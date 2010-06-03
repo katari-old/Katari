@@ -1,0 +1,57 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Welcome to Katari
+
+ Katari is a java based software platform that will help you develop web
+ applications faster. It was born as an internal project at Globant where was
+ used successfuly for dozens of projects. We are opening it to the community and
+ make it freely available under the Apache Software License 2.0.
+
+ Katari is built upon the most well known open source frameworks:
+
+ * Spring.
+
+ * Spring-mvc.
+
+ * Hibernate.
+
+ * Acegi security (now Spring security).
+
+ * Freemarker.
+
+ * Sitemesh.
+
+ []
+
+ But you don't have to spend a week or more properly integrating and configuring
+ them. With Katari you get a sample application up and running in a couple of
+ minutes. This sample application includes:
+
+ * Secured and non-secured content. A login page allows you to access
+ secured content.
+
+ * A nice styled site, where all styling element are under your control.
+
+ * A security aware menu structure.
+
+ * Sample pages that can be edited on line with the help of FCKEditor.
+
+ []
+
+ When you start a project with Katari you will also find a strong reliance on
+ best practices:
+
+ * Code is well documented, consistently formatted and easy to read.
+
+ * You will find testing (unit and integration) already in place, with a nice
+ approach to integrating tests that hits the database.
+
+ * Katari modular approach will make it easier to develop guided by business
+ driven requirements.
+
+ []
+
+ You can get started in Katari with the help of the provided maven archetype
+ (yes, it uses maven). The getting started guide will give you instructions on
+ how to start with Katari.
+ 

@@ -1,0 +1,9 @@
+<!-- Sample tomcat context configuration. Set docBase to the correct location.
+saveOnRestart must be false because otherwise the context will not be loaded
+untill the session expires (or so it looks like ...)
+-->
+<Context docBase="/home/gpablo/projects/globant/glb-template/main/dev/katari-sample/src/main/webapp"
+  path="katari-i" reloadable="true" override='true' saveOnRestart='false'>
+  <WatchedResource>*</WatchedResource>
+</Context>
+

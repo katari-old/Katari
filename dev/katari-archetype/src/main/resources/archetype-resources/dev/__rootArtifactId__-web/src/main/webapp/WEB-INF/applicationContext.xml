@@ -1,0 +1,285 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <description>
+    The web application context for the web archetype application.
+  </description>
+
+  <!-- The katari global beans. -->
+  <import resource="classpath:/com/globant/katari/core/applicationContext.xml"/>
+
+  <!-- The home module. -->
+  <import resource="classpath:/com/globant/${clientName}/${projectName}/web/home/module.xml"/>
+
+  <!-- The classic menu module. -->
+  <import resource="classpath:/com/globant/katari/menu/classic/module.xml"/>
+  
+  <!--  The editable-pages module -->
+  <import resource="classpath:/com/globant/katari/editablepages/module.xml"/>
+
+  <!-- LOGIN. -->
+  <!--
+  To have cas login support you have to enable the cas module.
+  for most of the scenarios the local one should be enough
+  -->
+  <!-- The cas module.
+  <import resource="classpath:/com/globant/katari/cas/module.xml"/>
+  -->
+  <!-- The local login module (recomended) -->
+  <import resource="classpath:/com/globant/katari/login/local/module.xml"/>
+
+  <!-- The user module. -->
+  <import resource="classpath:/com/globant/${clientName}/${projectName}/web/user/module.xml"/>
+
+  <!-- The role module. -->
+  <import resource="classpath:/com/globant/katari/hibernate/role/module.xml"/>
+
+  <!-- The trails module. It integrates trails into the web application. -->
+  <import resource="classpath:/com/globant/katari/trails/module.xml"/>
+
+  <!-- The reports module. -->
+  <import resource="classpath:/com/globant/katari/report/module.xml"/>
+
+  <!-- The search module. -->
+  <import resource="classpath:/com/globant/katari/search/module.xml" />
+
+  <!-- The console module. -->
+  <import resource="classpath:/com/globant/katari/console/module.xml" />
+
+  <!-- The client libs module. It provides unified access to common javascript
+  apis. -->
+  <import resource="classpath:/com/globant/katari/ajax/module.xml"/>
+
+  <!-- The style module. It provides a sample style and serves the static
+  content used in the application. -->
+  <import resource="classpath:/com/globant/${clientName}/${projectName}/style/module.xml"/>
+
+  <!-- The Institutional module. It has some static pages. -->
+  <import resource="classpath:/com/globant/${clientName}/${projectName}/web/institutional/module.xml"/>
+
+  <!-- The hibernate properties, They are referenced from the hibernate bean. -->
+  <bean id="katari.hibernateProperties"
+    class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="properties">
+      <props>
+        <prop key="hibernate.dialect">
+          org.hibernate.dialect.MySQL5InnoDBDialect
+        </prop>
+
+        <!-- For postgresql.
+        <prop key="hibernate.dialect">
+          org.hibernate.dialect.PostgreSQLDialect
+        </prop>
+        -->
+
+        <!-- WARNING: When this is set to 'auto', which is the default option
+        for Hibernate, it's not possible to change the isolation level of any
+        transaction. Spring sets it to 'on_close' , but in this way, the
+        tests never return the connections, thus emptying the connection pool.
+
+        To avoid this, we set it to 'after_transaction', but there may be
+        unexpected side effect we don't know of yet -->
+        <prop key="hibernate.connection.release_mode">after_transaction</prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    destroy-method="close">
+    <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+    <property name="jdbcUrl" value="jdbc:mysql://localhost/database"/>
+    <property name="user" value="username"/>
+    <property name="password" value="password"/>
+    <property name="minPoolSize" value='5'/>
+    <property name="maxPoolSize" value='5'/>
+    <property name="checkoutTimeout" value='10000'/>
+
+    <!-- Convenient but expensive. -->
+    <!-- property name="testConnectionOnCheckout" value='true'/-->
+
+    <!-- For debugging purposes only. Very expensive. -->
+    <!--property name='debugUnreturnedConnectionStackTraces' value='true'/ -->
+
+  </bean>
+
+  <!-- Example for postgres. -->
+  <!-- bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    destroy-method="close">
+    <property name="driverClass" value="org.postgresql.Driver" />
+    <property name="jdbcUrl" value="jdbc:postgresql://localhost/database" />
+    <property name="user" value="username" />
+    <property name="password" value="password" />
+    <property name="minPoolSize" value='5'/>
+    <property name="maxPoolSize" value='5'/>
+    <property name="checkoutTimeout" value='10000'/>
+  </bean -->
+
+  <!-- The application-wide data source. -->
+  <!-- bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName">
+      <value>com.mysql.jdbc.Driver</value>
+    </property>
+    <property name="url">
+      <value>jdbc:mysql://localhost/database</value>
+    </property>
+    <property name="username">
+      <value>username</value>
+    </property>
+    <property name="password">
+      <value>password</value>
+    </property>
+  </bean -->
+
+  <!-- The katari data source as an alias to dataSource. -->
+  <alias name="dataSource" alias="katari.dataSource"/>
+
+  <!-- Overrides the default top menu. -->
+  <katari:menuBar id='katari.menuBar'>
+    <katari:menuNode position='9000' name='Reports'/>
+    <katari:menuNode position='10000' name='Administration'/>
+    <katari:menuNode position='11000' name='Institutional'/>
+  </katari:menuBar>
+
+  <!-- A utility bean that checks if the application is running against a
+  development database. -->
+  <bean id="katari.developmentDataBaseChecker"
+    class="com.globant.katari.hibernate.DevelopmentDataBaseChecker">
+    <constructor-arg ref="katari.dataSource"/>
+    <constructor-arg>
+      <value>${clientName}_${projectName}_marker_666</value>
+    </constructor-arg>
+  </bean>
+
+  <!-- An implementation of UserDetailsService that builds a user details
+  object that delegates the user handling to the user domain object.
+  -->
+  <bean id="katari.userDetailsService" lazy-init='true'
+    class="com.globant.${clientName}.${projectName}.web.integration.DomainUserDetailsService">
+    <constructor-arg>
+      <ref bean="userRepository"/>
+    </constructor-arg>
+  </bean>
+
+  <!-- We use the userRepository from the user module. -->
+  <alias name="user.userRepository" alias="userRepository"/>
+
+  <!-- Here are some configuration examples for modules. -->
+
+  <!-- Trails module. -->
+  <!-- The location of the FCKEditor configuration file. -->
+  <!--
+  <bean id="trails.fckeditorConfiguration" class="java.lang.String">
+    <constructor-arg value="/test.js"/>
+  </bean>
+  <bean id="trails.fckeditorInstanceConfigurer" class="java.lang.String">
+    <constructor-arg>
+      <value>
+        <![CDATA[
+        editor.Height = 700;
+        alert(propertyName);
+        alert(className);
+        ]]>
+      </value>
+    </constructor-arg>
+  </bean>
+  -->
+
+  <!-- Overrides the security configuration for the trails module. -->
+  <!--
+  <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper"
+    id='trails.urlToRoleMapper'>
+    <constructor-arg index="0">
+      <map>
+        <entry key="/**">
+          <list>
+            <value>ROLE_REPORT_ADMIN</value>
+          </list>
+        </entry>
+      </map>
+    </constructor-arg>
+  </bean>
+  -->
+
+  <!-- Port mappings for HTTP/HTTPS access. -->
+  <bean id='katari.httpsPortMapper'
+      class='org.acegisecurity.util.PortMapperImpl'>
+    <property name='portMappings'>
+      <map>
+        <entry key='80' value='443' />
+        <entry key='8098' value='8097' />
+      </map>
+    </property>
+  </bean>
+
+  <!-- Sample configuration with the list of URLs that must be
+  accessed through HTTPS. -->
+  <!--
+  <bean id='katari.httpsUrls'
+      class='com.globant.katari.core.spring.StringHolder'>
+    <property name="value">
+      <value>
+          CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+          PATTERN_TYPE_APACHE_ANT
+          module/local-login/login.do=REQUIRES_SECURE_CHANNEL
+      </value>
+    </property>
+  </bean>
+  -->
+
+  <!-- Enable captcha in the login page. The captcha stops robots from gessing
+       passwords by brute force. -->
+  <!--
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='local-login.enableCaptcha' p:value='true'/>
+  -->
+
+  <!-- To configure the time an ip will be blacklisted. Defaults to 10 minutes.
+       Blacklisted ips are always shown a captcha.  -->
+  <!--
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='local-login.ipBlacklistTimeout' p:value='600000'/>
+  -->
+
+  <!-- Always show the captcha in the login page. -->
+  <!--
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='local-login.forceCaptcha' p:value='false'/>
+  -->
+
+  <!-- Configures the type of captcha. The value can be
+       local-login.captchaServiceEasy (default) or
+       local-login.captchaServiceHard. -->
+  <!--
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='local-login.captchaServiceType'
+    p:value='local-login.captchaServiceEasy'/>
+  -->
+
+  <!-- Configures the query to perform to test if the database is alive. -->
+  <!--
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name = 'katari.pingDatabaseQuery'
+    p:value = 'select * from users where id = 1' />
+    -->
+
+  <!-- Configures FCKEditor for the editablepages module. -->
+  <!--
+  <bean id='editable-pages.fckEditorConfiguration'
+    class='com.globant.katari.editablepages.view.FckEditorConfiguration'
+    p:height='400'/>
+    -->
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

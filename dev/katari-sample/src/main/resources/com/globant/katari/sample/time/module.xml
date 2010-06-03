@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.5.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- The time module configuration file. This file must be included in the
+    application context to use this module. -->
+
+  <bean id="time.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+
+    <property name='entryPoints'>
+      <!-- The servlet mappings. It maps the spring
+           EventFilterDispatcherServlet to *.do. -->
+      <bean
+        class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The spring-mvc controller servlet -->
+            <entry key=".*\.do">
+              <bean
+                class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="com.globant.katari.core.web.EventFilterDispatcherServlet"
+                    />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/sample/time/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <!-- The menu bar. -->
+    <property name='menuBar'>
+      <katari:menuBar id='menubar'>
+        <katari:menuNode name='Administration'>
+          <katari:menuNode name='Clients'>
+            <katari:menuItem name='List'
+              link='${trails.module}/trails/list/Client'/>
+            <katari:menuItem name='New'
+              link="${trails.module}/trails/new/Client" />
+          </katari:menuNode>
+          <katari:menuNode name='Projects'>
+            <katari:menuItem name='List'
+              link='${trails.module}/trails/list/Project'/>
+            <katari:menuItem name='New'
+              link='${trails.module}/trails/new/Project'/>
+          </katari:menuNode>
+          <katari:menuNode name='Activities'>
+            <katari:menuItem name='List'
+              link="${trails.module}/trails/list/Activity" />
+            <katari:menuItem name='New'
+              link="${trails.module}/trails/new/Activity" />
+          </katari:menuNode>
+        </katari:menuNode>
+        <katari:menuItem name='Time' display='My Time'
+          link="myTime.do" />
+        <katari:menuNode name='Reports'>
+          <katari:menuNode name='Standard_Reports' display='Standard Reports'
+              position='-10'>
+            <katari:menuItem name='UserProjectHoursReport'
+              display='User hours by project'
+              link="userProjectHoursReport.do" />
+          </katari:menuNode>
+        </katari:menuNode>
+      </katari:menuBar>
+    </property>
+
+  </bean>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='katari.persistentClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.sample.time.domain.Activity</value>
+        <value>com.globant.katari.sample.time.domain.Client</value>
+        <value>com.globant.katari.sample.time.domain.Project</value>
+        <value>com.globant.katari.sample.time.domain.TimeEntry</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='trails.persistentClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.sample.time.crud.Activity</value>
+        <value>com.globant.katari.sample.time.crud.Client</value>
+        <value>com.globant.katari.sample.time.crud.Project</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <!-- Overrides the messages location for trails.
+
+  NOTE: This is a sample only.
+  -->
+  <util:list id='trails.messageSourceBasenames'>
+    <value>com.globant.katari.sample.time.messages</value>
+  </util:list>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai : -->
+

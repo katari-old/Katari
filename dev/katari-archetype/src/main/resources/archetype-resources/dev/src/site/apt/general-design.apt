@@ -1,0 +1,151 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+General considerations
+
+* Some notes
+
+ These are issues that this application will try to demonstrate how to solve:
+
+ [[1]] Inmutable objects, if possible.
+
+ [[1]] No setters nor getters unless absolutely necessary.
+
+ [[1]] Hibernate uses private attributes.
+
+ [[1]] Use a module facade.
+
+ [[1]] Solve the 'close on dirty page' problem.
+
+ []
+
+ This is a nice to have one:
+
+ [[1]] Optimistic locking.
+
+ []
+
+* Considerations for the UI
+
+ The ui supports optimistic locking.
+
+ After a validation error occurs, the ui must preserve the data entered by the
+ user.
+
+ Solve the double post problem (redirect after post?).
+
+* Consideration for domain objects
+
+ The design is based on the concepts from Domain Driven Design, by Evans. All
+ domain objects are of one of the following type:
+
+ [[*]] Entity: it has an id an a lifespan of its own.
+
+ [[*]] Value: it lifespan is delimited by the lifespan of an entity.
+
+ [[*]] Repository: gets object graphs from the persistent storage.
+
+ [[*]] Service: sort of a utility, it encompass responibilities involving
+ multiple domain objects.
+
+ [[*]] Factory: a builder of object graphs.
+
+ []
+
+ Persistent domain objects (entities) have an empty protected constructor to
+ make hibernate happy, a constructor with all the necessary parameters to
+ correctly initialize the object, and one or more modify methods. It should have
+ no setters nor getters unless absolutely necessary.
+
+ The ids are of type long, with 0 for a new object. We discarded the common use
+ of Long to avoid code like this:
+
+------------
+ if (id != null && !id.equals(new Long(0))) {
+   ...
+ }
+-----------
+
+ Usually, ids are posted from web forms, so it is really easy for 0 values Long
+ to pop everywhere, leading to tests like this.
+
+ Repositories
+
+--------------------
+  UserRepository:
+
+    remove(User ...);
+    remove(Role ...);
+
+    save(User ...); // Saves or updates a user.
+    save(Role ...); // Saves or updates a role.
+
+    User findUser(long id);
+    Role findRole(long id);
+
+    searchUser(...);
+    searchRole(...);
+--------------------
+
+* Logging
+
+ Use commons-logging. We use the following policy for logging:
+
+ * ERROR: Use to log an event that avoids a task to complete. For example, an
+ exception that rollbacks the operation.
+
+ * WARNING: Situations where the application can continue with the operation.
+ Log how to avoid the warning.
+
+ * INFO: Environment information, normally useful for the administrator or
+ deployer.
+
+ * DEBUG: Internal state of the application, useful for debugging.
+
+ * TRACE: Information related to the flow of execution of the program.
+
+ When the method is complex enough, log entry and leave of the method with the
+ following idiom:
+
+-----------
+ log.trace("Entering methodName");
+ .
+ .
+ .
+ log.trace("Leaving methodName");
+-----------
+
+* Exception handling
+
+ Prefer unchecked exceptions. Only use checked exceptions if it is absolutely
+ necessary. Follow this guiding principle: <if it will be used for flow control,
+ do not use an exception>.
+
+Testing considerations
+
+ The Katari sample application shows a way to perform database integration
+ tests:
+
+ * Before the first test runs, all database tables are dropped and recreated.
+ Given that this is a potentially dangerous thing todo (image that some developer
+ gains access to a production system), the test machinery first verifies that the
+ database contain a marker table. The presence of this marker tables indicates
+ that this is a development database and all data will be removed. this marker
+ table is always created by hand. DO NOT AUTOMATE THE CREATION OF THIS TABLE.
+
+ * There is a test initialization script that loads some test data into the newly
+ created database. This initialization script is ran after recreating the
+ database objects. Developers must be sure that no test changes or erases any
+ data from the database put there by this initialization script. Tests take the
+ presence of this data as granted.
+
+Some random notes
+
+ Throw a module specific exception (eg: UnableToRemoveUser) when a depending
+ module forces the operation to abort. For example, suppose tha the time module
+ depends on the user module, and imagine that a business rule states that a
+ user cannot be deleted if there is at least one time entry loaded for that
+ user.
+
+ (time module throws an exception in the user module when the user cannot be
+ deleted because of constraints imposed by the time module.)
+

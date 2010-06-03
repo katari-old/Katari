@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+
+<script>
+
+  <input-symbol key="name" class="java.lang.String" required="yes"/>
+  <input-symbol key="propertyDescriptor" class="java.lang.Object" required="yes"/>
+  <input-symbol key="context" class="java.lang.String" required="yes"/>
+  <input-symbol key="request" class="java.lang.Object" required="yes"/>
+
+  <set key="name" expression="name"/>
+  <set key="context" expression="context"/>
+  <set key="propertyDescriptor" expression="propertyDescriptor"/>
+  <set key="baseweb" expression="request.getAttribute('baseweb')"/>
+
+  <!--
+  <set key="integrationScript" expression="editor.integrationScript"/>
+  <set key="basePath" expression="editor.basePath"/>
+  -->
+  <body>
+    <unique>
+      <![CDATA[
+      // --></script>
+      <script type='text/javascript' src="${baseweb}/module/ajax/fckeditor/fckeditor.js" />
+      <script type='text/javascript'>
+      ]]>
+    </unique>
+
+    <![CDATA[
+    ]]>
+  </body>
+
+  <initialization>
+    <![CDATA[
+    var editor_${name} = new FCKeditor( '${name}' );
+    ${configuration != "NONE" ?
+      "editor_" + name + ".Config['CustomConfigurationsPath'] = "
+        + "'" + baseweb + configuration + "';"
+      : ""
+    }
+    "${propertyDescriptor.name}";
+    "${propertyDescriptor.beanType.name}";
+    ${instanceConfigurer != "NONE" ?
+      "function configureFckeditor(editor, className, propertyName) {\n"
+      +   instanceConfigurer + "\n"
+      + "}\n"
+      + "configureFckeditor(editor_" + name
+      + ",'" + propertyDescriptor.beanType.name + "'"
+      + ",'" + propertyDescriptor.name + "');\n"
+      : ""
+    }
+    editor_${name}.BasePath = '${baseweb}/module/ajax/fckeditor/';
+    editor_${name}.ReplaceTextarea();
+    ]]>
+  </initialization>
+  <!-- vim: set ts=2 et sw=2 ai tw=80: -->
+</script>
+

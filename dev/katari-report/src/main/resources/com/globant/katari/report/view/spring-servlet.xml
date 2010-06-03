@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- freemarker config -->
+  <bean id="freemarkerConfig"
+    class="com.globant.katari.core.web.FreeMarkerConfigurer"
+    p:templateLoaderPath="classpath:/com/globant/katari/report/view/"
+    p:debugPrefix='../katari-report/src/main/resources'
+    p:debug-ref='debugMode'/>
+
+  <bean id="freemarkerViewResolver"
+    class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+    p:prefix="/" p:suffix=".ftl"
+    p:exposeSpringMacroHelpers='true'
+    p:exposeRequestAttributes='true'/>
+
+  <!--  Needed for file upload. -->
+  <bean id="multipartResolver"
+      class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+    p:maxUploadSize="1024000"/>
+
+  <!-- The spring mvc mappings. -->
+  <bean name="/editReport.do"
+      class="com.globant.katari.report.view.ReportController">
+    <lookup-method name="createCommandBean" bean="saveReportCommand" />
+    <property name="validator" ref="commandValidator" />
+    <property name="messageCodesResolver" ref="messageCodesResolver"/>
+    <property name="formView" value="editReport" />
+  </bean>
+
+  <bean name="/downloadReport.do"
+      class="com.globant.katari.report.view.DownloadReportDefinitionController">
+    <lookup-method name="createCommandBean" bean="retrieveReportContentCommand"/>
+  </bean>
+
+  <bean name="/reports.do"
+      class="com.globant.katari.report.view.ReportsController">
+    <lookup-method name="createCommandBean" bean="reportsCommand" />
+  </bean>
+
+  <bean name="/deleteReport.do"
+        class="com.globant.katari.report.view.ReportController">
+    <lookup-method name="createCommandBean" bean="deleteReportCommand"/>
+  </bean>
+
+  <bean name="/editParameters.do"
+        class="com.globant.katari.report.view.ParameterController">
+    <lookup-method name="createCommandBean" bean="generateReportCommand" />
+    <property name="validator" ref="commandValidator" />
+    <property name="messageCodesResolver" ref="messageCodesResolver"/>
+    <property name="formView" value="editParameters" />
+  </bean>
+
+  <!-- Validators -->
+  <bean name="commandValidator"
+      class="com.globant.katari.core.application.CommandValidator" />
+
+  <bean id="messageSource"
+      class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basenames">
+      <list>
+        <value>com.globant.katari.report.messages</value>
+      </list>
+    </property>
+    <property name="useCodeAsDefaultMessage" value="true" />
+  </bean>
+
+  <bean id="messageCodesResolver"
+      class="org.springframework.validation.DefaultMessageCodesResolver">
+    <property name="prefix" value="validation." />
+  </bean>
+
+  <!-- Commands -->
+  <bean name="saveReportCommand" scope="prototype"
+     class="com.globant.katari.report.application.SaveReportCommand">
+     <constructor-arg index="0" ref="jasperReportRepository"/>
+     <constructor-arg index="1" ref="role.roleRepository"/>
+  </bean>
+
+  <bean name="retrieveReportContentCommand" scope="prototype"
+     class="com.globant.katari.report.application.RetrieveReportContentCommand">
+     <constructor-arg index="0" ref="jasperReportRepository"/>
+  </bean>
+
+  <bean name="reportsCommand" scope="prototype"
+     class="com.globant.katari.report.application.ReportsCommand">
+     <constructor-arg index="0" ref="jasperReportRepository"/>
+  </bean>
+
+  <bean name="deleteReportCommand" scope="prototype"
+     class="com.globant.katari.report.application.DeleteReportCommand">
+     <constructor-arg index="0" ref="jasperReportRepository"/>
+  </bean>
+
+  <bean name="generateReportCommand" scope="prototype"
+     class="com.globant.katari.report.application.GenerateReportCommand">
+     <constructor-arg index="0" ref="jasperReportRepository"/>
+     <constructor-arg index="1" ref="jasperReportGenerator"/>
+     <constructor-arg index="2" ref="dataSource"/>
+  </bean>
+
+  <!-- End of commands -->
+
+  <bean class="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator">
+    <property name="proxyTargetClass" value="true" />
+    <property name="beanNames">
+      <list>
+        <value>*Command</value>
+      </list>
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>transactionInterceptor</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="transactionInterceptor"
+      class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    <property name="transactionManager" ref="katari.transactionManager"/>
+    <property name="transactionAttributes">
+      <props>
+        <prop key="execute">PROPAGATION_REQUIRED</prop>
+        <prop key="init">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
+  </bean>
+
+  <!-- The reports repository -->
+  <bean id="jasperReportRepository"
+      class="com.globant.katari.report.domain.JasperReportRepository">
+      <property name="sessionFactory" ref="katari.sessionFactory"/>
+  </bean>
+
+  <!-- The Jasper Generator -->
+  <bean id="jasperReportGenerator"
+      class="com.globant.katari.report.domain.JasperReportGenerator">
+    <constructor-arg index="0" ref="jasperReportRepository"/>
+  </bean>
+
+</beans>
+

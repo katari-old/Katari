@@ -1,0 +1,101 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<assembly>
+  <id>bin</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>${artifactId}/target</directory>
+      <includes>
+        <include>user-manual.pdf</include>
+        <include>release-notes.pdf</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-web/target</directory>
+      <includes>
+        <include>${parentArtifactId}-web.war</include>
+        <include>${parentArtifactId}-web.ddl</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-web/src/main/sql</directory>
+      <includes>
+        <include>db-setup.sql</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-web/src/test/resources</directory>
+      <includes>
+        <include>${parentArtifactId}.properties</include>
+        <include>log4j.properties</include>
+      </includes>
+    </fileSet>
+    <!-- The pdf files. -->
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>${artifactId}/target/site/pdf</directory>
+      <includes>
+        <include>user-manual.pdf</include>
+        <include>release-notes.pdf</include>
+      </includes>
+    </fileSet>
+    <!-- The main site. -->
+    <fileSet>
+      <outputDirectory>/doc</outputDirectory>
+      <directory>${artifactId}/target/site</directory>
+      <includes/>
+    </fileSet>
+    <!-- We copy each module. -->
+    <fileSet>
+      <outputDirectory>/doc/${parentArtifactId}-core</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-core/target/site</directory>
+      <includes/>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/doc/${parentArtifactId}-style</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-style/target/site</directory>
+      <includes/>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/doc/${parentArtifactId}-trails</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-trails/target/site</directory>
+      <includes/>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/doc/${parentArtifactId}-web</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-web/target/site</directory>
+      <includes/>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/doc/${parentArtifactId}-classic-menu</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-classic-menu/target/site</directory>
+      <includes/>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/doc/${parentArtifactId}-tools</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-tools/target/site</directory>
+      <includes/>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/doc/${parentArtifactId}-reporting</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-reporting/target/site</directory>
+      <includes/>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/doc/${parentArtifactId}-ajax</outputDirectory>
+      <directory>${artifactId}/${parentArtifactId}-ajax/target/site</directory>
+      <includes/>
+    </fileSet>
+  </fileSets>
+</assembly>
+<!-- vim: set ts=2 sw=2 et: -->
+

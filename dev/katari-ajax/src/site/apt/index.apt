@@ -1,0 +1,11 @@
+~~~ vim: set sw=1 et ts=1 ai:
+ -----
+ The Site
+ -----
+ Pablo Gra\~na
+ -----
+
+Globant Katari - ajax tools
+
+ This module contains common client side libraries like yui and other
+ javascript apis.

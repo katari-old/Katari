@@ -1,0 +1,256 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Search design
+
+ This module provides a site-wide, security aware, search facility with the help
+ of compass, an indexing and search engine based on lucene that can be easily
+ integrated with hibernate.
+
+ The aim of this module is to provide final users a way to search for content
+ across the whole application. Users enter a search condition and the module
+ shows a list with the result of the search. Users can interact with each of the
+ elements in the result, performing different actions. There is a default action
+ (view), and modules can add additional actions.
+
+ For example, if the client searches for a user name, the resulting list shows
+ the name of the user, some details of the user, a link to show the full
+ information of the user,  and a link allowing the client to modify the user.
+
+How a search is performed
+
+ The index module will find objects, but will not know how to handle them. It
+ doesn't know anything about what it is being indexed, other modules provide the
+ content. Each module must provide an adapter that wraps the result of the
+ search in an object that holds all the information that the search module needs
+ to present the result of the search on the screen.
+
+ The full process is shown in the following diagram
+
+[images/search-searching-sequence.png] How a search is performed
+
+ The main entry point for the search process in the application layer is the
+ SearchCommand. This command is created by spring and initialized by the spring
+ controller with the query posted by the user. On the execute operation, the
+ search command delegates all the work to the IndexRepository.
+
+ The IndexRepository knows how to perform the search, with the help of compass.
+ Once compass returns all the objects that matched the query, the
+ IndexRepository finds, for each resulting object, the corresponding
+ SearchAdapter instance. Those SearchAdapter instances are provided by the
+ modules, and know how to create a SearchResultElement from the domain object
+ found by compass. This SearchResultElement has all the information needed by
+ the search module to show the result of the search.
+
+ Finally, the IndexRepository returns to the command a SearchResult, that
+ contains a list of SearchResultElement instances.
+
+Security considerations
+
+ The search module has implemented a simple security schema: it will only return
+ to the user the elements of types that the user is allowed to view. To
+ determine which elements the user is allowed to view, modules need to implement
+ the getViewUrl operation in the SearchAdapter interface. This url must be
+ independent of the specific object that will be viewed. The search module will
+ use katari standard security mechanism (using acegi security) to check if the
+ logged on user has access to that url.
+ 
+Preparing a module to index its content
+
+ A module that wants to integrate with the search module must provide two
+ things:
+
+ [[1]] A list of entities that must be indexed.
+
+ [[1]] A list of adapters that adapt each entity to the requirements of the search
+ module.
+
+ []
+
+ The indexed entities must be mapped by hibernate, and annotated with compass
+ indexing annotations (for example, Searchable, SearchableId and
+ SearchableProperty in the package org.compass.annotations).
+
+ This is a fragment of an annotated entity:
+
+-----
+@Entity
+@Table(name = "users")
+@Searchable
+public class User {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  @SearchableId
+  private long id = 0;
+
+  @Column(name = "name", nullable = false, length = 50)
+  @SearchableProperty
+  private String name;
+
+  @Column(name = "email", nullable = false, length = 50)
+  @SearchableProperty
+  private String email;
+
+  .
+  .
+  .
+}
+-----
+
+ And this is a sample adapter for the previous object:
+
+-----
+public class UserSearchAdapter implements SearchAdapter {
+
+  public SearchResultElement convert(final Object o, final float score) {
+
+    User user = (User) o;
+
+    ArrayList<Action> actions;
+    actions = new ArrayList<Action>();
+
+    actions.add(new Action("Edit", null,
+          "userEdit.do?id=" + user.getId()));
+
+    StringBuilder description = new StringBuilder();
+    description.append("User - name: " + user.getName());
+    description.append("; email: " + user.getEmail());
+
+    return new SearchResultElement("User", user.getName(),
+        description.toString(), "/module/user/user.do?id=" + user.getId(),
+        actions, score);
+  }
+
+  public String getViewUrl() {
+    return "/module/user/user.do";
+  }
+
+  public Class getAdaptedClass() {
+    return User.class;
+  }
+}
+-----
+
+ As you can see, the adapter provides:
+
+ * A view url, for the specific object, returned in the convert operation.
+
+ * A description of the object, suitable to be show to the user.
+
+ * A list of urls representing actions that the user can perform (for example,
+ edit).
+
+ * A generic view url. This is used to check if the user can access the type of
+ object.
+
+ * Which class this adapter adapts.
+
+ []
+
+ The last step to index the module content is to register the objects and the
+ adapters in the search module. For that, add the following lines in your
+ module.xml:
+ 
+------
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='search.indexableClasses'/>
+    <constructor-arg value='true'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.myModule.domain.User</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='search.adapters'/>
+    <constructor-arg value='true'/>
+    <constructor-arg>
+      <list>
+        <bean class="com.globant.katari.myModule.domain.UserSearchAdapter"/>
+      </list>
+    </constructor-arg>
+  </bean>
+------
+
+ These two beans add the domain object (User) and its corresponding adapter
+ (UserSearchAdapter) to the search.indexableClasses and search.adapters
+ collections, defined in the search module. In this case, if the search module
+ is not installed, nothing will happen. This is indicated by the 'true' value as
+ the second constructor parameters in both beans.
+
+Using this module
+
+ To include this module in a Katari based application, simply put a line of the
+ form:
+
+------
+<import resource="classpath:/com/globant/katari/search/module.xml"/>
+------
+
+ Importing module.xml will automatically index and search on all the entities
+ provided by other modules that support indexing.
+
+ This module also provides a weblet that can be used to show the search input
+ text and its button. To use it, add the following to your decorator (usually
+ header.dec):
+
+------
+<@katari.weblet "search" "search" />
+------
+
+Configuration
+
+ The only configurable option provided by this module is the location of the
+ lucene index. This is the default configuration:
+
+-----
+   <!-- Overridable bean to define the file system location to store the lucene
+       index. -->
+  <bean id='search.compassEngineConnection'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='target/compass/' />
+
+  <bean id='search.compassIndexEngineConnection'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='target/compass-tmp/' />
+-----
+
+ Compass can perform search and mirroring separately from batch indexing. The
+ search.compassEngineConnection configuration is defines the place where compass
+ performs the search and mirroring operations. The
+ search.compassIndexEngineConnection is used for batch indexing. Once the
+ indexing process is finished, compass copies the new index to
+ search.compassEngineConnection.
+
+The user interface
+
+ The entry point of the search module is the previous weblet. This weblet shows
+ an input field and a search button. When you click on the search button, you
+ are taken to the search results page. This page contains the same input field
+ and search button, plus a list with the result of the search.
+
+ Each element of the list has a link to the 'view' location, and an optional
+ list of actions.
+
+Modules integrating search
+
+ For now, the sample user module and the editable pages module index their
+ content through this module. More to come ...
+
+Next steps
+
+ There are still a couple of things that would be nice to add here:
+
+ * Integrate the highlighter.
+
+ * Define a more fine grained security model, for example, define roles per
+ object, an owner, etc.
+
+ * Provide support to index things that are not hibernate mapped domain objects.
+
+ * Improve the search result page.
+
+ []
+

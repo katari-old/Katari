@@ -1,0 +1,32 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Curious bugs
+
+ This is a collection of bugs found (and corrected) in katari that has something
+ to teach us.
+
+Testing if AssertionFailedError is thrown
+
+ This test case tests if the method under test effectively throws
+ junit.framework.AssertionFailedError.
+
++----
+ public void testRunAndValidate_invalidRegexpsFail() throws Exception {
+
+  List<String> invalid = new ArrayList<String>();
+  invalid.add(".*Exception.*");
+
+  FreemarkerTestEngine engine = new FreemarkerTestEngine(
+      "/com/globant/katari/tools", Locale.ENGLISH, buildModel());
+  try {
+    engine.runAndValidate("freemarkerTestEngineTest.ftl",
+        Collections.<String>emptyList(), invalid);
+    fail();
+  } catch (AssertionFailedError e) {
+  }
+}
++----
+
+ The problem with this test is that fail also throws an AssertionFailedError, so
+ no matter what, the test will always pass.
+

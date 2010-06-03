@@ -1,0 +1,143 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <!-- vim: set ts=2 et sw=2 ai: -->
+
+  <parent>
+    <groupId>com.globant.katari</groupId>
+    <artifactId>dev</artifactId>
+    <version>0.22-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.globant.katari</groupId>
+  <artifactId>katari-console</artifactId>
+  <packaging>jar</packaging>
+  <name>Globant Katari - console</name>
+  <description>A scripting console for the Katari environment</description>
+
+  <dependencies>
+    <!-- Test only dependencies -->
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymockclassextension</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+    </dependency>
+
+    <!-- Runtime dependencies -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+    </dependency>
+    
+    <!-- Provided by the container -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jsp-api</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${artifactId}</finalName>
+
+    <plugins>
+      <!-- Defines two sets of tests, one for normal unit tests and the other
+      for functional testing. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- Excludes all the tests from the default surefire execution
+          phase. -->
+          <includes><include /></includes>
+        </configuration>
+        <executions>
+          <!-- We use the surefire plugin to set up the database. This is bound
+          to the test-compile phase. We could not manage to use
+          exec-maven-plugin. -->
+          <execution>
+            <id>Tests setup</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+          <!-- Unit tests that do not require the web application deployed in
+          the container. This is bound to the test phase. -->
+          <execution>
+            <id>Tests</id>
+            <phase>test</phase>
+            <configuration>
+              <excludes>
+                <exclude>**/functionaltest/**/*.java</exclude>
+              </excludes>
+              <includes>
+                <include>**/*Test.java </include>
+              </includes>
+            </configuration>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+          <!-- Unit tests that require the web application deployed in the
+          container. This is bound to the integration-test phase. -->
+          <execution>
+            <id>Functional tests</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <excludes>
+                <exclude>${selenium-test-exclusion-list}</exclude>
+              </excludes>
+              <includes>
+                <include>**/functionaltest/**/*Test.java </include>
+              </includes>
+            </configuration>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+

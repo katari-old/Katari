@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.globant.com/schema/katari"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  targetNamespace="http://www.globant.com/schema/katari"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+
+  <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+
+  <xsd:element name="menuItem">
+    <xsd:complexType>
+      <xsd:attribute name="name" use="required"/>
+      <xsd:attribute name="display"/>
+      <xsd:attribute name="position" default="1"/>
+      <xsd:attribute name="tooltip"/>
+      <xsd:attribute name="link" use="required"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="menuNode">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="menuNode"/>
+        <xsd:element ref="menuItem"/>
+      </xsd:choice>
+      <xsd:attribute name="name" use="required"/>
+      <xsd:attribute name="display"/>
+      <xsd:attribute name="position" default="1"/>
+      <xsd:attribute name="tooltip"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="menuBar">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="menuNode"/>
+        <xsd:element ref="menuItem"/>
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:ID"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- vim: set ts=2 et sw=2 : -->
+
+</xsd:schema>
+

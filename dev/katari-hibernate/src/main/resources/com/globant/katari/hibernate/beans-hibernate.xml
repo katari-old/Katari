@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xmlns:p="http://www.springframework.org/schema/p"
+      xmlns:util="http://www.springframework.org/schema/util"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <description>
+    Katari hibernate spring application context. This context contains
+    hibernate dependent beans.
+  </description>
+
+  <!-- Hibernate SessionFactory formerly an
+  org.springframework.orm.hibernate3.LocalSessionFactoryBean-->
+  <bean id="katari.sessionFactory"
+    class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+    lazy-init="true">
+    <property name="dataSource" ref="katari.dataSource" />
+    <property name="hibernateProperties" ref='katari.hibernateProperties'/>
+    <property name="annotatedClasses">
+      <ref bean='katari.persistentClasses' />
+    </property>
+  </bean>
+
+  <util:list id='katari.persistentClasses'/>
+
+  <!-- Transaction manager for a single Hibernate SessionFactory
+  (alternative to JTA) -->
+  <bean id="katari.transactionManager"
+    class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+    lazy-init="true">
+    <property name="sessionFactory">
+      <ref local="katari.sessionFactory" />
+    </property>
+  </bean>
+
+  <!-- ============================================================= -->
+  <!-- ================== Security related beans =================== -->
+  <!-- ============================================================= -->
+
+  <!-- Adds a database checker to the list of ping services -->
+
+  <bean class="com.globant.katari.core.ping.PingServicesExpander"
+    lazy-init="false">
+    <constructor-arg ref="katari.pingServices"/>
+    <constructor-arg>
+      <list>
+        <!-- The database ping -->
+        <bean class="com.globant.katari.hibernate.PingDatabase">
+          <constructor-arg ref="katari.dataSource"/>
+          <constructor-arg ref='katari.pingDatabaseQuery'/>
+          <constructor-arg ref="katari.developmentDataBaseChecker"/>
+        </bean>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <!-- A bean to override the query to perform to test if the database is
+       alive. -->
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name = 'katari.pingDatabaseQuery'
+    p:value = 'select * from users where id = 1' />
+
+  <!-- A utility bean that checks if the application is running against a
+  development database. -->
+  <bean id="katari.developmentDataBaseChecker"
+    class="com.globant.katari.hibernate.DevelopmentDataBaseChecker">
+    <constructor-arg ref="katari.dataSource"/>
+    <constructor-arg>
+      <value>katari_marker_666</value>
+    </constructor-arg>
+  </bean>
+
+  <!-- Puts the helper for the katari free marker url macros in the request
+  making it accessible to the rendering proccess.
+  This filter supports the debug mode for secure urls. It checks that the app
+  is using development database.
+  This bean overrides the bean defined in beans-core.xml. -->
+  <bean id="katari.secureUrlMacroFilter"
+    class="com.globant.katari.hibernate.HibernateSecureUrlMacroFilter">
+    <constructor-arg index="0" ref="katari.secureUrlAccessHelper"/>
+    <constructor-arg index="1" ref="katari.developmentDataBaseChecker"/>
+  </bean>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

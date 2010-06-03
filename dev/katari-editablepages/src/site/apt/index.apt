@@ -1,0 +1,142 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Editable pages design
+
+ This module provides pages that can be edited by a user with the appropriate
+ permissions.
+
+ The main concept in this module is the page. A page belongs to a site. Pages
+ have a name and a content. They can be referenced from other pages using
+ [content-path]/module/editablepages/[page-name], or from other editable pages
+ simply using the page name.
+
+ The module has two modes: a user mode and an editor mode. The user mode is the
+ standard way of navigating through the pages. The editor mode shows a toolbar
+ where editors can edit, create, remove, modify, revert and publish pages.
+
+ When an editor creates or modifies a page, the new content is only visible in
+ editor mode. The editor must publish the page to be viewable by the general
+ public.
+
+ For editors, the module also provides a list of pages with their status. This
+ is useful to identify 'dirty' pages (pages with modifications not yet
+ published).
+
+ There are two special roles relevant to this module: EDITOR and PUBLISHER.
+ To create, edit or remove a page, a user must be have the EDITOR role. The
+ PUBLISHER role is necessary to publish a page. Users with the ADMINISTRATOR
+ role can perform both types of activities.
+
+ If the search module is available, this module registers the pages to be
+ indexed by the search module.
+
+Using this module
+
+ To include this module in a Katari based application, simply put a line of the
+ form:
+
+------
+<import resource="classpath:/com/globant/katari/editablepages/module.xml"/>
+------
+
+ This module also provides a weblet that can be used to show editable page
+ fragments. For this, use:
+
+------
+<@katari.weblet "editable-pages" "page" "[name]"/>
+------
+
+ where [name] is the name of the page you want to include.
+
+Configuration
+
+ There are two configuration options: the site name and the FCKEditor
+ configuraition.
+
+* Configuring the site name
+
+ The site name under a collection of related pages can be stored. With this
+ option you can have multiple sites on the same database under different tomcat
+ instances.
+
+ To set the site name, define a bean in your main application context (after the
+ module import) like the following:
+
+------
+  <bean id="editable-pages.siteName"
+    class="com.globant.katari.core.spring.StringHolder"
+    p:value='mySite'/>
+------
+
+* Configuring FCKEditor
+
+ Most of FCKEditor configuration option can be set in a javascript file that
+ contains entries of the form:
+
+------
+FCKConfig.ImageUploadAllowedExtensions = ".(jpg|gif|jpeg|png)$" ;
+------
+
+ This javascript file must be accessible from the editor page. To configure the
+ location of this javascript file you must define a bean
+ in your application context like this:
+
+------
+  <bean id='editable-pages.fckEditorConfiguration'
+    class='com.globant.katari.editablepages.view.FckEditorConfiguration'
+    p:configurationUrl='/module/mymodule/asset/fckconfig.js'
+    />
+------
+
+ You can customize other aspects of the editor setting the following properties
+ in the previous spring bean:
+
+------
+  <bean id='editable-pages.fckEditorConfiguration'
+    class='com.globant.katari.editablepages.view.FckEditorConfiguration'
+    p:configurationUrl='/module/mymodule/asset/fckconfig.js'
+    p:editorAreaCss='/module/decorator/css/fck-editorarea.css'
+    p:toolbarSet='myToolbar'
+    p:width='100%'
+    p:height='500'/>
+------
+
+ [editorAreaCss:] The url for the css to style the content of the editor. This
+ url must be relative to the context path. If you don't specify this parameter,
+ the editor loads /module/decorator/css/fck-editorarea.css. Make sure to make
+ this file available in that location if you do not change the editorAreaCss
+ parameter.
+ 
+ [configurationUrl:] The url (relative to the context path) for the fck config
+ javascrip file. See the FckEditor documentation related to the configuration
+ file (fckconfig.js).
+
+ [toolbarSet:] The toolbar available to use in the editor. The possible toolbars
+ are defined in the js file under configurationUrl. If that parameter is not
+ defined, the only toolbar available is called EditablePagesMain.
+
+ [height:] The height of the area containing the editor.
+
+ [width:] The width of the area containing the editor.
+
+ []
+
+ See the javadoc for FckEditorConfiguration in the katari-editablepages module
+ for more information on configuration options.
+
+The user interface
+
+ If a user has one of the relevant roles, the module automatically goes into
+ editor mode. In this mode, each page is shown with a pencil icon in it's upper
+ left corner. Clicking in this pencil shows the editor toolbar.
+
+ As a future enhacements, we can provide an 'edit mode' button that shows the
+ 'pencil' menu and the yet to be published content.
+
+Next steps
+
+ The current integration with the search module shows the first 100 characters
+ of the page content, including html tags. This should be revisited to extract
+ only the text data from the html, and possibly integrate the compass
+ highlighter.
+

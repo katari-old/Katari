@@ -1,0 +1,49 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Katari">
+
+  <skin>
+    <groupId>com.globant.katari</groupId>
+    <artifactId>katari-siteskin</artifactId>
+    <version>${version}</version>
+  </skin>
+
+  <bannerLeft>
+    <name>Katari</name>
+    <src>images/mainLogo.png</src>
+  </bannerLeft>
+
+  <body>
+
+    <links>
+      <item name="Trac" href="https://projects.globant.com/trac/katari/" />
+      <item name="Nexus" href="https://projects.globant.com/nexus/" />
+    </links>
+
+    <menu name="${friendlyName}">
+      <item name="Introduction" href="index.html" />
+      <item name="Release Notes" href="release-notes.html"/>
+    </menu>
+
+    <menu name="Design">
+      <item name="General design" href="general-design.html" />
+      <item name="User crud design" href="user-crud-design.html" />
+    </menu>
+
+    <menu name="For Developers">
+      <item name="Review Checklist" href="review-checklist.html" />
+    </menu>
+
+    <menu name="Modules">
+      <item name="Archetype project Web" href="/${clientName}-${projectName}-web/index.html"/>
+      <item name="Archetype project Style" href="/${clientName}-${projectName}-style/index.html"/>
+    </menu>
+
+    ${symbol_dollar}{reports}
+
+  </body>
+</project>
+<!-- vim: set ts=2 sw=2 et: -->
+

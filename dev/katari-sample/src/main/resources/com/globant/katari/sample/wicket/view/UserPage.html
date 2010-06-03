@@ -1,0 +1,58 @@
+<html>
+  <head>
+  	<title><span wicket:id="head-title-label">[page title]</span></title>
+  </head>
+  <body>
+    <h3 wicket:id="page-title-label">User page</h3>
+    <form wicket:id="userForm" id="userEdit" name="userEdit">
+
+      <span class="error" wicket:id="errors" id="message"></span>
+
+      <div class="clearfix column left">
+
+        <div class="column left">
+
+          <span class="formfield">
+            <label for="name">Name</label>
+            <input type="text" wicket:id="profile.name" />
+          </span>
+
+          <span class="formfield">
+            <label for="email">Email</label>
+            <input type="text" wicket:id="profile.email" />
+          </span>
+
+          <span wicket:id="passwords">
+            <span class="formfield">
+              <label for="password">New Password</label>
+              <input type="password" wicket:id="password.newPassword" />
+            </span>
+
+            <span class="formfield">
+              <label for="passwordConfirm">Confirm New Password</label>
+              <input type="password" wicket:id="password.confirmedPassword" />
+            </span>
+          </span>
+
+        </div>
+
+        <div class="column left">
+          <div class="formfield" >
+          	<label for="roles">Roles</label>
+            <div wicket:id="profile.roles">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="buttons clear">
+        <input class="btn rightMargin" type="submit" value="Save" wicket:id="save"/>
+        <input class="btn" type="submit" value="Cancel" wicket:id="cancel"/>
+      </div>
+
+    </form>
+  </body>
+  <!-- vim: set ts=2 et sw=2 filetype=html ai : -->
+</html>
+

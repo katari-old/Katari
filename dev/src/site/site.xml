@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Katari">
+
+  <skin>
+    <groupId>com.globant.katari</groupId>
+    <artifactId>katari-siteskin</artifactId>
+    <version>${version}</version>
+  </skin>
+
+  <bannerLeft>
+    <name>Katari</name>
+    <src>images/mainLogo.png</src>
+  </bannerLeft>
+
+  <!--bannerRight>
+    <src>http://maven.apache.org/images/maven-small.gif</src>
+  </bannerRight -->
+
+  <body>
+
+    <links>
+      <item name="Trac" href="https://projects.globant.com/trac/katari/" />
+      <item name="Nexus" href="https://projects.globant.com/nexus/" />
+    </links>
+
+    <menu name="Main">
+      <item name="Welcome" href="index.html" />
+      <item name="Getting started" href="getting-started.html" />
+      <item name="General architecture" href="architecture.html" />
+      <!-- item name="Katari modules" href="modules.html" / -->
+      <!-- item name="Crud Modules" href="cruds.html" / -->
+      <item name="FAQ" href="faq.html"/>
+      <item name="Release Notes" href="release-notes.html"/>
+    </menu>
+
+    <!-- menu name="Design">
+      <item name="General design" href="general-design.html" />
+      <item name="Menus" href="menu-definition.html" />
+      <item name="User crud design" href="user-crud-design.html" />
+    </menu -->
+
+    <menu name="Modules">
+      <item name="Katari Core" href="/katari-core/index.html"/>
+      <item name="Katari Hibernate" href="/katari-hibernate/index.html"/>
+      <item name="Katari Local Login"
+        href="/katari-local-login/index.html"/>
+      <item name="Katari Classic Menu"
+        href="/katari-classic-menu/index.html"/>
+      <item name="Katari Search" href="/katari-search/index.html"/>
+      <item name="Katari Editable Pages"
+        href="/katari-editablepages/index.html"/>
+      <item name="Katari Reporting" href="/katari-report/index.html"/>
+      <item name="Katari Ajax Tools" href="/katari-ajax/index.html"/>
+      <item name="Katari CAS" href="/katari-cas/index.html"/>
+      <item name="Katari Console" href="/katari-console/index.html"/>
+      <item name="Katari Trails" href="/katari-trails/index.html"/>
+      <item name="Katari Tools" href="/katari-tools/index.html"/>
+      <item name="Katari Archetype" href="/katari-archetype/index.html"/>
+      <item name="Katari Style" href="/katari-style/index.html"/>
+      <item name="Katari Sample" href="/katari-sample/index.html"/>
+      <item name="Katari Sample without database"
+        href="/katari-nodatabase/index.html"/>
+    </menu>
+
+    <menu name="Documentation in PDF">
+      <item name="Release Notes" href="pdf/release-notes.pdf" />
+      <item name="User Manual" href="pdf/user-manual.pdf" />
+      <!-- item name="Architecture" href="pdf/katari-architecture.pdf" / -->
+    </menu>
+
+    <menu name="For Developers">
+      <item name="Review Checklist" href="review-checklist.html" />
+      <item name="Conventions" href="conventions.html" />
+    </menu>
+
+    ${reports}
+
+  </body>
+</project>
+<!-- vim: set ts=2 sw=2 et: -->
+

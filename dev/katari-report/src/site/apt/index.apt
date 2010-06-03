@@ -1,0 +1,89 @@
+Reports design
+
+ The report module for Katari allows the user to build and execute reports.
+ The report is built using a visual tool and then uploaded into Katari, to
+ be executed from a web interface on a later date.
+
+ The reports may be generated using the WYSIWYG tool iReports, where the
+ designer can customise the look and feel of the report. The query to generate
+ the report is written using SQL language inside iReports.
+
+ The report file is uploaded into Katari using a web interface. The user is
+ prompted to map the types used in the report parameters, so they can be
+ displayed correctly in a web form.
+
+ At a later time, a user with the correct role (specified upon the report
+ creation) can execute the report and print the output into a PDF.
+
+Using this module
+
+ To include this module in a Katari based application, simply put a line of the
+ form:
+
+------
+<import resource="classpath:/com/globant/katari/report/module.xml"/>
+------
+
+Design
+
+* Domain model
+
+[images/report-module-domain.png]
+
+* Entities responsibilities
+
+ [ReportDefinition] The report definition represents the blueprint of a report,
+ with the intended layout, query and constraints. The actual contents of the
+ report are opaque to the programmer, who only knows the relevant parts of the
+ report. The report definition also specifies which roles can execute it.
+
+ [ParameterDefinition] The parameter definition is the description of a
+ variable constraint in the report. The constraint is created in definition
+ time, and will be mapped for example to a constraint in the WHERE clause of
+ a SQL statement. In runtime, the actual value of the parameter is specified,
+ and the report is run with the appropriate constraint.
+
+ [Role] The roles that can execute a report, and are taken from the DB.
+
+ [JasperReportGenerator] The Jasper generator is used to execute a report
+ definition which was designed used iReports. The execution will need an actual
+ report definition, and the actual values for the parameters specified by such
+ definition. The output of the generator will depend on the ReportType, and
+ will be a PDF, an HTML, etc.
+
+Use case scenarios
+
+* Report upload
+
+ [[1]] The User creates a report using Jasper iReports WYSIWYG tool
+
+ [[1]] The User selects 'new report', fills in the information, selects the
+ file he has just created for upload and submits the form.
+
+ [[1]] The System creates the Report Definition and uploads it to the database.
+
+ []
+
+[images/report-module-upload.png] The report upload scenario
+
+* Report execution
+
+ [[1]] The User selects a report previously uploaded.
+
+ [[1]] The System shows a screen with the defined parameters for the selected
+ report, and propts the user to complete them.
+
+ [[1]] The User completes the report parameters by which the final report will
+ be filtered and submits the form.
+
+ [[1]] The System retrieves the report definition from the database.
+
+ [[1]] The System generates the report according to the definition and the
+ actual parameters given by the User.
+
+ [[1]] The System prompts the User to download the generated report.
+
+ []
+
+[images/report-module-execute.png] The report execute scenario
+

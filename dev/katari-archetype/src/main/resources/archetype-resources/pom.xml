@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>com.globant.maven</groupId>
+    <artifactId>globant-parent</artifactId>
+    <version>1.17</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>\${groupId}</groupId>
+  <artifactId>\${clientName}-\${projectName}</artifactId>
+  <version>\${version}</version>
+  <packaging>pom</packaging>
+  <name>\${friendlyName}</name>
+  <url>
+    ${repositoryRoot}/site/\${groupId}/\${clientName}-\${projectName}/\${version}
+  </url>
+
+  <prerequisites>
+    <maven>2.2</maven>
+  </prerequisites>
+
+  <build>
+
+    <plugins>
+
+      <!-- Prepares and performs the release. This basically deploys the
+      distribution package configured in the assembly-plugin.
+      -->
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${dependency.release-plugin.version}</version>
+        <configuration>
+          <!-- Where to tag -->
+          <tagBase>http://svn.globant.com/svn/\${clientName}-\${projectName}/release</tagBase>
+          <goals>install site-deploy assembly:attached deploy</goals>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+        </configuration>
+      </plugin>
+
+      <!-- Builds a distribution package. -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${dependency.assembly-plugin.version}</version>
+        <inherited>false</inherited>
+        <configuration>
+          <descriptors>
+            <descriptor>dev/src/main/assemble/bin.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+  <!-- The scm information used by continuous integration and documentation. -->
+  <scm>
+    <connection>scm:svn:http://svn.globant.com/svn/\${clientName}-\${projectName}/main</connection>
+    <developerConnection>scm:svn:http://svn.globant.com/svn/\${clientName}-\${projectName}/main</developerConnection>
+    <url>http://svn.globant.com/svn/\${clientName}-\${projectName}/main</url>
+  </scm>
+
+  <repositories>
+    <repository>
+      <id>globant-public-releases</id>
+      <name>globant-public-releases</name>
+      <!-- If I use ${repositoryRoot}, maven does not find the parent pom. -->
+      <url>https://projects.globant.com/nexus/content/repositories/globant</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>globant-public-releases</id>
+      <name>globant-public-releases</name>
+      <url>${repositoryRoot}/globant</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <!-- The location where deploy and site-deploy leaves the artifacts -->
+  <distributionManagement>
+    <repository>
+      <id>\${clientName}-\${projectName}-artifacts-repository</id>
+      <url>dav:${repositoryRoot}/globant</url>
+    </repository>
+    <site>
+      <id>\${clientName}-\${projectName}-artifacts-repository</id>
+      <url>dav:${repositoryRoot}/site\${groupId}/\${clientName}-\${projectName}/\${version}</url>
+    </site>
+  </distributionManagement>
+
+  <!-- Continuous integration configuration -->
+  <ciManagement>
+    <system>hudson</system>
+    <url>http://portobello.globant.com:8081/hudson/job/katari</url>
+  </ciManagement>
+
+  <mailingLists>
+    <mailingList>
+      <name>\${clientName}_\${projectName}@globant.com</name>
+      <subscribe>http://mailman.corp.globant.com/mailman/listinfo/\${clientName}_\${projectName}</subscribe>
+      <unsubscribe>http://mailman.corp.globant.com/mailman/listinfo/\${clientName}_\${projectName}</unsubscribe>
+      <post>\${clientName}_\${projectName}@globant.com</post>
+      <archive>http://mailman.corp.globant.com/mailman/private/\${clientName}_\${projectName}</archive>
+    </mailingList>
+  </mailingLists>
+
+  <!-- vim: set ts=2 et sw=2 ai: -->
+</project>
+

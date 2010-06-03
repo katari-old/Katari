@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.globant.com/schema/katari
+    http://www.globant.com/schema/katari/katari.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <bean id="editable-pages.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+
+    <property name='entryPoints'>
+      <!-- The servlet mappings. It maps the spring
+           EventFilterDispatcherServlet to *.do.
+      -->
+      <bean
+        class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- Serves the javascript for the edit menu. -->
+            <entry key="/asset/.*">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="com.globant.katari.core.web.StaticContentServlet"/>
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <!-- WARNING: Be careful with the value staticContentPath:
+                    if it starts with '/' it won't work under Tomcat.
+                    -->
+                    <entry key="staticContentPath"
+                      value="com/globant/katari/editablepages"/>
+                    <entry key="debug" value-ref='debugMode'/>
+                    <entry key="debugPrefix"
+                      value="../katari-editablepages/src/main/resources"/>
+                    <entry key="requestCacheContent" value="true"/>
+                    <entry key="mimeType_js" value="text/javascript"/>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+            <!-- The spring-mvc controller servlet -->
+            <entry key="">
+              <bean
+                class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="com.globant.katari.core.web.EventFilterDispatcherServlet"/>
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/editablepages/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <property name='weblets'>
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <entry key="page">
+              <value>weblet/page.do</value>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <property name="urlToRoleMapper">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper"
+        id='report.urlToRoleMapper'>
+        <constructor-arg index="0">
+          <map>
+            <entry key="/page/**/*" value="IS_AUTHENTICATED_ANONYMOUSLY" />
+            <entry key="/edit" value-ref="editable-pages.admins" />
+            <entry key="/edit/edit.do" value-ref="editable-pages.editors" />
+            <entry key="/edit/create.do" value-ref="editable-pages.editors" />
+            <entry key="/edit/remove.do" value-ref="editable-pages.editors" />
+            <entry key="/edit/publish.do" value-ref="editable-pages.publishers" />
+            <entry key="/edit/revert.do" value-ref="editable-pages.admins" />
+            <entry key="/weblet/**/*" value="IS_AUTHENTICATED_ANONYMOUSLY" />
+            <entry key="/asset/**/*" value="IS_AUTHENTICATED_ANONYMOUSLY" />
+          </map>
+        </constructor-arg>
+      </bean>
+    </property>
+
+  </bean>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='katari.persistentClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.editablepages.domain.Page</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <!-- Defines the searchable entities and their corresponding handlers for the
+       search module. If the search module is not installed, these beans have
+       no effect.-->
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='search.indexableClasses'/>
+    <constructor-arg value='true'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.editablepages.domain.Page</value>
+      </list>
+    </constructor-arg>
+  </bean>
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='search.adapters'/>
+    <constructor-arg value='true'/>
+    <constructor-arg>
+      <list>
+        <bean class="com.globant.katari.editablepages.domain.PageSearchAdapter">
+          <constructor-arg value='/module/editable-pages'/>
+        </bean>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <util:list id="editable-pages.admins">
+    <value>ROLE_ADMINISTRATOR</value>
+    <value>ROLE_EDITOR</value>
+    <value>ROLE_PUBLISHER</value>
+  </util:list>
+
+  <util:list id="editable-pages.editors">
+    <value>ROLE_ADMINISTRATOR</value>
+    <value>ROLE_EDITOR</value>
+  </util:list>
+
+  <util:list id="editable-pages.publishers">
+    <value>ROLE_ADMINISTRATOR</value>
+    <value>ROLE_PUBLISHER</value>
+  </util:list>
+
+  <bean id="editable-pages.siteName"
+    class="com.globant.katari.core.spring.StringHolder"
+    p:value='default'/>
+
+  <!-- Defines the default editable pages configuration. This can be overriden
+  in the containing application context. The main use is to customize the
+  FCKEditor menu bar. -->
+  <bean id='editable-pages.fckEditorConfiguration'
+    class='com.globant.katari.editablepages.view.FckEditorConfiguration'/>
+  
+  <!-- Adds editable pages to html validation ignored list. -->
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='katari.htmlValidator.ignoredUrlpatterns' />
+    <constructor-arg>
+      <list>
+        <value>.*editable-pages/page/.*</value>
+      </list>
+    </constructor-arg>
+  </bean>    
+
+  <!-- vim: set ts=2 et sw=2 ai ft=xml: -->
+</beans>
+

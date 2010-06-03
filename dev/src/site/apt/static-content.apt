@@ -1,0 +1,87 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Serving static content
+
+ Katari has a servlet that can serve static content from the classpath. With
+ this servlet, you can serve javascript, css, images, html, anything that is not
+ modified while the application is running.
+
+ The servlet is com.globant.katari.core.web.StaticContentServlet. It can be used
+ in your module with:
+
+------
+ <entry key="/asset/.*">
+   <bean class="com.globant.katari.core.web.ServletAndParameters">
+     <constructor-arg index="0">
+       <bean class="com.globant.katari.core.web.StaticContentServlet"/>
+     </constructor-arg>
+     <constructor-arg index="1">
+       <map>
+         <!-- WARNING: Be careful with the value staticContentPath:
+         if it starts with '/' it won't work under Tomcat.
+         -->
+         <entry key="staticContentPath"
+           value="com/globant/katari/style/asset"/>
+         <entry key="debug" value-ref='debugMode'/>
+         <entry key="debugPrefix"
+           value="../katari-style/src/main/resources"/>
+         <entry key="requestCacheContent" value="true"/>
+         <entry key="mimeType_png" value="image/png"/>
+         <entry key="mimeType_js" value="text/javascript"/>
+       </map>
+     </constructor-arg>
+   </bean>
+ </entry>
+------
+
+ This example shows how to configure the servlet to serve png and js resources.
+ When the client performs a request to [your module]/asset/script.js, the static
+ content servlet will search for a file named script.js under the classpath
+ entry com/globant/katari/style/asset and send it to the client with the mime
+ type text/javascript.
+
+ To protect the application from serving unexpected content (like a .class
+ file), this servlet only serves files that end in one of the specified mime
+ types.
+
+* Hot modification of resources
+
+ There are two additional parameters: debug and debugPrefix. These parameters
+ enable developers to edit static resources without the need to redeploy the
+ application, even if the resource is served from a different module.
+
+ The standard directory layout in Katari is a flat structure, one artifact per
+ directory. So all the jars that compose your application are siblings of the
+ web artifact. With this assumption, the static content servlet can be
+ configured to load the resources directly from the file system, from a path
+ relative to the war:
+
+ For example:
+
+---------
+ dev
+   katari-classic-menu
+   katari-style
+   katari-sample
+---------
+
+ With this layout, the static content servlet from katari-style can be
+ configured to load the resources from file setting debugPrefix to
+ ../katari-style/src/main/resources, so that all modifications to resources
+ under the style module can be immediately seen from the web application.
+
+* Production vs development
+
+ If you paid attention to the configuration, the debug parameter was set with:
+
+------
+  <entry key="debug" value-ref='debugMode'/>
+------
+
+ This means that the value of debug is set from another bean, called debugMode.
+ This bean is defined by Katari. It is a string wrapper that wraps, by default
+ a false value. The katari.properties file located in test/resources overrides
+ this bean setting the debug mode to true. Be sure not to copy this file into
+ production environments.
+
+

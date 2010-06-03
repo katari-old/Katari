@@ -1,0 +1,117 @@
+<book>
+  <id>user-manual</id>
+  <title>Katari user manual</title>
+  <chapters>
+    <chapter>
+      <id>overview</id>
+      <title>General Overview</title>
+      <sections>
+        <section>
+          <id>index</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>getting-started</id>
+      <title>Getting started</title>
+      <sections>
+        <section>
+          <id>getting-started</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>general-architecture</id>
+      <title>General Architecture</title>
+      <sections>
+        <section>
+          <id>architecture</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>features</id>
+      <title>Features provided by Katari</title>
+      <sections>
+        <section>
+          <id>menu-definition</id>
+        </section>
+        <section>
+          <id>static-content</id>
+        </section>
+      </sections>
+    </chapter>
+    <!-- chapter>
+      <id>module container</id>
+      <title>The module container</title>
+      <sections>
+        <section>
+          <id>modules</id>
+        </section>
+        <section>
+          <id>menu-definition</id>
+        </section>
+        <section>
+          <id>user-crud-design</id>
+        </section>
+      </sections>
+    </chapter -->
+    <chapter>
+      <id>editable-pages-module</id>
+      <!-- title>The editable pages module</title -->
+      <title>Editable pages module</title>
+      <sections>
+        <section>
+          <id>katari-editablepages</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>search-module</id>
+      <title>Search module</title>
+      <sections>
+        <section>
+          <id>katari-search</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>reports-module</id>
+      <title>Reports module</title>
+      <sections>
+        <section>
+          <id>katari-reports</id>
+        </section>
+      </sections>
+    </chapter>
+    <!-- chapter>
+      <id>static-content</id>
+      <title>Serving static content</title>
+      <sections>
+        <section>
+          <id>static-content</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>i18n</id>
+      <title>Internationalization</title>
+      <sections>
+        <section>
+          <id>i18n</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>cruds</id>
+      <title>The trails module</title>
+      <sections>
+        <section>
+          <id>cruds</id>
+        </section>
+      </sections>
+    </chapter -->
+  </chapters>
+  <!-- vim: set ts=2 et sw=2 ai: -->
+</book>
+

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xmlns:util="http://www.springframework.org/schema/util"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <!-- The user module configuration file. This file must be included in the
+  application context to use this module.  -->
+
+  <bean id="reports.module" class="com.globant.katari.core.web.ConfigurableModule">
+    <property name="entryPoints">
+       <!-- The servlet mappings. It maps the spring
+            EventFilterDispatcherServlet to *.do. -->
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The spring-mvc controller servlet -->
+            <entry key=".*\.do">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="com.globant.katari.core.web.EventFilterDispatcherServlet"/>
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/report/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <!-- The menu bar. -->
+    <property name="menuBar">
+      <katari:menuBar>
+        <katari:menuNode name='Reports'>
+          <katari:menuNode name='Custom_Reports' display='Custom Reports'
+              position='10'>
+            <katari:menuItem name='List' link='reports.do'/>
+            <katari:menuItem name='New' link='editReport.do'/>
+          </katari:menuNode>
+        </katari:menuNode>
+      </katari:menuBar>
+    </property>
+
+    <property name="urlToRoleMapper" ref='report.urlToRoleMapper'/>
+  </bean>
+
+  <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper"
+      id='report.urlToRoleMapper'>
+    <constructor-arg index="0">
+      <map>
+        <entry key="/editReport.do" value-ref="report.admins" />
+        <entry key="/downloadReport.do" value-ref="report.admins" />
+        <entry key="/deleteReport.do" value-ref="report.admins" />
+        <entry key="/**/*" value="IS_AUTHENTICATED_FULLY" />
+      </map>
+    </constructor-arg>
+  </bean>
+
+  <util:list id="report.admins">
+    <value>ROLE_ADMINISTRATOR</value>
+    <value>ROLE_REPORT_ADMIN</value>
+  </util:list>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='katari.persistentClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.report.domain.ReportDefinition</value>
+      </list>
+    </constructor-arg>
+  </bean>
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

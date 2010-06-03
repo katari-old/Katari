@@ -1,0 +1,27 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Checklist for reviewers
+
+ This checklist must contain no more than 20 items. If item 21 is added remove
+ the least significant item.
+
+ [[1]] There are no tabs.
+
+ [[1]] There are no trailing spaces.
+
+ [[1]] Javadocs are consistent with the code.
+
+ [[1]] Javadocs include the invariants (eg: null/not null for attributes).
+
+ [[1]] Javadocs include the preconditions (eg: null/not null for parameters).
+
+ [[1]] Check that all parameters are final.
+
+ [[1]] Make sure new clasess are created in the correct package.
+
+ [[1]] When reviewing a bug fix, make sure there is a test that checks for such
+ bug.
+
+ [[1]] Make sure singleton classes do not hold references to non-singleton
+ classes.
+

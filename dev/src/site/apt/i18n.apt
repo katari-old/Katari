@@ -1,0 +1,158 @@
+~~~ vim: set sw=2 et ts=2 tw=80 ai:
+
+Introduction
+
+  Here we lay out what must be considered to implement internationalization
+  (i18n) in a Katari application. But first, a minimal introduction.
+
+  When an application needs to be prepared for different cultures (countries,
+  languages, etc) we are talking about internationalization (i18n) and
+  localization (l10n).
+
+  * i18n means modifying or designing the progran so that it can handle
+    potentially multiple languages.
+
+  * l10n means adding a new language.
+
+  []
+
+  Here we focus on i18n. There are several aspects of i18n that must be taken
+  into account:
+
+  * Deployment: will there be one installation per language? Or one installation
+    must support all the languages?
+
+  * Content scope: what will be translated? Static pages, user modifiable
+    content, both?
+
+  * Translation process: what is the process by which a new language is
+    integrated in the system?
+
+  * Culture scope: which languages are intended to be supported? Latin based?
+    Oriental languages? Right to left? Must images be translated due to cultural
+    differences? What about colors?
+
+  * Language selection: what mechanisms will be used to allow the final user to
+  change the language?
+
+  []
+
+  Once these (and surely many more I can't recall now) are taken into account,
+  the i18n process must also consider all the technical aspects, of which the
+  most important is related to the byte vs string difference: you must be sure
+  that bytes are correctly translated to strings and viceversa. Under java, this
+  issue surfaces when the application has to move data to or from the virtual
+  machine so you must configure the encoding to use in such tranlations. Places
+  where you must pay attention:
+
+  * The database must be correctly configured. This includes the connection
+  string, that under some drivers it specifies the encoding to use.
+
+  * Reading data from the user's browser.
+
+  * Writing data to the user's browser.
+
+  * Sending an email.
+
+  * Reading or writing to a file.
+
+  * Property files.
+
+  * Which encoding to use? The safest encoding to use is utf-8.
+
+  []
+
+Design
+
+* Requirements
+
+ * Each module writer can decide to support i18n or not. This will not be
+   enforced by Katari.
+
+ * Katari uses mainly resource messages and freemarker templates. The freemarker
+   templates are used in sitemesh and in spring-mvn. Localization must be
+   'uniform', ie, the localization a sitemesh template and a spring-mvc page
+   must be similar. As a challenge to solve, sitemesh does not support resource
+   based localization as spring-mvc does (see @message macro).
+
+ * A module can be i18n but be localized to just one locale. It should be
+   possible to add additional locales without rebuilding the module. Probably
+   simply a jar with the same package and the locale specific files may do.
+
+ * As a plus, it would be nice for developers to 'override' the freemarker
+   templates using a mechanism similar to i18n.
+
+ * Decide if Katari should define a way to let users choose which locale to use.
+
+ []
+
+* Special cases
+
+ * Trails shows the field names from the entity being edited as obtained from a
+   property file. The problem is that trails does not know about the entities
+   being edited. So there should be a mechanism to 'augment' the trails
+   collection of propertiy files.
+
+ * It would be nice to have just one file for a specific locale. This makes it
+   easier to administer translations to a new language.
+
+* Possible stategy
+
+  * Add the messageSource to the application context. Make sure to use the
+    reloadable version, that supports not using the default locale.
+
+------
+  <bean id="messageSource"
+      class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <property name="basename" value="com.globant.laslenas.ecom.messages"/>
+    <property name="useCodeAsDefaultMessage" value='true'/>
+  </bean>
+------
+
+    this can be added to katari-core, giving the option of overriding the
+    basename/basenames parameter
+
+  * Decide how will the user change the locale. One option is to use a filter so
+    the locale can be changed in every request. This will also support changing
+    the locale with a drop down in the login page, for example. This filter can
+    be configured in katari-core. This filter will obtain the selected locale
+    from the request and store it within the locale resolver.
+
+    One drawback with this is that it won't be easy for the application to
+    configure the locale from a user profile. Or just use tha browser provided
+    locale.
+
+  * The coder will have to define the locale resolver for the app.
+
+* Open issues
+
+  * What is the best way to decouple l10n from each module?
+
+  * Define a way to localize ftls and decs. How do they interact with loading the
+    template (ftl) from the file system?
+
+  * See if it is possible to enable reloading of resources from the file system,
+    as supported today by Katari for static content.
+
+i18n Guide
+
+  For this version, Katari only includes support for transating trails messages
+  only.
+
+* Trails
+
+   You can translate, and even modify, all the messages that trails uses in it's
+   pages. For this, you need to override a bean called
+   trails.messageSourceBasenames. This bean is a list of location where Katari
+   locates all the messages defined in trails and the entities specific messages.
+
+   This bean must be of type list. It's default value is:
+
+---------------
+  <util:list id='trails.messageSourceBasenames'>
+    <value>com.globant.katari.trails.trails-messages</value>
+  </util:list>
+---------------
+
+  This default only defines the messages for the static part of the pages.
+

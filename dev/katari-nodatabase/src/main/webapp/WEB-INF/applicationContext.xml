@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <description>
+    The web application context for the sample katari application.
+  </description>
+
+  <!-- The katari global beans. -->
+  <import resource="classpath:/com/globant/katari/core/beans-core.xml"/>
+
+  <!-- The home module. -->
+  <import resource="classpath:/com/globant/katari/sample/home/module.xml"/>
+
+  <!-- The classic menu module. -->
+  <import resource="classpath:/com/globant/katari/menu/classic/module.xml"/>
+
+  <!-- LOGIN. -->
+  <!--
+  To have cas login support you have to enable the cas module.
+  for most of the scenarios the local one should be enough
+  -->
+  <!-- The cas module.
+  <import resource="classpath:/com/globant/katari/cas/module.xml"/>
+  -->
+  <!-- The local login module (recomended) -->
+  <import resource="classpath:/com/globant/katari/login/local/module.xml"/>
+
+  <!-- The style module. It provides a sample style and serves the static
+  content used in the application.
+  
+  TODO This was removed from here because the default style included weblets
+  that needs the database. Create a new style module embedded in the war. -->
+  <!-- import resource="classpath:/com/globant/katari/style/module.xml"/ -->
+
+  <!-- The client libs module. It provides unified access to common javascript
+  apis. -->
+  <import resource="classpath:/com/globant/katari/ajax/module.xml"/>
+
+  <!-- The Institutional module. It has some static pages. -->
+  <import resource="classpath:/com/globant/katari/sample/institutional/module.xml"/>
+
+  <!-- Overrides the default top menu. -->
+  <katari:menuBar id='katari.menuBar'>
+    <katari:menuNode position='9000' name='Reports'/>
+    <katari:menuNode position='10000' name='Administration'/>
+    <katari:menuNode position='11000' name='Institutional'/>
+  </katari:menuBar>
+
+  <!-- An implementation of UserDetailsService that builds a user details
+  object that delegates the user handling to the user domain object.
+  -->
+  <bean id="katari.userDetailsService" lazy-init='true'
+      class="com.globant.katari.sample.integration.DomainUserDetailsService">
+  </bean>
+
+  <!-- Here are some configuration examples for modules. -->
+
+  <!-- Trails module. -->
+  <!-- The location of the FCKEditor configuration file. -->
+  <!--
+  <bean id="trails.fckeditorConfiguration" class="java.lang.String">
+    <constructor-arg value="/test.js"/>
+  </bean>
+  <bean id="trails.fckeditorInstanceConfigurer" class="java.lang.String">
+    <constructor-arg>
+      <value>
+        <![CDATA[
+        editor.Height = 700;
+        alert(propertyName);
+        alert(className);
+        ]]>
+      </value>
+    </constructor-arg>
+  </bean>
+  -->
+
+  <!-- CAS module. -->
+  <!-- Set the cas validator host name to localhost ip.
+  <bean id='cas.validatorUrlTransformer'
+    class='com.globant.katari.cas.UrlTransformer'>
+    <constructor-arg index="0" value="127.0.0.1" />
+    <constructor-arg index="1"><null /></constructor-arg>
+    <constructor-arg index="2"><null /></constructor-arg>
+    <constructor-arg index="3"><null /></constructor-arg>
+  </bean>
+  -->
+
+  <!-- Overrides the security configuration for the trails module. -->
+  <!--
+  <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper"
+    id='trails.urlToRoleMapper'>
+    <constructor-arg index="0">
+      <map>
+        <entry key="/**">
+          <list>
+            <value>ROLE_REPORT_ADMIN</value>
+          </list>
+        </entry>
+      </map>
+    </constructor-arg>
+  </bean>
+  -->
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

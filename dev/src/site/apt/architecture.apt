@@ -1,0 +1,377 @@
+Architecture
+
+ This chapter describes Katari general architecture.
+
+* Modules
+
+ Katari applications are designed with modularity in mind, so the main concept
+ in Katari is a module. Each module is a reusable independent 'vertical cut' in
+ the functionality, spanning from the UI down to persistence.
+
+ We say that modules are contained in a Katari application, that serves as a
+ module container. The module container provides common services to all
+ modules, like request dispatching, menu registration, security infrastructure,
+ and more.
+
+ The full stack of each module (view, application and domain) can be
+ independently packed in a jar and reused in many applications.
+
+ The following figure gives a global overview of how a Katari application is
+ structured.
+
+[images/general-structure.png] High level module view
+
+ Modules are plugged with the help of spring. There are three 'points of
+ contact' between modules: the view, the domain and the database.
+
+ [[1]] <<View>>
+
+ At the view layer, the application consists of a servlet that dispatches the
+ request to the corresponding module. This servlet listens to all requests that
+ go to <context>/module. From there, the servlet dispatches the request to the
+ corresponding module. The modules are mapped with the following url:
+ <context>/module/<module-name>.
+
+ For example, if the application is deployed at localhost:8098, the main module
+ servlet gets all requests that go to:
+
+----
+ http://localhost:8098/acme-coyote/module.
+----
+
+ The user module gets mapped to the following url:
+
+----
+ http://localhost:8098/acme-coyote/module/user.
+----
+
+ The following figure describes how a request is dispatched to the destination
+ servlet in a module, considering a request to
+ <<<<http://localhost:8098/acme-coyote/module/user/editUser.do>>>>.
+
+[images/module-dispatching.png] Module dispatching
+
+ As you can see, the main entry point for a servlet request is the
+ SpringBootstrapServlet. This is a servlet that simply passes the request to
+ another servlet. The target server is configured in the spring application
+ context, under a bean named, by default, 'katari.moduleContainer'. This bean
+ is an instance of ModuleContainerServlet whose responsibility is to know all
+ the modules registered in an application and dispatch the request to the
+ corresponding module.
+
+ [[1]] <<Domain>>
+
+ Each module defines it's own domain model. We recommend following Evans
+ recomendations layed out in Domain Driven Design. You will find entities,
+ value objects, repositories, factories and services in modules implemented by
+ us.
+
+ All modules share the same classloader, so a module can use any public class
+ from another module. With the help of spring, a module can export a service
+ that can be used by any other module.
+
+ [[1]] <<Database>>
+
+ There is one database for all the modules. The database configuration is
+ injected in every module through spring.
+
+ []
+
+* Module initialization
+
+ When you write a module, you need to provide a spring bean that implements the
+ Module interface. You usually use an instance of ConfigurableModule so you
+ don't need to implement it yourself. The module interface defines:
+
+ [[1]] An init lifecycle operation
+
+-----
+ void init(final com.globant.katari.core.web.ModuleContext context);
+-----
+
+ [[1]] A destroy lifecycle operation.
+
+----
+ void destroy();
+----
+
+ []
+
+ When the spring application context starts up, a special Katari provided bean
+ factory post-processor (ModuleBeanPostProcessor) takes care of initializing
+ all the modules declared in the application context. This post-processor
+ creates an instance of ModuleContext for each module and calls init. The
+ ModuleContext is the point of contact between the module and its container. It
+ allows the module to declare:
+
+ [[1]] The module servlet and mappings (entry points).
+
+ [[1]] The module web filter and mappings.
+
+ [[1]] The module web context loader listeners and mappings.
+
+ [[1]] The menu entries.
+
+ [[1]] Security configuration.
+
+ [[1]] The module weblets.
+
+ []
+
+[images/module-initialization.png] Module initialization
+
+* Spring configuration
+
+ As mentioned earlier, Katari uses spring as its DI framework. Katari makes
+ heavy use of spring to split the application into modules. A normal Katari
+ application has a main bean definition file usually called
+ applicationContext.xml, located in the WEB-INF directory of the webapp. This
+ file imports the module spring files, called module.xml (for example
+ /com/globant/katari/editablepages/module.xml), and overrides some other beans
+ to configure the modules (for example, the data source connection information.)
+
+ A typical applicationContext.xml file looks like this:
+
+----
+<beans ... >
+  <!-- The katari global beans. -->
+  <import resource="classpath:/com/globant/katari/core/applicationContext.xml"/>
+
+  <!-- The home module. -->
+  <import resource="classpath:/com/globant/katari/sample/home/module.xml"/>
+
+  <!-- The classic menu module. -->
+  <import resource="classpath:/com/globant/katari/menu/classic/module.xml"/>
+
+  .... more modules ....
+
+  <!-- The hibernate properties, They are referenced from the hibernate bean. -->
+  <bean id="katari.hibernateProperties"
+    class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="properties">
+      <props>
+        <prop key="hibernate.dialect">
+          org.hibernate.dialect.MySQL5InnoDBDialect
+        </prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    destroy-method="close">
+    <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+    ... more datasource properties ....
+  </bean>
+
+  <!-- The katari data source as an alias to dataSource. -->
+  <alias name="dataSource" alias="katari.dataSource"/>
+
+  ... more configuration beans ...
+
+</beans>
+----
+
+ A sample module.xml file is:
+
+----
+<beans ... >
+
+  <bean id="editable-pages.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+
+    <property name='entryPoints'>
+      <!-- The servlet mappings. It maps the spring DispatcherServlet to *.do.
+      -->
+      <bean
+      ...
+    </property>
+
+  </bean
+
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='katari.persistentClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.editablepages.domain.Page</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  ... other beans ...
+
+</beans>
+----
+
+ Given that beans defined in module.xml files share the same spring bean
+ factory, every bean must comply to a strict naming convention:
+
+ * Beans defined by katari start with "katari." prefix.
+
+ * Beans defined by modules start with "<module>.".
+
+ []
+
+ This convention guarantees that beans do not accidentally override each other.
+
+* Currently supported modules
+
+ Katari includes the following modules:
+
+ [katari-ajax] A module that exposes yui client-side widgets.
+
+ [katari-classic-menu] Provides simple button menu bars.
+
+ [katari-report] Allow users to upload and manage jasper reports.
+
+ [katari-trails] Integrates trails, a framework that makes it easy to
+ develop simple cruds.
+
+ [katari-cas] Integrates CAS as a single sign-on for authentication with
+ all the services within the application.
+
+ [katari-local-login] Integrates the normal ACEGI login with a local
+ database as means of authentication.
+
+ []
+
+ There are also a couple of sample modules that are included in the main web
+ application:
+
+ * The sytle module: provides a unified look and feel for all the modules in
+ the application.
+
+ * The user module: this is basically a user and role crud module.
+
+ * The time reporting module: this is a sample module that serves as the core
+ end user functionality in the basic example.
+
+ []
+
+* Layers
+
+ Katari applications uses a traditional layered model, consisting of the
+ following four layers:
+
+ [View] It includes the servlet based front controllers (like
+ spring-mvc controllers or struts actions) and the view templates (like
+ freemarker templates).
+
+ [Application] The application layer adapts the client requests performed
+ through the view to the domain. This layer is responsible of converting the
+ request data (usually strings or ids) to domain objects, delegate the request
+ to the corresponding object in the domain and transaction demarcation. The
+ Katari samples and modules use a command based approach in this layer.
+
+ The view layer is permitted to call just one method per request en the
+ application layer, plus additional idempotent methods when rendering the view.
+
+ [Domain] Where the main business logic is implemented.
+
+ [Persistence] The persistence layer consists of hibernate without any
+ wrapping code. You should not see any package related to this layer in the
+ project.
+
+ []
+
+[images/layers.png] The Katari layers
+
+ The view and the application layer depends on the domain layer: classes from
+ the domain layer can be imported in the view and/or application layers.
+
+ Katari modules do not need to follow this layering schema, but it is our
+ recomended approach.
+
+Tools and libraries
+
+ Katari integrates the following libraries and tools:
+
+* Core libraries
+
+ [Acegi Security] Acegi Security is an open source project that
+ provides comprehensive authentication and authorisation services for enterprise
+ applications. Acegi Security can authenticate using a variety of pluggable
+ providers.
+
+ <<<http://www.acegisecurity.org>>>
+
+ [Spring] Spring is a layered Java/J2EE application platform for
+ inversion of control. It includes a lightweight container, an abstraction layer
+ for transaction managment and integration with persistence frameworks.
+
+ <<<http://www.springframework.org>>>
+
+ [Spring MVC] Spring MVC is a flexible and highly configurable web
+ application framework, witch accommodates multiple view technologies.
+
+ <<<http://www.springframework.org>>>
+
+ [Hibernate] Hibernate is a powerful, high performance
+ object/relational persistence and query service.
+
+ <<<http://www.hibernate.org>>>
+
+ [Freemarker] FreeMarker is a "template engine"; a generic tool to
+ generate text output (anything from HTML to autogenerated source code) based
+ on templates.
+
+ <<<http://freemarker.org>>>
+
+ [SiteMesh] SiteMesh is a web-page layout and decoration framework to
+ aid in creating large sites consisting of many pages for which a consistent
+ look/feel is required.
+
+ <<<http://opensymphony.com/sitemesh>>>
+
+ []
+
+* Frameworks
+
+ [CAS] CAS (Central Authentication Server) is an authentication system
+ originally created by Yale University to provide a trusted way for an
+ application to authenticate a user.
+
+ <<<http://www.ja-sig.org/products/cas>>>
+
+ [Mule] Mule is a lightweight Java-based messaging framework that
+ allows to quickly and easily connect applications and enable them to exchange
+ data.
+
+ <<<http://mulesource.org>>>
+
+ []
+
+* Support libraries
+
+ [Log4j] Log4j allows the developer to control which log statements are
+ output with arbitrary granularity.
+
+ <<<http://logging.apache.org/log4j>>>
+
+ [Jakarta commons] The Commons is an Apache project focused on all
+ aspects of reusable Java components.
+
+ <<<http://commons.apache.org>>>
+
+ [Easymock] EasyMock provides Mock Objects for interfaces in JUnit
+ tests by generating them on the fly using Java's proxy mechanism.
+
+ <<<http://www.easymock.org>>>
+
+ [JUnit] JUnit is a simple framework for writing and running automated
+ tests.
+
+ <<<http://www.junit.org>>>
+
+ []
+
+* Support tools
+
+ [Maven] Maven is a software project management and comprehension tool.
+ Based on the concept of a project object model (POM), Maven can manage a
+ project's build, reporting and documentation from a central piece of
+ information.
+
+ <<<http://maven.apache.org>>>
+
+ []
+

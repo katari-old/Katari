@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <!-- This module provides the classic menu rendering. It works though a
+  classic request-response cycle. It provides a weblet that must be included in
+  the application to draw the menus. -->
+
+  <bean id="classic-menu.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+
+    <property name='filters'>
+      <bean class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+          <list>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean class="com.globant.katari.menu.classic.application.MenuSupportFilter">
+                      <constructor-arg index="0">
+                        <ref bean='katari.contextRegistrar'/>
+                      </constructor-arg>
+                      <constructor-arg index="1">
+                        <ref bean='katari.menuAccessFilterer'/>
+                      </constructor-arg>
+                    </bean>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+
+    <property name='entryPoints'>
+      <!-- The servlet mappings. It maps the spring
+           EventFilterDispatcherServlet to *.do. -->
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The spring-mvc controller servlet -->
+            <entry key=".*\.do">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="com.globant.katari.core.web.EventFilterDispatcherServlet"/>
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/menu/classic/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <property name='weblets'>
+      <!-- Remember that weblets must be accessible from some entry point
+      defined in the web mapping. -->
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <entry key="menu">
+              <value>weblet/menu.do</value>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <!-- All users can access the menu module. The module checks internally for
+    permissions. -->
+    <property name='urlToRoleMapper'>
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
+        <constructor-arg index="0">
+          <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+            <property name="targetMapClass" value="java.util.LinkedHashMap"/>
+            <property name="sourceMap">
+              <map>
+                <entry key="/**">
+                  <list>
+                    <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+                  </list>
+                </entry>
+              </map>
+            </property>
+          </bean>
+        </constructor-arg>
+      </bean>
+    </property>
+  </bean>
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai : -->
+

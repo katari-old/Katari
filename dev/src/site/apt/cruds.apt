@@ -1,0 +1,248 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Trails
+
+ Katari provides a module that integrates trails, a framework to quickly
+ implement simply (almost naive) cruds.
+
+ With this module, a developer declares hibernate mapped classes to the trails
+ module and trails generates:
+
+ * A list page, with sorting and pagination.
+
+ * An edit page.
+
+ * A search form.
+
+ A note of caution: cruds from this module are not very powerful. You will reach
+ trails limits very fast, unless you know tapestry.
+
+Using this module
+
+ To include this module in a Katari based application, put a line of the form:
+
+------
+<import resource="classpath:/com/globant/katari/trails/module.xml"/>
+------
+
+ To register classes to be managed by trails, set the crudClasses property of
+ your module bean:
+
+------
+  <bean id="time.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+
+     <property name='crudClasses'>
+      <list>
+        <value>com.globant.katari.sample.time.crud.Activity</value>
+        <value>com.globant.katari.sample.time.crud.Client</value>
+        <value>com.globant.katari.sample.time.crud.Project</value>
+      </list>
+    </property>
+
+  </bean>
+------
+
+ The trails module does not provide menus, so you must declare them:
+
+------
+  <bean id="time.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+
+    <property name='menuBar'>
+      <katari:menuBar id='menubar'.>
+        <katari:menuNode name='Administration'>
+          <katari:menuNode name='Clients'>
+            <katari:menuItem name='List'
+              link='${trails.module}/trails/list/Client'/>
+            <katari:menuItem name='New'
+              link="${trails.module}/trails/new/Client" />
+          </katari:menuNode>
+          <katari:menuNode name='Projects'>
+            <katari:menuItem name='List'
+              link='${trails.module}/trails/list/Project'/>
+            <katari:menuItem name='New'
+              link='${trails.module}/trails/new/Project'/>
+          </katari:menuNode>
+        </katari:menuNode>
+      </katari:menuBar>
+    </property>
+
+  </bean>
+------
+
+ As you can see from the example, trails provides two urls per entity:
+ trails/list and trails/new.
+
+Configuration
+
+ This module provides the following overridable spring beans:
+
+ * trails.urlToRoleMapper: maps a list of links to the roles necessary to access
+ those links.
+
+ * trails.customPagesLocation: the classpath that trails searches for custom
+ pages.
+
+ * trails.customComponentsLocation: the classpath that trails searches for
+ custom components.
+
+ * trails.fckeditorConfiguration: the FCKEditor configuration file location. It
+ is the location of a .js relative to the context path.
+
+ * trails.fckeditorInstanceConfigurer: the FCKEditor configuration for fckeditor
+ instance. It must contain javascript code to configure an fckeditor. It is
+ passed a variable named 'editor' with the fckeditor instance, a variable named
+ 'className' with the fully qualified name of the class being edited, and a
+ variable called propertyName with the name of the property being edited.
+
+ For example:
+
+------
+ if (propertyName == 'header') {
+   editor.Height = 300;
+ } else {
+   editor.Height = 700;
+ }
+------
+
+ * trails.messageSourceBasenames: the location of the localized messages.
+
+Drop down filters
+
+ Drop down lists for cruds can be filtered using @PossibleValues annotation.
+ This annotation accepts an OGNL expression that must evaluate to a collection
+ of entities of the reference type.
+
+ For example in the following class, the OGNL expression "client.projects" sets
+ the collection of possible Project values for the drop down list in crud
+ functionality to the collection of projects the client property has.
+
++------------
+ package com.globant.katari.sample.time.crud;
+ ...
+
+ public class Activity {
+
+   private Client client;
+
+   @PossibleValues("client.projects")
+   @PropertyDescriptor(index = 2)
+   @ManyToOne
+   @JoinColumn(name = "project_id")
+   private Project project;
+   ...
+ }
++-----------
+
+	In the OGNL expression:
+	
+------------
+ client.projects
+------------
+
+	client : evaluates to the property getter invocation getClient() in root
+	object. In the example, the root object is the Activity instance.
+	
+	.projects : evaluates to the property getter invocation getPropjects() in
+	client object.
+	
+	See {{http://www.ognl.org/2.6.9/Documentation/html/LanguageGuide/index.html}}
+
+* Accessing Spring beans inside the ONGL expression
+
+ When using @PossibleValues and @InitialValue annotations, you can reference
+ spring beans inside the OGNL expression.
+ A default OGNL context is available for the property extension that evaluates
+ the expression. This context contains a bean provider object named "spring"
+ that gives access to any declared spring bean.
+
+ The OGNL syntax for referencing a spring bean is:
+
+-----------
+ #spring.bean['<bean_name>']
+-----------
+
+ #spring : references the context object named "spring"
+
+ .bean['<bean_name>'] : is the property access styntax, and will evaluate to
+ the execution of getBean('<bean_name>') in the spring context object
+
+ In the following example the "spring" bean is used to access the
+ persistenceService, allowing to retrieve all the Client instances with an
+ invocation to getAllInstances(final Class type) method.
+
++------------
+ package com.globant.katari.sample.time.crud;
+ ...
+
+ public class Activity {
+
+   @InitialValue("project.client")
+   @PossibleValues("#spring.bean['persistenceService']."
+      + "getAllInstances(@com.globant.katari.sample.time.crud.Client@class")
+   @Transient
+   @PropertyDescriptor(index = 1, summary = false)
+   private Client client;
+  ...
+ }
++-----------
+
+ And in the OGNL expression:
+
+------------
+ #spring.bean['persistenceService'].getAllInstances(@com.globant.katari.sample.
+ time.crud.Client@class)
+------------
+
+ @com.globant.katari.sample.time.crud.Client@class : is the static access
+ syntax, evaluates to the Client class object
+
+* Fitlering example, using Criteria API
+
+ Finally, you can provide @PossibleValues OGNL expression with a
+ DetachedCriteria object to filter persistenceService retrieved items.
+ This gives the possibility to use all criteria capabilities including
+ ordering.\
+ In the following example @PossibleValues filters Client instances using
+ persistenceService.getInstance(final Class type, DetachedCriteria
+ detachedCriteria).
+
++------------
+ package com.globant.katari.sample.time.crud;
+ ...
+
+ public class Activity {
+
+   @InitialValue("project.client")
+   @PossibleValues("#spring.bean['persistenceService']."
+      + "getInstances(@com.globant.katari.sample.time.crud.Client@class,  "
+      + "clientCriteria)")
+   @Transient
+   @PropertyDescriptor(index = 1, summary = false)
+   private Client client;
+
+   @Transient
+   @PropertyDescriptor(summary = false, hidden = true, searchable = false)
+   public DetachedCriteria getClientCriteria() {
+     DetachedCriteria criteria = DetachedCriteria.forClass(Client.class);
+     criteria.add(Expression.eq("status", Client.Status.ACTIVE));
+     criteria.addOrder(Order.asc("name"));
+     return criteria;
+   }
+   ...
+ }
++-----------
+
+ In the OGNL expression:
+
+------------
+ #spring.bean['persistenceService'].getInstances(@com.globant.katari.sample.
+ time.crud.Client@class, clientCriteria)
+------------
+
+ clientCriteria : evlauates to a call of the root object method
+ getClientCriteria(). In the example, the root object is the Activity object
+ instance
+
+

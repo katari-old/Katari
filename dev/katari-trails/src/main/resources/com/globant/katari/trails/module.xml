@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:util="http://www.springframework.org/schema/util"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.5.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- The trails module configuration file. This file must be included in the
+  application context to use this module. -->
+
+  <bean id="trails.module" class="com.globant.katari.core.web.ConfigurableModule">
+    <property name='entryPoints'>
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The trails servlet. -->
+            <entry key="/app"><ref bean="trails.trailsServlet"/></entry>
+            <entry key="/trails"><ref bean="trails.trailsServlet"/></entry>
+            <entry key=".*\.page"><ref bean="trails.trailsServlet"/></entry>
+            <entry key=".*\.direct"><ref bean="trails.trailsServlet"/></entry>
+            <entry key=".*\.sdirect"><ref bean="trails.trailsServlet"/></entry>
+            <entry key="/assets"><ref bean="trails.trailsServlet"/></entry>
+            <entry key=".*\.svc"><ref bean="trails.trailsServlet"/></entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+    <property name="urlToRoleMapper" ref='trails.urlToRoleMapper'/>
+  </bean>
+
+  <bean id='trails.trailsServlet'
+      class="com.globant.katari.core.web.ServletAndParameters">
+    <constructor-arg index="0">
+      <bean class="com.globant.katari.trails.TrailsModuleApplicationServlet"/>
+    </constructor-arg>
+    <constructor-arg index="1">
+      <map>
+        <entry key="hivemindModulePath"
+          value="/com/globant/katari/trails/hivemodule.xml" />
+        <entry key="trailsApplicationContextLocation"
+          value="classpath:/com/globant/katari/trails/module-beans.xml" />
+        <entry key="org.apache.tapestry.application-specification"
+          value="com/globant/katari/trails/trails.application" />
+      </map>
+    </constructor-arg>
+  </bean>
+
+  <!-- bean id="trails.applicationLocation" class="java.lang.String">
+    <constructor-arg value="com/globant/katari/trails/trails.application"/>
+  </bean -->
+
+  <!-- Bean to override the FCKEditor configuration file location. It is the
+  location of a .js relative to the context path. -->
+  <bean id="trails.fckeditorConfiguration" class="java.lang.String">
+    <constructor-arg value="NONE"/>
+  </bean>
+
+  <!-- Bean to override the FCKEditor configuration for fckeditor instance. It
+  must contain javascript code to configure an fckeditor. It is passed a
+  variable named 'editor' with the fckeditor instance, a variable named
+  'className' with the fully qualified name of the class being edited, and a
+  variable called propertyName with the name of the property being edited.
+
+  For example:
+
+  if (propertyName == 'header') {
+    editor.Height = 300;
+  } else {
+    editor.Height = 700;
+  }
+
+  -->
+  <bean id="trails.fckeditorInstanceConfigurer" class="java.lang.String">
+    <constructor-arg value="NONE"/>
+  </bean>
+
+  <!-- Bean to override the location of the custom pages. -->
+  <bean id="trails.customPagesLocation" class="java.lang.String">
+    <constructor-arg value="NONE"/>
+  </bean>
+
+  <!-- Bean to override the location of the custom components. -->
+  <bean id="trails.customComponentsLocation" class="java.lang.String">
+    <constructor-arg value="NONE"/>
+  </bean>
+
+  <!-- Bean to override the role mapper. -->
+  <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper"
+    id='trails.urlToRoleMapper'>
+    <constructor-arg index="0">
+      <map>
+        <entry key="/**">
+          <list>
+            <value>IS_AUTHENTICATED_REMEMBERED</value>
+          </list>
+        </entry>
+      </map>
+    </constructor-arg>
+  </bean>
+
+  <!-- Defines the location of the localized messages. It is defined here so
+  that it can be overriden in other beans. It is also theoreticall possible to
+  add additional paths to search for message resources using an appending
+  mechanism. -->
+  <util:list id='trails.messageSourceBasenames'>
+    <value>com.globant.katari.trails.trails-messages</value>
+  </util:list>
+
+  <!-- The list of persistence classes for trails. To add new classes managed by trails, add a bean like this:
+
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='trails.persistentClasses'/>
+    <constructor-arg>
+       <list>
+         <value>com.globant.katari.sample.time.crud.Activity</value>
+         <value>com.globant.katari.sample.time.crud.Client</value>
+         <value>com.globant.katari.sample.time.crud.Project</value>
+       </list>
+    </constructor-arg>
+   </bean>
+
+  -->
+  <util:list id='trails.persistentClasses'/>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai : -->
+

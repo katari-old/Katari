@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- The hibernate properties. This must be provided by the application
+  writer. -->
+  <bean id="katari.hibernateProperties"
+    class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="properties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+        <!-- WARNING: When this is set to 'auto', which is the default option
+	for Hibernate, it's not possible to change the isolation level of any
+	transaction. Spring sets it to 'on_close' , but in this way, the
+	tests never return the connections, thus emptying the connection pool.
+	
+	To avoid this, we set it to 'after_transaction', but there may be
+	unexpected side effect we don't know of yet -->
+        <prop key="hibernate.connection.release_mode">after_transaction</prop>
+      </props>
+    </property>
+  </bean>
+
+  <!-- The dataSource. This must be provided by the application writer. -->
+  <bean id="katari.dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName">
+      <value>org.hsqldb.jdbcDriver</value>
+    </property>
+    <property name="url">
+      <value>jdbc:hsqldb:mem:testdb</value>
+    </property>
+    <property name="username">
+      <value>sa</value>
+    </property>
+    <property name="password">
+      <value></value>
+    </property>
+  </bean>
+
+  <!-- The authentication manager. This must be provided by a login module. -->
+  <bean id="katari.authenticationManager"
+      class="org.acegisecurity.providers.ProviderManager">
+    <property name="providers">
+      <list>
+        <bean class='org.acegisecurity.providers.TestingAuthenticationProvider'/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- The userDetailsService. This must be provided by the application writer.
+  -->
+  <!-- An implementation of UserDetailsService that authenticates users against
+  an in-memory database that is loaded from the userMap properties. -->
+  <bean id="katari.userDetailsService"
+      class="org.acegisecurity.userdetails.memory.InMemoryDaoImpl">
+    <property name="userMap">
+      <value>
+        matthew=contegix,ROLE_ADMIN
+      </value>
+    </property>
+  </bean>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

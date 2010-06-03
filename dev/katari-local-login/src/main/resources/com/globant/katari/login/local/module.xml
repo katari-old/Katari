@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:util="http://www.springframework.org/schema/util"      
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+  http://www.springframework.org/schema/util
+  http://www.springframework.org/schema/util/spring-util-2.0.xsd      
+  http://www.globant.com/schema/katari
+  http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- The local login module configuration file. This file must be included
+  in the application context to use this module. -->
+
+  <!-- These are default beans that must be overriden by the application. -->
+
+  <!-- The katari.userDetailsService. This must be overriden by the application
+  writer.  -->
+  <!-- An implementation of UserDetailsService that authenticates users against
+  an in-memory database that is loaded from the userMap properties. -->
+  <bean id="katari.userDetailsService"
+      class="org.acegisecurity.userdetails.memory.InMemoryDaoImpl">
+    <property name="userMap">
+      <value>
+        admin=password,ROLE_ADMIN
+      </value>
+    </property>
+  </bean>
+
+  <bean id="local-login.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+
+    <property name='entryPoints'>
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The spring-mvc controller servlet -->
+            <entry key=".*\.do">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class=
+                  	"com.globant.katari.core.web.EventFilterDispatcherServlet"/>
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/login/local/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <property name="urlToRoleMapper">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
+        <constructor-arg index="0">
+          <map>
+            <entry key="/**">
+              <list>
+                <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+              </list>
+            </entry>
+          </map>
+        </constructor-arg>
+      </bean>
+    </property>
+
+    <property name="loginProvider">
+      <bean class="com.globant.katari.core.login.LoginProvider">
+        <constructor-arg index="0" ref="local-login.entryPoint" />
+        <constructor-arg index="1" ref="local-login.authenticationFilter" />
+        <constructor-arg index="2" ref="local-login.logoutFilter" />
+      </bean>
+    </property>
+
+  </bean>
+
+  <bean id="local-login.entryPoint" class=
+    "com.globant.katari.login.local.view.AuthenticationWithCaptchaEntryPoint"
+    p:loginFormUrl-ref="local-login.loginFormUrl"
+    p:loginWithCaptchaFormUrl="/module/local-login/loginWithCaptcha.do"
+    p:ipBlacklist-ref="local-login.ipBlacklist" />
+
+  <!-- Overridable bean to define the page to redirect the user if he needs to
+       be authenticatied. -->
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='local-login.loginFormUrl' p:value="/module/local-login/login.do"/>
+
+  <bean id="local-login.authenticationProvider" class=
+  	"org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+    <property name="userDetailsService">
+      <ref local="katari.userDetailsService" />
+    </property>
+  </bean>
+
+  <bean id="local-login.authenticationManager" class=
+  	"org.acegisecurity.providers.ProviderManager"
+    p:providers-ref='local-login.authenticationProviders'/>
+
+  <!-- Intended to be overriden by other modules with ListFactoryAdder. -->
+  <util:list id='local-login.authenticationProviders'>
+    <ref bean="local-login.authenticationProvider" />
+  </util:list>
+
+  <bean id="local-login.authenticationFilter" class=
+    "com.globant.katari.login.local.view.AuthenticationWithCaptchaProcessingFilter"
+    p:authenticationManager-ref="local-login.authenticationManager"
+    p:authenticationFailureUrl="/module/local-login/login.do"
+    p:captchaFailureUrl="/module/local-login/loginWithCaptcha.do"
+    p:defaultTargetUrl="/"
+    p:filterProcessesUrl="/module/local-login/j_acegi_security_check"
+    p:captchaService-ref="local-login.captchaService"
+    p:captchaValidationParameter='j_captcha_response'
+    p:ipBlacklist-ref="local-login.ipBlacklist" />
+
+  <bean id="local-login.logoutFilter"
+      class="com.globant.katari.login.local.view.LogoutFilter">
+    <constructor-arg value="/module/local-login/logout.do" />
+    <constructor-arg>
+      <list>
+        <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
+      </list>
+    </constructor-arg>
+    <property name="filterProcessesUrl" value="/logout"/>
+  </bean>
+
+  <bean id="local-login.ipBlacklist" destroy-method='destroy'
+    class="com.globant.katari.login.local.view.IpBlacklist">
+    <constructor-arg index="0" ref="local-login.ipBlacklistTimeout"/>
+    <constructor-arg index="1" ref="local-login.enableCaptcha"/>
+    <constructor-arg index="2" ref="local-login.forceCaptcha"/>
+  </bean>
+
+  <!-- Override in the global application context to enable captcha in the
+       login page. -->
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='local-login.enableCaptcha' p:value='false'/>
+
+  <!-- Override in the global application context to define the time an ip will
+       be blacklisted. Defaults to 10 minutes. -->
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='local-login.ipBlacklistTimeout' p:value='600000'/>
+
+  <!-- Override in the global application context to always show the captcha in
+       the login page. Defaults to ip blacklisting. -->
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='local-login.forceCaptcha' p:value='false'/>
+
+  <bean class='org.springframework.beans.factory.config.BeanReferenceFactoryBean'
+    name='local-login.captchaService'
+    p:targetBeanName-ref='local-login.captchaServiceType'/>
+
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='local-login.captchaServiceType'
+    p:value='local-login.captchaServiceEasy'/>
+
+  <!-- alias name="local-login.captchaService-hard"
+    alias="local-login.captchaService"/ -->
+
+  <!-- alias name="local-login.captchaService-easy"
+    alias="local-login.captchaService"/ -->
+
+  <!-- The captcha validation and validation service, provided by jcaptcha. -->
+  <bean id="local-login.captchaServiceHard"
+    class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService"/>
+
+  <bean id="local-login.captchaServiceEasy"
+    class="com.octo.captcha.service.multitype.GenericManageableCaptchaService">
+    <constructor-arg index="0" ref="local-login.imageEngine" />
+    <constructor-arg index="1" value='180'/>
+    <constructor-arg index="2" value='180000'/>
+    <constructor-arg index="3" value="75000"/>
+  </bean>
+
+  <bean id="local-login.imageEngine"
+    class="com.octo.captcha.engine.GenericCaptchaEngine">
+    <constructor-arg index="0"> 
+      <list>
+        <ref bean="local-login.captchaFactory" />
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <bean id="local-login.captchaFactory"
+    class="com.octo.captcha.image.gimpy.GimpyFactory">
+    <constructor-arg ref="local-login.wordgen" />
+    <constructor-arg ref="local-login.wordtoimage" />
+  </bean>
+
+  <bean id="local-login.wordgen"
+    class="com.octo.captcha.component.word.wordgenerator.DictionaryWordGenerator">
+    <constructor-arg ref="local-login.filedict" />
+  </bean>
+
+  <bean id="local-login.filedict"
+    class="com.octo.captcha.component.word.FileDictionary">
+    <constructor-arg index="0" value='toddlist'/>
+  </bean>
+
+  <bean id="local-login.wordtoimage"
+    class="com.octo.captcha.component.image.wordtoimage.ComposedWordToImage">
+    <constructor-arg index="0" ref="local-login.fontGenRandom" />
+    <constructor-arg index="1" ref="local-login.backGenUni" />
+    <constructor-arg index="2" ref="local-login.simpleWhitePaster" />
+  </bean>
+
+  <!-- A FontGenerator provide Fonts to a WordToImage, differents fonts
+       increase the difficulties for cracking software using a learning
+       process. This one generates random fonts from a list, and the first two
+       arguments are the minimum size and the maximum size of the font.
+       -->
+  <bean id="local-login.fontGenRandom"
+    class="com.octo.captcha.component.image.fontgenerator.RandomFontGenerator">
+    <constructor-arg index="0" value='40' />
+    <constructor-arg index="1" value='50' />
+    <constructor-arg index="2">
+      <list>
+        <ref bean="local-login.fontArial" />
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <!-- A font is declared like this -->
+  <bean id="local-login.fontArial" class="java.awt.Font">
+    <constructor-arg index="0" value='Arial' />
+    <constructor-arg index="1" value='0' />
+    <constructor-arg index="2" value='10' />
+  </bean>
+
+  <!-- The BackgrountGenerator component can be very simple like in the
+       example, single color, or more complex with real picture, or fancy
+       computed shapes. The first two arguments are always, the size (length
+       and height) of the resulting image.
+       -->
+  <bean id="local-login.backGenUni"
+    class="com.octo.captcha.component.image.backgroundgenerator.UniColorBackgroundGenerator">
+    <constructor-arg index="0" value='300' />
+    <constructor-arg index="1" value='60' />
+  </bean>
+
+  <!-- The TextPaster, according to his name, pastes the text on the
+       background. This can be done in a simple way, (see example below), or
+       another implementation can paste each character randomly (but still
+       readably), or can double the text to make computers more confused.
+       TextPaster can be even decorated to put perturbations around the text, a
+       component, TextDecorator, is designed for this purpose, see Annexes for
+       some examples. Commons arguments for TextPaster are:
+       Minimal length of the text.
+       Maximal length of the text.
+       A color generator component to create the text color, see Annexes.
+       -->
+  <bean id="local-login.simpleWhitePaster"
+    class="com.octo.captcha.component.image.textpaster.SimpleTextPaster">
+    <constructor-arg index="0" value='8' />
+    <constructor-arg index="1" value='10' />
+    <constructor-arg index="2" ref="local-login.colorGreen" />
+  </bean>
+
+  <!-- And a color definition. -->
+  <!-- WARNING: the type='int' is VERY important, otherwise spring may use the
+       Color constructor that takes three floats from 0 to 1, instead of three
+       ints from 0 to 255.
+  -->
+  <bean id="local-login.colorGreen" class="java.awt.Color">
+    <constructor-arg index="0" type="int" value='0' />
+    <constructor-arg index="1" type="int" value='255' />
+    <constructor-arg index="2" type="int" value='0'/>
+  </bean>
+
+  <!-- vim: set ts=2 sw=2 et ai: -->
+</beans>
+

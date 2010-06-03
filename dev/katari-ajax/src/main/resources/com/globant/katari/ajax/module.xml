@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="ajax.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+    <property name='entryPoints'>
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The servlet that serves the static content used for
+            decoration. -->
+            <entry key="/.*">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="com.globant.katari.core.web.StaticContentServlet"/>
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <!-- WARNING: Be careful with the value staticContentPath:
+                    if it starts with '/' it won't work under Tomcat.
+                    -->
+                    <entry key="staticContentPath"
+                      value="com/globant/katari/ajax/asset" />
+                    <entry key="debug" value-ref='debugMode'/>
+                    <entry key="debugPrefix"
+                      value="../katari-ajax/src/main/resources"/>
+                    <entry key="requestCacheContent" value="true"/>
+                    <entry key="mimeType_png" value="image/png"/>
+                    <entry key="mimeType_gif" value="image/gif"/>
+                    <entry key="mimeType_css" value="text/css"/>
+                    <entry key="mimeType_js" value="text/javascript"/>
+                    <entry key="mimeType_html" value="text/html"/>
+                    <entry key="mimeType_xml" value="text/xml"/>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+    <property name="urlToRoleMapper">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
+        <constructor-arg index="0">
+          <map>
+            <entry key="/**">
+              <list>
+                <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+              </list>
+            </entry>
+          </map>
+        </constructor-arg>
+      </bean>
+    </property>
+  </bean>
+  
+  <!-- Adds fckeditor and dojo to html validation ignored list. -->
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='katari.htmlValidator.ignoredUrlpatterns' />
+    <constructor-arg>
+      <list>
+        <value>.*/ajax/fckeditor/.*/.*\.html</value>
+        <value>.*/dojo/.*/iframe_history\.html</value>
+      </list>
+    </constructor-arg>
+  </bean>
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai : -->
+

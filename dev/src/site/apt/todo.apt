@@ -1,0 +1,83 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+ Some things to do, in preferred order of execution:
+
+ * Add an password hashing mechanism.
+
+ * Provide a way for 'extending' modules. A possible strategy: When
+ the spring post-processor detects a bean named name.moduleExtension, it looks
+ for the ModuleContext corresponding to the module 'name', and calls init with
+ that module context.  It could be nice if the name of the bean is forced to be
+ <name>.module. Now the .module suffix is optional.
+ Another (or complementary) approach would be to declare a listener bean in the
+ parent context that receives refresh events from the children contexts. This
+ gives a bean in the parent context to apply a post-processor to the beans in
+ the child contexts.
+
+ * Freemarker: the view resolver should be configured in UTF-8:
+
+----
+<bean id="freemarkerViewResolver"
+  class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+  <property name="prefix" value="/"/>
+  <property name="suffix" value=".ftl"/>
+  <property name="order" value="1" />
+  <property name="exposeSpringMacroHelpers" value="true"/>
+  <property name="exposeRequestAttributes" value="true" />
+  <property name="contentType" value="text/html; charset=utf-8" />
+ </bean>
+----
+
+ Additionally, it will be nice to have a global configuration that overrides all
+ FreeMarkerViewResolvers (macros, template paths, number format, etc).
+
+ * See if it is better to use
+ freemarker.template.TemplateDirectiveModel to implement the freemarker macros.
+
+ * I18n.
+
+ * Update mule to the latest version.
+
+ * Add a configuration sample for hibernate second level cache, with focus on
+ spring integration.
+
+ * Add an error page. Note: if the app throws a 403 error, sitemesh does not
+ decorates the error page. This is probably because the decorator filter is
+ after the acegi filter. This can probably be solved implemnting
+ ExceptionHandler and using a redirect (the default uses a forward).
+
+ * Dirty html pages: confirm on close.
+
+ * Provide a way to define the absolute cas, crud and web urls instead of
+ depending on the client. Depending on the client is considered a security
+ issue.
+
+ * Revisit the 'ping test case'. Make the client use the SimplePageVerifier as:
+
+ * Make the menu initialization more robust. Apparently it is possible to add
+ child items to a leaf node.
+
+ * Make the home module paint the logo as a weblet with a link to the home page.
+
+ * Add some nice content to the home page.
+
+ * Add a module to support web services with axis2 + spring (or something
+ similar).
+
+ * Add an inbox module, where other modules can register todo tasks to show to
+ the user.
+
+ * Add a scheduled tasks module.
+
+ []
+
+ Some other cool stuff to play with:
+
+ * ActiveMQ integration.
+
+ * Integrate some workflow engine.
+
+ * Auditory / clickstream ?????.
+
+ []
+

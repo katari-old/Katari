@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/maven-v4_0_0.xsd">
+  <!-- vim: set ts=2 et sw=2 ai: -->
+
+  <parent>
+    <groupId>\${groupId}</groupId>
+    <artifactId>dev</artifactId>
+    <version>\${version}</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>\${groupId}</groupId>
+  <artifactId>\${clientName}-\${projectName}-style</artifactId>
+  <packaging>jar</packaging>
+  <name>\${friendlyName} - style</name>
+  <description>This module contains a style for the web application. It
+    includes the sitemesh decorators and the common static files.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <!-- Filters the main decorator to include the version number. -->
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>com/globant/\${clientName}/\${projectName}/style/footer.dec</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>com/globant/\${clientName}/\${projectName}/style/footer.dec</exclude>
+        </excludes>
+      </resource>
+    </resources>
+
+  </build>
+
+</project>
+

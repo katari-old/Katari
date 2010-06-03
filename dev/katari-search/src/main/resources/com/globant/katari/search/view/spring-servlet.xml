@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <!-- freemarker config -->
+  <bean id="freemarkerConfig"
+    class="com.globant.katari.core.web.FreeMarkerConfigurer"
+    p:templateLoaderPath="classpath:/com/globant/katari/search/view/"
+    p:debugPrefix='../katari-search/src/main/resources'
+    p:debug-ref='debugMode'/>
+
+  <bean id="freemarkerViewResolver"
+    class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+    p:prefix="/" p:suffix=".ftl"
+    p:exposeSpringMacroHelpers='true'
+    p:exposeRequestAttributes='true'/>
+
+  <bean name="searchCommand"  scope='prototype'
+      class="com.globant.katari.search.application.SearchCommand">
+    <constructor-arg index='0' ref='search.indexRepository'/>
+  </bean>
+
+  <bean name="/weblet/search.do"
+      class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name='viewName' value='searchWeblet'/>
+  </bean>
+
+  <bean name="/search.do"
+      class="com.globant.katari.search.view.SearchController">
+    <lookup-method name="createCommandBean" bean="searchCommand" />
+  </bean>
+
+  <!-- Transactions -->
+  <bean class
+    ="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator">
+    <property name="proxyTargetClass" value="true" />
+    <property name="beanNames">
+      <list>
+        <value>*Command</value>
+      </list>
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>transactionInterceptor</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="transactionInterceptor"
+      class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    <property name="transactionManager" ref="katari.transactionManager" />
+    <property name="transactionAttributes">
+      <props>
+        <prop key="execute">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
+  </bean>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai : -->
+

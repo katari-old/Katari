@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="katari.sessionFactory"
+    class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+        <prop key="connection.driver_class">org.hsqldb.jdbcDriver</prop>
+        <prop key="connection.url">jdbc:hsqldb:mem:testdb</prop>
+        <prop key="connection.username">sa</prop>
+        <prop key="connection.password"></prop>
+      </props>
+    </property>
+    <property name="annotatedClasses">
+      <bean id="crud.jpaAnnotatedClasses"
+        class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+          <list>
+            <value>com.globant.katari.tools.Activity</value>
+            <value>com.globant.katari.tools.Client</value>
+            <value>com.globant.katari.tools.Project</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

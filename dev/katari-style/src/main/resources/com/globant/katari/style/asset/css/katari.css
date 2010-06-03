@@ -1,0 +1,972 @@
+ /* CSS Document */
+
+/* General */
+
+body, td, th, div, table, p, span, li, textarea, pre, input {
+	font-family:arial, verdana, helvetica, lucida, sans-serif;
+	font-size:1em;
+}
+
+html, body {
+	color:black;
+	height:100%; /* needed to stick footer to bottom of page. */
+	background-color:#ffffff;
+	margin:0;
+	padding:0;
+	position:relative;
+}
+
+body {
+	font-size:.8em;
+}
+
+div#container {
+	position:relative; /* needed for footer positioning */
+	margin:0 auto; /* center, not in IE5 */
+	width:100%;
+	background:#ffffff;
+	
+	height:auto !important; /* real browsers */
+	height:100%; /* IE6: treated as min-height*/
+
+	min-height:100%; /* real browsers */
+}
+
+/* Padding so that the content is not obscured by the footer. */
+div#footerPadding {
+	height:40px; /* IE6: treated as min-height*/
+	min-height:40px; /* real browsers */
+}
+
+div#footer {
+	position:absolute;
+	width:100%;
+	bottom:0; /* stick to bottom */
+	background:#ddd;
+	border-top:4px double gray;
+}
+
+a { color:#0000cc; }
+
+a.noUnderline { text-decoration:none; background-position:bottom }
+
+table {
+	display:table;
+}
+
+tr { display:table-row;  }
+
+th, td {
+	display: table-cell;
+	padding:0;
+}
+
+img { border:0px; }
+
+.text {
+	border:1px solid #666666;
+	background-color: #FCFCFC;
+}
+
+input.text { width:15em; }
+
+textarea { }
+
+select option { padding-right: 2px; }
+
+pre { margin:0; }
+
+.clear { clear:both; }
+
+.button, .buttonBarClass input {
+	color:#000000;
+	border:1px solid #dddddd;
+}
+
+.button:active, .buttonBarClass input:active { background-image:none; }
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearfix {display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+/* General */
+
+/* Main styles */
+
+#header #logo {
+	width:200px;
+	height:80px;
+	background:#000000 no-repeat top left;
+}
+
+#header #weblets {
+	position:absolute;
+	top:35px;
+	right:6em;
+}
+
+#header #weblets form {
+	padding:0px;
+	width:100%;
+}
+
+#header #data {
+	position:absolute;
+	top:5px;
+	right:12px;
+}
+
+/* KLUDGE: This rule matches for ie6. The div is positioned absolute due to an
+ * ie6 problem: the color of the div#frame takes over the whole content area.
+ * With the relative positioning, the div#section is rendered correctly. Also,
+ * ie6 ignores min-height. */
+* html div#section {
+	margin-bottom:10px;
+	background-color:#FFFFFF;
+	height:100px;
+	position:relative;
+}
+
+div#section {
+	margin-bottom:10px;
+	background-color:#FFFFFF;
+	min-height:100px;
+}
+
+div#section ul#menu_level_2 {
+	margin:0;
+	padding:3px 0 3px 2em;
+	background:#e6e6e6;
+}
+
+div#section ul#menu_level_2 li {
+	display:inline;
+	margin-right:1em;
+}
+
+div#section ul#menu_level_2 li a {
+	color:#333333;
+	text-decoration:none;
+}
+
+div#section ul#menu_level_2 li.selected a {
+	background:#e6e6e6;
+	font-weight:bold;
+}
+
+div#section ul#menu_level_3 {
+	margin:0;
+	padding:3px 0 3px 2em;
+	background:#ffffff;
+}
+
+div#section ul#menu_level_3 li {
+	display:inline;
+	margin-right:1em;
+}
+
+div#section ul#menu_level_3 li a {
+	color:#333333;
+	text-decoration:none;
+}
+
+div#section ul#menu_level_3 li.selected a {
+	background:#ffffff;
+	text-decoration:none;
+}
+
+div#section ul#menuHome {
+	margin:0;
+	padding:3px 0 3px 2em;
+	background:#e6e6e6;
+}
+
+div#section ul#menuHome li {
+	display:list-item;
+	margin-right:1em;
+}
+
+div#section ul#menuHome li a {
+	color:#333333;
+	text-decoration:none;
+}
+
+div#section ul#menuHome li.selected a {
+	background:#e6e6e6;
+	font-weight:bold;
+}
+
+/* Adds nice icons to the preview button for the editable pages.
+ */
+div.preview-button a span {
+	display:none;
+}
+
+#header .weblet {
+	float:right;
+}
+
+div.weblet_editable-pages_previewButton {
+	float:right;
+	margin-left:8px; 
+	width:16px;
+}
+
+div.preview-button a.published {
+	background-image:url(../image/show_preview_all.png);
+	background-repeat:no-repeat;
+	background-position: center;
+	height:16px;
+	display:block;
+	width:16px;
+	/*float:right;*/
+	cursor:pointer;
+	padding:0;
+	border:0px solid #CCCCCC;
+	margin:0;
+	background-color:#FFFFFF;
+	text-align:left;
+}
+
+div.preview-button a.pending-publication {
+	background-image:url(../image/show_original_all.png);
+	background-repeat:no-repeat;
+	background-position: center;
+	height:16px;
+	display:block;
+	width:16px;
+	/*float:right;*/
+	cursor:pointer;
+	padding:0;
+	border:0px solid #CCCCCC;
+	margin:0;
+	background-color:#FFFFFF;
+	text-align:left;
+	display: none;
+}
+
+/* Adds nice icons to the menu entries for the editable pages.
+ */
+div.editable-pages-pencil span {
+	display:none;
+}
+div.preview div.editable-pages-pencil {
+	background-image:url(../image/editable_pages_pencil_preview.png);
+	background-repeat:no-repeat;
+	background-position: center;
+	height:24px;
+	display:block;
+	width:24px;
+	/*float:right;*/
+	cursor:pointer;
+	padding:0;
+	border:0px solid #CCCCCC;
+	margin:0;
+	background-color:#FFFFFF;
+	text-align:left;
+}
+div.editable-pages-pencil {
+	background-image:url(../image/editable_pages_pencil.png);
+	background-repeat:no-repeat;
+	background-position: center;
+	height:24px;
+	display:block;
+	width:24px;
+	/*float:right;*/
+	cursor:pointer;
+	padding:0;
+	border:0px solid #CCCCCC;
+	margin:0;
+	background-color:#FFFFFF;
+	text-align:left;
+}
+.yui-module .bd li a {
+	background-repeat:no-repeat;
+	background-position:left;
+	text-align:left;
+	font-size:11px!important;
+	padding:0 28px!important;
+	line-height:22px;
+}
+.yui-module .bd li.editPage a {
+	background-image:url(../image/edit_menu_icon.png);
+}
+.yui-module .bd li.publishPage a {
+	background-image:url(../image/publish_menu_icon.png);
+}
+.yui-module .bd li.revertPage a {
+	background-image:url(../image/revert_menu_icon.png);
+}
+
+/* ------------------------------ */
+
+div#section h3 {
+	margin:0;
+	padding:10px 2em 5px 2em;
+	font-size:1em;
+}
+
+div#section h4 {
+	margin:0;
+	padding:0px 2em 5px 2em;
+	font-size:1em;
+	font-weight:normal;
+}
+
+
+div#section div#content { padding:0 10px; }
+
+/* KLUDGE: The div is positioned absolute due to an ie6 problem: the color of
+ * the div#frame takes over the whole content area.  With the relative
+ * positioning, the div#section is rendered correctly. */
+#version {
+	margin-bottom:5px;
+	padding:2px 0;
+	background:#000000 repeat-x top;
+	text-align:center;
+	font-size:.8em;
+	position:relative;
+}
+
+/* KLUDGE: The div is positioned absolute due to an ie6 problem: the color of
+ * the div#frame takes over the whole content area.  With the relative
+ * positioning, the div#section is rendered correctly. */
+#pageclose {
+	height:20px;
+	background:url(../image/globant.png) no-repeat top right;
+	background-color:#ffffff;
+	position:relative;
+}
+#pageclose a {
+	color:black;
+	text-decoration:none;
+}
+/* /Main styles */
+
+form {
+	padding:10px;
+	width:30em;
+}
+
+form.innerform {
+	padding:0px;
+	width:100%;
+}
+
+ul.glasslist {
+	padding:0;
+	margin:0;
+}
+
+form#login {
+	width:25em;
+}
+
+form span.formfield, form ul.glasslist li {
+	clear:both;
+	display:block;
+	margin-bottom:5px;
+}
+
+#message {
+	display:block;
+	margin-bottom:5px;
+}
+
+#message.error {
+	font-weight:bold;
+	color:#990000;
+}
+
+table.results {
+	border:1px solid;
+}
+
+/* Main styles */
+
+div.preview-button {
+  color:#dddddd;
+  background:#fff;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+ul#menu_level_1 {
+  margin:0;
+  padding:6px 0 6px 2em;
+}
+
+ul#menu_level_1 li {
+  display:inline;
+  margin-right:1em;
+  padding:3px 9px;
+  border:1px solid;
+}
+
+ul#menu_level_1 li a {
+  color:#838383;
+  text-decoration:none;
+}
+
+ul#menu_level_1 li.selected a {
+  color:#dddddd;
+}
+
+form.invisible {
+  margin:auto;
+  background-color:#FFFFFF;
+  border:1px solid #FFFFFF;
+}
+
+form {
+  margin:auto;
+  background-color:#f5f5f5;
+  border:1px solid #cccccc;
+}
+
+form label {
+  display:block;
+}
+
+form label.bold {
+  font-weight: bold;
+}
+
+form span.buttons, form ul.glasslist .buttonBarClass {
+  display:block;
+  text-align:right;
+  padding-top:5px;
+}
+
+/* /Main styles */
+
+/* Reports */
+
+table.results { margin:auto; }
+
+table.results td {
+  padding:1px 10px;
+  background-color:#eeeeee;
+}
+
+table.results thead td, table.tableHeaderTable td, table.tableHeaderTable td a {
+  padding-top:3px;
+  padding-bottom:3px;
+  color:#ffffff;
+  font-weight:bold;
+}
+
+table.results tr.even td {
+  background-color:#dfdfdf;
+}
+
+/* /Reports */
+/* START Fix for Floated Elements */
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0
+}
+
+html[xmlns] .clearfix { display: block }
+
+/* Only IE 6 */
+* html .clearfix { height: 1% }
+
+.clear { clear:both }
+
+/* END Fix for Floated Elements */
+
+body, td, th, div, table, p, span, li, textarea, pre, input {
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+/* For every property (ex margin):
+ * margin: 0 0 0 -4px;    1- All browsers
+ * margin: 0 0 0 -1px\9;  2- IE 8, 7 y 6
+ * *margin: 0 0 0 -2px;   3- IE 7 y 6
+ * _margin: 0;            4- only IE 6
+ */
+
+.btnCopy {
+  position:relative;
+  margin-left: 5px;
+  margin-left:10px\9;
+  *margin-left:5px;
+  _margin-left:10px;
+  top:-10px;
+  top:-4px\9;
+  *top:-4px !important;
+  _top:-4px;
+}
+
+.button, .buttonBarClass input {
+  background:url(../image/button-bg.png) top repeat-x center;
+}
+
+.button:active, .buttonBarClass input:active {
+  background-image:none;
+  background-color:#a2a274;
+}
+
+#header { background:#EEEEEE url(../image/header-bg.png) repeat-x; }
+
+#header #data {
+  color:#838383;
+  font-size:0.85em;
+  right:19px;
+  text-align:right;
+  top:17px;
+  width:250px;
+  width:280px\9;
+  *width:280px;
+}
+
+#header #data select, form input, form select, form textarea, .loginContainer input {
+  border:1px solid #c7c7c7;
+  color:#838383;
+  font-size:0.80em;
+  margin-bottom:20px;
+}
+
+form input, form select, form textarea, .loginContainer input {
+  font-size:1em;
+  margin-bottom:0;
+}
+
+#header #data a { color:#838383; float:right; }
+
+#header #data span { float:right; }
+
+#version {	
+  background-image: url(../image/footer-bg.png);
+  color:#838383;
+  height:20px;
+  font-size:0.95em;
+  line-height:20px;
+  margin-bottom:0;
+  padding:0;
+  text-align:left;
+  text-indent:19px;
+}
+
+div#frame { background:#54552d; }
+
+ul#menu_level_1 {
+  background:#eeeeee;
+  border-bottom:1px solid #c7c7c7;
+  font-size:0.9em;
+  height:27px;
+  line-height:27px;
+  padding:0 0 0 19px;
+}
+
+ul#menu_level_1 li {
+  border:none;
+  display:block;
+  float:left;
+  margin:0;
+  padding:0 15px;
+  text-transform:lowercase;
+}
+
+ul#menu_level_1 li.selected {
+  background:transparent url(../image/tab_left_on.png) no-repeat scroll left top;
+  display:block;
+  float:left;
+  height:27px;
+  padding:0 0 0 15px;
+  position:relative;
+  top:1px;
+}
+
+ul#menu_level_1 li.selected a {
+  background:transparent url(../image/tab_right_on.png) no-repeat scroll right top;
+  color:#838383;
+  display:block;
+  float:left;
+  font-weight:bold;
+  height:27px;
+  padding:0 15px 0 0;
+  text-transform:lowercase;
+}
+
+table.tableHeaderTable td {
+  background-color:#54552d;
+}
+
+table.results {
+  border:none !important;
+  color:#838383;
+  margin:10px 0 20px;
+  table-layout:fixed;
+}
+
+table.results thead th {
+  background:#FFFFFF;
+  border-bottom:2px solid #cccccc;
+  padding-left:10px;
+  text-align:left;
+}
+
+table.results thead th a, table.results thead th a:hover {
+  color:#94A717;
+}
+
+table.results tbody td {
+  background:#FFFFFF;
+  border-bottom:1px solid #ececec;
+  height:25px;
+}
+
+table.results tbody td a, table.results tbody td a:hover {
+  color:#838383;
+}
+
+div#footer {
+  background:#FFFFFF url(../image/globant.png) no-repeat scroll right 25px;
+  font-size:0.80em;
+  border-top:none;
+}
+
+#pageclose {
+  background:none;
+  height:30px;
+  line-height:30px;
+  padding:0 19px;
+}
+
+div#section div#content {
+  padding:10px 19px;
+}
+
+div#editable-pages-pencil1, div#editable-pages-pencil2 {
+  cursor:pointer;
+  position: absolute;
+  right:19px !important;
+}
+
+.weblet_editable-pages_page_about {
+  padding:0 19px;
+}
+
+ul#menu_level_2 {
+  background:transparent url(../image/bg_submenu2.png) repeat-x scroll left
+    bottom !important;
+  font-size:0.85em;
+  height:30px;
+  line-height:30px;
+  padding:0 19px !important;
+}
+
+ul#menu_level_3 {
+  background:transparent url(../image/bg_submenu3.png) repeat-x scroll left
+    bottom !important;
+  font-size:0.85em;
+  height:30px;
+  line-height:30px;
+  padding:0 19px !important;
+}
+
+div#footer div#pageclose .weblet_editable-pages_page_about {
+  padding:0;
+}
+
+div#footer div#pageclose p {
+  margin:0;
+  padding:0;
+}
+
+.pageContent {
+  position:relative;
+}
+
+.pending-publish-content {
+  position:absolute;
+  font-weight:bold;
+  right:6em;
+  top:0px;
+  font-size:3em;
+  color:#888;
+  z-index:1;
+  filter:alpha(opacity=10);
+  -moz-opacity:0.1;
+  -khtml-opacity: 0.1;
+  opacity: 0.1;
+}
+
+.pending-publication {
+  display: none;
+}
+
+div#pageclose .weblet_editable-pages_page_about #editable-pages-pencil1, div#pageclose .weblet_editable-pages_page_about #editable-pages-pencil2{
+  right:160px !important;
+}
+
+div#section ul#menu_level_2 li a {
+  color:#838383;
+}
+
+div#section ul#menu_level_2 li.selected {
+  background:transparent url(../image/detailSelected.png) no-repeat scroll center 14px !important;
+}
+
+div#section ul#menu_level_2 li.selected a {
+  background:none;
+  color:#94a717;
+  font-weight:bold;
+}
+
+div#section ul#menu_level_2 li {
+  display:block;
+  float:left;
+  height:30px;
+  margin-right:3em;
+}
+
+div#section ul#menu_level_3 li.selected a {
+  background:#FFFFFF none repeat scroll 0 0;
+  color:#94a717;
+  text-decoration:none;
+}
+
+div#section ul#menu_level_3 li a {
+  color:#838383;
+  text-decoration:none;
+}
+
+div#section ul#menu_level_3 li {
+  margin-right:3em;
+}
+
+div#section h3 {
+  color:#94a717;
+  font-size:1.3em;
+  font-weight:normal;
+  margin:0;
+  padding:10px 0;
+}
+
+/* Forms */
+form {
+  border:none;
+  background:none;
+  margin:0;
+  padding:0;
+  width:auto;
+}
+
+.deleteTimeEntry { width:auto }
+
+.column {
+  width:49%;
+}
+
+.left {
+  float:left;
+}
+
+.right {
+  float:right;
+}
+
+.bottomMargin {
+  margin-bottom:40px;
+}
+
+.leftMargin {
+  margin-left:10px;
+}
+
+.rightMargin {
+  margin-right:10px !important;
+  *margin-right:5px;
+}
+
+.topMargin {
+  margin-top:10px;
+}
+
+input.btn {
+  background:#899A1B none repeat scroll 0 0;
+  border:1px solid #6C7B0B;
+  color:#FFFFFF;
+  cursor:pointer;
+  font-size:0.95em;
+  font-weight:bold;
+  padding:1px 8px;
+  padding:2px 10px\9;
+  *padding:1px 3px;
+  text-transform:lowercase;
+}
+
+input.btn:hover {
+  background:#b5c73d none repeat scroll 0 0;
+  color:#54552d;
+}
+
+form span.formfield {
+  margin-bottom:12px;
+}
+
+form label {
+  color:#838383;
+  font-size:0.95em;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+form label span {
+  font-weight:normal !important;
+}
+
+.largeInput {
+  width:200px;
+}
+
+.smallInput {
+  width:80px;
+}
+
+#message.error {
+  margin-bottom:10px;
+}
+
+.check {
+  border:none;
+  background:none;
+  padding:0;
+  padding:3px 0\9;
+}
+
+.formfield div {
+	height:18px;
+	height:19px\9;
+	line-height:18px;
+}
+
+/* Login */
+.loginContainer {
+  border:2px solid #e9e9e9;
+  background:#f6f6f6;
+  width:325px;
+  margin:70px auto;
+  padding:10px 30px 30px 30px;
+}
+
+.loginContainer p {
+  color:#838383;
+}
+
+/* Paginator */
+.paginator {
+  color:#838383;
+  font-size:0.85em;
+  text-align:right;
+}
+
+/* YUI Calendar */
+.yui-skin-sam .yui-calendar td.calcell.selected a {
+  background-color:#D0D896;
+  color:#000000;
+}
+
+.yui-skin-sam .yui-calendar td.calcell a {
+  color:#81930B;
+  display:block;
+  height:100%;
+  text-decoration:none;
+}
+
+.yui-skin-sam .yui-calendar td.calcell.calcellhover {
+  background-color:#81930B;
+  color:#FFFFFF;
+  cursor:pointer;
+}
+
+
+/* Trails */
+.glasslist .buttonBar .button {
+  background:#899A1B none repeat scroll 0 0;
+  border:1px solid #6C7B0B;
+  color:#FFFFFF;
+  cursor:pointer;
+  font-size:0.95em;
+  font-weight:bold;
+  padding:1px 8px;
+  padding:2px 10px\9;
+  *padding:1px 3px;
+  text-transform:lowercase;
+}
+
+ul.glasslist {
+  margin:0 0 40px 0;
+  padding:0;
+}
+
+.glasslist .buttonBar .button:hover {
+  background:#b5c73d none repeat scroll 0 0;
+  color:#54552d;
+}
+
+form span.formfield, form ul.glasslist li {
+  clear:both;
+  display:block;
+  margin-bottom:10px;
+  list-style:none;
+}
+
+#tableView .results tbody th {
+  background:#FFFFFF;
+  border-bottom:2px solid #cccccc;
+  padding-left:10px;
+  text-align:left;
+}
+
+#tableView table.results table tbody td {
+  background:#FFFFFF none repeat scroll 0 0;
+  border-bottom:none !important;
+  height:25px;
+}
+
+#tableView table.results tbody td a {
+	text-decoration:none;
+}
+
+#tableView .nameColumnHeader, #tableView .descriptionColumnHeader, #tableView .statusColumnHeader, #tableView .viewAndEditColumnHeader {
+	padding:0 !important;
+}
+
+#tableView table.results tbody td a {
+	text-decoration:underline;
+}
+
+table.results tr.even td {
+    background:#FFFFFF;
+}
+
+form span.buttons, form ul.glasslist .buttonBarClass {
+  display:block;
+  padding-top:5px;
+  text-align:left;
+}
+
+.glasslist input.text {
+  border:1px solid #C7C7C7;
+  color:#838383;
+}

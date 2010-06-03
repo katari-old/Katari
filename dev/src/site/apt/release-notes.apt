@@ -1,0 +1,424 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Release notes for version 0.21
+
+* What's new since version 0.20
+
+ * New archetype to scafold a new module.
+
+* Upgrading from version 0.20
+
+ * If you overrided katari.httpSessionContextIntegrationFilter, you now need to
+ override katari.contextHolderIntegrationFilter.
+
+Release notes for version 0.20
+
+* What's new since version 0.19
+
+ * New search module.
+
+ * New console module.
+
+ * Katari is now compatible with spring 3.0. It still uses spring 2.5.
+
+ * Documentation improvements.
+
+ * The maven generated site now looks like the sample katari application.
+
+Release notes for version 0.19
+
+ The project has been renamed to Katari. This is the first release under the new
+ name.
+
+* What's new since version 0.18
+
+ * Improved the editable pages module: rollback and per page preview.
+
+ * Minor fixes to the captcha feature.
+
+ * New logo to match the new name.
+
+* Upgrading from version 0.18
+
+ Renaming to katari involved changing the java package names and the maven
+ artifact name. To upgrade from version 0.18 just change anubis for katari in
+ package name, artifactId and groupId.
+
+* What's new since version 0.17
+
+ * Katari now integrates wicket.
+
+ * Added support for captcha in the login page.
+
+ * The editable pages module now provides a preview and a revert mechanism.
+
+ * New ui for the sample applications.
+
+ * Added https support.
+
+ * Changed the way modules registers persistent classes.
+
+ * Updated yui from 2.6 to 2.8.0r4.
+
+ * Updated hibernate and selenium dependencies.
+
+* Upgrading from version 0.17
+
+ Persistent classes are no longer registered using persistentClasses property in
+ the ConfigurableModule class (this operation was removed.) You now must append
+ your persistent classes to a special bean in spring named
+ anubis.persistentClasses. Replace, in all your modules, fragments like:
+
++-----
+<property name='persistentClasses'>
+  <list>
+    <value>com.globant.katari.sample.user.domain.User</value>
+  </list>
+</property>
++-----
+
+ with:
+
++-----
+<bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <constructor-arg value='anubis.persistentClasses'/>
+  <constructor-arg>
+    <list>
+      <value>com.globant.katari.sample.user.domain.User</value>
+    </list>
+  </constructor-arg>
+</bean>
++-----
+
+ This version has updated a couple of dependencies, mainly related to hibernate
+ and selenium:
+
+ * Change the following dependencies:
+
+  * hibernate to hibernate-core-3.3.2.GA.
+
+  * update hibernate-annotations to version 3.4.0.GA.
+
+  * update hibernate-validator 3.1.0.GA.
+
+  * remove hibernate-commons-annotation.
+
+  * jboss.javassist to javassist.javassist-3.8.0.GA.
+
+  * org.openqa.selenium.client-drivers.selenium-java-client-driver to
+
+  org.seleniumhq.selenium.client-drivers.selenium-java-client-driver-1.0.
+
+ * Remove the selenium-server dependency from the selenium-maven-plugin
+ configuration in your web app module.
+
+ * If you are using yui loader, replace yuiloader-beta-min.js for
+ yuiloader-min.js.
+
+* What's new since version 0.16.1
+
+ * Katari now has an archetype to generate a project. This lowers the barrier
+ for new anubis developers.
+
+ * Lots of improvements in the editable pages module.
+
+* What's new since version 0.16
+
+ * It is now possible to override the location of the message resource of the
+ trails module. This is a simple workaround until we find a method of merging
+ listis in spring.
+
+ * Improved html validation error message.
+
+* What's new since version 0.15
+
+ * There is a new module katari-editablepages that allows users with the
+ appropriate privileges to edit web pages with a web based WYSIWYG editor.
+
+ * Changes to freemarker templates loaded from spring mvc are immediately picked
+ by the browser. It is no longer necessary to restart the container to see the
+ result of a change in freemarker templates. The same holds for static content
+ like css and javascript files.
+
+ * Now anubis incorporates a filter that automatically validates all html
+ content sent to the client. This makes it easier to generate valid html
+ content.
+
+* Resolved issues since version 0.15
+
+ * Some pages generated invalid html content.
+
+ * Fixed the random fail in trails pages when using jetty. This was a long
+ standing problem only manifestating in jetty.
+
+* What's new since version 0.14.1
+
+ * The local login module now shows a message if the user entered invalid
+ credentials (merged from 0.14.2).
+
+ * Split anubis core in two, one with the core related to the webapp and spring
+ integration, and the other with hibernate support. Now you can have an anubis
+ application without a database.
+
+ * Improved the documentation, adding a getting started section in the user
+ manual.
+
+ * Upgraded htmlunit to version 2.5 and cargo plugin to version 1.0.
+
+* Resolved issues since version 0.14.1
+
+ * Weblet rendering was ignoring the encoding.
+
+ * Due to an unexpected change in doxia, pdf documents where generated with the
+ images not properly scaled.
+
+ * The menu module was showing menus that the user did not have access to.
+
+* Upgrading from version 0.14.1
+
+ There is a new artifact called katari-hibernate that contains hibernate
+ dependencies. This stuff was removed from katari-core, so you must add a new
+ dependency in your old application:
+
+----
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-hibernate</artifactId>
+      <version>0.15</version>
+    </dependency>
+----
+
+ This version changed the way that some filters are used. The acegi, encoding
+ and serviceUrlFilter are now declared in the core anubis bean factory and they
+ no longer belong to the web.xml file. You should remove those filters from your
+ web.xml.
+
+ The way the security filter is configured has changed: it is no longer necessary
+ to declare the 'Acegi Filter Chain Proxy' filter in the web.xml file.
+
+ Keeping the 'Acegi Filter Chain Proxy' filter will throw an error stating that
+ the bean anubis.securityFilter no longer exists.
+
+ Keeping the encoding filter will throw an error stating that
+ com.globant.katari.core.web.EncodingFilter was not found.
+
+ Keeping the serviceUrlFilter will throw an error stating that
+ com.globant.katari.core.web.ServiceUrlFilter was not found.
+
+* What's new since version 0.14
+
+ * One test succeded or failed depending on the order it was ran.
+
+* What's new since version 0.13
+
+ * Upgraded spring to version 2.5.6.
+
+ * Added prototype to the ajax module.
+
+ * Improvements to the reporting module.
+
+   * Combos can now be nested.
+
+   * The filled data is not cleared when the form is redrawn in case of error.
+
+   * It is now possible to download the jrxml file.
+
+* Resolved issues since version 0.13
+
+ * Non privilege users where able to modify other users data.
+
+* Upgrading from version 0.13
+
+ If you where using the constructor:
+
+----
+ public ServletAndParameters(final HttpServlet servlet,
+     final Map<String, String> parameters);
+----
+
+ now, parameters cannot be null. You have to use
+
+----
+ public ServletAndParameters(final HttpServlet servlet);
+----
+
+ instead
+
+* What's new since version 0.12.1
+
+ * Upgraded trails to version 1.2.1
+
+ * Now it is possible to define a query criteria for the drop downs generated by
+ trails.
+
+ * It is now possible to override the security permission of the trails and
+ report modules.
+
+ * Integrated c3p0 pool in the sample application.
+
+ * Improved menu access validation logic, now a user must have permission to see
+ at least one leaf in a menu for anubis to show a parent menu.
+
+* Upgrading from version 0.12.1
+
+ The only changes for this version are related to the update to trails 1.2.1.
+ This version of trails now includes InitialValue and PossibleValues, so classes
+ that uses those annotations must use:
+
+---
+import org.trails.descriptor.annotation.InitialValue;
+import org.trails.descriptor.annotation.PossibleValues;
+---
+
+* What's new since version 0.12
+
+ * Added the possibility to split the application in frontoffice and backoffice
+ features with different security implementations.
+
+* Upgrading from version 0.11.2
+
+ If you want to use the new local login module, the old sample functional tests
+ will fail due to the differences between the local and CAS login pages. This
+ version has a modified SimplePageVerifier that works agains both login modules.
+
+* What's new since version 0.11.2
+
+ * New module katari-local-login. CAS is now optional.
+
+ * Made the fckeditor configurable from the web application context.
+
+ * Show the report title in the report parameters page.
+
+* Resolved issues since version 0.11.2
+
+ * Fixed a typo in the cas.validatorUrlTransformer bean name test.
+
+* What's new since version 0.11.1
+
+ No new features where added to this release.
+
+* Resolved issues since version 0.11.1
+
+ * When katari-report validated a jrxml report, the validator tried to get the
+ DTD file from its uri.
+
+* What's new since version 0.11
+
+ * It is possible to configure the host name of the cas validator server.
+
+* What's new since version 0.10
+
+ * The page shown after the user logs out is now configurable.
+
+ * It is now possible to add additional editors and viewers to trails.
+
+ * The report now supports time data.
+
+* Resolved issues since version 0.10
+
+ * Fixed the default view page in trails module.
+
+ * Fixed the default list page in trails module.
+
+ * Reworked the dependecies.
+
+* What's new since version 0.9.1
+
+ * Upgraded trails to version 1.1.99 (a preview release of version 1.2).
+
+ * Removed the people search module, it did not add any real value.
+
+* Resolved issues since version 0.9.1
+
+ * Fixed the logout link in the sample.
+
+ * The footer obscured the bottom of the page when the content was too big to
+ fit in the screen.
+
+* What's new since version 0.9
+
+ * katari-ajax now includes FCKEditor scripts.
+
+* Resolved issues since version 0.9
+
+ * Modifying the name of a report forced the user to upload a new report file.
+
+* What's new since version 0.8.1
+
+ * The cas module is now in its own package katari-cas.
+
+ * The reports can now display a drop down in the parameters page.
+
+* What's new since version 0.8
+
+ * The html pages in the sample application now uses 100% of page height.
+
+* Resolved issues since version 0.8
+
+ * The top level menu was hardcoded in the core spring application context and
+ it was difficult to change.
+
+ * The report module now validates if the uploaded file is a valid jasper
+ report.
+
+* What's new since version 0.7
+
+ * Split the spring configuration in 'core' and 'user' beans. This will make it
+ easier to upgrade to newer anubis versions.
+
+* What's new since version 0.6
+
+ * 'Flatten' the trails component structure for default pages, making it easier
+ to customize the look and feel.
+
+ * Menus do not have roles any more, access is directly checked on the url that
+ the menu points to.
+
+ * You can now check in an ftl template if a url is accessible before rendering
+ an html fragment. This is like the acegisecurity tag lib, but checks for a url
+ instead of a role.
+
+ * The ui is now fully modularized, including the sitemesh decorators and their
+ mappings.
+
+ * Some improvement in the user management module.
+
+ * New katari-ajax module that packages the yui framework.
+
+ * There is a new option that, if you do not have permissions to see a button,
+ it shows it anyway with a special mark. This makes it easier to test if an
+ action is effectively being validated for permissions, instead of only hidding
+ the button. This is only available for a development environment for security
+ reasons.
+
+ * There is a freemarker engine intended to be used from unit tests. This engine
+ makes it possible to test the ftl rendering process without starting a servlet
+ container, speeding up the development cycle.
+
+ * Draf of a first approach to generate pdf files from the maven site.
+
+* What's new since version 0.5
+
+ * There is a new syntax to define menus, making the menus more readable and
+ compact.
+
+ * Menus are now modularized. There is a classic-menu module that implements
+ simple button like menus.
+
+ * New module katari-report, that implements reporting with jasperreports.
+
+ * Modules can add filters to the request processing.
+
+ * Security is now defined in each module.
+
+ * Modules now register their persistent and crud jpa clases. It is no longer
+ necessary for module users to manually add these classes to the application
+ context.
+
+ * Added events through mule support.
+
+* Resolved issues since version 0.5
+
+ * MenuNodes could be created with null auhorities, violating the menuNode
+ contract.
+

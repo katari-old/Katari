@@ -1,0 +1,64 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+How the application is tested.
+
+ For this application, we consider three levels of testing:
+
+ [[1]] Isolated unit testing.
+
+ [[1]] Unit testing with database integration.
+
+ [[1]] Functional testing.
+
+ []
+
+Unit testing
+
+ This level is the simplest one. For this, we use easy mock to mock all the
+ dependencies of the class we are testing. These tests are usually the easiest
+ to write if the class is well designed. Problems testing with mocks usually
+ mean that there is something that can be improved in the design of the class or
+ method under test.
+
+ Testing at this level is usually adequate when the class or method has complex
+ logic. This kind of tests leaves out problems that are caused by improper
+ integration between classes.
+
+Unit testing with database integration
+
+ This level of testing includes access to the database. There are mainly two
+ types of tests:
+
+ [[1]] Read only tests.
+
+ [[1]] Read / write tests.
+
+ []
+
+ The main problem with tests in this level is how to make sure the database is
+ in a consistent state. The aproach taken here is very simple:
+
+ * Before the first test is run, drop all database objects, recreate them and
+ load a sample data set.
+
+ * Run the tests.
+
+ Each test has the following responsibilites:
+
+ * If the tests only need to read some object, use one of the sample data set.
+
+ * If the tests needs a specific number of objects in the database, remove all
+ the objects that could be in the database that where not in the sample data
+ set. These objects may be left by other tests that inserted data in the
+ database.
+
+ * If the test needs to modify an object, create one first.
+
+ * No test can modify or remove any of the objects in the sample data set.
+
+ To comply with this, all tests must follow these rules:
+
++--------
+TODO Complete this
++--------
+

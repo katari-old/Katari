@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<faqs id="Problem related FAQ">
+  <part id="Problems">
+    <faq id="jetty-inplace">
+      <question>Why is jetty ignoring my changes?</question>
+      <answer>
+        <p>
+          You probably ran mvn war:inplace in a previous build. This copies the
+          compiled classes and third party libraries to
+          main/src/webapp/WEB-INF/classes and main/src/webapp/WEB-INF/lib.
+          Remove both directories, restart jetty, and it shuld work.
+        </p>
+      </answer>
+    </faq>
+    <faq id="jetty-katari.properties-not-found">
+      <question>
+        Jetty is failing with file not found for katari.properties
+      </question>
+      <answer>
+        <p>
+          Jetty looks for katari.properties in the target directory.
+          You must run 'mvn process-test-resources' (or any other goal that
+          includes it) before running jetty:run.
+        </p>
+      </answer>
+    </faq>
+  </part>
+  <!-- vim: set ts=2 et sw=2 ai tw=80 fo=t: -->
+</faqs>
+

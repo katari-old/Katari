@@ -1,0 +1,1008 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <!-- vim: set ts=2 et sw=2 ai tw=80: -->
+
+  <parent>
+    <groupId>com.globant.katari</groupId>
+    <artifactId>katari</artifactId>
+    <version>0.22-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.globant.katari</groupId>
+  <artifactId>dev</artifactId>
+  <packaging>pom</packaging>
+  <name>Globant Katari - dev</name>
+  <url>
+    https://projects.globant.com/nexus/content/repositories/site/${groupId}/katari/${version}
+  </url>
+
+  <licenses>
+    <license>
+      <name>Apache 2.0 License</name>
+      <!--url>http://www.apache.org/licenses/LICENSE-2.0.txt</url -->
+      <url>LICENSE</url>
+      <distribution>repo</distribution>
+      <comments />
+    </license>
+  </licenses>
+
+  <modules>
+    <!-- Katari core package. -->
+    <module>katari-core</module>
+    <!-- Katari hibernate package. -->
+    <module>katari-hibernate</module>
+    <!-- A sample web application -->
+    <module>katari-sample</module>
+    <!-- A sample web application that does not use a database -->
+    <module>katari-nodatabase</module>
+    <!-- A sample style module -->
+    <module>katari-style</module>
+    <!-- The classic menu support module -->
+    <module>katari-classic-menu</module>
+    <!-- The trails support module -->
+    <module>katari-trails</module>
+    <!-- Katari test and build support tools. -->
+    <module>katari-tools</module>
+    <!-- Katari report management module -->
+    <module>katari-report</module>
+    <!-- Katari editable pages module -->
+    <module>katari-editablepages</module>
+    <!-- Katari search module -->
+    <module>katari-search</module>
+    <!-- Katari common client side libraries (javascript)-->
+    <module>katari-ajax</module>
+    <!-- Katari cas module for server and client  -->
+    <module>katari-cas</module>
+    <!-- Katari local login module  -->
+    <module>katari-local-login</module>
+    <!-- Katari scripting console -->
+    <module>katari-console</module>
+    <!-- Katari archetype -->
+    <module>katari-archetype</module>
+    <!-- Katari modlue archetype -->
+    <module>katari-module-archetype</module>
+    <!-- Katari site skin -->
+    <module>katari-siteskin</module>
+  </modules>
+
+  <!-- List of dependencies for all modules in the application. This section
+  sets the version of the dependencies. Each module must define its specific
+  dependencies without stating the version. -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- Test only dependencies -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${dependency.junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.5.8</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.5.8</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.easymock</groupId>
+        <artifactId>easymock</artifactId>
+        <version>${dependency.easymock.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.easymock</groupId>
+        <artifactId>easymockclassextension</artifactId>
+        <version>${dependency.easymock.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${dependency.spring.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>net.sourceforge.htmlunit</groupId>
+        <artifactId>htmlunit</artifactId>
+        <version>${dependency.htmlunit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-tools</artifactId>
+        <version>${version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- Forcing version 3.2 needed by htmlunit. This package is also used by
+      hibernate, so it goes in the default scope.-->
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>1.4</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>1.2</version>
+      </dependency>
+
+      <!-- Runtime dependencies -->
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.14</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>${dependency.hibernate-core.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-annotations</artifactId>
+        <version>${dependency.hibernate-annotations.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${dependency.hibernate-validator.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.persistence</groupId>
+        <artifactId>persistence-api</artifactId>
+        <version>1.0</version>
+      </dependency>
+
+      <!-- Be careful. This version of the mysql jdbc driver is GPL. -->
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>3.1.13</version>
+      </dependency>
+
+      <!-- If you want to use postgres.
+      <dependency>
+        <groupId>postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>8.3-603.jdbc3</version>
+      </dependency>
+      -->
+
+      <dependency>
+        <groupId>hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>1.8.0.7</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>c3p0</groupId>
+        <artifactId>c3p0</artifactId>
+        <version>0.9.1.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${dependency.spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>${dependency.spring.version}</version>
+      </dependency>
+
+      <!-- Needed by spring-beans (marked optional there) -->
+      <dependency>
+        <groupId>cglib</groupId>
+        <artifactId>cglib-nodep</artifactId>
+        <version>2.1_3</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${dependency.spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>${dependency.spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+        <version>${dependency.spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-orm</artifactId>
+        <version>${dependency.spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+        <version>${dependency.spring.version}</version>
+      </dependency>
+
+      <!-- Needed by hibernate -->
+      <dependency>
+        <groupId>javassist</groupId>
+        <artifactId>javassist</artifactId>
+        <version>${dependency.javassist.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>opensymphony</groupId>
+        <artifactId>sitemesh</artifactId>
+        <version>${dependency.sitemesh.version}</version>
+      </dependency>
+
+      <!-- This is due to acegi depending on a package from spring 1 -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+        <version>${dependency.spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.acegisecurity</groupId>
+        <artifactId>acegi-security</artifactId>
+        <version>1.0.7</version>
+        <exclusions>
+          <exclusion>
+            <!-- This is due to acegi depending on a package from spring 1 -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-support</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-remoting</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.freemarker</groupId>
+        <artifactId>freemarker</artifactId>
+        <version>2.3.16</version>
+      </dependency>
+
+      <dependency>
+        <groupId>ognl</groupId>
+        <artifactId>ognl</artifactId>
+        <version>2.7.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jasig.cas</groupId>
+        <artifactId>cas-server-core</artifactId>
+        <version>3.1</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>cas</groupId>
+        <artifactId>casclient</artifactId>
+        <version>2.1.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${dependency.spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-aop</artifactId>
+        <version>${dependency.spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>quartz</groupId>
+        <artifactId>quartz</artifactId>
+        <version>1.5.2</version>
+      </dependency>
+
+      <!-- This and taglibs.standard are needed by tomcat. -->
+      <dependency>
+        <groupId>jstl</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.1.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>taglibs</groupId>
+        <artifactId>standard</artifactId>
+        <version>1.1.2</version>
+      </dependency>
+      <!-- End of cas dependencies -->
+
+      <!-- Reporting dependencies -->
+      <dependency>
+        <groupId>jasperreports</groupId>
+        <artifactId>jasperreports</artifactId>
+        <version>2.0.4</version>
+      </dependency>
+
+      <!-- Jasperreports depends on itext [1.02b,), so it will get any version
+      newer than 1.02b. We pin itext version to 2.1.5.
+
+      As of this writing, itext is in version 2.1.7. Using it brings
+      bouncycastle:bctsp-jdk14:jar:138, not yet available in globant maven repo.
+      -->
+      <dependency>
+        <groupId>com.lowagie</groupId>
+        <artifactId>itext</artifactId>
+        <version>2.1.5</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>3.0.2-FINAL</version>
+      </dependency>
+
+      <dependency>
+        <groupId>stax</groupId>
+        <artifactId>stax</artifactId>
+        <version>1.2.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.compass-project</groupId>
+        <artifactId>compass</artifactId>
+        <version>2.2.0</version>
+      </dependency>
+
+      <!-- Trails dependencies. -->
+      <dependency>
+        <groupId>org.trailsframework</groupId>
+        <artifactId>trails-security</artifactId>
+        <version>1.2.1</version>
+        <!-- spring-remoting and spring-support are no loger separate jars
+             in spring 2.5, both are in spring-context-support  -->
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-remoting</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-support</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.trailsframework</groupId>
+        <artifactId>trails-hibernate</artifactId>
+        <version>1.2.1</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+          </exclusion>
+          <!-- in spring 2.5, spring-dao changes name to spring-tx -->
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-dao</artifactId>
+          </exclusion>
+          <!-- in spring 2.5, spring-hibernate3 changes name to spring-orm -->
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-hibernate3</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.trailsframework</groupId>
+        <artifactId>trails-test</artifactId>
+        <version>1.2.1</version>
+        <scope>test</scope>
+        <exclusions>
+          <!-- in spring 2.5, spring-mock changes name to spring-test -->
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-mock</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjrt</artifactId>
+        <version>1.6.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjweaver</artifactId>
+        <version>1.6.1</version>
+      </dependency>
+      <!-- End of trails dependencies. -->
+
+      <!-- Mule dependencies -->
+      <dependency>
+        <groupId>org.mule</groupId>
+        <artifactId>mule-core</artifactId>
+        <version>1.4.4</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mule.modules</groupId>
+        <artifactId>mule-module-spring</artifactId>
+        <version>1.4.4</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.yourkit</groupId>
+            <artifactId>yjp-controller-api-redist</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>tanukisoft</groupId>
+            <artifactId>wrapper</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-servlet_2.4_spec</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mule.modules</groupId>
+        <artifactId>mule-module-management</artifactId>
+        <version>1.4.4</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.yourkit</groupId>
+            <artifactId>yjp-controller-api-redist</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mule.transports</groupId>
+        <artifactId>mule-transport-vm</artifactId>
+        <version>1.4.4</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mule.transports</groupId>
+        <artifactId>mule-transport-tcp</artifactId>
+        <version>1.4.4</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mule.transports</groupId>
+        <artifactId>mule-transport-stream</artifactId>
+        <version>1.4.4</version>
+      </dependency>
+      <!-- End of mule dependencies -->
+      <!-- Wicket -->
+      <dependency>
+        <groupId>org.apache.wicket</groupId>
+        <artifactId>wicket</artifactId>
+        <version>1.4.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wicket</groupId>
+        <artifactId>wicket-spring</artifactId>
+        <version>1.4.4</version>
+      </dependency>
+
+      <!-- Provided by the container -->
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.4</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>jsp-api</artifactId>
+        <version>2.0</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+        <artifactId>selenium-java-client-driver</artifactId>
+        <version>${dependency.selenium-java-client-driver.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>${groupId}</groupId>
+        <artifactId>katari-style</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-core</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-hibernate</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-classic-menu</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-trails</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-report</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-editablepages</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-search</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-ajax</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-cas</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-local-login</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-console</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>jtidy</groupId>
+        <artifactId>jtidy</artifactId>
+        <version>r938</version>
+      </dependency>
+
+      <!-- Beware: jcaptcha depends on jhlabs imaging that is not in the public
+      maven 2 repo, and is no longer maintained. See
+      http://jira.codehaus.org/browse/MAVENUPLOAD-2350.
+      -->
+      <dependency>
+        <groupId>com.octo.captcha</groupId>
+        <artifactId>jcaptcha</artifactId>
+        <version>1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-all</artifactId>
+        <version>1.7.1</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+
+    <pluginManagement>
+      <!-- Added due to a bug: build fails from dev but passes from report. See
+         http://jira.codehaus.org/browse/MNG-4178. -->
+      <plugins>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>2.1</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.globant.katari</groupId>
+              <artifactId>katari-siteskin</artifactId>
+              <version>${version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>groovy-maven-plugin</artifactId>
+          <version>1.2</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.umlet</groupId>
+              <artifactId>umlet-jdk15-globant</artifactId>
+              <version>10.3</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <compilerArguments><deprecation>-Xlint:all</deprecation></compilerArguments>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>groovy-maven-plugin</artifactId>
+        <!-- extensions>true</extensions -->
+        <executions>
+          <execution>
+            <id>uxf2png</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>
+                <![CDATA[
+
+                def uxf2png = {
+                  file ->
+                    if(file.name.matches("^.*\\.uxf\$")) {
+                      target = targetdir + file.name.replace('.uxf','.png')
+                      handler = new com.umlet.control.diagram.DiagramHandler(file);
+                      handler.getFileHandler().doExportAs("png", target);
+                    }}
+
+                targetdir = project.build.directory + "/site/images/"
+                new File(targetdir).mkdirs()
+                log.info("Converting uml diagrams ...")
+
+                main = project.basedir.canonicalPath + "/src/site/uxf"
+                new java.io.File(main).eachFileRecurse(uxf2png)
+
+                reports = project.basedir.canonicalPath + "/katari-report/src/site/uxf"
+                new java.io.File(reports).eachFileRecurse(uxf2png)
+
+                search = project.basedir.canonicalPath + "/katari-search/src/site/uxf"
+                new java.io.File(search).eachFileRecurse(uxf2png)
+                ]]>
+              </source>
+            </configuration>
+          </execution>
+        </executions>
+        <inherited>false</inherited>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.3</version>
+        <inherited>false</inherited>
+        <executions>
+          <execution>
+            <id>generate-book-sources</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+
+                <!-- Copy and filter the apt files -->
+                <copy todir="target/site-src/apt" preservelastmodified="true" filtering="true">
+                  <filterset>
+                    <filter token="version" value="${version}" />
+                  </filterset>
+                  <fileset dir="src/site/apt" />
+                </copy>
+
+                <!-- Copy the module indexes -->
+                <copy file="katari-editablepages/src/site/apt/index.apt" tofile="target/site-src/apt/katari-editablepages.apt" preservelastmodified="true" />
+                <copy file="katari-report/src/site/apt/index.apt" tofile="target/site-src/apt/katari-reports.apt" preservelastmodified="true" />
+                <copy file="katari-search/src/site/apt/index.apt" tofile="target/site-src/apt/katari-search.apt" preservelastmodified="true" />
+
+                <!-- Copy the images for the pdf -->
+                <copy todir="target/generated-site/pdf/user-manual/images">
+                  <fileset dir="target/site/images" />
+                </copy>
+                <copy todir="target/generated-site/pdf/user-manual/images">
+                  <fileset dir="src/site/resources/images" />
+                </copy>
+
+                <!-- Prepare the pdf generation through latex -->
+                <copy todir="target/generated-site/latex/user-manual/images">
+                  <fileset dir="target/generated-site/pdf/user-manual/images" />
+                </copy>
+
+              </tasks>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-pdfs</id>
+            <phase>site</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <copy todir="target/site/pdf" flatten="true">
+                  <fileset dir="target/generated-site/pdf">
+                    <include name="**/*.pdf" />
+                  </fileset>
+                </copy>
+                <!-- If the latex generated pdfs are there, replace the doxia
+                     generated ones (latex is WAAAYYYYY better).-->
+                <copy todir="target/site/pdf" flatten="true" overwrite="true">
+                  <fileset dir="target/generated-site/latex">
+                    <include name="**/*.pdf" />
+                  </fileset>
+                </copy>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.doxia</groupId>
+        <artifactId>doxia-maven-plugin</artifactId>
+        <version>1.1.2</version>
+        <executions>
+          <execution>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>render-books</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <imageDirs>target/site</imageDirs>
+          <books>
+            <book>
+              <directory>target/site-src/apt</directory>
+              <descriptor>src/site/book/user-manual.xml</descriptor>
+              <formats>
+                <format>
+                  <id>latex</id>
+                </format>
+                <format>
+                  <id>pdf</id>
+                </format>
+              </formats>
+            </book>
+            <book>
+              <directory>src/site/apt</directory>
+              <descriptor>src/site/book/release-notes.xml</descriptor>
+              <formats>
+                <format>
+                  <id>pdf</id>
+                </format>
+              </formats>
+            </book>
+          </books>
+        </configuration>
+        <inherited>false</inherited>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>groovy-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare-latex-sources</id>
+            <phase>site</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>
+                <![CDATA[
+def texdir = project.basedir.canonicalPath + '/target/generated-site/latex/user-manual'
+dest = texdir + '/user-manual.tex.tmp';
+latex = texdir + '/user-manual.tex'
+new File(dest).delete();
+new File(dest).withWriter {
+  file ->
+  new File(latex).eachLine {
+    line ->
+    file.writeLine(
+      line.replaceAll('\\\\usepackage\\{graphics\\}.*',
+          '\\\\usepackage{graphicx}\n' \
+          + '\\\\usepackage[a4paper,top=3cm,bottom=3cm,pdftex=true]{geometry}')
+        .replace('linkcolor=green', 'linkcolor=blue')
+        .replace('\\begin{document}',
+          '\\let\\oldincludegraphics\\includegraphics\n' \
+          + '\\renewcommand{\\includegraphics}[1]{\\oldincludegraphics[width=1\\textwidth]{#1}}\n' \
+          + '\n' \
+          + '\\begin{document}'
+        )
+    );
+  }
+}
+new File(dest).renameTo(new File(latex));
+
+try {
+  def outStream = new StringBuffer()
+  def errStream = new StringBuffer()
+  // must execute twice, to update the table of contents.
+  def proc = "pdflatex -interaction=nonstopmode user-manual.tex".execute(null,
+    new File(texdir));
+  proc.consumeProcessOutput(outStream, errStream)
+  proc.waitFor()
+  proc = "pdflatex -interaction=nonstopmode user-manual.tex".execute(null,
+    new File(texdir));
+  proc.consumeProcessOutput(outStream, errStream)
+  proc.waitFor()
+  println outStream
+  println errStream
+} catch (Exception e) {
+  log.error("Error generating pdf from latex files, ignoring....");
+}
+                ]]>
+              </source>
+            </configuration>
+          </execution>
+        </executions>
+        <inherited>false</inherited>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <!-- Generates the change log from trac -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <columnNames>id,summary,type,priority</columnNames>
+          <query>
+            status=closed&amp;order=type&amp;order=priority&amp;
+            milestone=${project.version}
+          </query>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <!-- The location where deploy and site-deploy leaves the artifacts.
+       repositoryRoot is defined in globant parent pom. We override the parent
+       distributionManagement section to skip the parent pom site. -->
+  <distributionManagement>
+    <repository>
+      <id>globant-public-releases</id>
+      <url>dav:${repositoryRoot}/globant</url>
+    </repository>
+    <snapshotRepository>
+      <id>globant-public-snapshots</id>
+      <url>dav:${repositoryRoot}/globant-snapshots</url>
+    </snapshotRepository>
+    <site>
+      <id>globant-public-releases</id>
+      <url>dav:${repositoryRoot}/site/${groupId}/katari/${version}</url>
+    </site>
+  </distributionManagement>
+
+  <properties>
+    <!-- Dependencies versions. They are declared here to avoid duplication in
+    the archetype. -->
+    <!-- TODO: there are more dependencies that should probably be declared
+    here. -->
+    <dependency.sitemesh.version>2.4.2</dependency.sitemesh.version>
+    <dependency.junit.version>4.5</dependency.junit.version>
+    <dependency.easymock.version>2.2</dependency.easymock.version>
+    <dependency.spring.version>2.5.6</dependency.spring.version>
+    <dependency.htmlunit.version>2.5</dependency.htmlunit.version>
+    <dependency.hibernate-core.version>3.3.2.GA</dependency.hibernate-core.version>
+    <dependency.hibernate-annotations.version>
+      3.4.0.GA
+    </dependency.hibernate-annotations.version>
+    <dependency.hibernate-validator.version>
+      3.1.0.GA
+    </dependency.hibernate-validator.version>
+    <dependency.javassist.version>
+      3.8.0.GA
+    </dependency.javassist.version>
+    <dependency.selenium-java-client-driver.version>
+      1.0
+    </dependency.selenium-java-client-driver.version>
+    <!-- Versions 6.1.2 - 6.1.10 makes groovy fail. -->
+    <dependency.jetty-plugin.version>
+      6.1.21
+    </dependency.jetty-plugin.version>
+  </properties>
+
+</project>
+

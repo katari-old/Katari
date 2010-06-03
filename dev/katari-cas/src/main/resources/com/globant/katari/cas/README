@@ -1,0 +1,114 @@
+This was removed from the sample application context. See where should this go.
+
+
+  <!-- The cas server configuration. The basic spring configuration for cas
+  contains unresolved references to the authenticationManager and the
+  httpClient beans. -->
+
+  <bean id="httpClient"
+      class="org.jasig.cas.util.HttpClient">
+    <property name="readTimeout" value="5000" />
+    <property name="connectionTimeout" value="5000" />
+  </bean>
+
+  <!-- This bean declares our AuthenticationManager. The
+  CentralAuthenticationService service bean declared in applicationContext.xml
+  picks up this AuthenticationManager by reference to its id,
+  "casAuthenticationManager". Most deployers will be able to use the default
+  AuthenticationManager implementation and so do not need to change the class
+  of this bean. We include the whole AuthenticationManager here in the
+  userConfigContext.xml so that you can see the things you will need to change
+  in context.  +-->
+  <bean id="casAuthenticationManager"
+    class="org.jasig.cas.authentication.AuthenticationManagerImpl">
+    <!-- This is the List of CredentialToPrincipalResolvers that identify what
+    Principal is trying to authenticate. The AuthenticationManagerImpl
+    considers them in order, finding a CredentialToPrincipalResolver which
+    supports the presented credentials.
+
+    AuthenticationManagerImpl uses these resolvers for two purposes.  First, it
+    uses them to identify the Principal attempting to authenticate to CAS
+    /login. In the default configuration, it is the
+    DefaultCredentialsToPrincipalResolver that fills this role.  If you are
+    using some other kind of credentials than UsernamePasswordCredentials, you
+    will need to replace DefaultCredentialsToPrincipalResolver with a
+    CredentialsToPrincipalResolver that supports the credentials you are using.
+
+    Second, AuthenticationManagerImpl uses these resolvers to identify a
+    service requesting a proxy granting ticket.  In the default configuration,
+    it is the HttpBasedServiceCredentialsToPrincipalResolver that serves this
+    purpose.  You will need to change this list if you are identifying services
+    by something more or other than their callback URL.  +-->
+    <property name="credentialsToPrincipalResolvers">
+      <list>
+        <!-- UsernamePasswordCredentialsToPrincipalResolver supports the
+        UsernamePasswordCredentials that we use for /login by default and
+        produces SimplePrincipal instances conveying the username from the
+        credentials.
+
+        If you've changed your LoginFormAction to use credentials other than
+        UsernamePasswordCredentials then you will also need to change this bean
+        declaration (or add additional declarations) to declare a
+        CredentialsToPrincipalResolver that supports the Credentials you are
+        using.  +-->
+        <bean
+          class="org.jasig.cas.authentication.principal.UsernamePasswordCredentialsToPrincipalResolver" />
+        <!-- HttpBasedServiceCredentialsToPrincipalResolver supports
+        HttpBasedCredentials. It supports the CAS 2.0 approach of
+        authenticating services by SSL callback, extracting the callback URL
+        from the Credentials and representing it as a SimpleService identified
+        by that callback URL.
+
+        If you are representing services by something more or other than an
+        HTTPS URL whereat they are able to receive a proxy callback, you will
+        need to change this bean declaration (or add additional declarations).
+        +-->
+        <bean
+          class="org.jasig.cas.authentication.principal.HttpBasedServiceCredentialsToPrincipalResolver" />
+      </list>
+    </property>
+
+    <!-- Whereas CredentialsToPrincipalResolvers identify who it is some
+    Credentials might authenticate, AuthenticationHandlers actually
+    authenticate credentials.  Here we declare the AuthenticationHandlers that
+    authenticate the Principals that the CredentialsToPrincipalResolvers
+    identified. CAS will try these handlers in turn until it finds one that
+    both supports the Credentials presented and succeeds in authenticating.
+    +-->
+    <property name="authenticationHandlers">
+      <list>
+        <!--
+          This is the authentication handler that authenticates services by
+          means of callback via SSL, thereby validating a server side SSL
+          certificate.
+          +-->
+        <bean
+          class="org.jasig.cas.authentication.handler.support.HttpBasedServiceCredentialsAuthenticationHandler">
+          <property name="httpClient" ref="httpClient" />
+        </bean>
+
+        <!-- Authentication handler to validate the password through a domain
+        object. There are other authentication handlers provided by cas that
+        can authenticate against other databases like ldap. -->
+        <bean class
+            = "com.globant.katari.sample.integration.CasDomainAuthenticationHandler">
+          <constructor-arg>
+            <ref bean="userRepository"/>
+          </constructor-arg>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+
+  <!-- CAS module. -->
+  <!-- Set the cas validator host name to localhost ip.
+  <bean id='cas.validatorUrlTransformer'
+    class='com.globant.katari.cas.UrlTransformer'>
+    <constructor-arg index="0" value="127.0.0.1" />
+    <constructor-arg index="1"><null /></constructor-arg>
+    <constructor-arg index="2"><null /></constructor-arg>
+    <constructor-arg index="3"><null /></constructor-arg>
+  </bean>
+  -->
+

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor name="katari-archetype">
+  <!-- vim: set ts=2 et sw=2 ai: -->
+
+  <requiredProperties>
+    <requiredProperty key="clientName"/>
+    <requiredProperty key="projectName"/>
+    <requiredProperty key="friendlyName"/>
+  </requiredProperties>
+
+  <modules>
+
+    <module id="dev" dir="dev" name="dev">
+      <fileSets>
+        <fileSet filtered="true" encoding="UTF-8">
+          <directory>src/main/config</directory>
+          <includes>
+            <include>**/*.xml</include>
+          </includes>
+        </fileSet>
+        <fileSet filtered="true" encoding="UTF-8">
+          <directory>src/main/assemble</directory>
+          <includes>
+            <include>**/*.xml</include>
+          </includes>
+        </fileSet>
+        <fileSet filtered="true" encoding="UTF-8">
+          <directory>src/site</directory>
+          <includes>
+            <include>**/*.txt</include>
+            <include>**/*.xml</include>
+          </includes>
+        </fileSet>
+        <fileSet encoding="UTF-8">
+          <directory>src/site</directory>
+          <includes>
+            <include>**/*.dia</include>
+            <include>**/*.fml</include>
+            <include>**/*.apt</include>
+            <include>**/*.</include>
+          </includes>
+        </fileSet>
+        <fileSet filtered='true' encoding="UTF-8">
+          <directory></directory>
+          <includes>
+            <include>README</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+      <modules>
+        <module id="${rootArtifactId}-web" dir="__rootArtifactId__-web"
+          name="${rootArtifactId}-web">
+          <fileSets>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/main/java</directory>
+              <includes>
+                <include>**/*.java</include>
+                <include>**/*.html</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/main/webapp</directory>
+              <includes>
+                <include>**/*.jsp</include>
+                <include>**/*.xml</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/main/resources</directory>
+              <includes>
+                <include>**/*.xml</include>
+                <include>**/*.properties</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/main/sql</directory>
+              <includes>
+                <include>**/*.sql</include>
+              </includes>
+            </fileSet>
+            <fileSet encoding="UTF-8">
+              <directory>src/main/resources</directory>
+              <includes>
+                <include>**/*.jrxml</include>
+                <include>**/*.ftl</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/test/java</directory>
+              <includes>
+                <include>**/*.java</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/test/resources</directory>
+              <includes>
+                <include>**/*.properties</include>
+              </includes>
+            </fileSet>
+            <fileSet encoding="UTF-8">
+              <directory>src/test/sql</directory>
+              <includes>
+                <include>**/*.sql</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/site</directory>
+              <includes>
+                <include>**/*.xml</include>
+              </includes>
+            </fileSet>
+            <fileSet encoding="UTF-8">
+              <directory>src/site</directory>
+              <includes>
+                <include>**/*.apt</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/config</directory>
+              <includes>
+                <include>**/*.xml</include>
+              </includes>
+            </fileSet>
+          </fileSets>
+        </module>
+        <module id="${rootArtifactId}-style"
+          dir="__rootArtifactId__-style"
+          name="${rootArtifactId}-style">
+          <fileSets>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/main/resources</directory>
+              <includes>
+                <include>**/*.xml</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered='true' encoding="UTF-8">
+              <directory>src/main/resources</directory>
+              <includes>
+                <include>**/footer.dec</include>
+              </includes>
+            </fileSet>
+            <fileSet encoding="UTF-8">
+              <directory>src/main/resources</directory>
+              <excludes>
+                <exclude>**/footer.dec</exclude>
+              </excludes>
+              <includes>
+                <include>**/*.dec</include>
+                <include>**/*.gif</include>
+                <include>**/*.css</include>
+                <include>**/*.png</include>
+                <include>**/*.ico</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/site</directory>
+              <includes>
+                <include>**/*.xml</include>
+              </includes>
+            </fileSet>
+            <fileSet encoding="UTF-8">
+              <directory>src/site</directory>
+              <includes>
+                <include>**/*.apt</include>
+              </includes>
+            </fileSet>
+          </fileSets>
+        </module>
+      </modules>
+    </module>
+  </modules>
+</archetype-descriptor>
+

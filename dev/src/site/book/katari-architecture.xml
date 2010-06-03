@@ -1,0 +1,26 @@
+<book>
+  <id>katari-architecture</id>
+  <title>Katari - Architecture Document</title>
+  <chapters>
+    <chapter>
+      <id>architecture</id>
+      <title>Katari Architecture Document</title>
+      <sections>
+        <section>
+          <id>architecture</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>katari-reports</id>
+      <title>Katari Reports Module - Architecture Document</title>
+      <sections>
+        <section>
+          <id>katari-reports</id>
+        </section>
+      </sections>
+    </chapter>
+  </chapters>
+  <!-- vim: set ts=2 et sw=2 ai: -->
+</book>
+

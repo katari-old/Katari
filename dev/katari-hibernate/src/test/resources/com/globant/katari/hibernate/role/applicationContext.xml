@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xmlns:util="http://www.springframework.org/schema/util"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <!-- The role module. -->
+  <import resource="classpath:/com/globant/katari/hibernate/role/module.xml"/>
+
+  <!-- Implementation of BeanPostProcessor to initialize modules. It looks for
+  bean that implements the Module interfase. -->
+  <bean class="com.globant.katari.core.web.ModuleBeanPostProcessor">
+    <constructor-arg>
+      <ref bean='contextRegistrar'/>
+    </constructor-arg>
+  </bean>
+
+  <!-- ModuleContextRegistrar manages the module contexts. -->
+  <bean id="contextRegistrar"
+    class="com.globant.katari.core.web.ModuleContextRegistrar">
+
+    <constructor-arg>
+      <ref bean='moduleListenerProxy'/>
+    </constructor-arg>
+
+    <constructor-arg>
+      <ref bean='moduleFilterProxy'/>
+    </constructor-arg>
+
+    <constructor-arg>
+      <ref bean='moduleContainer'/>
+    </constructor-arg>
+
+    <!-- The initial menu bar. It defines the order of the menu elements. -->
+    <constructor-arg>
+      <katari:menuBar>
+        <katari:menuNode position='10000' name='Administration'/>
+      </katari:menuBar>
+    </constructor-arg>
+
+    <constructor-arg>
+      <ref bean='loginConfigurer' />
+    </constructor-arg>
+  </bean>
+
+  <bean id="loginConfigurer"
+      class="com.globant.katari.core.login.LoginConfigurationSetter">
+    <constructor-arg index="0" ref="delegatingFilterEntryPoint" />
+    <constructor-arg index="1" ref="delegatingLogoutFilter" />
+    <constructor-arg index="2" ref="delegatingProcessingFilter" />
+  </bean>
+
+  <bean id="delegatingFilterEntryPoint"
+      class="com.globant.katari.core.login.DelegatingEntryPoint">
+  </bean>
+
+  <bean id="delegatingLogoutFilter"
+    class="com.globant.katari.core.login.ConfigurableFilterProxy">
+  </bean>
+
+  <bean id="delegatingProcessingFilter"
+    class="com.globant.katari.core.login.ConfigurableFilterProxy">
+  </bean>
+  <!-- End of security information. -->
+
+  <bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName">
+      <value>org.hsqldb.jdbcDriver</value>
+    </property>
+    <property name="url">
+      <value>jdbc:hsqldb:mem:testdb</value>
+    </property>
+    <property name="username">
+      <value>sa</value>
+    </property>
+    <property name="password">
+      <value></value>
+    </property>
+  </bean>
+
+  <!-- Hibernate SessionFactory initialized with annotated classes. -->
+  <bean id="katari.sessionFactory"
+    class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+    lazy-init="true">
+    <property name="dataSource" ref="dataSource" />
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+        <prop key="hibernate.hbm2ddl.auto">create</prop>
+      </props>
+    </property>
+    <property name="annotatedClasses">
+      <ref bean='katari.persistentClasses' />
+    </property>
+  </bean>
+
+  <util:list id='katari.persistentClasses'/>
+
+  <!-- Transaction manager for a single Hibernate SessionFactory
+  (alternative to JTA) -->
+  <bean id="transactionManager"
+    class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+    lazy-init="true">
+    <property name="sessionFactory">
+      <ref local="katari.sessionFactory" />
+    </property>
+  </bean>
+
+  <bean id='moduleListenerProxy'
+    class='com.globant.katari.core.web.ModuleListenerProxy'/>
+
+  <!-- Mantains a list of web filters, and give each filter in the list a
+  chance to filter the request. -->
+  <bean id='moduleFilterProxy'
+    class='com.globant.katari.core.web.ModuleFilterProxy'>
+
+    <constructor-arg>
+      <bean class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+          <list>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean class="com.globant.katari.core.web.WebletSupportFilter"/>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </constructor-arg>
+
+  </bean>
+
+  <!-- Maps a module name to a servlet config bean. -->
+  <bean id='moduleContainer'
+    class='com.globant.katari.core.web.ModuleContainerServlet'/>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

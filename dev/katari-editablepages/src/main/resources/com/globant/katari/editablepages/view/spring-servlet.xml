@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <bean id='pageRepository'
+    class='com.globant.katari.editablepages.domain.PageRepository'
+    p:sessionFactory-ref='katari.sessionFactory' />
+
+  <!-- freemarker config -->
+  <bean id="freemarkerConfig"
+    class="com.globant.katari.core.web.FreeMarkerConfigurer"
+    p:templateLoaderPath="classpath:/com/globant/katari/editablepages/view/"
+    p:debugPrefix='../katari-editablepages/src/main/resources'
+    p:debug-ref='debugMode'/>
+
+  <bean id="freemarkerViewResolver"
+    class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+    p:prefix="/" p:suffix=".ftl"
+    p:exposeSpringMacroHelpers='true'/>
+
+  <!-- Controllers  -->
+
+  <!-- Shows a page from the domain. -->
+  <bean name='/page/*'
+    class='com.globant.katari.editablepages.view.PageController'>
+    <constructor-arg ref='pageRepository'/>
+    <constructor-arg ref='editable-pages.siteName'/>
+  </bean>
+
+  <!-- Edits a page. -->
+  <bean name="/edit/edit.do"
+    class='com.globant.katari.editablepages.view.PageEditController'>
+    <constructor-arg index='0'>
+      <ref bean='editable-pages.fckEditorConfiguration'/>
+    </constructor-arg>
+    <lookup-method name="createCommandBean" bean="editPageCommand" />
+    <property name="formView" value="pageEdit" />
+    <property name="validator" ref="commandValidator" />
+    <property name="messageCodesResolver" ref="messageCodesResolver"/>
+  </bean>
+
+  <!-- Publishes a page. -->
+  <bean name="/edit/publish.do"
+    class='com.globant.katari.editablepages.view.PageEditController'>
+    <constructor-arg index='0'>
+      <ref bean='editable-pages.fckEditorConfiguration'/>
+    </constructor-arg>
+    <lookup-method name="createCommandBean" bean="publishPageCommand" />
+    <property name="formView" value="pageEdit" />
+    <property name="messageCodesResolver" ref="messageCodesResolver"/>
+    <property name="submitMethod" value="GET" />
+  </bean>
+
+  <!-- Reverts the changes of a page. -->
+  <bean name="/edit/revert.do"
+    class='com.globant.katari.editablepages.view.PageEditController'>
+    <constructor-arg index='0'>
+      <ref bean='editable-pages.fckEditorConfiguration'/>
+    </constructor-arg>
+    <lookup-method name="createCommandBean" bean="revertPageCommand" />
+    <property name="formView" value="pageEdit" />
+    <property name="messageCodesResolver" ref="messageCodesResolver"/>
+    <property name="submitMethod" value="GET" />
+  </bean>
+
+  <!-- Shows a page as a weblet. -->
+  <bean name="/weblet/page.do"
+    class='com.globant.katari.editablepages.view.PageEditController'>
+    <constructor-arg index='0'>
+      <ref bean='editable-pages.fckEditorConfiguration'/>
+    </constructor-arg>
+    <lookup-method name="createCommandBean" bean="showPageCommand" />
+    <property name="formView" value="page" />
+    <property name="commandName" value="page" />
+    <property name="validator" ref="commandValidator" />
+    <property name="messageCodesResolver" ref="messageCodesResolver"/>
+  </bean>
+
+  <!-- Shows the preview button -->
+  <bean name="/weblet/previewButton.do"
+    class='com.globant.katari.editablepages.view.RequestModelViewController'
+    p:viewName='previewButton'/>
+
+  <!-- End of controllers  -->
+
+  <!-- Commands -->
+
+  <bean name="editPageCommand" scope='prototype'
+      class='com.globant.katari.editablepages.application.SavePageCommand'>
+    <constructor-arg index='0' >
+      <ref bean='pageRepository' />
+    </constructor-arg>
+    <constructor-arg index='1'>
+      <ref bean='editable-pages.siteName'/>
+    </constructor-arg>
+  </bean>
+
+  <bean name="publishPageCommand" scope='prototype'
+      class='com.globant.katari.editablepages.application.PublishPageCommand'>
+    <constructor-arg index='0' >
+      <ref bean='pageRepository' />
+    </constructor-arg>
+    <constructor-arg index='1'>
+      <ref bean='editable-pages.siteName'/>
+    </constructor-arg>
+  </bean>
+
+  <bean name="revertPageCommand" scope='prototype'
+      class='com.globant.katari.editablepages.application.RevertPageCommand'>
+    <constructor-arg index='0' >
+      <ref bean='pageRepository' />
+    </constructor-arg>
+    <constructor-arg index='1'>
+      <ref bean='editable-pages.siteName'/>
+    </constructor-arg>
+  </bean>
+
+  <bean name="showPageCommand" scope='prototype'
+      class='com.globant.katari.editablepages.application.ShowPageCommand'>
+    <constructor-arg index='0' >
+      <ref bean='pageRepository' />
+    </constructor-arg>
+    <constructor-arg index='1'>
+      <ref bean='editable-pages.siteName'/>
+    </constructor-arg>
+  </bean>
+
+  <!-- End of commands -->
+
+  <!-- Validator -->
+  <bean name="commandValidator"
+    class="com.globant.katari.core.application.CommandValidator" />
+
+  <bean id="messageCodesResolver"
+    class="org.springframework.validation.DefaultMessageCodesResolver">
+    <property name="prefix" value="validation." />
+  </bean>
+
+  <bean id="messageSource"
+      class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basenames">
+      <list>
+        <value>com.globant.katari.editablepages.messages</value>
+      </list>
+    </property>
+    <property name="useCodeAsDefaultMessage">
+      <value>true</value>
+    </property>
+  </bean>
+
+  <!-- Transaction definitions -->
+  <bean class="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator">
+    <property name="proxyTargetClass" value="true" />
+    <property name="beanNames">
+      <list>
+        <value>*Command</value>
+      </list>
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>transactionInterceptor</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="transactionInterceptor"
+      class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    <property name="transactionManager" ref="katari.transactionManager" />
+    <property name="transactionAttributes">
+      <props>
+        <prop key="execute">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
+  </bean>
+
+  <!-- vim: set ts=2 et sw=2 ai : -->
+</beans>
+

@@ -1,0 +1,22 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Installation instructions
+
+ General installation instructions.
+
+Release notes for version 1.0
+
+ This is a new release for ${friendlyName}.
+
+What's new since version 0.1
+
+ * Some improvement.
+
+Resolved issues since version 0.1
+
+ * Some fixed bug.
+
+Upgrading from version 0.1
+
+ Fill this with the upgrade information.
+

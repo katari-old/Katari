@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- Spring controller beans of the classic menu module. -->
+
+  <!-- freemarker config -->
+  <bean id="freemarkerConfig"
+    class="com.globant.katari.core.web.FreeMarkerConfigurer"
+    p:templateLoaderPath="classpath:/com/globant/katari/menu/classic/view/"
+    p:debugPrefix='../katari-classic-menu/src/main/resources'
+    p:debug-ref='debugMode'/>
+
+  <bean id="freemarkerViewResolver"
+    class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+    p:prefix="/" p:suffix=".ftl"
+    p:exposeSpringMacroHelpers='false'
+    p:exposeRequestAttributes='true' />
+
+  <!-- Controllers  -->
+  <!-- Shows the menu as a weblet. -->
+  <bean name="/weblet/menu.do"
+      class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name='viewName' value='menu'/>
+  </bean>
+  <!-- End Controllers  -->
+
+  <!-- Shows the current selected menu children as a normal page. -->
+  <bean name="/menu.do"
+      class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name='viewName' value='menuHome'/>
+  </bean>
+  <!-- End Controllers  -->
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai : -->
+

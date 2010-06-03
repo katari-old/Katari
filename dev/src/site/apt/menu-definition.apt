@@ -1,0 +1,53 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Menu support
+
+ Katari has support for declarative menus. Modules declare menu entries that
+ Katari merges together. The menus can be defined using a special syntax in
+ spring.
+ 
+ The responsibility of drawing a menu is delegated to a module, it is not part
+ of Katari's core. The module katari-classic-menu is one possible module that
+ draws the menu in the page.
+ 
+ This is the structure of a menu declaration:
+
+--------------------
+ <katari:menuBar name='menubar-name'>
+
+   <katari:menuNode name='menu-name' display='display text'
+     tooltip='tooltip text'>
+
+     <katari:menuItem name='menu-name-1' display='display text'
+       tooltip='tooltip text' link='entry-1.do'/>
+
+     <katari:menuItem name='menu-name-2' display='display text'
+       tooltip='tooltip text' link='entry-2.do'/>
+
+   </katari:menuNode>
+
+ </katari:menuBar>
+--------------------
+
+ It consists of a hierarchy of menuNode elements with menuItem elements, that
+ can appear anywhere in the hierarchy. The attributes of each element are:
+
+ * name: it applies to elements menuNode and menuItem. This is a name that
+ identifies the node in the current level. It cannot contain spaces.
+
+ * display: it applies to elements menuNode and menuItem. This is the text that
+ appears as the label of the menu. This is optional. If not specified, Katari
+ uses the menu name.
+
+ * tooltip: an option popup help text for the menu. It applies to elements
+ menuNode and menuItem.
+
+ * link: only applies to menuItem. This is the link of the menu. It is relative
+ to the module home. This link can contain ${variablename}, that get replaced
+ when the link in generated. The currently supported variables are of the form
+ ${modulename.module} (modulename is the name of some other module), to create
+ links to other modules.
+
+ Each menu entry is only shown only if the user has access to the corresponding
+ link.
+

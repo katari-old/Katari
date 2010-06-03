@@ -1,0 +1,31 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<decorators defaultdir="/">
+
+  <!-- We do not decorate cas module urls and the weblets -->
+  <excludes>
+    <pattern>/module/cas/proxyValidate*</pattern>
+    <pattern>/module/ajax/*</pattern>
+    <pattern>*/weblet/*</pattern>
+    <!-- Trails pages fail randomly under jetty if sitemesh decorates this url.
+    -->
+    <pattern>/module/trails/assets/static/dojo-0.4.3-custom-4.1.5/iframe_history.html</pattern>
+    <!-- FCKEditor pages must not be decorated. -->
+    <pattern>/module/ajax/fckeditor/editor/fckdialog.html</pattern>
+  </excludes>
+
+  <!-- Decorate login/logout related pages. -->
+  <decorator name="login" page="/module/decorator/login.dec">
+    <pattern>/module/cas/login*</pattern>
+    <pattern>/module/cas/logout*</pattern>
+  </decorator>
+
+  <!-- Decorate the rest of the pages. -->
+  <decorator name="main" page="/module/decorator/main.dec">
+    <pattern>*</pattern>
+  </decorator>
+
+ <!-- vim: set ts=2 et sw=2 : -->
+</decorators>
+

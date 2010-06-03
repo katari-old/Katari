@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- The wicket module configuration file. This file must be included in the
+  application context to use this module.
+
+  This is a sample module that shows how to integrate a wicket module in
+  katari.-->
+  <bean id="wicket.module" class="com.globant.katari.core.web.ConfigurableModule">
+    <property name='entryPoints'>
+      <!-- The servlet mappings. It maps the wicket servlet to /. -->
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The wicket servlet -->
+            <entry key="">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0" ref="wicket.wrapperServlet" />
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation"
+                           value="classpath:/com/globant/katari/sample/wicket/view/module-servlet.xml" />
+                    <entry key='applicationFactoryClassName'
+                           value='org.apache.wicket.spring.SpringWebApplicationFactory' />
+                    <entry key='beanName=' value='wicket.application'/>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <property name='menuBar'>
+      <!-- The menu bar. -->
+      <katari:menuBar>
+        <katari:menuNode name='Wicket'>
+          <katari:menuNode name='Users'>
+            <katari:menuItem name='List' link='users' />
+            <katari:menuItem name='New' link='user' />
+          </katari:menuNode>
+        </katari:menuNode>
+      </katari:menuBar>
+    </property>
+  </bean>
+
+  <bean id="wicket.wrapperServlet"
+    class="com.globant.katari.core.web.KatariWrapperServlet">
+    <constructor-arg>
+      <bean class="org.apache.wicket.protocol.http.WicketServlet" />
+    </constructor-arg>
+  </bean>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai : -->
+

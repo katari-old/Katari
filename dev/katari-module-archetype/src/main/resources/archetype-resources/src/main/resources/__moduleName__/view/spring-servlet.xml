@@ -1,0 +1,34 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.globant.com/schema/katari
+    http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- freemarker config -->
+  <bean id="freemarkerConfig" class="com.globant.katari.core.web.FreeMarkerConfigurer"
+    p:templateLoaderPath='classpath:/${packageInPathFormat}/${moduleName}/view/'
+    p:debugPrefix='../${artifactId}/src/main/resources'
+    p:debug-ref='debugMode'/>
+
+  <!-- View resolvers can also be configured with ResourceBundles or XML files.
+  If you need different view resolving based on Locale, you have to use the
+  resource bundle resolver. -->
+  <bean id="viewResolver"
+    class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+    p:prefix="/" p:suffix=".ftl"
+    p:exposeSpringMacroHelpers="true"
+    p:exposeRequestAttributes="true" />
+
+  <bean name='/hello.do'
+    class='${package}.${moduleName}.view.HelloController'/>
+
+  <!-- vim: set ts=2 sw=2 et ai: -->
+</beans>
+

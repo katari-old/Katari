@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- freemarker config -->
+  <bean id="freemarkerConfig"
+    class="com.globant.katari.core.web.FreeMarkerConfigurer"
+    p:templateLoaderPath="classpath:/com/globant/katari/sample/time/view/"
+    p:debugPrefix='../katari-sample/src/main/resources'
+    p:debug-ref='debugMode'/>
+
+  <bean id="freemarkerViewResolver"
+    class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+    p:prefix="/" p:suffix=".ftl" p:order='1'
+    p:exposeSpringMacroHelpers='true'/>
+
+  <!-- ViewResolvers that inherit from UrlBasedViewResolver, such as
+  JasperReportsViewResolver and FreeMarkerViewResolver must be last in the resolvers
+  list. As both resolvers can't be the last, a ResourceBundleViewResolver is used to
+  resolve for JasperReports, so the chain defaults to FreemarkerViewResolver if the
+  view is not a report. -->
+
+  <bean id="bundleViewResolver"
+      class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+      <property name="basename" value="com/globant/katari/sample/time/view/views"/>
+      <property name="order" value="0" />
+  </bean>
+
+  <!-- The spring mappings. -->
+  <bean name='/myTime.do'
+      class='com.globant.katari.sample.time.view.MyTimeController'>
+    <constructor-arg index="0" >
+      <ref bean="timeRepository" />
+    </constructor-arg>
+    <property name="formView" value="myTime" />
+    <lookup-method name="createCommandBean" bean="saveTimeEntryCommand" />
+    <lookup-method name="createViewTimeEntriesCommand" bean="viewTimeEntriesCommand" />
+    <property name="validator" ref="commandValidator" />
+  </bean>
+
+  <bean name='/editTimeEntry.do'
+      class='com.globant.katari.sample.time.view.EditTimeEntryController'>
+    <constructor-arg index="0">
+      <ref bean="timeRepository" />
+    </constructor-arg>
+    <lookup-method name="createCommandBean" bean="saveTimeEntryCommand" />
+    <property name="validator" ref="commandValidator" />
+  </bean>
+
+  <bean name='/deleteTimeEntry.do'
+      class='com.globant.katari.sample.time.view.DeleteTimeEntryController'>
+    <lookup-method name="createCommandBean" bean="deleteTimeEntryCommand" />
+  </bean>
+
+  <bean name='/userProjectHoursReport.do'
+      class='com.globant.katari.sample.time.view.UserProjectHoursReportController'>
+    <property name="formView" value="userProjectHoursReport" />
+    <lookup-method name="createCommandBean" bean="userProjectHoursReportCommand" />
+  </bean>
+
+  <!-- Commands -->
+  <bean name="viewTimeEntriesCommand" scope="prototype"
+      class="com.globant.katari.sample.time.application.ViewTimeEntriesCommand" >
+    <constructor-arg index="0" >
+      <ref bean="timeRepository" />
+    </constructor-arg>
+  </bean>
+
+  <bean name="saveTimeEntryCommand" scope="prototype"
+      class="com.globant.katari.sample.time.application.SaveTimeEntryCommand" >
+    <constructor-arg index="0" >
+      <ref bean="timeRepository" />
+    </constructor-arg>
+  </bean>
+
+  <bean name="deleteTimeEntryCommand" scope="prototype"
+      class="com.globant.katari.sample.time.application.DeleteTimeEntryCommand" >
+    <constructor-arg index="0" >
+      <ref bean="timeRepository" />
+    </constructor-arg>
+  </bean>
+
+  <bean name="userProjectHoursReportCommand" scope="prototype"
+      class="com.globant.katari.sample.time.application.UserProjectHoursReportCommand" >
+    <constructor-arg index="0" ref="timeReportService" />
+  </bean>
+
+  <!-- Validators -->
+  <bean name="commandValidator"
+      class="com.globant.katari.core.application.CommandValidator" />
+
+  <bean id="messageSource"
+      class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basenames">
+      <list>
+        <value>com.globant.katari.sample.time.messages</value>
+      </list>
+    </property>
+    <property name="useCodeAsDefaultMessage">
+      <value>true</value>
+    </property>
+  </bean>
+
+  <bean id="messageCodesResolver" class="org.springframework.validation.DefaultMessageCodesResolver">
+    <property name="prefix" value="validation." />
+  </bean>
+
+  <!-- Transactions -->
+  <bean class="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator">
+    <property name="proxyTargetClass" value="true" />
+    <property name="beanNames">
+      <list>
+        <value>*Command</value>
+      </list>
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>transactionInterceptor</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="transactionInterceptor"
+      class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    <property name="transactionManager" ref="katari.transactionManager" />
+    <property name="transactionAttributes">
+      <props>
+        <prop key="execute">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean id='timeReportService'
+      class='com.globant.katari.sample.time.application.TimeReportService'>
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
+  </bean>
+
+  <!-- The time repository needed by the commands. -->
+  <bean id='timeRepository'
+      class='com.globant.katari.sample.time.domain.TimeRepository'>
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
+  </bean>
+
+</beans>
+

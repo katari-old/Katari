@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.globant.com/schema/katari
+    http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- The katari global beans. -->
+  <import resource="classpath:/com/globant/katari/core/applicationContext.xml"/>
+
+  <!-- This module (search). -->
+  <import resource="classpath:/com/globant/katari/search/module.xml"/>
+
+  <import resource="classpath:/com/globant/katari/hibernate/role/module.xml"/>
+
+  <!-- Defines the searchable entities and their corresponding handlers for the
+       search module -->
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='search.indexableClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.search.domain.mock.User</value>
+        <value>com.globant.katari.search.domain.mock.Activity</value>
+        <value>com.globant.katari.hibernate.role.domain.Role</value>
+      </list>
+    </constructor-arg>
+  </bean>
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='search.adapters'/>
+    <constructor-arg>
+      <list>
+        <bean class="com.globant.katari.search.domain.mock.UserSearchAdapterExample"/>
+        <bean class="com.globant.katari.search.domain.mock.ActivitySearchAdapterExample"/>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+    destroy-method="close">
+    <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+    <property name="url" value="jdbc:hsqldb:mem:testdb"/>
+  </bean>
+
+  <!-- The hibernate properties, They are referenced from the hibernate bean. -->
+  <bean id="katari.hibernateProperties"
+    class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="properties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+        <prop key="hibernate.hbm2ddl.auto">create</prop>
+        <!-- WARNING: When this is set to 'auto', which is the default option
+	for Hibernate, it's not possible to change the isolation level of any
+	transaction. Spring sets it to 'on_close' , but in this way, the
+	tests never return the connections, thus emptying the connection pool.
+	
+	To avoid this, we set it to 'after_transaction', but there may be
+	unexpected side effect we don't know of yet -->
+	<!-- This does not work with hsql. -->
+        <!-- prop key="hibernate.connection.release_mode">after_transaction</prop -->
+      </props>
+    </property>
+  </bean>
+
+  <!-- The katari data source as an alias to dataSource. -->
+  <alias name="dataSource" alias="katari.dataSource"/>
+
+  <!-- Add a mock user class to the hibernate session factory. -->
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='katari.persistentClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.search.domain.mock.User</value>
+        <value>com.globant.katari.search.domain.mock.Activity</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <bean id='search.compassEngineConnection'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='ram://' />
+
+  <bean id='search.compassIndexEngineConnection'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='ram://' />
+
+  <!-- A fake user module. -->
+  <bean id="user.module" class="com.globant.katari.core.web.ConfigurableModule">
+    <property name="urlToRoleMapper">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
+        <constructor-arg index="0">
+          <map>
+            <entry key="/user.do">
+              <list>
+                <value>ROLE_ADMINISTRATOR</value>
+              </list>
+            </entry>
+            <entry key="/activity.do">
+              <list>
+                <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+              </list>
+            </entry>
+          </map>
+        </constructor-arg>
+      </bean>
+    </property>
+  </bean>
+
+  <bean name="repository"
+    class="com.globant.katari.search.domain.TestRepository" 
+    p:sessionFactory-ref='katari.sessionFactory' />
+
+  <bean class="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator">
+    <property name="proxyTargetClass" value="true" />
+    <property name="beanNames">
+      <list>
+        <value>repository</value>
+      </list>
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>transactionInterceptor</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="transactionInterceptor"
+      class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    <property name="transactionManager" ref="katari.transactionManager" />
+    <property name="transactionAttributes">
+      <props>
+        <prop key="*">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
+  </bean>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

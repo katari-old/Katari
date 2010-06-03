@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.5.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- The search module. It provides a cross-module search. -->
+  <bean id="search.module" class="com.globant.katari.core.web.ConfigurableModule">
+    <property name='entryPoints'>
+      <!--
+        The servlet mappings. It maps the spring EventFilterDispatcherServlet
+        to *.do.
+      -->
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The spring-mvc controller servlet -->
+            <entry key=".*\.do">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="com.globant.katari.core.web.EventFilterDispatcherServlet"
+                    />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/search/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <property name='weblets'>
+      <!-- Remember that weblets must be accessible from some entry point
+      defined in the web mapping. -->
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <entry key="search">
+              <value>weblet/search.do</value>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <property name="urlToRoleMapper">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
+        <constructor-arg index="0">
+          <map>
+            <entry key="/**">
+              <list>
+                <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+              </list>
+            </entry>
+          </map>
+        </constructor-arg>
+      </bean>
+    </property>
+
+  </bean>
+
+  <!-- Main entry point to access the search logic. -->
+  <bean id="search.indexRepository"
+    class="com.globant.katari.search.domain.IndexRepository">
+    <constructor-arg index="0" ref="search.compassGps"/>
+    <constructor-arg index="1" ref="search.compassSearchHelper"/>
+    <constructor-arg index="2" ref="search.compass"/>
+    <constructor-arg index="3" ref="search.adapters"/>
+    <constructor-arg index="4" ref="katari.secureUrlAccessHelper"/>
+  </bean>
+
+  <!-- List where other modules will append their specific handlers. -->
+  <bean class="org.springframework.beans.factory.config.ListFactoryBean"
+    id='search.adapters'>
+    <property name="sourceList">
+      <list />
+    </property>
+  </bean>
+
+  <!-- List where other modules will append their indexable entities. -->
+  <bean class="org.springframework.beans.factory.config.ListFactoryBean"
+    id='search.indexableClasses'>
+    <property name="sourceList">
+      <list/>
+    </property>
+  </bean>
+
+  <!-- List where other modules will append their mappings (.cpm.xml). -->
+  <bean class="org.springframework.beans.factory.config.ListFactoryBean"
+    id='search.indexableClassMappings'>
+    <property name="sourceList">
+      <list/>
+    </property>
+  </bean>
+
+  <!-- Compass configuration -->
+  <bean id="search.compass" class="org.compass.spring.LocalCompassBean"
+    p:classMappings-ref='search.indexableClasses'
+    p:resourceLocations-ref='search.indexableClassMappings'
+    p:transactionManager-ref="katari.transactionManager">
+    <property name="compassSettings">
+      <map>
+        <entry key="compass.engine.connection"
+          value-ref="search.compassEngineConnection"/>
+        <entry key="compass.transaction.factory"
+          value='org.compass.spring.transaction.SpringSyncTransactionFactory'/>
+      </map>
+    </property>
+  </bean>
+
+  <!-- Overridable bean to define the file system location to store the lucene
+       index. -->
+  <bean id='search.compassEngineConnection'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='target/compass/' />
+
+  <bean id='search.compassIndexEngineConnection'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='target/compass-tmp/' />
+
+  <bean id="search.compassGps" class="org.compass.gps.impl.SingleCompassGps"
+    init-method='start' destroy-method="stop"
+    p:compass-ref="search.compass">
+    <property name="gpsDevices">
+      <list>
+        <bean class="org.compass.gps.device.hibernate.HibernateGpsDevice"
+          p:name='hibernateDevice'
+          p:sessionFactory-ref="katari.sessionFactory">
+          <property name='nativeExtractor'>
+            <bean class=
+              "org.compass.spring.device.hibernate.SpringNativeHibernateExtractor" />
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="indexProperties">
+      <map>
+        <entry key="compass.engine.connection" value="target/compass-tmp"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="search.compassSearchHelper"
+    class="org.compass.core.support.search.CompassSearchHelper"
+    p:pageSize='20'>
+    <constructor-arg index="0" ref='search.compass'/>
+  </bean>
+
+  <!-- We remove the reindex because it looks like, during the phase that
+       creates the sql statements, quartz tries to index a compass database
+       that is not correctly initialized. This makes the index fail leaving a
+       lock that makes all tests fail. This happens randomly. -->
+  <!-- Quartz -->
+  <!-- bean id="search.jobDetail"
+    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+     p:targetObject-ref="search.indexRepository"
+     p:targetMethod="reIndex"
+     p:concurrent="false" />
+
+   <bean id="search.scheduler"
+     class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+     <property name="triggers">
+       <list>
+         <ref bean="search.indexTrigger"/>
+       </list>
+     </property>
+     <property name="autoStartup" value="true"/>
+   </bean -->
+
+   <!-- Wait 1 second to start indexing. Repeat every 24 hours. -->
+   <!-- bean id="search.indexTrigger"
+     class="org.springframework.scheduling.quartz.SimpleTriggerBean"
+     p:jobDetail-ref="search.jobDetail"
+     p:startDelay="1"
+     p:repeatInterval="86400000" / -->
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai : -->
+

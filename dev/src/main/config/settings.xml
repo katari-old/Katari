@@ -1,0 +1,62 @@
+<!-- vim: set ts=2 et sw=2 : -->
+<settings>
+  <!-- Use only inside Globant network -->
+  <mirrors>
+    <mirror>
+      <id>nexus</id>
+      <url>http://maven.corp.globant.com/nexus/content/groups/public</url>
+      <!-- Don't put a space after the , or some versions of maven won't work
+           correctly. -->
+      <mirrorOf>*,!sonar</mirrorOf>
+    </mirror>
+  </mirrors>
+
+  <profiles>
+    <profile>
+      <id>katari</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <!-- Use cargo.tomcatLocation only inside globant network -->
+        <cargo.tomcatLocation>
+          http://maven.corp.globant.com/tools/containers/apache-tomcat-5.5.17.zip
+        </cargo.tomcatLocation>
+        <katari.datasource.url>
+          jdbc:mysql://localhost/katari
+        </katari.datasource.url>
+        <katari.datasource.username>
+          katari
+        </katari.datasource.username>
+        <katari.datasource.password>
+          katari
+        </katari.datasource.password>
+        <!-- Starts cargo with jpda enabled for remote debugging in port 8000.
+             -->
+        <katari.cargo.jvmargs>
+          -Xdebug -Xnoagent -Djava.compiler=NONE
+          -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n
+        </katari.cargo.jvmargs>
+        <!-- You can add log4j configuration options here. -->
+        <katari.log4j>
+          log4j.logger.com.globant.katari.sample=TRACE
+          log4j.logger.com.globant.katari.editablepages=TRACE
+        </katari.log4j>
+      </properties>
+      <!-- Or, for postgres:
+      <properties>
+        <katari.datasource.url>
+          jdbc:postgresql://localhost/katari
+        </katari.datasource.url>
+        <katari.datasource.username>
+          katari
+        </katari.datasource.username>
+        <katari.datasource.password>
+          katari
+        </katari.datasource.password>
+      </properties>
+      -->
+    </profile>
+  </profiles>
+</settings>
+

@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:p="http://www.springframework.org/schema/p"
+      xmlns:util="http://www.springframework.org/schema/util"      
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd      
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <description>
+    Katari core spring application context.
+  </description>
+
+  <!-- Implementation of BeanPostProcessor to initialize modules. It looks for
+  beans that implement the Module interfase and calls init on each of them.-->
+  <bean class="com.globant.katari.core.web.ModuleBeanPostProcessor">
+    <constructor-arg ref='katari.contextRegistrar'/>
+  </bean>
+
+  <bean id="katari.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+    <property name='listeners'>
+      <list>
+        <!-- Cleans up bogus references from parent class loaders that stops
+        this class loader from being garbarge collected. -->
+        <bean class='com.globant.katari.core.spring.ReferenceCleaner'/>
+      </list>
+    </property>
+
+    <property name='filters'>
+      <bean class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+          <list>
+            <!-- Sets the character set of the request to utf-8. This must be
+            the first filter in the chain since it sets the encoding for the
+            request. -->
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean
+                      class="com.globant.katari.core.web.Utf8EncodingFilter">
+                    </bean>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+              <!-- This should be the first filter to execute to guarantee to
+              ensure that the encoding is set before any request.getParameter
+              is performed. -->
+              <constructor-arg value='-1000100'/>
+            </bean>
+            <!-- Validates the generated html output. -->
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg ref='htmlValidator'/>
+                </bean>
+              </constructor-arg>
+              <constructor-arg value='-1000099'/>
+            </bean>
+            <!-- Puts the helper for the katari free marker url macros in the
+                 request making it accessible to the rendering proccess.  This
+                 filter supports the debug mode for secure urls. -->
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg ref='katari.secureUrlMacroFilter'/>
+                </bean>
+              </constructor-arg>
+              <constructor-arg value='-1000098'/>
+            </bean>
+            <!-- Exchanges the session/request information with acegi security
+                 context holder. -->
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg ref='katari.contextHolderIntegrationFilter'/>
+                </bean>
+              </constructor-arg>
+              <constructor-arg value='-1000097'/>
+            </bean>
+            <!-- Switches the configured urls to https. -->
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg ref='katari.httpsChannelProcessingFilter'/>
+                </bean>
+              </constructor-arg>
+              <constructor-arg value='-1000096'/>
+            </bean>
+            <!-- Acegi security chain. Contains the filters for authentication
+                 and access control. The alternative filter chain can be
+                 overriden to use a conditioned filter chain -->
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean
+                      class="com.globant.katari.core.security.SecurityEntryPointFilter">
+                      <constructor-arg index="0" ref="katari.defaultFilterChain" />
+                      <constructor-arg index="1" ref="katari.alternativeFilterChain" />
+                    </bean>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+              <!-- This should be one of the first filters to execute.-->
+              <constructor-arg value='-1000000'/>
+            </bean>
+            <!-- Adds some useful variables to the request. -->
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean
+                      class="com.globant.katari.core.web.RequestVariablesFilter"/>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+
+  </bean>
+
+  <bean name='htmlValidator'
+    class="com.globant.katari.core.web.HtmlValidationFilter"
+    p:enabled='false' 
+    p:ignoredUrlpatterns-ref='katari.htmlValidator.ignoredUrlpatterns'/>
+
+  <!--The list of url patters to ignore for validation. Each module can add
+  patters using the ListFactoryAdder bean post processor. -->
+  <util:list id='katari.htmlValidator.ignoredUrlpatterns'/>
+
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='debugMode' p:value='false'/>
+
+  <!-- ModuleContextRegistrar manages the module contexts. -->
+  <bean id="katari.contextRegistrar" lazy-init="true"
+    class="com.globant.katari.core.web.ModuleContextRegistrar">
+
+    <constructor-arg ref='katari.moduleListenerProxy'/>
+    <constructor-arg ref='katari.moduleFilterProxy'/>
+    <constructor-arg ref='katari.moduleContainer'/>
+
+    <!-- The initial menu bar. It defines the order of the menu elements. -->
+    <constructor-arg ref='katari.menuBar'/>
+    <constructor-arg ref='katari.loginConfigurer' />
+  </bean>
+
+  <!-- Mantains a list of web listeners, and forwards each listener in the list
+  the corresponding event. -->
+  <bean id='katari.moduleListenerProxy'
+    class='com.globant.katari.core.web.ModuleListenerProxy'/>
+
+  <!-- Mantains a list of web filters, and gives each filter in the list a
+  chance to filter the request. -->
+  <bean id='katari.moduleFilterProxy'
+    class='com.globant.katari.core.web.ModuleFilterProxy'>
+
+    <constructor-arg>
+      <bean class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+          <list>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean class="com.globant.katari.core.web.WebletSupportFilter"/>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </constructor-arg>
+
+  </bean>
+
+  <!-- Maps a module name to a servlet config bean. -->
+  <bean id='katari.moduleContainer'
+    class='com.globant.katari.core.web.ModuleContainerServlet'/>
+
+  <!-- Bean post processor that takes care of initializing katari modules.-->
+  <bean id='katari.moduleInitializer'
+    class="com.globant.katari.core.web.ModuleInitializer">
+    <constructor-arg index='0' ref='katari.contextRegistrar' />
+  </bean>
+
+  <!-- The default empty menu bar. -->
+  <katari:menuBar id='katari.menuBar' />
+
+  <!-- A list of pingServices.  -->
+  <bean id="katari.pingServices"
+    class="com.globant.katari.core.ping.PingServices">
+  </bean>
+
+  <!-- ============================================================= -->
+  <!-- ================== Security related beans =================== -->
+  <!-- ============================================================= -->
+
+  <!-- This is the menu access filterer to filter menu nodes depending the
+  authentication roles -->
+  <bean id='katari.menuAccessFilterer'
+    class='com.globant.katari.core.security.MenuAccessFilterer'>
+    <constructor-arg index='0' ref='katari.secureUrlAccessHelper' />
+  </bean>
+
+  <!-- Puts the helper for the katari free marker url macros in the request
+  making it accessible to the rendering proccess.
+  This filter supports the debug mode for secure urls. -->
+  <bean id='katari.secureUrlMacroFilter'
+    class='com.globant.katari.core.security.SecureUrlMacroFilter'>
+    <constructor-arg index='0' ref='katari.secureUrlAccessHelper' />
+  </bean>
+
+  <!-- Secure url access helper. Used to check if an url is accessible. This
+  helper is mainly used in ftl macros. -->
+  <bean id='katari.secureUrlAccessHelper'
+    class='com.globant.katari.core.security.SecureUrlAccessHelper'>
+    <constructor-arg index='0' ref='katari.moduleFilterInvocationDefinitionSource'/>
+    <constructor-arg index='1' ref='katari.accessDecisionManager'/>
+  </bean>
+
+  <bean id ='katari.accessDecisionManager'
+    class='org.acegisecurity.vote.AffirmativeBased'>
+    <property name='allowIfAllAbstainDecisions' value='false'/>
+    <property name='decisionVoters'>
+      <list>
+        <bean class='org.acegisecurity.vote.RoleVoter'/>
+        <bean class='org.acegisecurity.vote.AuthenticatedVoter'/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Filter for URLs that must be accessed through HTTPS -->
+  <bean id='katari.httpsChannelProcessingFilter'
+      class='org.acegisecurity.securechannel.ChannelProcessingFilter'>
+    <property name='channelDecisionManager'>
+      <ref local='katari.httpsChannelDecisionManager' />
+    </property>
+    <property name='filterInvocationDefinitionSource' ref='katari.httpsUrls'/>
+  </bean>
+
+  <!-- This bean should be overridden with the list of URLs that must be
+  accessed through HTTPS.
+  As an example, the following configuration requires HTTPS access for
+  module/local-login/login.do URL:
+
+       <value>
+          CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+          PATTERN_TYPE_APACHE_ANT
+          module/local-login/login.do=REQUIRES_SECURE_CHANNEL
+      </value>
+  -->
+  <bean id='katari.httpsUrls'
+      class='com.globant.katari.core.spring.StringHolder'>
+    <property name="value">
+      <value>
+          CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+          PATTERN_TYPE_APACHE_ANT
+      </value>
+    </property>
+  </bean>
+
+  <bean id='katari.httpsChannelDecisionManager'
+    class='org.acegisecurity.securechannel.ChannelDecisionManagerImpl'>
+    <property name='channelProcessors'>
+      <list>
+        <ref local='katari.httpsSecureChannelProcessor' />
+      </list>
+    </property>
+  </bean>
+
+  <!-- HTTPS channel processor. -->
+  <bean id='katari.httpsSecureChannelProcessor'
+      class='org.acegisecurity.securechannel.SecureChannelProcessor'>
+      <property name='entryPoint'>
+        <ref bean='katari.httpsSecureChannelProcessorEntryPoint'/>
+      </property>
+  </bean>
+
+  <!-- Redirects the HTTP call to a HTTPS. -->
+  <bean id='katari.httpsSecureChannelProcessorEntryPoint'
+      class='org.acegisecurity.securechannel.RetryWithHttpsEntryPoint'>
+      <property name='portMapper' ref='katari.httpsPortMapper'/>
+  </bean>
+
+  <!-- Port mappings for HTTP/HTTPS access -->
+  <bean id='katari.httpsPortMapper'
+      class='org.acegisecurity.util.PortMapperImpl'>
+    <property name='portMappings'>
+      <map>
+        <entry key='80' value='443' />
+      </map>
+    </property>
+  </bean>
+
+  <!-- Outputs interceptor-related application events to Commons Logging.  All
+  failures are logged at the warning level, with success events logged at the
+  information level, and public invocation events logged at the debug level.
+  -->
+  <bean id="katari.loggerListener"
+    class="org.acegisecurity.event.authentication.LoggerListener"/>
+
+  <!-- ============================================================= -->
+  <!-- ============== Security related filter beans ================ -->
+  <!-- ============================================================= -->
+
+  <!-- The alternative filter chain for security in katari. It can be overriden
+  to allow other security filter chains to take place. -->
+  <bean id="katari.alternativeFilterChain"
+    class="com.globant.katari.core.security.ConditionedFilter" />
+
+  <!-- This is the acegi default filter chain. It only chains the request
+   through all the configured filters. -->
+  <bean id="katari.defaultFilterChain"
+    class="org.acegisecurity.util.FilterChainProxy">
+    <property name="filterInvocationDefinitionSource">
+      <value>
+        CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+        PATTERN_TYPE_APACHE_ANT
+        /**=katari.delegatingLogoutFilter,katari.delegatingProcessingFilter,katari.securityContextHolderAwareRequestFilter,katari.rememberMeProcessingFilter,katari.anonymousProcessingFilter,katari.exceptionTranslationFilter,katari.filterInvocationInterceptor
+      </value>
+    </property>
+  </bean>
+
+  <!-- Copies the relevant data in the http session to the
+  SecurityContextHolder at the begining of the request, and the other way round
+  at the end of the web request. -->
+  <bean id="katari.contextHolderIntegrationFilter"
+      class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
+
+  <!-- Wraps the servlet request so that calls to isUserInRole and
+  getRemoteUser returns information based on acegi Authentication. -->
+  <bean id="katari.securityContextHolderAwareRequestFilter"
+    class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
+
+  <bean id="katari.rememberMeProcessingFilter" lazy-init='true'
+      class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
+    <property name="authenticationManager" ref="katari.authenticationManager"/>
+    <property name="rememberMeServices" ref="katari.rememberMeServices"/>
+  </bean>
+
+  <bean id="katari.rememberMeServices" lazy-init='true'
+      class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
+    <property name="userDetailsService" ref="katari.userDetailsService"/>
+    <property name="key" value="changeThis"/>
+  </bean>
+
+  <!-- Puts an AnonymousAuthenticationToken in the SecurityContextHolder if the
+  user is not authenticated. -->
+  <bean id="katari.anonymousProcessingFilter"
+      class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+    <property name="key" value="changeThis"/>
+    <property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS"/>
+  </bean>
+
+  <!-- Sets the delegates of the different proxies. This hooks the login
+  services to the acegi filter chain. -->
+  <bean id="katari.loginConfigurer"
+      class="com.globant.katari.core.login.LoginConfigurationSetter">
+  	<constructor-arg index="0" ref="katari.delegatingEntryPoint" />
+  	<constructor-arg index="1" ref="katari.delegatingLogoutFilter" />
+  	<constructor-arg index="2" ref="katari.delegatingProcessingFilter" />
+  </bean>
+
+  <!-- Listens for a logout request and delegates the logout-->
+  <bean id="katari.delegatingLogoutFilter"
+    class="com.globant.katari.core.login.ConfigurableFilterProxy"/>
+
+  <!-- Listens for authentication requests. -->
+  <bean id="katari.delegatingProcessingFilter"
+    class="com.globant.katari.core.login.ConfigurableFilterProxy"/>
+
+  <!-- Redirects the user to the login page. The specific login page is
+  configured by a module. -->
+  <bean id="katari.delegatingEntryPoint"
+    class="com.globant.katari.core.login.DelegatingEntryPoint"/>
+
+  <!-- If an AccessDeniedException is detected, the filter will determine
+  whether or not the user is an anonymous user. If they are an anonymous user,
+  the authenticationEntryPoint will be launched. If they are not an anonymous
+  user, the filter will delegate to the AccessDeniedHandler. -->
+  <bean id="katari.exceptionTranslationFilter"
+      class="org.acegisecurity.ui.ExceptionTranslationFilter">
+    <property name="authenticationEntryPoint"
+      ref="katari.delegatingEntryPoint" />
+  </bean>
+
+  <!-- Performs security handling of HTTP resources via a filter
+  implementation. -->
+  <bean id="katari.filterInvocationInterceptor"
+      class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+    <property name="authenticationManager" ref="katari.authenticationManager"/>
+    <property name="accessDecisionManager" ref='katari.accessDecisionManager'/>
+    <property name="objectDefinitionSource"
+      ref="katari.moduleFilterInvocationDefinitionSource"/>
+  </bean>
+
+  <!-- The authentication manager. This must be provided by a login module. -->
+  <bean id="katari.authenticationManager" lazy-init='true'
+      class="org.acegisecurity.providers.ProviderManager">
+    <property name="providers">
+      <list>
+        <bean class='org.acegisecurity.providers.TestingAuthenticationProvider'/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Globant's implementation of objectDefinitionSource. It delegates the
+  'definition source' to the module that is being requested. -->
+  <bean id="katari.moduleFilterInvocationDefinitionSource"
+      class="com.globant.katari.core.security.ModuleFilterInvocationDefinitionSource">
+    <constructor-arg index="0" ref="katari.contextRegistrar" />
+    <constructor-arg index="1">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
+        <constructor-arg index="0">
+          <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+            <property name="targetMapClass" value="java.util.LinkedHashMap" />
+              <property name="sourceMap">
+                <map>
+                  <entry key="/j_acegi_cas_security_check">
+                    <list>
+                      <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+                    </list>
+                  </entry>
+                  <entry key="/ping/**">
+                    <list>
+                      <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+                    </list>
+                  </entry>
+                  <entry key="/*">
+                    <list>
+                      <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+                    </list>
+                  </entry>
+                  <entry key="/**">
+                    <list>
+                      <value>IS_AUTHENTICATED_REMEMBERED</value>
+                    </list>
+                  </entry>
+                </map>
+              </property>
+          </bean>
+        </constructor-arg>
+      </bean>
+    </constructor-arg>
+  </bean>
+  <!-- End of security related beans. -->
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

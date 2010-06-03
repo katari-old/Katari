@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- The authentication manager. This must be provided by a login module. -->
+  <bean id="katari.authenticationManager"
+      class="org.acegisecurity.providers.ProviderManager">
+    <property name="providers">
+      <list>
+        <bean class='org.acegisecurity.providers.TestingAuthenticationProvider'/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- The userDetailsService. This must be provided by the application writer.
+  -->
+  <!-- An implementation of UserDetailsService that authenticates users against
+  an in-memory database that is loaded from the userMap properties. -->
+  <bean id="katari.userDetailsService"
+      class="org.acegisecurity.userdetails.memory.InMemoryDaoImpl">
+    <property name="userMap">
+      <value>
+        matthew=contegix,ROLE_ADMIN
+      </value>
+    </property>
+  </bean>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

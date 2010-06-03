@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component-specification
+  PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.1//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd">
+  <!-- vim: set ts=2 et sw=2 ai tw=80: -->
+
+<component-specification class="org.apache.tapestry.BaseComponent"
+  allow-body="yes" allow-informal-parameters="yes">
+  <description>
+    Produces an FCKEditor wysiwyg html editor for a given property
+  </description>
+  <parameter name="value"/>
+  <parameter name="descriptor"/>
+  <inject property="contextPath" object="infrastructure:contextPath"/>
+  <inject property="request" object="infrastructure:request"/>
+  <inject property="configuration"
+    object="spring:trails.fckeditorConfiguration"/>
+  <inject property="instanceConfigurer"
+    object="spring:trails.fckeditorInstanceConfigurer"/>
+</component-specification>
+

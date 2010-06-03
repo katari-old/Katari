@@ -1,0 +1,20 @@
+
+<#import "katari.ftl" as katari />
+
+<img src="${baseweb}/module/decorator/image/mainLogo.png" width="200"
+  height="80" alt="Katari" title="Katari" />
+
+<div id="data">
+  <@katari.weblet "editable-pages" "previewButton"/>
+  <@katari.weblet "search" "search"/>
+  <#if request.remoteUser??>    
+    <a class="leftMargin" href="${baseweb}/logout?service=${response.encodeRedirectURL(baseweb+'/module/editable-pages/page/about?selected-module-entry=/root/Institutional')}"
+      >Sign out</a>
+    <span>Logged in as ${request.remoteUser}</span>
+  <#else>    
+    <a class="leftMargin" href="${baseweb}/module/institutional/confidential.do">Sign in</a>
+    <span>Not logged in</span>
+  </#if>
+</div>
+<#-- vim: set ts=2 et sw=2 filetype=html ai: -->
+

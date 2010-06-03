@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <!-- This is an invalid data source used in the ddl generation. The ddl
+  generation does not need a valid data source, so we use this instead of the
+  one configured for the application. This makes the compilation run faster,
+  because the c3p0 pool times out in approx 20 seconds.
+  -->
+  <bean name="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource" />
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+

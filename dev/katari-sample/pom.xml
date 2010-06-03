@@ -1,0 +1,669 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <!-- vim: set ts=2 et sw=2 ai: -->
+
+  <parent>
+    <groupId>com.globant.katari</groupId>
+    <artifactId>dev</artifactId>
+    <version>0.22-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.globant.katari</groupId>
+  <artifactId>katari-sample</artifactId>
+  <packaging>war</packaging>
+  <name>Globant Katari - sample</name>
+
+  <dependencies>
+    <!-- Test only dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymockclassextension</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sourceforge.htmlunit</groupId>
+      <artifactId>htmlunit</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+      <artifactId>selenium-java-client-driver</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Nedded by htmlunit class -->
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+
+    <!-- Runtime dependencies -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-annotations</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+    </dependency>
+
+    <!-- Be careful. This version of the mysql jdbc driver is GPL. -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+
+    <!-- If you want to use postgres.
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+    </dependency>
+    -->
+
+    <dependency>
+      <groupId>c3p0</groupId>
+      <artifactId>c3p0</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+
+    <!-- dependency>
+      <groupId>jboss</groupId>
+      <artifactId>javassist</artifactId>
+    </dependency -->
+
+    <dependency>
+      <groupId>org.acegisecurity</groupId>
+      <artifactId>acegi-security</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>opensymphony</groupId>
+      <artifactId>sitemesh</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>jasperreports</groupId>
+      <artifactId>jasperreports</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mule</groupId>
+      <artifactId>mule-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mule.modules</groupId>
+      <artifactId>mule-module-spring</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mule.transports</groupId>
+      <artifactId>mule-transport-vm</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mule.transports</groupId>
+      <artifactId>mule-transport-tcp</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mule.transports</groupId>
+      <artifactId>mule-transport-stream</artifactId>
+    </dependency>
+
+    <!-- Wicket -->
+    <dependency>
+      <groupId>org.apache.wicket</groupId>
+      <artifactId>wicket</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.wicket</groupId>
+      <artifactId>wicket-spring</artifactId>
+    </dependency>    
+
+    <!-- Provided by the container. -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+
+    <!-- Provided by the container -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jsp-api</artifactId>
+    </dependency>
+
+    <!-- We use ${groupId} because we will depend on the style package from the
+    current groupId. -->
+    <dependency>
+      <groupId>${groupId}</groupId>
+      <artifactId>katari-style</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-hibernate</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-classic-menu</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-trails</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-report</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-editablepages</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-ajax</artifactId>
+    </dependency>
+
+    <!-- We use the local login, not cas. -->
+    <!-- dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-cas</artifactId>
+    </dependency -->
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-local-login</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-tools</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-search</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-console</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.compass-project</groupId>
+      <artifactId>compass</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${artifactId}</finalName>
+
+    <!-- Filters the katari and log4j property resource files. -->
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>katari.properties</include>
+          <include>log4j.properties</include>
+        </includes>
+      </testResource>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <excludes>
+          <exclude>katari.properties</exclude>
+          <exclude>log4j.properties</exclude>
+        </excludes>
+      </testResource>
+    </testResources>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>aspectj-maven-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <aspectLibraries>
+            <aspectLibrary>
+              <groupId>org.trailsframework</groupId>
+              <artifactId>trails-core</artifactId>
+            </aspectLibrary>
+            <aspectLibrary>
+              <groupId>org.trailsframework</groupId>
+              <artifactId>trails-hibernate</artifactId>
+            </aspectLibrary>
+          </aspectLibraries>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Starts tomcat and deploys the web application in it, listening at
+      port 8099.  The plugin is also bounded to the pre-integration-test and
+      post-integration-test phase to start and stop the deployed application to
+      run the integration tests. -->
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <version>1.0</version>
+
+        <executions>
+
+          <execution>
+            <id>start-container</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+            <configuration>
+              <wait>false</wait>
+              <configuration>
+                <home>${project.build.directory}/tmp/cargo</home>
+                <properties>
+                  <reloadable>true</reloadable>
+                  <cargo.servlet.port>8099</cargo.servlet.port>
+                </properties>
+                <deployables>
+                  <deployable>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}</artifactId>
+                    <type>war</type>
+                  </deployable>
+                </deployables>
+              </configuration>
+            </configuration>
+          </execution>
+
+          <!-- Stops the container after the integration tests -->
+          <execution>
+            <id>stop-container</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <configuration>
+              <wait>true</wait>
+              <configuration>
+                <home>${project.build.directory}/tmp/cargo</home>
+                <properties>
+                  <cargo.servlet.port>8099</cargo.servlet.port>
+                </properties>
+              </configuration>
+            </configuration>
+          </execution>
+
+        </executions>
+
+        <configuration>
+
+          <container>
+            <containerId>tomcat5x</containerId>
+            <zipUrlInstaller>
+              <url>${cargo.tomcatLocation}</url>
+            </zipUrlInstaller>
+            <dependencies>
+              <dependency>
+                <location>${basedir}/target/test-classes</location>
+              </dependency>
+            </dependencies>
+          </container>
+          <configuration>
+            <properties>
+              <cargo.servlet.port>8099</cargo.servlet.port>
+              <cargo.jvmargs>${katari.cargo.jvmargs}</cargo.jvmargs>
+            </properties>
+          </configuration>
+
+        </configuration>
+
+      </plugin>
+
+      <!-- Defines two sets of tests, one for normal unit tests and the other
+      for functional testing. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- Excludes all the tests from the default surefire execution
+          phase. -->
+          <includes><include /></includes>
+        </configuration>
+        <executions>
+          <!-- We use the surefire plugin to set up the database. This is bound
+          to the test-compile phase. We could not manage to use
+          exec-maven-plugin. -->
+          <execution>
+            <id>Tests setup</id>
+            <phase>test-compile</phase>
+            <configuration>
+              <includes>
+                <include>com/globant/katari/sample/testsupport/database/TestDbSupport.java</include>
+              </includes>
+            </configuration>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+          <!-- Unit tests that do not require the web application deployed in
+          the container. This is bound to the test phase. -->
+          <execution>
+            <id>Tests</id>
+            <phase>test</phase>
+            <configuration>
+              <excludes>
+                <exclude>**/functionaltest/**/*.java</exclude>
+              </excludes>
+              <includes>
+                <include>**/*Test.java </include>
+              </includes>
+            </configuration>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+          <!-- Unit tests that require the web application deployed in the
+          container. This is bound to the integration-test phase. -->
+          <execution>
+            <id>Functional tests</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <excludes>
+                <exclude>${selenium-test-exclusion-list}</exclude>
+              </excludes>
+              <includes>
+                <include>**/functionaltest/**/*Test.java </include>
+              </includes>
+            </configuration>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>maven-jetty-plugin</artifactId>
+        <version>${dependency.jetty-plugin.version}</version>
+        <configuration>
+          <contextPath>katari-sample</contextPath>
+          <connectors>
+            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+              <port>8098</port>
+              <maxIdleTime>60000</maxIdleTime>
+            </connector>
+            <connector implementation="org.mortbay.jetty.security.SslSocketConnector">
+              <port>8097</port>
+              <maxIdleTime>60000</maxIdleTime>
+              <keystore>${project.build.directory}/jetty-ssl.keystore</keystore>
+              <password>jetty6</password>
+              <keyPassword>jetty6</keyPassword>
+            </connector>
+          </connectors>
+          <useTestClasspath>true</useTestClasspath>
+          <reload>manual</reload>
+
+          <systemProperties>
+            <!-- Without this, mvn jetty:run fails with java.lang.LinkageError:
+            Class javax/management/MBeanServer violates loader constraints.
+            -->
+            <systemProperty>
+              <name>com.mchange.v2.c3p0.management.ManagementCoordinator</name>
+              <value>com.mchange.v2.c3p0.management.NullManagementCoordinator</value>
+            </systemProperty>
+          </systemProperties>
+
+        </configuration>
+      </plugin>
+      
+      <!-- Generates a self signed certificate to be used by the jetty plugin.
+           This is plugin regenerates the key for every run.
+      -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>keytool-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <!-- We must remove the key from previous runs so that the genkey
+                 goal does not fail with an existing key error. -->
+            <id>clean</id>
+            <goals><goal>clean</goal></goals>
+          </execution>
+          <execution>
+            <phase>generate-resources</phase>
+            <id>genkey</id>
+            <goals><goal>genkey</goal></goals>
+          </execution>
+        </executions>
+        <configuration>
+          <keystore>${project.build.directory}/jetty-ssl.keystore</keystore>
+          <dname>cn=localhost</dname>
+          <keypass>jetty6</keypass>
+          <storepass>jetty6</storepass>
+          <alias>jetty6</alias>
+          <keyalg>RSA</keyalg>
+        </configuration>
+      </plugin>      
+
+      <!-- Generates the ddl file. -->
+      <!-- Tried using maven groovy plugin, but it threw an error with mvn
+      jetty:run. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals><goal>java</goal></goals>
+          </execution>
+        </executions>
+
+        <configuration>
+          <classpathScope>test</classpathScope>
+          <cleanupDaemonThreads>false</cleanupDaemonThreads>
+          <keepAlive>false</keepAlive>
+
+          <mainClass>com.globant.katari.tools.HibernateUtils</mainClass>
+          <arguments>
+            <!-- the three / are for compatibility with windows: file:///c:/..
+            -->
+            <argument>
+              file:///${project.basedir}/src/main/webapp/WEB-INF/applicationContext.xml,
+              classpath:/com/globant/katari/tools/dummyDataSourceContext.xml
+            </argument>
+            <argument>${project.basedir}/target/katari-sample.ddl</argument>
+          </arguments>
+
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <profiles>
+
+    <!-- Wtih this profile active, cargo:start starts tomcat and deploys the
+    expanded web application in it, listening at port 8098. You must first run
+    mvn war:inplace. -->
+    <profile>
+      <id>cargo-inplace</id>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.cargo</groupId>
+            <artifactId>cargo-maven2-plugin</artifactId>
+            <version>0.3.1</version>
+            <configuration>
+              <container>
+                <containerId>tomcat5x</containerId>
+                <zipUrlInstaller>
+                  <url>${cargo.tomcatLocation}</url>
+                </zipUrlInstaller>
+                <dependencies>
+                  <dependency>
+                    <location>${basedir}/target/test-classes</location>
+                  </dependency>
+                </dependencies>
+              </container>
+              <configuration>
+                <home>${project.build.directory}/tmp/cargo</home>
+                <properties>
+                  <reloadable>true</reloadable>
+                  <cargo.servlet.port>8098</cargo.servlet.port>
+                  <cargo.jvmargs>${katari.cargo.jvmargs}</cargo.jvmargs>
+                </properties>
+                <deployables>
+                  <deployable>
+                    <!-- Deploys the exploded webapp. -->
+                    <location>${basedir}/src/main/webapp</location>
+                    <properties>
+                      <context>katari</context>
+                    </properties>
+                  </deployable>
+                </deployables>
+              </configuration>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- A test configuration with selenium. Activate with -P selenium-test -->
+    <profile>
+      <id>selenium-test</id>
+      <properties>
+        <selenium-test-exclusion-list />
+      </properties>
+
+      <build>
+        <plugins>
+          <!-- Selenium Maven plugin. -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>selenium-maven-plugin</artifactId>
+            <version>1.0</version>
+            <executions>
+              <execution>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start-server</goal>
+                </goals>
+                <configuration>
+                  <background>true</background>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>selenium-exclude-test</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <selenium-test-exclusion-list>
+          **/functionaltest/selenium/*.java
+        </selenium-test-exclusion-list>
+      </properties>
+    </profile>
+  </profiles>
+
+  <properties>
+    <!-- This property is intended to be overriden from the command line in
+         case that apache cannot be reached normally. This is specifically used
+         to build katari inside Globant in hudson. -->
+    <cargo.tomcatLocation>
+      http://apache.xmundo.com.ar/tomcat/tomcat-5/v5.5.28/bin/apache-tomcat-5.5.28.zip
+    </cargo.tomcatLocation>
+  </properties>
+
+</project>
+

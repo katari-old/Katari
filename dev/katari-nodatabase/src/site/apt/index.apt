@@ -1,0 +1,12 @@
+~~~ vim: set sw=1 et ts=1 ai:
+ -----
+ The Site
+ -----
+ Pablo Gra\~na
+ -----
+
+Katari - sample application without a database
+
+ This is a copy of the sample web application with all the database related
+ functionality removed.
+

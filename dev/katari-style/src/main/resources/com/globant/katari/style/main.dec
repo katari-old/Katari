@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+
+<#import "katari.ftl" as katari/>
+
+<html>
+
+  <head>
+    <title>${title}</title>
+
+    <script type='text/javascript'
+      src="${baseweb}/module/ajax/yui/yuiloader/yuiloader-min.js">
+    </script>
+
+    ${head}
+    <link rel="stylesheet" type="text/css" media="screen"
+        href="${baseweb}/module/decorator/css/katari.css">
+    <link rel="icon" type="image/vnd.microsoft.icon"
+        href="${baseweb}/module/decorator/image/katari.ico">
+
+    <script type='text/javascript'>
+      /* Loads the katari css and overrides the style for the calendar. */
+      var loader = new YAHOO.util.YUILoader(
+        {base: '/katari-sample/module/ajax/yui/'});
+      loader.addModule({
+        name: 'katari-style',
+        type: 'css',
+        fullpath: '${baseweb}/module/decorator/css/katari.css',
+        requires: ['calendar']
+      });
+      loader.require(["katari-style"]);
+      loader.insert();
+    </script>
+  </head>
+
+  <body class='yui-skin-sam'>
+    <div id='container'>
+      <div id="header">
+        <!-- Header starts here -->
+        <#include "header.dec">
+        <!-- Header ends here -->
+      </div>
+      <div id="frame">
+        <!-- the main menu starts here -->
+        <@katari.weblet "classic-menu" "menu" "1"/>
+
+        <!-- the main menu ends here -->
+        <div id="section">
+
+          <!-- the inner menu starts here -->
+          <@katari.weblet "classic-menu" "menu" "2"/>
+          <!-- the inner menu ends here -->
+
+          <!-- the button menu starts here -->
+          <@katari.weblet "classic-menu" "menu" "3"/>
+          <!-- the button menu ends here -->
+
+          <div id='content'>
+            <!-- Body begins here -->
+            ${body}
+            <!-- body ends here -->
+          </div>
+
+        </div>
+      </div>
+      <div id="footerPadding"></div>
+      <div id="footer">
+        <!-- Footer begins here -->
+        <#include "footer.dec">
+        <!-- Footer ends here -->
+      </div>
+    </div>
+  </body>
+
+<#-- vim: set ts=2 et sw=2 filetype=html ai: -->
+</html>
+

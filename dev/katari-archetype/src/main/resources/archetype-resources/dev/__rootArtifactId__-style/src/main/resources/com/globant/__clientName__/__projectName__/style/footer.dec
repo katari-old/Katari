@@ -1,0 +1,9 @@
+#set( $symbol_dollar = '$' )
+<#import "katari.ftl" as katari/>
+
+<#noparse>
+  <div id="version">${clientName}-${projectName}-${symbol_dollar}{parent.parent.version}</div>
+</#noparse>
+<div id="pageclose"><@katari.weblet "editable-pages" "page" "about"/></div>
+<#-- vim: set ts=2 et sw=2 filetype=html ai : -->
+

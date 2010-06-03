@@ -1,0 +1,67 @@
+/* TODO: This file name is hardcoded in the editable pages module. Provide a
+ * way to decouple the editable pages module from the decorator module.
+ */
+body {
+  background-color: #ffffff;
+  padding: 5px 5px 5px 5px;
+  margin: 0px;
+}
+
+body, td {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 0.8em;
+}
+
+a[href] {
+  /* For Firefox... mark as important, otherwise it becomes black */
+  color: -moz-hyperlinktext !important;
+  /* For Firefox 3, otherwise no underline will be used */
+  text-decoration: -moz-anchor-decoration;
+}
+
+/* Just uncomment the following block if you want to avoid spaces between
+ * paragraphs. Remember to apply the same style in your output front end page.
+ */
+
+/*
+p, ul, li {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+*/
+
+/* The following are some sample styles used in the "Styles" toolbar command.
+ * You should instead remove them, and include the styles used by the site you
+ * are using the editor in.
+ */
+
+.Bold {
+  font-weight: bold;
+}
+
+.Title {
+  font-weight: bold;
+  font-size: 18px;
+  color: #cc3300;
+}
+
+.Code {
+  border: #8b4513 1px solid;
+  padding-right: 5px;
+  padding-left: 5px;
+  color: #000066;
+  font-family: 'Courier New' , Monospace;
+  background-color: #ff9933;
+}
+
+h3 {
+  color: #94A717;
+}
+
+h4 {
+	font-size:1em;
+	font-weight:normal;
+	margin:0;
+	padding:0 2em 5px;
+}
+

@@ -1,0 +1,22 @@
+<decorators defaultdir="/">
+
+  <!-- We do not decorate cas module urls and the weblets -->
+  <excludes>
+    <pattern>/module/cas/proxyValidate*</pattern>
+    <pattern>*/weblet/*</pattern>
+  </excludes>
+
+  <!-- Decorate login/logout related pages. -->
+  <decorator name="login" page="/module/decorator/login.dec">
+    <pattern>/module/cas/login*</pattern>
+    <pattern>/module/cas/logout*</pattern>
+  </decorator>
+
+  <!-- Decorate the rest of the pages. -->
+  <decorator name="main" page="/module/decorator/main.dec">
+    <pattern>*</pattern>
+  </decorator>
+
+ <!-- vim: set ts=2 et sw=2 : -->
+</decorators>
+

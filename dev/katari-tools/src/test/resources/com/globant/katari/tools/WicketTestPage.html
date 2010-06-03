@@ -1,0 +1,34 @@
+<html>
+  <body>
+    <h3>Test page</h3>
+    <table width='100%' border='0' class='results bottomMargin' id='userList'
+        cellpadding='0' cellspacing='0'>
+      <col width='20%'/>
+      <col width='30%'/>
+      <col width='30%'/>
+      <col width='20%'/>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>E-Mail</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr wicket:id="users" class="even">
+          <td wicket:id="name">name</td>
+          <td wicket:id="email">email</td>
+          <td>
+            <span class="btnContainer">
+              <input class="btn" type="submit" value="delete"
+                wicket:id='delete' href='' />
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+  <!-- vim: set ts=2 et sw=2 filetype=html ai : -->
+</html>
+

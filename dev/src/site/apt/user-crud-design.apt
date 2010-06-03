@@ -1,0 +1,78 @@
+~~~ vim: set sw=1 et ts=1 tw=80 ai:
+
+Crud design
+
+ Here we layout some design issues related to crud functionality.
+
+ The user module contains a sample implementation of a crud (create - remove -
+ update - delete) operation. The ideas layed out here can be used for all other
+ cases of user transactions.
+
+ First, a story of how we got to the current design. These are some of the
+ things considered:
+
+ [[1]] Post to DTOs or to domain objects.
+
+ [[1]] How to delimit transactions.
+
+ [[1]] The use of open session in view is still under evaluation.
+
+ []
+
+ The tools of choice produce a huge impact on how this is solved. With struts,
+ the only reasonably way of handling the posting of data is using the form as a
+ DTO. With spring-mvc we have another alternative: spring's simple form
+ controller can post directly to domain objects. This can make certain things
+ easier, but it pollutes the domain with setters and getters, exposing their
+ internals to all clients.
+
+ The other thing is how to delimit transactions. The usual way is simply with
+ the facades. Facades are proxied with the help of spring to delimit
+ transactions.  So we now have a DTO + a facade. What if we merge them? The DTO
+ has almost all the necessary information to perform the operation. So we did,
+ and called it a command. Now, to perform some action through a post we:
+
+ [[1]] Create a command object with getters and setters for all the attributes
+ that will receive post data.
+
+ [[1]] Create an execute method on the command object. This method implements
+ the command logic.
+
+ [[1]] Declare the command as a prototype in the spring application context.
+ Inject all the necesary dependencies (domain services, repositories, etc).
+
+ [[1]] Proxy the command to wrap the execute method in a transaction.
+
+ [[1]] Inject the command to the corresponding view controller. This needs to be
+ done through method injection, because the controller is a singleton and we
+ need one command per request.
+
+ [[1]] Return the the command object as the formBackingObject.
+
+ [[1]] Call the execute method of the command object in doSubmit.
+
+ []
+
+ This is how it goes:
+
+[images/user-module-edit.png] Editing a user
+
+* Pagination, filtering and sorting
+
+ The user crud supports pagination, filtering by one field, and sorting. All
+ this information is posted from the user/role list page. The posting
+ information is:
+
+ * Current page number.
+
+ * The number of items per page.
+
+ * The current column to sort by.
+
+ * The sort order (ascending or descending).
+
+ * The name of the field to filter.
+
+ * The value that the filter field must begin with that determines with objects
+ to show.
+

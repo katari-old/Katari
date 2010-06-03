@@ -1,0 +1,88 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4"
+  xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+      http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <display-name>${artifactId}</display-name>
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      <!-- The main spring application context. It can be loaded independently
+      of the rest, but with default configuration values. -->
+      /WEB-INF/applicationContext.xml
+      <!-- The fragment of the application context that contains configuration
+      option that must be defined at runtime. The main application context is
+      split in two so that it can be loaded at compile time to generate the ddl
+      file. -->
+      /WEB-INF/applicationContextRuntime.xml
+    </param-value>
+  </context-param>
+
+  <!-- Initializes the main spring bean factory -->
+  <listener>
+    <listener-class>
+      org.springframework.web.context.ContextLoaderListener
+    </listener-class>
+  </listener>
+
+  <!-- Katari spring bootstrap listener. This listener searches for a bean in the
+  application context and delegates the listening process to it. -->
+  <listener>
+    <listener-class>
+      com.globant.katari.core.web.SpringBootstrapListener
+    </listener-class>
+  </listener>
+
+  <!-- Katari spring bootstrap filter. This filter searches for a bean in the
+  application context and delegates the filtering process to it.
+  -->
+  <filter>
+    <filter-name>springBootstrapFilter</filter-name>
+    <filter-class>
+      com.globant.katari.core.web.SpringBootstrapFilter
+    </filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>springBootstrapFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+    <description></description>
+    <display-name>SpringBootstrapServlet</display-name>
+    <servlet-name>modules</servlet-name>
+    <servlet-class>
+      com.globant.katari.core.web.SpringBootstrapServlet
+    </servlet-class>
+  </servlet>
+
+  <servlet>
+    <description></description>
+    <display-name>PingServlet</display-name>
+    <servlet-name>pingServlet</servlet-name>
+    <servlet-class>
+      com.globant.katari.core.ping.PingServlet
+    </servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>pingServlet</servlet-name>
+    <url-pattern>/ping/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- The main UI entry point for all the modules. -->
+  <servlet-mapping>
+    <servlet-name>modules</servlet-name>
+    <url-pattern>/module/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- vim: set ts=2 et sw=2 : -->
+</web-app>
+

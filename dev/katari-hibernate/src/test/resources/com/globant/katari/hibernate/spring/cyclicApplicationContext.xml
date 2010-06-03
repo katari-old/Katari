@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- This module is intended to make the tests in ModularCyclicReferenceTest
+  fail because of a cyclic dependency -->
+  <bean id="cyclic-dependency-test.module"
+    class="com.globant.katari.core.web.ConfigurableModule">
+    <property name="filters">
+      <list>
+        <bean class="com.globant.katari.core.web.FilterMapping">
+          <constructor-arg index="0" value=".*" />
+          <constructor-arg index="1">
+            <bean class="com.globant.katari.core.web.FilterAndParameters">
+              <constructor-arg index="0">
+                <bean class="com.globant.katari.hibernate.ModuleCyclicReferenceTest$SampleFilter">
+                  <constructor-arg index="0" ref="katari.sessionFactory" />
+                </bean>
+              </constructor-arg>
+            </bean>
+          </constructor-arg>
+        </bean>
+      </list>
+    </property>
+  </bean>
+</beans>
+

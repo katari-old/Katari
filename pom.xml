@@ -1,0 +1,173 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <!-- vim: set ts=2 et sw=2 ai: -->
+
+  <parent>
+    <groupId>com.globant.maven</groupId>
+    <artifactId>globant-parent</artifactId>
+    <version>1.17</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.globant.katari</groupId>
+  <artifactId>katari</artifactId>
+  <version>0.22-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Globant Katari</name>
+  <description>
+    A template application that serves as a base for all java based Globant
+    projects.
+  </description>
+  <url>${repositoryRoot}/site/${groupId}/katari/${version}</url>
+
+  <modules>
+    <module>dev</module>
+  </modules>
+
+  <prerequisites>
+    <maven>2.2</maven>
+  </prerequisites>
+
+  <build>
+
+    <plugins>
+
+      <!-- Version 2.1 fails with something related to a duplicate version of
+           commons logging (version 1.0.4).
+           -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>2.0.1</version>
+      </plugin>
+
+      <!-- Prepares and performs the release. This basically deploys the
+      distribution package configured in the assembly-plugin.
+      -->
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${dependency.release-plugin.version}</version>
+        <configuration>
+          <!-- Where to tag -->
+          <tagBase>
+            https://projects.globant.com/svn/katari/release
+          </tagBase>
+          <goals>install site-deploy assembly:attached deploy</goals>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+        </configuration>
+      </plugin>
+
+      <!-- Builds a distribution package. -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${dependency.assembly-plugin.version}</version>
+        <inherited>false</inherited>
+        <configuration>
+          <descriptors>
+            <descriptor>dev/src/main/assemble/bin.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+    <!-- Should be inherited from parent.
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav</artifactId>
+      </extension>
+    </extensions>
+    -->
+
+  </build>
+
+  <!-- The scm information used by continuous integration and documentation. -->
+  <scm>
+    <connection>scm:svn:https://projects.globant.com/svn/katari/main</connection>
+    <developerConnection>
+      scm:svn:https://projects.globant.com/svn/katari/main
+    </developerConnection>
+    <url>https://projects.globant.com/trac/katari/browser/main</url>
+  </scm>
+
+  <issueManagement>
+    <system>trac</system>
+    <url>https://projects.globant.com/trac/katari</url>
+  </issueManagement>
+
+  <repositories>
+    <repository>
+      <id>globant-public-releases</id>
+      <name>globant-public-releases</name>
+      <!-- If I use ${repositoryRoot}, maven does not find the parent pom. -->
+      <url>https://projects.globant.com/nexus/content/repositories/globant</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>globant-public-releases</id>
+      <name>globant-public-releases</name>
+      <url>${repositoryRoot}/globant</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <!-- The location where deploy and site-deploy leaves the artifacts.
+       repositoryRoot is defined in globant parent pom. This configuration is
+       overriden in dev to skip this pom site. -->
+  <distributionManagement>
+    <repository>
+      <id>globant-public-releases</id>
+      <url>dav:${repositoryRoot}/globant</url>
+    </repository>
+    <snapshotRepository>
+      <id>globant-public-snapshots</id>
+      <url>dav:${repositoryRoot}/globant-snapshots</url>
+    </snapshotRepository>
+    <site>
+      <id>globant-public-releases</id>
+      <url>dav:${repositoryRoot}/site/${groupId}/katari/${version}</url>
+    </site>
+  </distributionManagement>
+
+  <!-- Continuous integration configuration -->
+  <ciManagement>
+    <system>hudson</system>
+    <url>http://portobello.globant.com:8081/hudson/job/katari</url>
+  </ciManagement>
+
+  <mailingLists>
+    <mailingList>
+      <name>glb_template</name>
+      <subscribe>
+        http://mailman.corp.globant.com/mailman/listinfo/glb_template
+      </subscribe>
+      <unsubscribe>
+        http://mailman.corp.globant.com/mailman/listinfo/glb_template
+      </unsubscribe>
+      <post>glb_template@globant.com</post>
+      <archive>
+        http://mailman.corp.globant.com/mailman/private/glb_template
+      </archive>
+    </mailingList>
+  </mailingLists>
+
+  <properties>
+    <!-- Dependencies versions. They are declared here to avoid duplication in
+    the archetype. -->
+    <dependency.release-plugin.version>
+      2.0-beta-9
+    </dependency.release-plugin.version>
+    <dependency.assembly-plugin.version>
+      2.2-beta-4
+    </dependency.assembly-plugin.version>
+    <dependency.assembly-plugin.version>
+      2.2-beta-4
+    </dependency.assembly-plugin.version>
+    <repositoryRoot>
+      https://projects.globant.com/nexus/content/repositories
+    </repositoryRoot>
+  </properties>
+
+</project>
+

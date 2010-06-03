@@ -1,0 +1,15 @@
+<!-- If the current user can access the given url the body is rendered. 
+  If the current user cannot access the given url and the application is in 
+  test debug mode the body is rendered in red with a debug title above it. -->
+  
+<span jwcid="$content$">
+  <span jwcid="@If" condition="ognl:canAccessUrl()">
+    <span jwcid="@RenderBody"/>
+  </span>
+
+  <span jwcid="@If" condition="ognl:isInSecurityDebugMode() && !canAccessUrl()">
+    <span style="color:red"><b>debug</b><br>
+      <span jwcid="@RenderBody"/>
+    </span>
+  </span>
+</span>
