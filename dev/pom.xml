@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <!-- vim: set ts=2 et sw=2 ai tw=80: -->
 
@@ -22,7 +23,7 @@
       <!--url>http://www.apache.org/licenses/LICENSE-2.0.txt</url -->
       <url>LICENSE</url>
       <distribution>repo</distribution>
-      <comments />
+      <comments/>
     </license>
   </licenses>
 
@@ -63,6 +64,7 @@
     <module>katari-module-archetype</module>
     <!-- Katari site skin -->
     <module>katari-siteskin</module>
+    <module>katari-socialserver</module>
   </modules>
 
   <!-- List of dependencies for all modules in the application. This section
@@ -781,27 +783,27 @@
                 <!-- Copy and filter the apt files -->
                 <copy todir="target/site-src/apt" preservelastmodified="true" filtering="true">
                   <filterset>
-                    <filter token="version" value="${version}" />
+                    <filter token="version" value="${version}"/>
                   </filterset>
-                  <fileset dir="src/site/apt" />
+                  <fileset dir="src/site/apt"/>
                 </copy>
 
                 <!-- Copy the module indexes -->
-                <copy file="katari-editablepages/src/site/apt/index.apt" tofile="target/site-src/apt/katari-editablepages.apt" preservelastmodified="true" />
-                <copy file="katari-report/src/site/apt/index.apt" tofile="target/site-src/apt/katari-reports.apt" preservelastmodified="true" />
-                <copy file="katari-search/src/site/apt/index.apt" tofile="target/site-src/apt/katari-search.apt" preservelastmodified="true" />
+                <copy file="katari-editablepages/src/site/apt/index.apt" tofile="target/site-src/apt/katari-editablepages.apt" preservelastmodified="true"/>
+                <copy file="katari-report/src/site/apt/index.apt" tofile="target/site-src/apt/katari-reports.apt" preservelastmodified="true"/>
+                <copy file="katari-search/src/site/apt/index.apt" tofile="target/site-src/apt/katari-search.apt" preservelastmodified="true"/>
 
                 <!-- Copy the images for the pdf -->
                 <copy todir="target/generated-site/pdf/user-manual/images">
-                  <fileset dir="target/site/images" />
+                  <fileset dir="target/site/images"/>
                 </copy>
                 <copy todir="target/generated-site/pdf/user-manual/images">
-                  <fileset dir="src/site/resources/images" />
+                  <fileset dir="src/site/resources/images"/>
                 </copy>
 
                 <!-- Prepare the pdf generation through latex -->
                 <copy todir="target/generated-site/latex/user-manual/images">
-                  <fileset dir="target/generated-site/pdf/user-manual/images" />
+                  <fileset dir="target/generated-site/pdf/user-manual/images"/>
                 </copy>
 
               </tasks>
@@ -817,14 +819,14 @@
               <tasks>
                 <copy todir="target/site/pdf" flatten="true">
                   <fileset dir="target/generated-site/pdf">
-                    <include name="**/*.pdf" />
+                    <include name="**/*.pdf"/>
                   </fileset>
                 </copy>
                 <!-- If the latex generated pdfs are there, replace the doxia
                      generated ones (latex is WAAAYYYYY better).-->
                 <copy todir="target/site/pdf" flatten="true" overwrite="true">
                   <fileset dir="target/generated-site/latex">
-                    <include name="**/*.pdf" />
+                    <include name="**/*.pdf"/>
                   </fileset>
                 </copy>
               </tasks>
