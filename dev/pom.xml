@@ -647,6 +647,12 @@
       </dependency>
 
       <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-socialserver</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>jtidy</groupId>
         <artifactId>jtidy</artifactId>
         <version>r938</version>

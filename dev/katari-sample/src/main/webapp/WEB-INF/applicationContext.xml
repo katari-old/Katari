@@ -74,6 +74,9 @@
   <!-- The console module. -->
   <import resource="classpath:/com/globant/katari/console/module.xml" />
 
+  <!-- The social server module. -->
+  <import resource="classpath:/com/globant/katari/socialserver/socialserver/module.xml" />
+
   <!-- The hibernate properties. They are referenced from the hibernate bean. -->
   <bean id="katari.hibernateProperties"
     class="org.springframework.beans.factory.config.PropertiesFactoryBean">
