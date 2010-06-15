@@ -216,11 +216,6 @@
 
     <dependency>
       <groupId>com.globant.katari</groupId>
-      <artifactId>katari-trails</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.globant.katari</groupId>
       <artifactId>katari-report</artifactId>
     </dependency>
 
@@ -289,33 +284,6 @@
     </testResources>
 
     <plugins>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>aspectj-maven-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-          <aspectLibraries>
-            <aspectLibrary>
-              <groupId>org.trailsframework</groupId>
-              <artifactId>trails-core</artifactId>
-            </aspectLibrary>
-            <aspectLibrary>
-              <groupId>org.trailsframework</groupId>
-              <artifactId>trails-hibernate</artifactId>
-            </aspectLibrary>
-          </aspectLibraries>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>test-compile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
 
       <!-- Starts tomcat and deploys the web application in it, listening at
       port 8089.  The plugin is also bounded to the pre-integration-test and

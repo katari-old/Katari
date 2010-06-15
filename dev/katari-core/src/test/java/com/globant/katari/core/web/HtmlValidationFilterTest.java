@@ -165,45 +165,6 @@ public class HtmlValidationFilterTest {
     filter.doFilter(request, response, chain);
   }
 
-  /* Tests that the filter ignores the invalid attribute 'validator' for trails
-   * module.
-   */
-  @Test
-  public final void testDoFilter_ignoreValidator() throws Exception {
-
-    request = createNiceMock(HttpServletRequest.class);
-    expect(request.getRequestURI()).andReturn("/test");
-    expect(request.getPathInfo()).andReturn("/trails/");
-    replay(request);
-
-    // Mocks the filter chain.
-    FilterChain chain = new FilterChain() {
-      public void doFilter(final ServletRequest request, final
-          ServletResponse response) throws IOException {
-        log.trace("Entering doFilter");
-
-        PrintWriter writer = new PrintWriter(response.getOutputStream());
-        writer.write(
-            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\""
-            + " \"http://www.w3.org/TR/html4/strict.dtd\">"
-            + " <html><head><title>aa</title></head><body>"
-            + "<form action='test'>"
-            + " <input type='text' validator='aa'>"
-            + "</form>"
-            + "</body></html>");
-        writer.flush();
-        log.trace("Leaving doFilter");
-      }
-    };
-
-    // Executes the test.
-    HtmlValidationFilter filter = new HtmlValidationFilter();
-    filter.setEnabled(true);
-    filter.init(filterConfig);
-    // Would throw an exception if enabled.
-    filter.doFilter(request, response, chain);
-  }
-
   /* Tests that the filter ignores based on url pattern list.
    */
   @Test
@@ -243,14 +204,13 @@ public class HtmlValidationFilterTest {
     filter.doFilter(request, response, chain);
   }
 
-  /* Tests that the filter considers the invalid attribute 'validator' if the
-   * module is not trails.
+  /* Tests that the filter considers the invalid attribute 'validator'.
    */
   @Test(expected=ServletException.class)
   public final void testDoFilter_considerValidator() throws Exception {
 
     request = createNiceMock(HttpServletRequest.class);
-    expect(request.getPathInfo()).andReturn("/notTrails/");
+    expect(request.getPathInfo()).andReturn("/something/");
     expect(request.getRequestURI()).andReturn("/test");
     replay(request);
 

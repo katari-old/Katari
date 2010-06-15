@@ -52,7 +52,7 @@ public class UsersTest extends TestCase {
     repository.save(user);
   }
 
-  /** Tests the hello world servlet.
+  /** Tests that the app does returns a list of users.
    *
    * It checks for the title and that both users are found.
    *

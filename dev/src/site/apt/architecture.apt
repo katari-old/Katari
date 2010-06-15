@@ -223,9 +223,6 @@ Architecture
 
  [katari-report] Allow users to upload and manage jasper reports.
 
- [katari-trails] Integrates trails, a framework that makes it easy to
- develop simple cruds.
-
  [katari-cas] Integrates CAS as a single sign-on for authentication with
  all the services within the application.
 

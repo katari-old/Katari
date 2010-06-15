@@ -59,54 +59,6 @@
       class="com.globant.katari.sample.integration.DomainUserDetailsService">
   </bean>
 
-  <!-- Here are some configuration examples for modules. -->
-
-  <!-- Trails module. -->
-  <!-- The location of the FCKEditor configuration file. -->
-  <!--
-  <bean id="trails.fckeditorConfiguration" class="java.lang.String">
-    <constructor-arg value="/test.js"/>
-  </bean>
-  <bean id="trails.fckeditorInstanceConfigurer" class="java.lang.String">
-    <constructor-arg>
-      <value>
-        <![CDATA[
-        editor.Height = 700;
-        alert(propertyName);
-        alert(className);
-        ]]>
-      </value>
-    </constructor-arg>
-  </bean>
-  -->
-
-  <!-- CAS module. -->
-  <!-- Set the cas validator host name to localhost ip.
-  <bean id='cas.validatorUrlTransformer'
-    class='com.globant.katari.cas.UrlTransformer'>
-    <constructor-arg index="0" value="127.0.0.1" />
-    <constructor-arg index="1"><null /></constructor-arg>
-    <constructor-arg index="2"><null /></constructor-arg>
-    <constructor-arg index="3"><null /></constructor-arg>
-  </bean>
-  -->
-
-  <!-- Overrides the security configuration for the trails module. -->
-  <!--
-  <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper"
-    id='trails.urlToRoleMapper'>
-    <constructor-arg index="0">
-      <map>
-        <entry key="/**">
-          <list>
-            <value>ROLE_REPORT_ADMIN</value>
-          </list>
-        </entry>
-      </map>
-    </constructor-arg>
-  </bean>
-  -->
-
 </beans>
 
 <!-- vim: set ts=2 et sw=2 ai: -->

@@ -101,15 +101,6 @@
           <id>i18n</id>
         </section>
       </sections>
-    </chapter>
-    <chapter>
-      <id>cruds</id>
-      <title>The trails module</title>
-      <sections>
-        <section>
-          <id>cruds</id>
-        </section>
-      </sections>
     </chapter -->
   </chapters>
   <!-- vim: set ts=2 et sw=2 ai: -->

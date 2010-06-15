@@ -324,18 +324,6 @@
         <version>2.2.0</version>
       </dependency>
 
-      <dependency>
-        <groupId>org.aspectj</groupId>
-        <artifactId>aspectjrt</artifactId>
-        <version>1.6.1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.aspectj</groupId>
-        <artifactId>aspectjweaver</artifactId>
-        <version>1.6.1</version>
-      </dependency>
-      <!-- End of trails dependencies. -->
 
       <!-- Provided by the container -->
       <dependency>
@@ -380,12 +368,6 @@
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-classic-menu</artifactId>
-        <version>${version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.globant.katari</groupId>
-        <artifactId>katari-trails</artifactId>
         <version>${version}</version>
       </dependency>
 

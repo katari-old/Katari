@@ -51,26 +51,6 @@
     <!-- The menu bar. -->
     <property name='menuBar'>
       <katari:menuBar id='menubar'>
-        <katari:menuNode name='Administration'>
-          <katari:menuNode name='Clients'>
-            <katari:menuItem name='List'
-              link='${trails.module}/trails/list/Client'/>
-            <katari:menuItem name='New'
-              link="${trails.module}/trails/new/Client" />
-          </katari:menuNode>
-          <katari:menuNode name='Projects'>
-            <katari:menuItem name='List'
-              link='${trails.module}/trails/list/Project'/>
-            <katari:menuItem name='New'
-              link='${trails.module}/trails/new/Project'/>
-          </katari:menuNode>
-          <katari:menuNode name='Activities'>
-            <katari:menuItem name='List'
-              link="${trails.module}/trails/list/Activity" />
-            <katari:menuItem name='New'
-              link="${trails.module}/trails/new/Activity" />
-          </katari:menuNode>
-        </katari:menuNode>
         <katari:menuItem name='Time' display='My Time'
           link="myTime.do" />
         <katari:menuNode name='Reports'>
@@ -97,25 +77,6 @@
       </list>
     </constructor-arg>
   </bean>
-
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
-    <constructor-arg value='trails.persistentClasses'/>
-    <constructor-arg>
-      <list>
-        <value>com.globant.katari.sample.time.crud.Activity</value>
-        <value>com.globant.katari.sample.time.crud.Client</value>
-        <value>com.globant.katari.sample.time.crud.Project</value>
-      </list>
-    </constructor-arg>
-  </bean>
-
-  <!-- Overrides the messages location for trails.
-
-  NOTE: This is a sample only.
-  -->
-  <util:list id='trails.messageSourceBasenames'>
-    <value>com.globant.katari.sample.time.messages</value>
-  </util:list>
 
 </beans>
 

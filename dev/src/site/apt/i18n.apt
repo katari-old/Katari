@@ -70,7 +70,7 @@ Design
    enforced by Katari.
 
  * Katari uses mainly resource messages and freemarker templates. The freemarker
-   templates are used in sitemesh and in spring-mvn. Localization must be
+   templates are used in sitemesh and in spring-mvc. Localization must be
    'uniform', ie, the localization a sitemesh template and a spring-mvc page
    must be similar. As a challenge to solve, sitemesh does not support resource
    based localization as spring-mvc does (see @message macro).
@@ -87,11 +87,6 @@ Design
  []
 
 * Special cases
-
- * Trails shows the field names from the entity being edited as obtained from a
-   property file. The problem is that trails does not know about the entities
-   being edited. So there should be a mechanism to 'augment' the trails
-   collection of propertiy files.
 
  * It would be nice to have just one file for a specific locale. This makes it
    easier to administer translations to a new language.
@@ -135,24 +130,4 @@ Design
     as supported today by Katari for static content.
 
 i18n Guide
-
-  For this version, Katari only includes support for transating trails messages
-  only.
-
-* Trails
-
-   You can translate, and even modify, all the messages that trails uses in it's
-   pages. For this, you need to override a bean called
-   trails.messageSourceBasenames. This bean is a list of location where Katari
-   locates all the messages defined in trails and the entities specific messages.
-
-   This bean must be of type list. It's default value is:
-
----------------
-  <util:list id='trails.messageSourceBasenames'>
-    <value>com.globant.katari.trails.trails-messages</value>
-  </util:list>
----------------
-
-  This default only defines the messages for the static part of the pages.
 

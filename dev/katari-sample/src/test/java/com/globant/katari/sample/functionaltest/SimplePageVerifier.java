@@ -1,3 +1,5 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.sample.functionaltest;
 
 import java.net.URL;
@@ -5,6 +7,9 @@ import java.net.URL;
 import junit.framework.TestCase;
 
 import org.apache.commons.lang.Validate;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.HttpMethod;
@@ -61,6 +66,11 @@ public final class SimplePageVerifier extends TestCase {
    */
   private static final String PASSWORD = "admin";
 
+  /** The class logger.
+   */
+  private static Logger log =
+    LoggerFactory.getLogger(SimplePageVerifier.class);
+
   /** A private constructor so no instances are created.
    */
   private SimplePageVerifier() {
@@ -80,10 +90,13 @@ public final class SimplePageVerifier extends TestCase {
    */
   public static WebClient login(final String url) throws Exception {
     Validate.notNull(url, "The relative url cannot be null.");
+    log.trace("Entering login");
 
     URL fullUrl = new URL(BASE_URL + url);
     WebClient webClient = new WebClient();
     HtmlPage loginPage = (HtmlPage) webClient.getPage(fullUrl);
+
+    log.debug("Page {}: \n{}\n", fullUrl, loginPage.asXml());
 
     HtmlForm loginForm = loginPage.getFormByName(FORM_SUBMITION);
     assertNotNull(loginForm);
@@ -109,8 +122,10 @@ public final class SimplePageVerifier extends TestCase {
 
     HtmlInput loginButton = loginForm.getInputByName(SUBMIT_BUTTON_NAME);
     HtmlPage homePage = (HtmlPage) loginButton.click();
+    log.debug("Login button click: \n{}\n", homePage.asXml());
     assertNotNull(homePage);
 
+    log.trace("Leaving login");
     return webClient;
   }
 
@@ -151,11 +166,15 @@ public final class SimplePageVerifier extends TestCase {
     Validate.notNull(matchRegExp, "The regular expression cannot be null.");
     Validate.notNull(notMatchRegExp, "The regular expression cannot be null.");
 
-    WebRequestSettings webRequestSettings = new WebRequestSettings(
-        new URL(BASE_URL + url + requestParameters), httpMethod);
+    log.trace("Entering verifyPage");
+
+    String location = BASE_URL + url + requestParameters;
+    WebRequestSettings webRequestSettings;
+    webRequestSettings = new WebRequestSettings(new URL(location), httpMethod);
 
     // Verify the title page.
     HtmlPage page = (HtmlPage) webClient.getPage(webRequestSettings);
+    log.debug("Page {}: \n{}\n", location, page.asXml());
     assertNotNull(page);
     assertTrue("The regular expression '" + titleRegExp
         + "' does not matches the page title: \n" + page.getTitleText(), page
@@ -174,6 +193,7 @@ public final class SimplePageVerifier extends TestCase {
       assertFalse("The regular expression '" + regExp
           + "' is in the page: \n" + pageText, pageText.matches(regExp));
     }
+    log.trace("Leaving verifyPage");
   }
 
   /** Verify a page.
@@ -203,13 +223,18 @@ public final class SimplePageVerifier extends TestCase {
     Validate.notNull(httpMethod, "The http method cannot be null.");
     Validate.notNull(title, "The title cannot be null.");
 
-    WebRequestSettings webRequestSettings = new WebRequestSettings(
-        new URL(BASE_URL + url + requestParameters), httpMethod);
+    log.trace("Entering verifyPage");
+
+    String location = BASE_URL + url + requestParameters;
+    WebRequestSettings webRequestSettings;
+    webRequestSettings = new WebRequestSettings(new URL(location), httpMethod);
 
     // Verify the title page.
     HtmlPage page = (HtmlPage) webClient.getPage(webRequestSettings);
+    log.debug("Page {}: \n{}\n", location, page.asXml());
     assertNotNull(page);
     assertEquals(title, page.getTitleText());
+    log.trace("Leaving verifyPage");
   }
 }
 

@@ -16,7 +16,7 @@ import javax.persistence.Table;
 /** Defines the Activity entity.
  *
  * Activities are cross project tasks. The only way to create an activity is
- * through a repository. Activities are managed in the trails module.
+ * through a repository.
  */
 @Entity
 @Table(name = "activities")

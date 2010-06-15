@@ -63,11 +63,6 @@
       <includes/>
     </fileSet>
     <fileSet>
-      <outputDirectory>/doc/katari-trails</outputDirectory>
-      <directory>dev/katari-trails/target/site</directory>
-      <includes/>
-    </fileSet>
-    <fileSet>
       <outputDirectory>/doc/katari-sample</outputDirectory>
       <directory>dev/katari-sample/target/site</directory>
       <includes/>

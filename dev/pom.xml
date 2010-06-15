@@ -40,8 +40,6 @@
     <module>katari-style</module>
     <!-- The classic menu support module -->
     <module>katari-classic-menu</module>
-    <!-- The trails support module -->
-    <module>katari-trails</module>
     <!-- Katari test and build support tools. -->
     <module>katari-tools</module>
     <!-- Katari report management module -->
@@ -274,7 +272,8 @@
         <version>${dependency.spring.version}</version>
       </dependency>
 
-      <!-- Needed by hibernate -->
+      <!-- Needed by hibernate. We could also use cglib, that is reported to be
+           faster. But javassist is the default. -->
       <dependency>
         <groupId>javassist</groupId>
         <artifactId>javassist</artifactId>
@@ -410,82 +409,6 @@
         <version>2.2.0</version>
       </dependency>
 
-      <!-- Trails dependencies. -->
-      <dependency>
-        <groupId>org.trailsframework</groupId>
-        <artifactId>trails-security</artifactId>
-        <version>1.2.1</version>
-        <!-- spring-remoting and spring-support are no loger separate jars
-             in spring 2.5, both are in spring-context-support  -->
-        <exclusions>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-remoting</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-support</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.trailsframework</groupId>
-        <artifactId>trails-hibernate</artifactId>
-        <version>1.2.1</version>
-        <exclusions>
-          <exclusion>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-          </exclusion>
-          <!-- in spring 2.5, spring-dao changes name to spring-tx -->
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-dao</artifactId>
-          </exclusion>
-          <!-- in spring 2.5, spring-hibernate3 changes name to spring-orm -->
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-hibernate3</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.trailsframework</groupId>
-        <artifactId>trails-test</artifactId>
-        <version>1.2.1</version>
-        <scope>test</scope>
-        <exclusions>
-          <!-- in spring 2.5, spring-mock changes name to spring-test -->
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-mock</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>htmlunit</groupId>
-            <artifactId>htmlunit</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.aspectj</groupId>
-        <artifactId>aspectjrt</artifactId>
-        <version>1.6.1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.aspectj</groupId>
-        <artifactId>aspectjweaver</artifactId>
-        <version>1.6.1</version>
-      </dependency>
-      <!-- End of trails dependencies. -->
-
       <!-- Mule dependencies -->
       <dependency>
         <groupId>org.mule</groupId>
@@ -602,12 +525,6 @@
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-classic-menu</artifactId>
-        <version>${version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.globant.katari</groupId>
-        <artifactId>katari-trails</artifactId>
         <version>${version}</version>
       </dependency>
 

@@ -214,8 +214,7 @@ public class HtmlValidationFilter implements Filter {
         tidy.setErrout(new PrintWriter(new ByteArrayOutputStream()));
 
         String path = ((HttpServletRequest) request).getPathInfo();
-        boolean trailsPage = path != null && path.matches(".*/trails/.*");
-        ErrorListener errors = new ErrorListener(trailsPage);
+        ErrorListener errors = new ErrorListener(false);
         tidy.setMessageListener(errors);
 
         InputStream inputStream;

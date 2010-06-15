@@ -66,11 +66,6 @@
       <includes/>
     </fileSet>
     <fileSet>
-      <outputDirectory>/doc/${parentArtifactId}-trails</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-trails/target/site</directory>
-      <includes/>
-    </fileSet>
-    <fileSet>
       <outputDirectory>/doc/${parentArtifactId}-web</outputDirectory>
       <directory>${artifactId}/${parentArtifactId}-web/target/site</directory>
       <includes/>
