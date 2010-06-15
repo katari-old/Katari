@@ -18,8 +18,8 @@ import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionBindingEvent;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang.Validate;
 
@@ -46,7 +46,7 @@ public final class ModuleListenerProxy implements ServletContextListener,
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ModuleListenerProxy.class);
+  private static Logger log = LoggerFactory.getLogger(ModuleListenerProxy.class);
 
   /** The target filter that this filter delegates all requests.
    *

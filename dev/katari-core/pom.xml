@@ -22,8 +22,20 @@
     </dependency>
 
     <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-tools</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymockclassextension</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -33,12 +45,8 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>com.globant.katari</groupId>
-      <artifactId>katari-tools</artifactId>
-      <scope>test</scope>
-    </dependency>
-
+    <!-- Used by a test to register the driver with the driver manager. No
+         class from this package is imported directly. -->
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
@@ -46,14 +54,23 @@
     </dependency>
 
     <!-- Runtime dependencies -->
+
+    <!-- The binding should be specified in the application referencing this
+         module (usually, the war). We depend on katari-tools at test time,
+         that brings the log4j bindings. -->
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
     </dependency>
 
     <dependency>
@@ -66,7 +83,28 @@
       <artifactId>spring-beans</artifactId>
     </dependency>
 
-    <!-- Needed by spring-beans (marked optional there) -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
+
+    <!-- Needed by spring-beans (marked optional there). No class from this
+         package is imported directly. -->
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib-nodep</artifactId>
@@ -80,12 +118,6 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aop</artifactId>
-    </dependency>
-
-    <!-- Needed to extend LocalSessionFactoryBean -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
     </dependency>
 
     <dependency>
@@ -103,32 +135,15 @@
       <artifactId>sitemesh</artifactId>
     </dependency>
 
-    <!-- This and taglibs.standard are needed by tomcat. -->
     <dependency>
-      <groupId>jstl</groupId>
-      <artifactId>jstl</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>taglibs</groupId>
-      <artifactId>standard</artifactId>
-    </dependency>
-    <!-- End of cas dependencies -->
-
-    <dependency>
-      <groupId>org.mule.modules</groupId>
-      <artifactId>mule-module-spring</artifactId>
+      <groupId>jtidy</groupId>
+      <artifactId>jtidy</artifactId>
     </dependency>
 
     <!-- Provided by the container -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>jtidy</groupId>
-      <artifactId>jtidy</artifactId>
     </dependency>
 
   </dependencies>

@@ -4,8 +4,8 @@ package com.globant.katari.core.ping;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang.Validate;
 
@@ -20,7 +20,7 @@ public class PingServicesExpander {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(PingServicesExpander.class);
+  private static Logger log = LoggerFactory.getLogger(PingServicesExpander.class);
 
   /** Adds additional PingService instances to the PingServices object.
    *

@@ -96,27 +96,21 @@
       <artifactId>hsqldb</artifactId>
     </dependency>
 
-    <!-- Runtime dependencies -->
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
 
-    <!-- we don't want to force log4j for all clients -->
+    <!-- This package is intended to be used at compile/test time only, so we
+         are not forcing log4j for all clients -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
     </dependency>
 
     <dependency>

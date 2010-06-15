@@ -5,8 +5,8 @@ package com.globant.katari.core.web;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Default module implementation with entry points and menu support.
  */
@@ -15,7 +15,7 @@ public class ModuleWithEntryPoints implements Module {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ModuleWithEntryPoints.class);
+  private static Logger log = LoggerFactory.getLogger(ModuleWithEntryPoints.class);
 
   /** The module context.
    *

@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.EventListener;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.core.login.LoginProvider;
 import com.globant.katari.core.security.StaticUrlToRoleMapper;
@@ -26,7 +26,7 @@ public class ConfigurableModule implements Module {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ConfigurableModule.class);
+  private static Logger log = LoggerFactory.getLogger(ConfigurableModule.class);
 
   /** The default roles array to instanciate the UrlToRoleMapper by default.
    */

@@ -11,8 +11,8 @@ import java.sql.SQLException;
 
 import java.util.Enumeration;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** A simple bean that performs memory clean up of the application when the
  * spring context shuts down.
@@ -35,7 +35,7 @@ public class ReferenceCleaner implements ServletContextListener {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ReferenceCleaner.class);
+  private static Logger log = LoggerFactory.getLogger(ReferenceCleaner.class);
 
   /** This method does nothing.
    *

@@ -28,6 +28,12 @@
       <artifactId>easymockclassextension</artifactId>
     </dependency>
 
+    <!-- Adds the logging implementation to the test classpath. -->
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-tools</artifactId>
+    </dependency>
+
     <!-- Runtime dependencies -->
     <dependency>
       <groupId>com.globant.katari</groupId>

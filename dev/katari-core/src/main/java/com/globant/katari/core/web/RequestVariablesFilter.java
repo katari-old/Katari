@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.ServletException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** This filter puts in the request various objects useful for an katari
  * applicaion, including 'baseweb', 'request' and 'response'.
@@ -25,7 +25,7 @@ public final class RequestVariablesFilter implements Filter {
 
   /** The class logger.
   */
-  private static Log log = LogFactory.getLog(RequestVariablesFilter.class);
+  private static Logger log = LoggerFactory.getLogger(RequestVariablesFilter.class);
 
   /** {@inheritDoc}
    *

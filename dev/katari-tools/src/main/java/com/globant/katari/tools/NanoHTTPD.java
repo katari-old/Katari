@@ -20,8 +20,8 @@ import java.util.TimeZone;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 server in Java
@@ -72,7 +72,7 @@ public abstract class NanoHTTPD {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(NanoHTTPD.class);
+  private static Logger log = LoggerFactory.getLogger(NanoHTTPD.class);
 
   /** The buffer size for reading and writing to the client.
    */

@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** This servlet is the main entry to the modules of a web application.
  *
@@ -39,7 +39,7 @@ public final class SpringBootstrapServlet extends HttpServlet {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(SpringBootstrapServlet.class);
+  private static Logger log = LoggerFactory.getLogger(SpringBootstrapServlet.class);
 
   /** The target servlet that this servlet delegates all requests.
    *

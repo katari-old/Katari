@@ -9,8 +9,8 @@ import java.io.Writer;
 
 import org.apache.commons.io.IOUtils;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang.Validate;
 
@@ -31,7 +31,7 @@ public final class HibernateUtils {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(HibernateUtils.class);
+  private static Logger log = LoggerFactory.getLogger(HibernateUtils.class);
 
   /** Private contructor, this is a utility class.
    */

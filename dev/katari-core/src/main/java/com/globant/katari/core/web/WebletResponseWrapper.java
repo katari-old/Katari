@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.Validate;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** A response wrapper that intercepts the data sent by the servlets and makes
  * it available as a string.
@@ -19,7 +19,7 @@ public class WebletResponseWrapper extends ServletOutputInterceptor {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(WebletResponseWrapper.class);
+  private static Logger log = LoggerFactory.getLogger(WebletResponseWrapper.class);
 
   /** A stream that gets the data and buffers it in a byte array.
    *

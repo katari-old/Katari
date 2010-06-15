@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.Validate;
 import org.apache.commons.collections.IteratorUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** This class chains the filters provided by each module.
  *
@@ -50,7 +50,7 @@ public final class ModuleFilterProxy implements Filter {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ModuleFilterProxy.class);
+  private static Logger log = LoggerFactory.getLogger(ModuleFilterProxy.class);
 
   /** A list of module names to module configuration.
    *
@@ -220,7 +220,7 @@ public final class ModuleFilterProxy implements Filter {
 
     /** The class logger.
      */
-    private static Log log = LogFactory.getLog(Chain.class);
+    private static Logger log = LoggerFactory.getLogger(Chain.class);
 
     /** The list of filter that filters the requests.
      *

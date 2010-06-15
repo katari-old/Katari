@@ -12,8 +12,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** A module request dispatcher that forwards to a servlet in a module.
  */
@@ -21,7 +21,7 @@ class RootRequestDispatcher implements RequestDispatcher {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(RootRequestDispatcher.class);
+  private static Logger log = LoggerFactory.getLogger(RootRequestDispatcher.class);
 
   /** If true, this request dispatcher disptaches to the wrapped request.
   */

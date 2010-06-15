@@ -10,8 +10,8 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** The servlet config initialized with the module parameters.
  */
@@ -19,7 +19,7 @@ class ModuleServletConfig implements ServletConfig {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ModuleServletConfig.class);
+  private static Logger log = LoggerFactory.getLogger(ModuleServletConfig.class);
 
   /** The servlet context.
    *

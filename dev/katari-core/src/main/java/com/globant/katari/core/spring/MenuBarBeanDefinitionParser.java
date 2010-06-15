@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.ManagedList;
@@ -26,8 +26,8 @@ public class MenuBarBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
   /** The class logger.
    */
-  private static Log log =
-    LogFactory.getLog(MenuBarBeanDefinitionParser.class);
+  private static Logger log =
+    LoggerFactory.getLogger(MenuBarBeanDefinitionParser.class);
 
   /** Parses the xml fragment.
    *

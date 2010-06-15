@@ -11,8 +11,8 @@ import javax.servlet.ServletResponse;
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.ui.AuthenticationEntryPoint;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*** Used by the <code>ExceptionTranslation filter</code> to commence
  * authentication.
@@ -27,7 +27,7 @@ public class DelegatingEntryPoint implements AuthenticationEntryPoint {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(DelegatingEntryPoint.class);
+  private static Logger log = LoggerFactory.getLogger(DelegatingEntryPoint.class);
 
   /** Commences an authentication scheme.
    *

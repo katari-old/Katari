@@ -170,6 +170,13 @@
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-core</artifactId>
         <version>${dependency.hibernate-core.version}</version>
+        <exclusions>
+          <!-- xml-apis classes are part of sun's jdk. -->
+          <exclusion>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>

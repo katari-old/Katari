@@ -15,8 +15,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.Validate;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** A filter that adds to the request attributes that will be used by
  * freemarker macros.
@@ -39,7 +39,7 @@ public class SecureUrlMacroFilter implements Filter {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(SecureUrlMacroFilter.class);
+  private static Logger log = LoggerFactory.getLogger(SecureUrlMacroFilter.class);
 
   /** The secure url macro helper.
    *

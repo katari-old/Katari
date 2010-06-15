@@ -9,8 +9,8 @@ import java.util.Set;
 import java.util.EventListener;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.core.login.LoginConfigurationSetter;
 import com.globant.katari.core.login.LoginProvider;
@@ -25,7 +25,7 @@ public class ModuleContext {
 
   /** Class logger.
    */
-  private static Log log = LogFactory.getLog(ModuleContext.class);
+  private static Logger log = LoggerFactory.getLogger(ModuleContext.class);
 
   /** Module name.
    *

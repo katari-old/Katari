@@ -11,8 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.commons.lang.Validate;
 
 /** A wrapper filter that can enable or disable a wrapped filter at
@@ -22,7 +22,7 @@ public class OptionalFilter implements Filter {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(OptionalFilter.class);
+  private static Logger log = LoggerFactory.getLogger(OptionalFilter.class);
 
   /** The filter to enable or disable.
    *

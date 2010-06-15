@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.tools.DatabaseTestSupport;
 
@@ -25,7 +25,7 @@ public class MySqlDropAllObjects extends DatabaseTestSupport {
 
   /** A logger.
    */
-  private static Log log = LogFactory.getLog(MySqlDropAllObjects.class);
+  private static Logger log = LoggerFactory.getLogger(MySqlDropAllObjects.class);
 
   /** string to see al the tables.
    */

@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import junit.framework.Assert;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -86,7 +86,7 @@ public class FreemarkerTestEngine {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(FreemarkerTestEngine.class);
+  private static Logger log = LoggerFactory.getLogger(FreemarkerTestEngine.class);
 
   /** Freemarker configuration.
    *

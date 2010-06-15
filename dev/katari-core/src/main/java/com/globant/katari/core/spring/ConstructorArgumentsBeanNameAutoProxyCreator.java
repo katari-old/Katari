@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.framework.AopProxy;
@@ -53,8 +53,8 @@ public class ConstructorArgumentsBeanNameAutoProxyCreator extends
   /**
    * The logger.
    */
-  private static Log log = LogFactory
-      .getLog(ConstructorArgumentsBeanNameAutoProxyCreator.class);
+  private static Logger log = LoggerFactory
+      .getLogger(ConstructorArgumentsBeanNameAutoProxyCreator.class);
 
   /**
    * Thread local variable for storing the name of the bean that's currently

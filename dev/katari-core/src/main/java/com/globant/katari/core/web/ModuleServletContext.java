@@ -9,8 +9,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.RequestDispatcher;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** A servlet context that wraps the web container servlet context.
  *
@@ -22,7 +22,8 @@ public final class ModuleServletContext extends ServletContextWrapper {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ModuleServletContext.class);
+  private static Logger log = LoggerFactory.getLogger(
+      ModuleServletContext.class);
 
   /** The module container servlet.
    *

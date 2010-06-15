@@ -20,8 +20,8 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** An event listener that delegates the event handling to a bean obtained from
  * the spring application context.
@@ -47,7 +47,7 @@ public final class SpringBootstrapListener implements ServletContextListener,
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(SpringBootstrapListener.class);
+  private static Logger log = LoggerFactory.getLogger(SpringBootstrapListener.class);
 
   /** The target filter that this filter delegates all requests.
    *

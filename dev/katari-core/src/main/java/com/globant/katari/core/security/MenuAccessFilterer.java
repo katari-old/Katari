@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.core.web.MenuNode;
 
@@ -26,7 +26,7 @@ public class MenuAccessFilterer {
   /**
    * The logger.
    */
-  private static Log log = LogFactory.getLog(MenuAccessFilterer.class);
+  private static Logger log = LoggerFactory.getLogger(MenuAccessFilterer.class);
 
   /**
    * The {@link SecureUrlAccessHelper}.

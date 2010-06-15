@@ -9,8 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.tools.DatabaseTestSupport;
 
@@ -24,7 +24,7 @@ import com.globant.katari.tools.DatabaseTestSupport;
 public class OracleDropAllObjects extends DatabaseTestSupport {
 
   /** The class logger. */
-  private final Log log = LogFactory.getLog(OracleDropAllObjects.class);
+  private final Logger log = LoggerFactory.getLogger(OracleDropAllObjects.class);
 
   /** ALL_TABLES_QUERY. */
   private static final String ALL_TABLES_QUERY =

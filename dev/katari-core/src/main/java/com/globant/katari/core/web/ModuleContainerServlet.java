@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** This servlet is the entry point to all web requests for all modules.
  *
@@ -41,7 +41,7 @@ public final class ModuleContainerServlet extends HttpServlet {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ModuleContainerServlet.class);
+  private static Logger log = LoggerFactory.getLogger(ModuleContainerServlet.class);
 
   /** A map of module names to module configuration.
    *

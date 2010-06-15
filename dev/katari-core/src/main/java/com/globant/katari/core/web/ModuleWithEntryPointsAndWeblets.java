@@ -5,8 +5,8 @@ package com.globant.katari.core.web;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Default module implementation with entry points.
  */
@@ -15,7 +15,7 @@ public class ModuleWithEntryPointsAndWeblets implements Module {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(
+  private static Logger log = LoggerFactory.getLogger(
       ModuleWithEntryPointsAndWeblets.class);
 
   /** The module context.

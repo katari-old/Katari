@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.RequestDispatcher;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Wraps a request to hide the module from the delegated servlet.
  */
@@ -16,7 +16,7 @@ class ModuleRequestWrapper extends HttpServletRequestWrapper {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ModuleRequestWrapper.class);
+  private static Logger log = LoggerFactory.getLogger(ModuleRequestWrapper.class);
 
   /** The path where the application is mapped.
    */

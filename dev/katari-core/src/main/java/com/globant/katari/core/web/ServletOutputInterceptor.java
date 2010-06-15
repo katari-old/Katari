@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** A response wrapper that intercepts the binary data written by the servlets.
  */
@@ -22,7 +22,7 @@ public abstract class ServletOutputInterceptor extends
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ServletOutputInterceptor.class);
+  private static Logger log = LoggerFactory.getLogger(ServletOutputInterceptor.class);
 
   /** Indicates whether the data is written through to the original output
    * stream.

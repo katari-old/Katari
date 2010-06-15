@@ -13,8 +13,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Makes the weblet renderer available as a request parameter.
  *
@@ -24,7 +24,7 @@ public final class WebletSupportFilter implements Filter {
 
   /** The class logger.
   */
-  private static Log log = LogFactory.getLog(WebletSupportFilter.class);
+  private static Logger log = LoggerFactory.getLogger(WebletSupportFilter.class);
 
   /** The servlet context.
    *

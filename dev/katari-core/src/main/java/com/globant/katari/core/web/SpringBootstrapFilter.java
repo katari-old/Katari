@@ -15,8 +15,8 @@ import javax.servlet.ServletResponse;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** A filter that delegates all processing to another filter obtained from the
  * spring application context.
@@ -39,7 +39,7 @@ public final class SpringBootstrapFilter implements Filter {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(SpringBootstrapFilter.class);
+  private static Logger log = LoggerFactory.getLogger(SpringBootstrapFilter.class);
 
   /** The target filter that this filter delegates all requests.
    *

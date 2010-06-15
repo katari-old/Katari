@@ -12,8 +12,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** This filter sets the request encoding to UTF-8.
  *
@@ -25,7 +25,7 @@ public final class Utf8EncodingFilter implements Filter {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(Utf8EncodingFilter.class);
+  private static Logger log = LoggerFactory.getLogger(Utf8EncodingFilter.class);
 
   /** Initializes the filter. It currently does nothing.
    *
