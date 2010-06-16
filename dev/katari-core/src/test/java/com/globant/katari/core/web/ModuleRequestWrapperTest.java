@@ -17,11 +17,6 @@ import junit.framework.TestCase;
  */
 public class ModuleRequestWrapperTest extends TestCase {
 
-  protected void setUp() {
-    org.apache.log4j.PropertyConfigurator.configure(
-        "src/test/resources/log4j.properties");
-  }
-
   public final void testGetContextPath() {
     HttpServletRequest request = createNiceMock(HttpServletRequest.class);
     expect(request.getContextPath()).andReturn("/katari");

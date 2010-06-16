@@ -138,12 +138,6 @@
       <artifactId>servlet-api</artifactId>
     </dependency>
 
-    <!-- Provided by the container -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jsp-api</artifactId>
-    </dependency>
-
     <!-- We use ${groupId} because we will depend on the style package from the
     current groupId. -->
     <dependency>

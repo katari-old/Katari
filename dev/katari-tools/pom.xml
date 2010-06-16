@@ -18,7 +18,9 @@
 
   <dependencies>
 
-    <!-- Test only dependencies -->
+    <!-- Test only dependencies. This is needed by spring to load annotated
+         classes in spring (when you use AnnotationSessionFactoryBean instead
+         of LocalSessionFactoryBean). Not directly used in our code. -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-annotations</artifactId>
@@ -85,7 +87,13 @@
       <artifactId>hibernate-core</artifactId>
     </dependency>
 
-    <!-- Needed for hibernate. This is the default bytecode provider. -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>ejb3-persistence</artifactId>
+    </dependency>
+
+    <!-- Needed for hibernate. This is the default bytecode provider. Not used
+         directly in our code. -->
     <dependency>
       <groupId>javassist</groupId>
       <artifactId>javassist</artifactId>
@@ -102,12 +110,16 @@
     </dependency>
 
     <!-- This package is intended to be used at compile/test time only, so we
-         are not forcing log4j for all clients -->
+         are not forcing log4j for all clients. We are not using this package
+         directly, but through slf4j. -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
     </dependency>
 
+    <!-- This package is intended to be used at compile/test time only, so we
+         are not forcing log4j for all clients. We are not using this package
+         directly, but through slf4j. -->
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -138,11 +150,6 @@
       <artifactId>persistence-api</artifactId>
       <scope>test</scope>
     </dependency -->
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>javax.servlet</groupId>

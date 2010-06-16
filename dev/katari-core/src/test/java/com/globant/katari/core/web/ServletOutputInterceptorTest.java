@@ -20,12 +20,6 @@ import static org.junit.Assert.*;
  */
 public class ServletOutputInterceptorTest {
 
-  @Before
-  public void setUp() {
-    org.apache.log4j.PropertyConfigurator.configure(
-        "src/test/resources/log4j.properties");
-  }
-
   /* Tests that the writer correctly writes to the output stream and that the
    * original output stream is not touched.
    */

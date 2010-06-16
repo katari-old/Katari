@@ -92,7 +92,7 @@ public final class ModuleServletContext extends ServletContextWrapper {
   /** Returns a URL to the resource that is mapped to a specified path.
    *
    * In this implementation, if the resource is not found relative to the
-   * context, then it is seach in the classloader that loaded the servlet.
+   * context, then it is search in the classloader that loaded the servlet.
    *
    * This is done to allow serlvet configurations like struts to be loaded from
    * the classpath. There was a portability problem between jetty and tomcat:

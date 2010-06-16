@@ -89,9 +89,6 @@ public class ModuleFilterProxyTest extends TestCase {
 
   protected void setUp() throws Exception {
 
-    org.apache.log4j.PropertyConfigurator.configure(
-        "src/test/resources/log4j.properties");
-
     filter1 = new TestFilter();
     filter2 = new TestFilter();
     filter3 = new TestFilter();

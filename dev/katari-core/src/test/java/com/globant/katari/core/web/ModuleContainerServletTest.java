@@ -33,9 +33,6 @@ public class ModuleContainerServletTest extends TestCase {
   @SuppressWarnings("serial")
   protected void setUp() {
 
-    org.apache.log4j.PropertyConfigurator.configure(
-        "src/test/resources/log4j.properties");
-
     servletCalled = "";
     pathInfo = null;
 
