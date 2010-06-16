@@ -151,6 +151,12 @@
         <version>1.2</version>
       </dependency>
 
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>1.8.3</version>
+      </dependency>
+
       <!-- Runtime dependencies -->
       <dependency>
         <groupId>log4j</groupId>
@@ -189,10 +195,14 @@
         <version>${dependency.hibernate-validator.version}</version>
       </dependency>
 
+      <!-- According to hibernate (see this bug
+           http://opensource.atlassian.com/projects/hibernate/browse/ANN-712),
+           hibernate repackaged javax.persistence api due to bugs in sun's
+           release. -->
       <dependency>
-        <groupId>javax.persistence</groupId>
-        <artifactId>persistence-api</artifactId>
-        <version>1.0</version>
+        <groupId>org.hibernate</groupId>
+        <artifactId>ejb3-persistence</artifactId>
+        <version>${dependency.hibernate-ejb3-persistence.version}</version>
       </dependency>
 
       <!-- Be careful. This version of the mysql jdbc driver is GPL. -->
@@ -409,73 +419,13 @@
         <version>2.2.0</version>
       </dependency>
 
-      <!-- Mule dependencies -->
-      <dependency>
-        <groupId>org.mule</groupId>
-        <artifactId>mule-core</artifactId>
-        <version>1.4.4</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.mule.modules</groupId>
-        <artifactId>mule-module-spring</artifactId>
-        <version>1.4.4</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.yourkit</groupId>
-            <artifactId>yjp-controller-api-redist</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>tanukisoft</groupId>
-            <artifactId>wrapper</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-servlet_2.4_spec</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.mule.modules</groupId>
-        <artifactId>mule-module-management</artifactId>
-        <version>1.4.4</version>
-        <exclusions>
-          <exclusion>
-            <groupId>com.yourkit</groupId>
-            <artifactId>yjp-controller-api-redist</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.mule.transports</groupId>
-        <artifactId>mule-transport-vm</artifactId>
-        <version>1.4.4</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.mule.transports</groupId>
-        <artifactId>mule-transport-tcp</artifactId>
-        <version>1.4.4</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.mule.transports</groupId>
-        <artifactId>mule-transport-stream</artifactId>
-        <version>1.4.4</version>
-      </dependency>
-      <!-- End of mule dependencies -->
       <!-- Wicket -->
       <dependency>
         <groupId>org.apache.wicket</groupId>
         <artifactId>wicket</artifactId>
         <version>1.4.4</version>
       </dependency>
+
       <dependency>
         <groupId>org.apache.wicket</groupId>
         <artifactId>wicket-spring</artifactId>
@@ -924,6 +874,9 @@ try {
     <dependency.hibernate-validator.version>
       3.1.0.GA
     </dependency.hibernate-validator.version>
+    <dependency.hibernate-ejb3-persistence.version>
+      1.0.2.GA
+    </dependency.hibernate-ejb3-persistence.version>
     <dependency.javassist.version>
       3.8.0.GA
     </dependency.javassist.version>

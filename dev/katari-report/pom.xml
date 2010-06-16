@@ -34,7 +34,20 @@
       <artifactId>easymockclassextension</artifactId>
     </dependency>
 
-    <!-- Katari dependencies -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+    </dependency>
+
+    <!-- Used only in spring configuration. No java class imports a class from
+         this jar. -->
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+    </dependency>
+
+    <!-- Runtime dependencies. -->
+
     <dependency>
       <groupId>com.globant.katari</groupId>
       <artifactId>katari-core</artifactId>
@@ -50,7 +63,6 @@
       <artifactId>katari-tools</artifactId>
     </dependency>
 
-    <!-- Commons dependencies -->
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
@@ -66,9 +78,21 @@
       <artifactId>commons-collections</artifactId>
     </dependency>
 
+    <!-- Needed by spring's CommonsMultipartResolver. Not imported directly in
+         the sources. -->
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
     </dependency>
 
     <dependency>
@@ -78,7 +102,32 @@
 
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.acegisecurity</groupId>
+      <artifactId>acegi-security</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>ejb3-persistence</artifactId>
     </dependency>
 
     <dependency>
@@ -86,30 +135,23 @@
       <artifactId>jasperreports</artifactId>
     </dependency>
 
+    <!-- Needed by jasperreports, presumable to generate the pdf output. Not
+         imported directly in the sources. -->
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
     </dependency>
 
-    <dependency>
+    <!-- Included in jdk, not needed any more. -->
+    <!-- dependency>
       <groupId>stax</groupId>
       <artifactId>stax</artifactId>
-    </dependency>
+    </dependency -->
 
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
       <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>c3p0</groupId>
-      <artifactId>c3p0</artifactId>
     </dependency>
 
   </dependencies>

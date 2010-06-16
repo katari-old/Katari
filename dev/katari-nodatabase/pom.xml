@@ -48,6 +48,18 @@
 
     <!-- Runtime dependencies -->
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!-- slf4j logging implementation. This package is not directly imported
+         from sources. -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
     </dependency>
@@ -119,31 +131,6 @@
       <artifactId>standard</artifactId>
     </dependency>
     <!-- End of cas dependencies -->
-
-    <dependency>
-      <groupId>org.mule</groupId>
-      <artifactId>mule-core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mule.modules</groupId>
-      <artifactId>mule-module-spring</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mule.transports</groupId>
-      <artifactId>mule-transport-vm</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mule.transports</groupId>
-      <artifactId>mule-transport-tcp</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mule.transports</groupId>
-      <artifactId>mule-transport-stream</artifactId>
-    </dependency>
 
     <!-- Provided by the container. -->
     <dependency>

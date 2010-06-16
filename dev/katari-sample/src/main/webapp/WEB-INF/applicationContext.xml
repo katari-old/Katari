@@ -44,9 +44,6 @@
   <!-- The time module. -->
   <import resource="classpath:/com/globant/katari/sample/time/module.xml"/>
 
-  <!-- The event module. -->
-  <import resource="classpath:/com/globant/katari/event/module.xml"/>
-
   <!-- The reports module. -->
   <import resource="classpath:/com/globant/katari/report/module.xml"/>
 

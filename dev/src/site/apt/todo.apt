@@ -36,8 +36,6 @@
 
  * I18n.
 
- * Update mule to the latest version.
-
  * Add a configuration sample for hibernate second level cache, with focus on
  spring integration.
 
