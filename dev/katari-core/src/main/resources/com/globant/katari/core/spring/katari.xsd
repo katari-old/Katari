@@ -41,7 +41,23 @@
     </xsd:complexType>
   </xsd:element>
 
-  <!-- vim: set ts=2 et sw=2 : -->
+  <!-- Imports a bean definition file depending on a condition. -->
+  <xsd:element name="import">
+    <xsd:complexType>
+      <xsd:attribute name="properties-ref" use="optional"/>
+      <xsd:attribute name="property-name" use="required"/>
+      <xsd:attribute name="property-value" use="required"/>
+      <xsd:attribute name="resource" use="required"/>
+    </xsd:complexType>
+  </xsd:element>
 
+  <!-- Parses a properties file to be used by the import element -->	
+  <xsd:element name="properties">
+    <xsd:complexType>
+      <xsd:attribute name="name" use="required"/>
+      <xsd:attribute name="resource" use="required"/>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- vim: set ts=2 et sw=2 : -->
 </xsd:schema>
 

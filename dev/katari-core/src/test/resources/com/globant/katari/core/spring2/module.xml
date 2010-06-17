@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <katari:menuBar id='secured-menubar'>
+
+    <katari:menuItem name='menu-item-1'
+      tooltip='tooltip text1' link='link1'/>
+
+    <katari:menuItem display='item-2' name='menu-item-2'
+      position='2' tooltip='tooltip-2' link='link-2'/>
+
+    <katari:menuNode display='node-3' name='menu-node-3'
+      position='3' tooltip='tooltip-3'>
+
+      <katari:menuItem display='item-3-1' name='menu-node-3-1'
+        tooltip='tooltip-3-1' link='link-3-1'/>
+
+      <katari:menuItem display='item-3-2' name='menu-item-3-2'
+        position='2' tooltip='tooltip-3-2' link='link-3-2'/>
+
+      <katari:menuNode display='node-3-3' name='menu-node-3-3'
+        position='3' tooltip='tooltip-3-3'>
+
+        <katari:menuItem display='item-3-3-1'
+          name='menu-item-3-3-1' tooltip='tooltip-3-3-1' link='link-5'/>
+
+      </katari:menuNode>
+
+    </katari:menuNode>
+
+  </katari:menuBar>
+
+  <!-- vim: set ts=2 et sw=2 : -->
+
+</beans>
+

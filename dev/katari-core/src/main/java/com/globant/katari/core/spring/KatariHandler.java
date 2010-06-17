@@ -17,7 +17,11 @@ public class KatariHandler extends NamespaceHandlerSupport {
   /** Registers the parser for each kind of element defined in the schema.
    */
   public final void init() {
+    PropertiesParser propertiesParser = new PropertiesParser();
+    ConditionalImportParser importParser = new ConditionalImportParser(propertiesParser);
     registerBeanDefinitionParser("menuBar", new MenuBarBeanDefinitionParser());
+    registerBeanDefinitionParser("import", importParser);
+    registerBeanDefinitionParser("properties", propertiesParser);
   }
 }
 
