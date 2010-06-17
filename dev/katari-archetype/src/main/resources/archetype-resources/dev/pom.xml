@@ -65,6 +65,8 @@
         <scope>test</scope>
       </dependency>
 
+      <!-- Runtime dependencies -->
+
       <!-- Forcing version 3.2 needed by htmlunit. This package is also used by
       hibernate, so it goes in the default scope.-->
       <dependency>
@@ -91,17 +93,34 @@
         <version>1.2</version>
       </dependency>
 
-      <!-- Runtime dependencies -->
-      <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>1.2.14</version>
-      </dependency>
-
       <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
         <version>1.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>3.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.5.8</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.5.8</version>
+      </dependency>
+
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.14</version>
       </dependency>
 
       <dependency>
@@ -114,6 +133,13 @@
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-annotations</artifactId>
         <version>${dependency.hibernate-annotations.version}</version>
+        <exclusions>
+          <!-- xml-apis classes are part of sun's jdk. -->
+          <exclusion>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
@@ -122,10 +148,14 @@
         <version>${dependency.hibernate-validator.version}</version>
       </dependency>
 
+      <!-- According to hibernate (see this bug
+           http://opensource.atlassian.com/projects/hibernate/browse/ANN-712),
+           hibernate repackaged javax.persistence api due to bugs in sun's
+           release. -->
       <dependency>
-        <groupId>javax.persistence</groupId>
-        <artifactId>persistence-api</artifactId>
-        <version>1.0</version>
+        <groupId>org.hibernate</groupId>
+        <artifactId>ejb3-persistence</artifactId>
+        <version>${dependency.hibernate-ejb3-persistence.version}</version>
       </dependency>
 
       <!-- Be careful. This version of the mysql jdbc driver is GPL. -->

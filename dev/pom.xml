@@ -79,18 +79,6 @@
       </dependency>
 
       <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>1.5.8</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-log4j12</artifactId>
-        <version>1.5.8</version>
-      </dependency>
-
-      <dependency>
         <groupId>org.easymock</groupId>
         <artifactId>easymock</artifactId>
         <version>${dependency.easymock.version}</version>
@@ -125,6 +113,8 @@
         <scope>test</scope>
       </dependency>
 
+      <!-- Runtime dependencies -->
+
       <!-- Forcing version 3.2 needed by htmlunit. This package is also used by
       hibernate, so it goes in the default scope.-->
       <dependency>
@@ -157,7 +147,24 @@
         <version>1.8.3</version>
       </dependency>
 
-      <!-- Runtime dependencies -->
+      <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>3.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.5.8</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.5.8</version>
+      </dependency>
+
       <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>

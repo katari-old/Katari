@@ -45,16 +45,25 @@
       <artifactId>selenium-java-client-driver</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-      <scope>test</scope>
-    </dependency>
-
     <!-- Nedded by htmlunit class -->
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
     </dependency>
 
     <!-- Runtime dependencies -->
@@ -76,16 +85,6 @@
     </dependency>
 
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
     </dependency>
@@ -99,11 +98,6 @@
       <groupId>org.hibernate</groupId>
       <artifactId>ejb3-persistence</artifactId>
     </dependency>
-
-    <!-- dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-annotations</artifactId>
-    </dependency -->
 
     <!-- Needed by hibernate. We could also use cglib, that is reported to be
          faster. But javassist is the default. -->
@@ -157,11 +151,6 @@
       <artifactId>spring-context</artifactId>
     </dependency>
 
-    <!-- dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-    </dependency -->
-
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
@@ -172,25 +161,10 @@
       <artifactId>spring-web</artifactId>
     </dependency>
 
-    <!-- dependency>
-      <groupId>jboss</groupId>
-      <artifactId>javassist</artifactId>
-    </dependency -->
-
     <dependency>
       <groupId>org.acegisecurity</groupId>
       <artifactId>acegi-security</artifactId>
     </dependency>
-
-    <!-- dependency>
-      <groupId>org.freemarker</groupId>
-      <artifactId>freemarker</artifactId>
-    </dependency -->
-
-    <!-- dependency>
-      <groupId>jasperreports</groupId>
-      <artifactId>jasperreports</artifactId>
-    </dependency -->
 
     <!-- Wicket -->
     <dependency>

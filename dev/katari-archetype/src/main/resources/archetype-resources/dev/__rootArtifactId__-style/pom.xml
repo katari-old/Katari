@@ -25,6 +25,19 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- Not directly imported, used in spring files. -->
+    <dependency>
+      <groupId>opensymphony</groupId>
+      <artifactId>sitemesh</artifactId>
+    </dependency>
+
+    <!-- Not directly imported, used in sitemesh configuration. -->
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+    </dependency>
+
   </dependencies>
 
   <build>

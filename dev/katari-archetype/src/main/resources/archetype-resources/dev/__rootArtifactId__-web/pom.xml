@@ -32,6 +32,11 @@
     </dependency>
 
     <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
     </dependency>
@@ -46,19 +51,30 @@
       <artifactId>selenium-java-client-driver</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-      <scope>test</scope>
-    </dependency>
-
     <!-- Nedded by htmlunit class -->
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+    </dependency>
+
     <!-- Runtime dependencies -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!-- slf4j logging implementation. This package is not directly imported
+         from sources. -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -81,17 +97,14 @@
 
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-annotations</artifactId>
+      <artifactId>ejb3-persistence</artifactId>
     </dependency>
 
+    <!-- Needed by hibernate. We could also use cglib, that is reported to be
+         faster. But javassist is the default. -->
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-validator</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.persistence</groupId>
-      <artifactId>persistence-api</artifactId>
+      <groupId>javassist</groupId>
+      <artifactId>javassist</artifactId>
     </dependency>
 
     <!-- Be careful. This version of the mysql jdbc driver is GPL. -->
@@ -107,6 +120,8 @@
     </dependency>
     -->
 
+    <!-- Pool implementation. Not directly imported from sources, included in
+         spring configuration. -->
     <dependency>
       <groupId>c3p0</groupId>
       <artifactId>c3p0</artifactId>
@@ -119,7 +134,12 @@
 
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
     </dependency>
 
     <dependency>
@@ -133,11 +153,6 @@
     </dependency>
 
     <dependency>
-      <groupId>javassist</groupId>
-      <artifactId>javassist</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.acegisecurity</groupId>
       <artifactId>acegi-security</artifactId>
     </dependency>
@@ -147,49 +162,10 @@
       <artifactId>freemarker</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>opensymphony</groupId>
-      <artifactId>sitemesh</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>jasperreports</groupId>
-      <artifactId>jasperreports</artifactId>
-    </dependency>
-
-    <!-- Needed for CAS server integration. -->
-    <dependency>
-      <groupId>quartz</groupId>
-      <artifactId>quartz</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-aop</artifactId>
-    </dependency>
-
-    <!-- This and taglibs.standard are needed by tomcat. -->
-    <dependency>
-      <groupId>jstl</groupId>
-      <artifactId>jstl</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>taglibs</groupId>
-      <artifactId>standard</artifactId>
-    </dependency>
-    <!-- End of cas dependencies -->
-
     <!-- Provided by the container. -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-    </dependency>
-
-    <!-- Provided by the container -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jsp-api</artifactId>
     </dependency>
 
     <!-- We use \${groupId} because we will depend on the style package from the
@@ -229,10 +205,11 @@
       <artifactId>katari-ajax</artifactId>
     </dependency>
 
-    <dependency>
+    <!-- We use the local login, not cas. -->
+    <!-- dependency>
       <groupId>com.globant.katari</groupId>
       <artifactId>katari-cas</artifactId>
-    </dependency>
+    </dependency -->
 
     <dependency>
       <groupId>com.globant.katari</groupId>
