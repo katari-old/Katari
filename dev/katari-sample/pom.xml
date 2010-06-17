@@ -539,7 +539,6 @@
         <configuration>
           <classpathScope>test</classpathScope>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
-          <keepAlive>false</keepAlive>
 
           <mainClass>com.globant.katari.tools.HibernateUtils</mainClass>
           <arguments>

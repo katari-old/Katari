@@ -69,20 +69,13 @@
   </bean>
   <!-- End of security information. -->
 
+  <!-- A sample datasource. Do not use this for production. -->
   <bean id="dataSource"
     class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-    <property name="driverClassName">
-      <value>org.hsqldb.jdbcDriver</value>
-    </property>
-    <property name="url">
-      <value>jdbc:hsqldb:mem:testdb</value>
-    </property>
-    <property name="username">
-      <value>sa</value>
-    </property>
-    <property name="password">
-      <value></value>
-    </property>
+    <property name="driverClassName" value='org.hsqldb.jdbcDriver'/>
+    <property name="url" value="jdbc:hsqldb:mem:testdb"/>
+    <property name="username" value="sa"/>
+    <property name="password" value=""/>
   </bean>
 
   <!-- Hibernate SessionFactory initialized with annotated classes. -->

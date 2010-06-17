@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * spring application context.
  *
  * It dispatches all requests to a spring configured filter defind under the
- * bean named, by default 'anbis.moduleFilterProxy' in the web application
+ * bean named, by default 'katari.moduleFilterProxy' in the web application
  * context.
  *
  * The specific bean name is configured using the 'filterBeanName'

@@ -27,8 +27,8 @@ import org.slf4j.LoggerFactory;
  * the spring application context.
  *
  * It forwards all events to a spring configured listener defined under the
- * bean named, by default, 'moduleListenerProxy' in the spring application
- * context.
+ * bean named, by default, 'katari.moduleListenerProxy' in the spring
+ * application context.
  *
  * The specific bean name is configured using the 'listenerBeanName' context
  * parameter.

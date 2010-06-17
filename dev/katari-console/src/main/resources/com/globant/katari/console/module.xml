@@ -50,7 +50,8 @@
                       value="com/globant/katari/console/view" />
 
                     <entry key="debug" value-ref="debugMode"/>
-                    <entry key="debugPrefix" value="../katari-console/src/main/resources"/>
+                    <entry key="debugPrefix"
+                      value="../katari-console/src/main/resources"/>
                     <entry key="requestCacheContent" value="false"/>
                     <entry key="mimeType_css" value="text/css"/>
                     <entry key="mimeType_js" value="text/javascript"/>
@@ -58,7 +59,8 @@
                     <entry key="mimeType_gif" value="image/gif"/>
                     <entry key="mimeType_jpg" value="image/jpg"/>
                     <entry key="mimeType_html" value="text/html"/>
-                    <entry key="mimeType_swf" value="application/x-shockwave-flash"/>
+                    <entry key="mimeType_swf"
+                      value="application/x-shockwave-flash"/>
                   </map>
                 </constructor-arg>
               </bean>

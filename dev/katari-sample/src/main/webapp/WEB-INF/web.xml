@@ -28,17 +28,18 @@
     </listener-class>
   </listener>
 
-  <!-- Katari spring bootstrap listener. This listener searches for a bean in the
-  application context and delegates the listening process to it. -->
+  <!-- Katari spring bootstrap listener. This listener searches for a bean
+       named, by default, katari.moduleListenerProxy in the application context
+       and delegates the listening process to it. -->
   <listener>
     <listener-class>
       com.globant.katari.core.web.SpringBootstrapListener
     </listener-class>
   </listener>
 
-  <!-- Katari spring bootstrap filter. This filter searches for a bean in the
-  application context and delegates the filtering process to it.
-  -->
+  <!-- Katari spring bootstrap filter. This filter searches for a bean named,
+       by default, katari.moduleFilterProxy in the application context and
+       delegates the filtering process to it.  -->
   <filter>
     <filter-name>springBootstrapFilter</filter-name>
     <filter-class>
@@ -51,6 +52,9 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!-- Katari spring bootstrap servlet. This servlet searches for a bean named,
+       by default, katari.moduleContainer in the application context and
+       delegates the service process to it.  -->
   <servlet>
     <description></description>
     <display-name>SpringBootstrapServlet</display-name>
