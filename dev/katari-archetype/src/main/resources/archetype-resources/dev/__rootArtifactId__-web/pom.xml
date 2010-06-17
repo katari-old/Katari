@@ -471,7 +471,7 @@
 
   <profiles>
 
-    <!-- Wtih this profile active, cargo:start starts tomcat and deploys the
+    <!-- With this profile active, cargo:start starts tomcat and deploys the
     expanded web application in it, listening at port 8088. You must first run
     mvn war:inplace. -->
     <profile>
@@ -559,7 +559,6 @@
       </properties>
     </profile>
   </profiles>
-  <!-- vim: set ts=2 et sw=2 ai: -->
 
   <properties>
     <!-- This property is intended to be overriden from the command line in
@@ -569,6 +568,8 @@
       http://apache.xmundo.com.ar/tomcat/tomcat-5/v5.5.28/bin/apache-tomcat-5.5.28.zip
     </cargo.tomcatLocation>
   </properties>
+
+  <!-- vim: set ts=2 et sw=2 ai: -->
 
 </project>
 

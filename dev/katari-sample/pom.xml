@@ -533,7 +533,7 @@
 
   <profiles>
 
-    <!-- Wtih this profile active, cargo:start starts tomcat and deploys the
+    <!-- With this profile active, cargo:start starts tomcat and deploys the
     expanded web application in it, listening at port 8098. You must first run
     mvn war:inplace. -->
     <profile>
