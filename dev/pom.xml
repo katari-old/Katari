@@ -63,6 +63,8 @@
     <!-- Katari site skin -->
     <module>katari-siteskin</module>
     <module>katari-socialserver</module>
+    <!-- Katari container for open social gadgets. -->
+    <module>katari-gadget-container</module>
   </modules>
 
   <!-- List of dependencies for all modules in the application. This section
@@ -527,6 +529,12 @@
       </dependency>
 
       <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-gadget-container</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>jtidy</groupId>
         <artifactId>jtidy</artifactId>
         <version>r938</version>
@@ -896,4 +904,3 @@ try {
   </properties>
 
 </project>
-
