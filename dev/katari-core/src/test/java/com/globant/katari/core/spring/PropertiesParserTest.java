@@ -27,7 +27,8 @@ public class PropertiesParserTest {
       + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
       + "    http://www.globant.com/schema/katari\n"
       + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-      + "  <katari:properties name='katari.props' resource='classpath:/com/globant/katari/core/spring/test.properties'/>\n" 
+      + "  <katari:properties name='katari.props'"
+      + "   location='classpath:/com/globant/katari/core/spring/test.properties'/>\n" 
       + "</beans>\n";
 
     AbstractXmlApplicationContext context;
@@ -42,6 +43,5 @@ public class PropertiesParserTest {
     assertEquals("CAS", ((Properties)properties).getProperty("authentication.mode"));
     context.close();
   }
-  
 }
 

@@ -28,8 +28,10 @@ public class ConditionalImportParserTest {
       + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
       + "    http://www.globant.com/schema/katari\n"
       + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-      + "  <katari:properties name='katari.props' resource='classpath:/com/globant/katari/core/spring/test.properties'/>\n" 
-      + "  <katari:import properties-ref=\"katari.props\" resource='com.globant.katari.core.spring'\n" 
+      + "  <katari:properties name='katari.props'"
+      + "   location='classpath:/com/globant/katari/core/spring/test.properties'/>\n"
+      + "  <katari:import properties-ref='katari.props'"
+      + "    module='com.globant.katari.core.spring'\n"
       + "    property-name='authentication.mode' property-value='CAS'/>"
       + "</beans>\n";
 
@@ -45,7 +47,7 @@ public class ConditionalImportParserTest {
 
     context.close();
   }
-  
+
   @Test
   public void testImport2Properties() {
 
@@ -58,9 +60,12 @@ public class ConditionalImportParserTest {
       + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
       + "    http://www.globant.com/schema/katari\n"
       + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-      + "  <katari:properties name='katari.props' resource='classpath:/com/globant/katari/core/spring/test.properties'/>\n" 
-      + "  <katari:properties name='katari2.props' resource='classpath:/com/globant/katari/core/spring/test2.properties'/>\n" 
-      + "  <katari:import properties-ref=\"katari2.props\" resource='com.globant.katari.core.spring'\n" 
+      + "  <katari:properties name='katari.props'"
+      + "   location='classpath:/com/globant/katari/core/spring/test.properties'/>\n"
+      + "  <katari:properties name='katari2.props'"
+      + "   location='classpath:/com/globant/katari/core/spring/test2.properties'/>\n"
+      + "  <katari:import properties-ref='katari2.props'\n"
+      + "    module='com.globant.katari.core.spring'\n"
       + "    property-name='authentication.mode' property-value='FB'/>"
       + "</beans>\n";
 
@@ -76,7 +81,7 @@ public class ConditionalImportParserTest {
 
     context.close();
   }
-  
+
   @Test
   public void testImport2PropertiesNoPropertiesRef() {
 
@@ -89,9 +94,11 @@ public class ConditionalImportParserTest {
       + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
       + "    http://www.globant.com/schema/katari\n"
       + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-      + "  <katari:properties name='katari.props' resource='classpath:/com/globant/katari/core/spring/test.properties'/>\n" 
-      + "  <katari:properties name='katari2.props' resource='classpath:/com/globant/katari/core/spring/test2.properties'/>\n" 
-      + "  <katari:import resource='com.globant.katari.core.spring'\n" 
+      + "  <katari:properties name='katari.props'"
+      + "   location='classpath:/com/globant/katari/core/spring/test.properties'/>\n"
+      + "  <katari:properties name='katari2.props'"
+      + "   location='classpath:/com/globant/katari/core/spring/test2.properties'/>\n"
+      + "  <katari:import module='com.globant.katari.core.spring'\n"
       + "    property-name='authentication.mode' property-value='FB'/>"
       + "</beans>\n";
 
@@ -107,7 +114,7 @@ public class ConditionalImportParserTest {
 
     context.close();
   }
-  
+
   @Test(expected=RuntimeException.class)
   public void testImport2PropertiesNoPropertiesRefInvalidProperty() {
 
@@ -120,9 +127,11 @@ public class ConditionalImportParserTest {
       + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
       + "    http://www.globant.com/schema/katari\n"
       + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-      + "  <katari:properties name='katari.props' resource='classpath:/com/globant/katari/core/spring/test.properties'/>\n" 
-      + "  <katari:properties name='katari2.props' resource='classpath:/com/globant/katari/core/spring/test2.properties'/>\n" 
-      + "  <katari:import resource='com.globant.katari.core.spring'\n" 
+      + "  <katari:properties name='katari.props'"
+      + "   location='classpath:/com/globant/katari/core/spring/test.properties'/>\n"
+      + "  <katari:properties name='katari2.props'"
+      + "   location='classpath:/com/globant/katari/core/spring/test2.properties'/>\n"
+      + "  <katari:import module='com.globant.katari.core.spring'\n"
       + "    property-name='invalid' property-value='CAS'/>"
       + "</beans>\n";
 
@@ -133,9 +142,9 @@ public class ConditionalImportParserTest {
       }
     };
     context.refresh();
- 
+
   }
-  
+
   @Test(expected=RuntimeException.class)
   public void testImportPropertiesRefInvalidProperty() {
 
@@ -148,9 +157,11 @@ public class ConditionalImportParserTest {
       + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
       + "    http://www.globant.com/schema/katari\n"
       + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-      + "  <katari:properties name='katari.props' resource='classpath:/com/globant/katari/core/spring/test.properties'/>\n" 
-      + "  <katari:import resource='com.globant.katari.core.spring'\n" 
-      + "    properties-ref=\"katari.props\" property-name='invalid' property-value='CAS'/>"
+      + "  <katari:properties name='katari.props'"
+      + "   location='classpath:/com/globant/katari/core/spring/test.properties'/>\n"
+      + "  <katari:import module='com.globant.katari.core.spring'\n"
+      + "    properties-ref=\"katari.props\" property-name='invalid'"
+      + "    property-value='CAS'/>"
       + "</beans>\n";
 
     AbstractXmlApplicationContext context;
@@ -174,9 +185,11 @@ public class ConditionalImportParserTest {
       + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
       + "    http://www.globant.com/schema/katari\n"
       + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-      + "  <katari:properties name='katari.props' resource='classpath:/com/globant/katari/core/spring/test.properties'/>\n" 
-      + "  <katari:import properties-ref=\"no.props\" resource='com.globant.katari.core.spring'\n" 
-      + "    property-name='authentication.mode' property-value='CAS'/>"
+      + "  <katari:properties name='katari.props'\n"
+      + "   location='classpath:/com/globant/katari/core/spring/test.properties'/>\n"
+      + "  <katari:import properties-ref='no.props'\n"
+      + "   module='com.globant.katari.core.spring'\n"
+      + "   property-name='authentication.mode' property-value='CAS'/>"
       + "</beans>\n";
 
     AbstractXmlApplicationContext context;
@@ -186,7 +199,7 @@ public class ConditionalImportParserTest {
       }
     };
     context.refresh();
-    
+
   }
 
   @Test(expected=NoSuchBeanDefinitionException.class)
@@ -201,8 +214,9 @@ public class ConditionalImportParserTest {
     + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
     + "    http://www.globant.com/schema/katari\n"
     + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-    + "  <katari:properties name='katari.props' resource='classpath:/com/globant/katari/core/spring/test2.properties'/>\n" 
-    + "  <katari:import resource='com.globant.katari.core.spring'\n" 
+    + "  <katari:properties name='katari.props'"
+    + "   location='classpath:/com/globant/katari/core/spring/test2.properties'/>\n"
+    + "  <katari:import module='com.globant.katari.core.spring'\n"
     + "    property-name='authentication.mode' property-value='CAS'/>"
     + "</beans>\n";
     AbstractXmlApplicationContext context;
@@ -216,7 +230,7 @@ public class ConditionalImportParserTest {
 
     context.close();
   }
-  
+
   @Test(expected=RuntimeException.class)
   public void testImportNoCondition() {
 
@@ -229,7 +243,8 @@ public class ConditionalImportParserTest {
     + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
     + "    http://www.globant.com/schema/katari\n"
     + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-    + "  <katari:import resource='classpath:/com/globant/katari/core/spring/module.xml'\n" 
+    + "  <katari:import"
+    + "    module='classpath:/com/globant/katari/core/spring/module.xml'\n"
     + "    property-name='authentication.mode' property-value='CAS'/>"
     + "</beans>\n";
 
@@ -242,8 +257,8 @@ public class ConditionalImportParserTest {
     context.refresh();
 
   }
-  
-  @Test
+
+  @Test(expected=NoSuchBeanDefinitionException.class)
   public void testImportCombination() {
 
     final String beans =
@@ -255,10 +270,11 @@ public class ConditionalImportParserTest {
     + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
     + "    http://www.globant.com/schema/katari\n"
     + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-    + "  <katari:properties name='katari.props' resource='classpath:/com/globant/katari/core/spring/test2.properties'/>\n" 
-    + "  <katari:import resource='com.globant.katari.core.spring'\n" 
+    + "  <katari:properties name='katari.props'"
+    + "   location='classpath:/com/globant/katari/core/spring/test2.properties'/>\n"
+    + "  <katari:import module='com.globant.katari.core.spring'\n"
     + "    property-name='authentication.mode' property-value='CAS'/>"
-    + "  <katari:import resource='com.globant.katari.core.spring2'\n" 
+    + "  <katari:import module='com.globant.katari.core.spring2'\n"
     + "    property-name='authentication.mode' property-value='FB'/>"
     + "</beans>\n";
     System.setProperty("authentication.mode", "CAS");
@@ -275,14 +291,13 @@ public class ConditionalImportParserTest {
     try {
       context.getBean("menubar");
       fail("Shouldn't reach this");
-    } catch (NoSuchBeanDefinitionException e) {
+    } finally {
+      context.close();
     }
-    
-    context.close();
   }
-  
+
   @Test(expected=RuntimeException.class)
-  public void testImportAlternateCombination() {
+  public void testImport_propertiesAfterImport() {
 
     final String beans =
     "<?xml version='1.0' encoding='UTF-8'?>\n"
@@ -293,11 +308,13 @@ public class ConditionalImportParserTest {
     + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
     + "    http://www.globant.com/schema/katari\n"
     + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
-    + "  <katari:properties name='katari.props' resource='classpath:/com/globant/katari/core/spring/test2.properties'/>\n" 
-    + "  <katari:import resource='com.globant.katari.core.spring'\n" 
+    + "  <katari:properties name='katari.props'"
+    + "   location='classpath:/com/globant/katari/core/spring/test2.properties'/>\n"
+    + "  <katari:import module='com.globant.katari.core.spring'\n"
     + "    property-name='authentication.mode' property-value='CAS'/>"
-    + "  <katari:properties name='katari2.props' resource='classpath:/com/globant/katari/core/spring/test2.properties'/>\n" 
-    + "  <katari:import resource='com.globant.katari.core.spring2'\n" 
+    + "  <katari:properties name='katari2.props'"
+    + "   location='classpath:/com/globant/katari/core/spring/test2.properties'/>\n"
+    + "  <katari:import module='com.globant.katari.core.spring2'\n"
     + "    property-name='authentication.mode' property-value='FB'/>"
     + "</beans>\n";
     System.setProperty("authentication.mode", "CAS");
@@ -308,7 +325,62 @@ public class ConditionalImportParserTest {
       }
     };
     context.refresh();
- 
+  }
+
+  @Test
+  public void testImport_always() {
+    final String beans =
+    "<?xml version='1.0' encoding='UTF-8'?>\n"
+    + "<beans xmlns='http://www.springframework.org/schema/beans'\n"
+    + "  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'\n"
+    + "  xmlns:katari='http://www.globant.com/schema/katari'\n"
+    + "  xsi:schemaLocation='http://www.springframework.org/schema/beans\n"
+    + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
+    + "    http://www.globant.com/schema/katari\n"
+    + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
+    + "  <katari:properties name='katari.props'"
+    + "   location='classpath:/com/globant/katari/core/spring/test2.properties'/>\n"
+    + "  <katari:import module='com.globant.katari.core.spring'/>"
+    + "</beans>\n";
+    System.setProperty("authentication.mode", "CAS");
+    AbstractXmlApplicationContext context;
+    context = new AbstractXmlApplicationContext() {
+      protected Resource[] getConfigResources() {
+        return new Resource[] {new ByteArrayResource(beans.getBytes())};
+      }
+    };
+    context.refresh();
+    Object menubar = context.getBean("menubar");
+    assertThat(menubar, is(MenuBar.class));
+
+    context.close();
+  }
+
+  @Test
+  public void testImport_alwaysNoProperties() {
+    final String beans =
+    "<?xml version='1.0' encoding='UTF-8'?>\n"
+    + "<beans xmlns='http://www.springframework.org/schema/beans'\n"
+    + "  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'\n"
+    + "  xmlns:katari='http://www.globant.com/schema/katari'\n"
+    + "  xsi:schemaLocation='http://www.springframework.org/schema/beans\n"
+    + "    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd\n"
+    + "    http://www.globant.com/schema/katari\n"
+    + "    http://www.globant.com/schema/katari/katari.xsd'>\n"
+    + "  <katari:import module='com.globant.katari.core.spring'/>"
+    + "</beans>\n";
+    System.setProperty("authentication.mode", "CAS");
+    AbstractXmlApplicationContext context;
+    context = new AbstractXmlApplicationContext() {
+      protected Resource[] getConfigResources() {
+        return new Resource[] {new ByteArrayResource(beans.getBytes())};
+      }
+    };
+    context.refresh();
+    Object menubar = context.getBean("menubar");
+    assertThat(menubar, is(MenuBar.class));
+
+    context.close();
   }
 }
 

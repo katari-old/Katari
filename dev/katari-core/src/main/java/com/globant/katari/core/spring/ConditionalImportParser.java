@@ -47,10 +47,10 @@ public class ConditionalImportParser implements BeanDefinitionParser {
   private static final String IMPORT = "import";
 
   /** Constant for the resource attribute. */
-  private static final String RESOURCE = "resource";
+  private static final String MODULE = "module";
 
   /** Constant for the ref-properties attribute. */
-  private static final String REF_PROPERTIES = "properties-ref";
+  private static final String PROPERTIES_REF = "properties-ref";
 
   /** Constant for the property-value attribute. */
   private static final String PROPERTY_VALUE = "property-value";
@@ -73,7 +73,13 @@ public class ConditionalImportParser implements BeanDefinitionParser {
     this.propertiesParser = propertiesParser;
   }
 
-  /**
+  /** Parses an import element.
+   *
+   * It must have a module attribute, and may have optional properties-ref,
+   * property-name and property-value attributes.
+   *
+   * @return always returns null.
+   *
    * {@inheritDoc}
    */
   public BeanDefinition parse(final Element element,
@@ -90,19 +96,26 @@ public class ConditionalImportParser implements BeanDefinitionParser {
   }
 
   /**
-   * Evaluates the condition specified in the import element. If the condition
-   * evals to true, the module (specified by the resource attribute) should be
-   * loaded
+   * Evaluates the condition specified in the import element.
    * 
-   * @param condition
-   *          the condition element
+   * If the condition evals to true, the module (specified by the resource
+   * attribute) should be loaded
    * 
-   * @return true, if successful
+   * @param condition the condition element. It may have a properties-ref,
+   * property-name and property-value optional attributes.
+   * 
+   * @return true if condition does not have an attribute named
+   * [attribute-name] or the attribute named [attribute-name] is
+   * [attribute-value].
    */
   private boolean evalCondition(final Element condition) {
-    String refProperties = condition.getAttribute(REF_PROPERTIES);
+    String refProperties = condition.getAttribute(PROPERTIES_REF);
     String propertyName = condition.getAttribute(PROPERTY_NAME);
     String propertyValue = condition.getAttribute(PROPERTY_VALUE);
+    if (!condition.hasAttribute(PROPERTY_NAME)) {
+      // property-name not specified, evaluates to true.
+      return true;
+    }
     String actualPropertyValue = propertiesParser.getProperty(refProperties,
         propertyName);
     if ((!StringUtils.isEmpty(actualPropertyValue))
@@ -135,7 +148,7 @@ public class ConditionalImportParser implements BeanDefinitionParser {
     beanReader.setResourceLoader(resourceLoader);
     beanReader.setEntityResolver(new ResourceEntityResolver(resourceLoader));
 
-    String location = element.getAttribute(RESOURCE);
+    String location = element.getAttribute(MODULE);
     location = location.replaceAll("\\.", "/");
     location = CLASSPATH_PREFIX.concat(location).concat("/").concat(
         KATARI_MODULE_NAME);

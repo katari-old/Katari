@@ -16,13 +16,13 @@
   <import resource="classpath:/com/globant/katari/core/applicationContext.xml"/>
 
   <!-- The home module. -->
-  <import resource="classpath:/com/globant/katari/sample/home/module.xml"/>
+  <katari:import module="com.globant.katari.sample.home"/>
 
   <!-- The classic menu module. -->
-  <import resource="classpath:/com/globant/katari/menu/classic/module.xml"/>
+  <katari:import module="com.globant.katari.menu.classic"/>
 
   <!--  The editable-pages module -->
-  <import resource="classpath:/com/globant/katari/editablepages/module.xml"/>
+  <katari:import module="com.globant.katari.editablepages"/>
 
   <!-- LOGIN. -->
   <!--
@@ -30,48 +30,48 @@
   for most of the scenarios the local one should be enough
   -->
   <!-- The cas module.
-  <import resource="classpath:/com/globant/katari/cas/module.xml"/>
+  <katari:import module="com.globant.katari.cas"/>
   -->
   <!-- The local login module (recomended) -->
-  <import resource="classpath:/com/globant/katari/login/local/module.xml"/>
+  <katari:import module="com.globant.katari.login.local"/>
 
   <!-- The user module. -->
-  <import resource="classpath:/com/globant/katari/sample/user/module.xml"/>
+  <katari:import module="com.globant.katari.sample.user"/>
 
   <!-- The role module. -->
-  <import resource="classpath:/com/globant/katari/hibernate/role/module.xml"/>
+  <katari:import module="com.globant.katari.hibernate.role"/>
 
   <!-- The time module. -->
-  <import resource="classpath:/com/globant/katari/sample/time/module.xml"/>
+  <katari:import module="com.globant.katari.sample.time"/>
 
   <!-- The reports module. -->
-  <import resource="classpath:/com/globant/katari/report/module.xml"/>
+  <katari:import module="com.globant.katari.report"/>
 
   <!-- The style module. It provides a sample style and serves the static
   content used in the application. -->
-  <import resource="classpath:/com/globant/katari/style/module.xml"/>
+  <katari:import module="com.globant.katari.style"/>
 
   <!-- The client libs module. It provides unified access to common javascript
   apis. -->
-  <import resource="classpath:/com/globant/katari/ajax/module.xml"/>
+  <katari:import module="com.globant.katari.ajax"/>
 
   <!-- The Institutional module. It has some static pages. -->
-  <import resource="classpath:/com/globant/katari/sample/institutional/module.xml"/>
+  <katari:import module="com.globant.katari.sample.institutional"/>
 
   <!-- The wicket module. -->
-  <import resource="classpath:/com/globant/katari/sample/wicket/module.xml" />
+  <katari:import module="com.globant.katari.sample.wicket" />
 
   <!-- The search module. -->
-  <import resource="classpath:/com/globant/katari/search/module.xml" />
+  <katari:import module="com.globant.katari.search" />
 
   <!-- The console module. -->
-  <import resource="classpath:/com/globant/katari/console/module.xml" />
+  <katari:import module="com.globant.katari.console" />
 
   <!-- The social server module. -->
-  <import resource="classpath:/com/globant/katari/socialserver/socialserver/module.xml" />
+  <katari:import module="com.globant.katari.socialserver.socialserver" />
 
   <!-- The social server module. -->
-  <import resource="classpath:/com/globant/katari/gadgetcontainer/module.xml" />
+  <katari:import module="com.globant.katari.gadgetcontainer" />
 
   <!-- The hibernate properties. They are referenced from the hibernate bean. -->
   <bean id="katari.hibernateProperties"

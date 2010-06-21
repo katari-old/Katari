@@ -41,21 +41,48 @@
     </xsd:complexType>
   </xsd:element>
 
-  <!-- Imports a bean definition file depending on a condition. -->
+  <!-- Imports a katari module.
+
+  <katari:properties location='classpath:katari.properties'/>
+
+  <katari:import module='com.globant.katari.local-login'/>
+  or
+  <katari:import module='com.globant.katari.local-login'
+    property-name='loginMethod' property-value='local'/>
+  -->
   <xsd:element name="import">
     <xsd:complexType>
+      <!-- If there is a property named [property-name] with value
+           [property-value] in the properties entry named [properties-ref],
+           then import the module.
+
+           If no properties-ref is specified, then search all properties.
+
+           If property-name is specified, and property-value is not, then
+           import the module if there is a property with name property-name, no
+           matter the value.
+
+           If neither property-name nor property-value are specified, then
+           import the module no matter what.  -->
       <xsd:attribute name="properties-ref" use="optional"/>
-      <xsd:attribute name="property-name" use="required"/>
-      <xsd:attribute name="property-value" use="required"/>
-      <xsd:attribute name="resource" use="required"/>
+      <xsd:attribute name="property-name" use="optional"/>
+      <xsd:attribute name="property-value" use="optional"/>
+      <!-- A classpath package name where to find the module.xml to import. -->
+      <xsd:attribute name="module" use="required"/>
     </xsd:complexType>
   </xsd:element>
 
-  <!-- Parses a properties file to be used by the import element -->	
+  <!-- Parses a properties file to be used by the import element.
+
+      Element must always appear before the first katari:import.
+      -->
   <xsd:element name="properties">
     <xsd:complexType>
-      <xsd:attribute name="name" use="required"/>
-      <xsd:attribute name="resource" use="required"/>
+      <!-- The bean name of the properties bean. If not specified, the
+           properties instance is not added to the spring application context.
+           -->
+      <xsd:attribute name="name" use="optional"/>
+      <xsd:attribute name="location" use="required"/>
     </xsd:complexType>
   </xsd:element>
   <!-- vim: set ts=2 et sw=2 : -->
