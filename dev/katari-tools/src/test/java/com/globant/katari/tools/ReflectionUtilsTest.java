@@ -19,6 +19,9 @@ public class ReflectionUtilsTest {
     }
   }
 
+  private static class D extends C {
+  }
+
   @Test
   public void testGetAttribute() {
     C c = new C();
@@ -32,5 +35,17 @@ public class ReflectionUtilsTest {
     assertEquals("new", c.getS());
   }
 
+  @Test
+  public void testGetAttribute_baseClass() {
+    D d = new D();
+    assertEquals("old", ReflectionUtils.getAttribute(d, "s"));
+  }
+
+  @Test
+  public void testSetAttribute_baseClass() {
+    D d = new D();
+    ReflectionUtils.setAttribute(d, "s", "new");
+    assertEquals("new", d.getS());
+  }
 }
 
