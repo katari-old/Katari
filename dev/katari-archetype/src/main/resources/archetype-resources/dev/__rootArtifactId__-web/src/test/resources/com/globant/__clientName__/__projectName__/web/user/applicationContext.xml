@@ -1,0 +1,60 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- The katari global beans. -->
+  <import resource="classpath:/com/globant/katari/core/applicationContext.xml"/>
+
+  <!-- The search module. -->
+  <import resource="classpath:/com/globant/katari/search/module.xml"/>
+
+  <!-- The role module. -->
+  <import resource="classpath:/com/globant/katari/hibernate/role/module.xml"/>
+
+  <!-- The user module. -->
+  <import resource="classpath:/com/globant/${clientName}/${projectName}/web/user/module.xml"/>
+
+  <!-- A sample datasource. Do not use this for production. -->
+  <bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value='org.hsqldb.jdbcDriver'/>
+    <property name="url" value="jdbc:hsqldb:mem:testdb"/>
+    <property name="username" value="sa"/>
+    <property name="password" value=""/>
+  </bean>
+
+  <!-- The hibernate properties, They are referenced from the hibernate bean. -->
+  <bean id="katari.hibernateProperties"
+    class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="properties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+        <prop key="hibernate.hbm2ddl.auto">create</prop>
+        <!-- WARNING: When this is set to 'auto', which is the default option
+	for Hibernate, it's not possible to change the isolation level of any
+	transaction. Spring sets it to 'on_close' , but in this way, the
+	tests never return the connections, thus emptying the connection pool.
+
+	To avoid this, we set it to 'after_transaction', but there may be
+	unexpected side effect we don't know of yet -->
+	<!-- This does not work with hsql. -->
+        <!-- prop key="hibernate.connection.release_mode">after_transaction</prop -->
+      </props>
+    </property>
+  </bean>
+
+  <!-- The katari data source as an alias to dataSource. -->
+  <alias name="dataSource" alias="katari.dataSource"/>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->
+
