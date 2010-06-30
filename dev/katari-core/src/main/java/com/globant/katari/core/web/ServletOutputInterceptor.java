@@ -15,14 +15,26 @@ import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** A response wrapper that intercepts the binary data written by the servlets.
+/** A response wrapper that intercepts the body data written by the servlets.
+ *
+ * This is used to post process the response, either by transforming it (like
+ * sitemesh) or by validating it (like HtmlValidationFilter).
+ *
+ * You must provide an output stream by implementing
+ *
+ * protected abstract OutputStream createOutputStream();
+ *
+ * The stream you provide will receive the body sent to the response object.
+ * This interceptor has a write through option that, when set, also copies the
+ * output to the original response.
  */
 public abstract class ServletOutputInterceptor extends
     HttpServletResponseWrapper {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(ServletOutputInterceptor.class);
+  private static Logger log =
+    LoggerFactory.getLogger(ServletOutputInterceptor.class);
 
   /** Indicates whether the data is written through to the original output
    * stream.
@@ -85,14 +97,14 @@ public abstract class ServletOutputInterceptor extends
     }
   };
 
-  /** The output strean that intercepts the data written by the servlets.
+  /** The output stream that intercepts the data written by the servlets.
    *
    * It is null until the user requests the output stream through
    * getOutputStream.
    */
   private OutputStreamWrapper outputStreamWrapper = null;
 
-  /** A writter that intercepts characted data written by the servlets and
+  /** A writer that intercepts character data written by the servlets and
    * writes it to the outputStreamWrapper.
    *
    * It is null until the client requests the writer through getWriter.
@@ -185,7 +197,11 @@ public abstract class ServletOutputInterceptor extends
     }
   }
 
-  /** {@inheritDoc}
+  /** Flushes all the buffers.
+   *
+   * This operation must be called before accessing the buffered output stream.
+   *
+   * If we are in writeThrough mode, we also flush the wrapped response.
    */
   @Override
   public void flushBuffer() throws IOException {
@@ -194,6 +210,9 @@ public abstract class ServletOutputInterceptor extends
     }
     if (outputStreamWrapper != null) {
       outputStreamWrapper.flush();
+    }
+    if (writeThrough) {
+      super.flushBuffer();
     }
   }
 }

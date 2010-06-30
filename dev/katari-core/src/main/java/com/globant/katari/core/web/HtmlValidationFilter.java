@@ -111,7 +111,7 @@ public class HtmlValidationFilter implements Filter {
 
     /** Called by tidy when a warning or error occurs.
      *
-     * It explicitely skips the error related to the attribute 'validator'.
+     * It explicitly skips the error related to the attribute 'validator'.
      * This makes it possible to validate tapestry pages that adds the
      * 'validator' attribute to some elements.
      *
@@ -160,10 +160,9 @@ public class HtmlValidationFilter implements Filter {
     }
   };
 
-  /** Initializes the filter. It currently does nothing.
+  /** {@inheritDoc}
    *
-   * @param filterConfig The provided filter configuration.
-   * @throws ServletException in case of error.
+   * It currently does nothing.
    */
   public void init(final FilterConfig filterConfig) throws ServletException {
     log.trace("Entering init");
@@ -205,6 +204,8 @@ public class HtmlValidationFilter implements Filter {
 
       chain.doFilter(request, wrapper);
 
+      wrapper.flushBuffer();
+
       String contentType = httpResponse.getContentType();
       if (contentType != null && contentType.startsWith("text/html")) {
         Tidy tidy = new Tidy();
@@ -213,7 +214,6 @@ public class HtmlValidationFilter implements Filter {
         // Set the error output and ignore it.
         tidy.setErrout(new PrintWriter(new ByteArrayOutputStream()));
 
-        String path = ((HttpServletRequest) request).getPathInfo();
         ErrorListener errors = new ErrorListener(false);
         tidy.setMessageListener(errors);
 

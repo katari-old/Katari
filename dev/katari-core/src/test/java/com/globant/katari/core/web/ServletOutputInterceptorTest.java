@@ -16,8 +16,6 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 
-/* Tests the weblet response wrapper.
- */
 public class ServletOutputInterceptorTest {
 
   /* Tests that the writer correctly writes to the output stream and that the
@@ -58,6 +56,7 @@ public class ServletOutputInterceptorTest {
     HttpServletResponse response = createMock(HttpServletResponse.class);
     expect(response.getCharacterEncoding()).andReturn("utf-8");
     expect(response.getOutputStream()).andReturn(outputStream);
+    response.flushBuffer();
     replay(response);
 
     final OutputStream stream = new ByteArrayOutputStream();

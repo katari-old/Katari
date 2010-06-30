@@ -2,11 +2,7 @@
 
 package com.globant.katari.core.web;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.createNiceMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
+import static org.easymock.classextension.EasyMock.*;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -240,6 +236,34 @@ public class HtmlValidationFilterTest {
     filter.init(filterConfig);
     // Would throw an exception if enabled.
     filter.doFilter(request, response, chain);
+  }
+
+  /* Tests what happens when the user does not call flush on the reseponse or
+   * writer.
+   */
+  @Test
+  public final void testDoFilter_flushNotCalled() throws Exception {
+
+    // Mocks the filter chain.
+    FilterChain chain = new FilterChain() {
+      public void doFilter(final ServletRequest request, final
+          ServletResponse response) throws IOException {
+        log.trace("Entering doFilter");
+
+        PrintWriter writer = response.getWriter();
+        writer.write(
+            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\""
+            + " \"http://www.w3.org/TR/html4/strict.dtd\">"
+            + " <html><head><title>aa</title></head><body>test</body></html>");
+        log.trace("Leaving doFilter");
+      }
+    };
+
+    // Executes the test.
+    HtmlValidationFilter filter = new HtmlValidationFilter();
+    filter.init(filterConfig);
+    filter.doFilter(request, response, chain);
+    verify(response);
   }
 }
 
