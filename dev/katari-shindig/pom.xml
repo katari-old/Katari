@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <!-- vim: set ts=2 et sw=2 : -->
+
+  <parent>
+    <groupId>com.globant.katari</groupId>
+    <artifactId>dev</artifactId>
+    <version>0.22-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.globant.katari</groupId>
+  <artifactId>katari-shindig</artifactId>
+  <packaging>jar</packaging>
+  <name>Katari - shindig integration</name>
+
+  <dependencies>
+    <!-- Test only dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymockclassextension</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+    </dependency>
+
+    <!-- Used only in spring configuration. No java class imports a class from
+         this jar. -->
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-tools</artifactId>
+    </dependency>
+
+    <!-- Runtime dependencies -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+    </dependency>
+
+    <!-- Needed to extend LocalSessionFactoryBean -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.acegisecurity</groupId>
+      <artifactId>acegi-security</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-core</artifactId>
+    </dependency>
+
+    <!-- Provided by the container -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+
+    <!-- Needed by shindig. The version numbers should eventually go in the
+         parent pom, under dependencyManagement. -->
+    <dependency>
+      <groupId>org.apache.shindig</groupId>
+      <artifactId>shindig-common</artifactId>
+      <version>1.1-BETA5-incubating</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.shindig</groupId>
+      <artifactId>shindig-common</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+      <version>1.1-BETA5-incubating</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.shindig</groupId>
+      <artifactId>shindig-gadgets</artifactId>
+      <version>1.1-BETA5-incubating</version>
+      <exclusions>
+        <exclusion>
+          <groupId>caja</groupId>
+          <artifactId>caja</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- Shindig depends on caja:caja:RELEASE (latest version, who would tell)
+         and at the time of this writing, it failed compilation. The sample
+         packed war included version r3828, that seems to be working. -->
+    <dependency>
+      <groupId>caja</groupId>
+      <artifactId>caja</artifactId>
+      <version>r3828</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.shindig</groupId>
+      <artifactId>shindig-social-api</artifactId>
+      <version>1.1-BETA5-incubating</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.shindig</groupId>
+      <artifactId>shindig-features</artifactId>
+      <version>1.1-BETA5-incubating</version>
+    </dependency>
+    <!-- End of shindig dependencies. -->
+
+  </dependencies>
+
+  <!-- Needed by shindig (caja). Should be removed or moved to parent. -->
+  <repositories>
+    <repository>
+      <id>caja</id>
+      <url>http://google-caja.googlecode.com/svn/maven</url>
+    </repository>
+  </repositories>
+
+</project>
+

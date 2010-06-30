@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.globant.com/schema/katari
+    http://www.globant.com/schema/katari/katari.xsd">
+
+  <bean id="shindig.module" class="com.globant.katari.core.web.ConfigurableModule">
+
+    <!-- Initializes Guice when the web application context starts. -->
+    <property name='listeners'>
+      <list>
+        <bean class='com.globant.katari.shindig.GuiceInitializerListener'>
+          <constructor-arg>
+            <list>
+              <value>com.globant.katari.shindig.ShindigPropertiesModule</value>
+              <value>org.apache.shindig.gadgets.DefaultGuiceModule</value>
+              <value>org.apache.shindig.social.sample.SampleModule</value>
+              <value>org.apache.shindig.gadgets.oauth.OAuthModule</value>
+              <value>org.apache.shindig.common.cache.ehcache.EhCacheModule</value>
+            </list>
+          </constructor-arg>
+        </bean>
+      </list>
+    </property>
+
+    <!-- Filters as defined by shindig. -->
+    <property name='filters'>
+      <bean class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+          <list>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg value='/module/shindig/social.*'/>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <ref bean='shindig.authenticationFilter'/>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+            </bean>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg value='/module/shindig/gadgets/ifr.*'/>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <ref bean='shindig.authenticationFilter'/>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+            </bean>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg value='/module/shindig/gadgets/makeRequest.*'/>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <ref bean='shindig.authenticationFilter'/>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+            </bean>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg value='/module/shindig/gadgets/api/rpc.*'/>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <ref bean='shindig.authenticationFilter'/>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+            </bean>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg value='/module/shindig/gadgets/api/rest.*'/>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <ref bean='shindig.authenticationFilter'/>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+
+    <!-- Servlets as defined by shindig. -->
+    <property name="entryPoints">
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <entry key="/gadgets/js">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="org.apache.shindig.gadgets.servlet.JsServlet" />
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/gadgets/proxy">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="org.apache.shindig.gadgets.servlet.ProxyServlet" />
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/gadgets/makeRequest">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="org.apache.shindig.gadgets.servlet.MakeRequestServlet" />
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/gadgets/api/rpc">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="org.apache.shindig.protocol.JsonRpcServlet" />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="handlers">
+                      <value>org.apache.shindig.gadgets.handlers</value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/gadgets/api/rest">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="org.apache.shindig.protocol.DataServiceServlet" />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="handlers">
+                      <value>org.apache.shindig.gadgets.handlers</value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/gadgets/concat">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="org.apache.shindig.gadgets.servlet.ConcatProxyServlet"
+                    />
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/gadgets/oauthcallback">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="org.apache.shindig.gadgets.servlet.OAuthCallbackServlet"
+                    />
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/gadgets/ifr">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="org.apache.shindig.gadgets.servlet.GadgetRenderingServlet"
+                    />
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/gadgets/metadata">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="org.apache.shindig.gadgets.servlet.RpcServlet" />
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/social/rest">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="org.apache.shindig.protocol.DataServiceServlet" />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="handlers">
+                      <value>org.apache.shindig.social.handlers</value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/social/rpc">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="org.apache.shindig.protocol.JsonRpcServlet" />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="handlers">
+                      <value>org.apache.shindig.social.handlers</value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+            <!--entry key="/oauth">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="org.apache.shindig.gadgets.servlet.ProxyServlet" />
+                </constructor-arg>
+              </bean>
+            </entry -->
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <property name="urlToRoleMapper">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
+        <constructor-arg index="0">
+          <map>
+            <entry key="/**">
+              <list>
+                <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+              </list>
+            </entry>
+          </map>
+        </constructor-arg>
+      </bean>
+    </property>
+
+  </bean>
+
+  <bean id='shindig.authenticationFilter'
+    class="org.apache.shindig.auth.AuthenticationServletFilter" />
+
+  <!-- We cannot guarantee that gadgets generate well formed html, so we don't
+       let katari validate them. -->
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='katari.htmlValidator.ignoredUrlpatterns' />
+    <constructor-arg>
+      <list>
+        <value>.*/module/shindig/gadgets/ifr.*</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <!-- vim: set ts=2 sw=2 et ai: -->  
+</beans>
+
