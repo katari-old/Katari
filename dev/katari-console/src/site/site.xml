@@ -13,7 +13,7 @@
   </bannerLeft>
 
   <body>
-    <menu name="Globant Katari - console">
+    <menu name="Katari - console">
       <item name="Parent" href="../index.html" />
       <item name="Introduction" href="index.html" />
     </menu>

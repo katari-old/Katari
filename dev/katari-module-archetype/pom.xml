@@ -13,7 +13,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-module-archetype</artifactId>
   <packaging>maven-archetype</packaging>
-  <name>Globant Katari - module archetype</name>
+  <name>Katari - module archetype</name>
   <description>Generates a Katari module</description>
 
   <build>

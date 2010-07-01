@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-cas</artifactId>
   <packaging>jar</packaging>
-  <name>Globant Katari - cas server and client</name>
+  <name>Katari - cas server and client</name>
 
   <dependencies>
     <!-- Test only dependencies -->

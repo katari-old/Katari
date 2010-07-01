@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-local-login</artifactId>
   <packaging>jar</packaging>
-  <name>Globant Katari - local login</name>
+  <name>Katari - local login</name>
 
   <dependencies>
     <!-- Test only dependencies -->

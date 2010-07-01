@@ -17,7 +17,7 @@
 
   <body>
 
-    <menu name="Globant Katari - local login">
+    <menu name="Katari - local login">
       <item name="Parent" href="../index.html" />
       <item name="Introduction" href="index.html" />
     </menu>

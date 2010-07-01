@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-style</artifactId>
   <packaging>jar</packaging>
-  <name>Globant Katari - style</name>
+  <name>Katari - style</name>
   <description>
     This module contains a style for the web application sample. It includes
     the sitemesh decorators and the common static files.

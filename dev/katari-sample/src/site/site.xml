@@ -14,7 +14,7 @@
 
   <body>
 
-    <menu name="Globant Katari - web">
+    <menu name="Katari - web">
       <item name="Parent" href="../index.html" />
       <item name="Introduction" href="index.html" />
     </menu>

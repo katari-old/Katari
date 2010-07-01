@@ -12,7 +12,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>dev</artifactId>
   <packaging>pom</packaging>
-  <name>Globant Katari - dev</name>
+  <name>Katari - dev</name>
   <url>
     https://projects.globant.com/nexus/content/repositories/site/${groupId}/katari/${version}
   </url>

@@ -12,7 +12,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-socialserver</artifactId>
   <packaging>jar</packaging>
-  <name>Globant Katari - social server</name>
+  <name>Katari - social server</name>
 
   <dependencies>
     <!-- Test only dependencies -->

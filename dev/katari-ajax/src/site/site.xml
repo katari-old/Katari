@@ -14,7 +14,7 @@
 
   <body>
 
-    <menu name="Globant Katari - ajax tools">
+    <menu name="Katari - ajax tools">
       <item name="Parent" href="../index.html" />
       <item name="Introduction" href="index.html" />
     </menu>

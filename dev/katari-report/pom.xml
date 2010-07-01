@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-report</artifactId>
   <packaging>jar</packaging>
-  <name>Globant Katari - report</name>
+  <name>Katari - report</name>
   <description>
     Katari reporting module.
   </description>

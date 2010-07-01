@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-classic-menu</artifactId>
   <packaging>jar</packaging>
-  <name>Globant Katari - classic menu</name>
+  <name>Katari - classic menu</name>
   <description>
     This module contains the classic menu.
   </description>

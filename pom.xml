@@ -12,7 +12,7 @@
   <artifactId>katari</artifactId>
   <version>0.22-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Globant Katari</name>
+  <name>Katari</name>
   <description>
     A template application that serves as a base for all java based Globant
     projects.

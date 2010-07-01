@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-sample</artifactId>
   <packaging>war</packaging>
-  <name>Globant Katari - sample</name>
+  <name>Katari - sample</name>
 
   <dependencies>
     <!-- Test only dependencies -->

@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-console</artifactId>
   <packaging>jar</packaging>
-  <name>Globant Katari - console</name>
+  <name>Katari - console</name>
   <description>A scripting console for the Katari environment</description>
 
   <dependencies>

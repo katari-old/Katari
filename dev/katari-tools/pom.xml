@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-tools</artifactId>
   <packaging>jar</packaging>
-  <name>Globant Katari - tools</name>
+  <name>Katari - tools</name>
   <description>
     Katari build and test support tools.
   </description>

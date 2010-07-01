@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-nodatabase</artifactId>
   <packaging>war</packaging>
-  <name>Globant Katari - sample without database</name>
+  <name>Katari - sample without database</name>
 
   <dependencies>
     <!-- Test only dependencies -->

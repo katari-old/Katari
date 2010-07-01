@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-editablepages</artifactId>
   <packaging>jar</packaging>
-  <name>Globant Katari - editable pages</name>
+  <name>Katari - editable pages</name>
   <description>
     Katari editable pages module.
   </description>

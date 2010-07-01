@@ -11,7 +11,7 @@
   <groupId>com.globant.katari</groupId>
   <artifactId>katari-core</artifactId>
   <packaging>jar</packaging>
-  <name>Globant Katari - core</name>
+  <name>Katari - core</name>
 
   <dependencies>
     <!-- Test only dependencies -->
