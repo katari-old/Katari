@@ -105,7 +105,7 @@
   	"org.acegisecurity.providers.ProviderManager"
     p:providers-ref='local-login.authenticationProviders'/>
 
-  <!-- Intended to be overriden by other modules with ListFactoryAdder. -->
+  <!-- Intended to be overriden by other modules with ListFactoryAppender. -->
   <util:list id='local-login.authenticationProviders'>
     <ref bean="local-login.authenticationProvider" />
   </util:list>

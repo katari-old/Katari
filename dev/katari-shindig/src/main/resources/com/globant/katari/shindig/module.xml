@@ -234,7 +234,7 @@
 
   <!-- We cannot guarantee that gadgets generate well formed html, so we don't
        let katari validate them. -->
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.htmlValidator.ignoredUrlpatterns' />
     <constructor-arg>
       <list>

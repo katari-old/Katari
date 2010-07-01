@@ -76,7 +76,7 @@
     </property>
   </bean>
 
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.persistentClasses'/>
     <constructor-arg>
       <list>
@@ -87,7 +87,7 @@
 
   <!-- Defines the searchable entities and their corresponding handlers for the
        search module. -->
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='search.indexableClasses'/>
     <constructor-arg>
       <list>
@@ -96,7 +96,7 @@
       </list>
     </constructor-arg>
   </bean>
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='search.adapters'/>
     <constructor-arg>
       <list>

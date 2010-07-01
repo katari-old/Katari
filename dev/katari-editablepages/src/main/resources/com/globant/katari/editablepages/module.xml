@@ -101,7 +101,7 @@
 
   </bean>
 
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.persistentClasses'/>
     <constructor-arg>
       <list>
@@ -113,7 +113,7 @@
   <!-- Defines the searchable entities and their corresponding handlers for the
        search module. If the search module is not installed, these beans have
        no effect.-->
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='search.indexableClasses'/>
     <constructor-arg value='true'/>
     <constructor-arg>
@@ -122,7 +122,7 @@
       </list>
     </constructor-arg>
   </bean>
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='search.adapters'/>
     <constructor-arg value='true'/>
     <constructor-arg>
@@ -161,7 +161,7 @@
     class='com.globant.katari.editablepages.view.FckEditorConfiguration'/>
   
   <!-- Adds editable pages to html validation ignored list. -->
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.htmlValidator.ignoredUrlpatterns' />
     <constructor-arg>
       <list>

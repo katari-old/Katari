@@ -113,7 +113,7 @@
 
   <!-- The list of persistence classes for trails. To add new classes managed by trails, add a bean like this:
 
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='trails.persistentClasses'/>
     <constructor-arg>
        <list>

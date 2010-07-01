@@ -141,7 +141,7 @@
     p:ignoredUrlpatterns-ref='katari.htmlValidator.ignoredUrlpatterns'/>
 
   <!--The list of url patters to ignore for validation. Each module can add
-  patters using the ListFactoryAdder bean post processor. -->
+  patters using the ListFactoryAppender bean post processor. -->
   <util:list id='katari.htmlValidator.ignoredUrlpatterns'/>
 
   <bean class='com.globant.katari.core.spring.StringHolder'

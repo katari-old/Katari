@@ -13,10 +13,11 @@ import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
-/** Tests the ListFactoryAdder with a spring application context.
+/** Tests the ListFactoryAppender with a spring application context.
+ *
  * @author gerardo.bercovich
  */
-public class ListFactoryAdderTest {
+public class ListFactoryAppenderTest {
   final String springBeans = "<?xml version='1.0' encoding='UTF-8'?>\n"
     + "<beans xmlns='http://www.springframework.org/schema/beans'\n"
     + " xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'\n"
@@ -29,8 +30,8 @@ public class ListFactoryAdderTest {
     + " <util:list id='colorList'>\n"
     + "  <value>Yellow</value>\n"
     + " </util:list>\n"
-    + " <bean id='monocromeColorAdder'"
-    + "   class='com.globant.katari.core.web.ListFactoryAdder'>\n"
+    + " <bean id='monocromeColorAppender'"
+    + "   class='com.globant.katari.core.web.ListFactoryAppender'>\n"
     + "   <constructor-arg index='0' value='colorList'/>\n"
     + "   <constructor-arg index='1'>\n"
     + "     <list>\n"
@@ -39,8 +40,8 @@ public class ListFactoryAdderTest {
     + "     </list>\n"
     + "   </constructor-arg>\n"
     + " </bean>\n"
-    + " <bean id='rgbColorAdder'"
-    + "   class='com.globant.katari.core.web.ListFactoryAdder'>\n"
+    + " <bean id='rgbColorAppender'"
+    + "   class='com.globant.katari.core.web.ListFactoryAppender'>\n"
     + "   <constructor-arg index='0' value='colorList'/>\n"
     + "   <constructor-arg index='1'>\n"
     + "     <list>\n"
@@ -64,10 +65,10 @@ public class ListFactoryAdderTest {
     + " http://www.springframework.org/schema/util "
     + " http://www.springframework.org/schema/util/spring-util-2.5.xsd'>\n"
     + " <bean id='wrongTarget' "
-    + "   class='com.globant.katari.core.web.ListFactoryAdderTest."
+    + "   class='com.globant.katari.core.web.ListFactoryAppenderTest."
     + "WrongTarget'/>\n"
-    + " <bean id='monocromeColorAdderWrongTarget'"
-    + "   class='com.globant.katari.core.web.ListFactoryAdder'>\n"
+    + " <bean id='monocromeColorAppenderWrongTarget'"
+    + "   class='com.globant.katari.core.web.ListFactoryAppender'>\n"
     + "   <constructor-arg index='0' value='wrongTarget'/>\n"
     + "   <constructor-arg index='1'>\n"
     + "     <list>\n"
@@ -88,7 +89,7 @@ public class ListFactoryAdderTest {
     + " http://www.springframework.org/schema/beans/spring-beans-2.5.xsd\n"
     + " http://www.springframework.org/schema/util "
     + " http://www.springframework.org/schema/util/spring-util-2.5.xsd'>\n"
-    + " <bean class='com.globant.katari.core.web.ListFactoryAdder'>\n"
+    + " <bean class='com.globant.katari.core.web.ListFactoryAppender'>\n"
     + "   <constructor-arg index='0' value='nonexistingBean'/>\n"
     + "   <constructor-arg index='1' value='true'/>\n"
     + "   <constructor-arg index='2'>\n"

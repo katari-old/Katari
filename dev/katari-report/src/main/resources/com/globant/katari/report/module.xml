@@ -76,7 +76,7 @@
     <value>ROLE_REPORT_ADMIN</value>
   </util:list>
 
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.persistentClasses'/>
     <constructor-arg>
       <list>

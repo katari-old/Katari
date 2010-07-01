@@ -80,7 +80,7 @@ Release notes for version 0.19
  with:
 
 +-----
-<bean class='com.globant.katari.core.web.ListFactoryAdder'>
+<bean class='com.globant.katari.core.web.ListFactoryAppender'>
   <constructor-arg value='anubis.persistentClasses'/>
   <constructor-arg>
     <list>
