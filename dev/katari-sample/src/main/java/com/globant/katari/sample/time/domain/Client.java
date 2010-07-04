@@ -2,6 +2,8 @@
 
 package com.globant.katari.sample.time.domain;
 
+import org.apache.commons.lang.Validate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,8 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.Validate;
-import org.hibernate.validator.NotNull;
+import javax.validation.constraints.NotNull;
 
 /**
  * Defines the Client entity.

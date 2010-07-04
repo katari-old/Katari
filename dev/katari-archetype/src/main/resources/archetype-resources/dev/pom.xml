@@ -148,14 +148,15 @@
         <version>${dependency.hibernate-validator.version}</version>
       </dependency>
 
-      <!-- According to hibernate (see this bug
+      <!-- This comment was related to jpa 1, looks like it still applies for 2:
+           According to hibernate (see this bug
            http://opensource.atlassian.com/projects/hibernate/browse/ANN-712),
            hibernate repackaged javax.persistence api due to bugs in sun's
            release. -->
       <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>ejb3-persistence</artifactId>
-        <version>${dependency.hibernate-ejb3-persistence.version}</version>
+        <groupId>org.hibernate.javax.persistence</groupId>
+        <artifactId>hibernate-jpa-2.0-api</artifactId>
+        <version>${dependency.hibernate-jpa-2.0.version}</version>
       </dependency>
 
       <!-- Be careful. This version of the mysql jdbc driver is GPL. -->

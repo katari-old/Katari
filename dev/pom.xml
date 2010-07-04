@@ -207,14 +207,15 @@
         <version>${dependency.hibernate-validator.version}</version>
       </dependency>
 
-      <!-- According to hibernate (see this bug
+      <!-- This comment was related to jpa 1, looks like it still applies for 2:
+           According to hibernate (see this bug
            http://opensource.atlassian.com/projects/hibernate/browse/ANN-712),
            hibernate repackaged javax.persistence api due to bugs in sun's
            release. -->
       <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>ejb3-persistence</artifactId>
-        <version>${dependency.hibernate-ejb3-persistence.version}</version>
+        <groupId>org.hibernate.javax.persistence</groupId>
+        <artifactId>hibernate-jpa-2.0-api</artifactId>
+        <version>${dependency.hibernate-jpa-2.0.version}</version>
       </dependency>
 
       <!-- Be careful. This version of the mysql jdbc driver is GPL. -->
@@ -890,16 +891,18 @@ try {
     <dependency.easymock.version>2.2</dependency.easymock.version>
     <dependency.spring.version>2.5.6.SEC01</dependency.spring.version>
     <dependency.htmlunit.version>2.5</dependency.htmlunit.version>
-    <dependency.hibernate-core.version>3.3.2.GA</dependency.hibernate-core.version>
+    <dependency.hibernate-core.version>
+      3.5.1-Final
+    </dependency.hibernate-core.version>
     <dependency.hibernate-annotations.version>
-      3.4.0.GA
+      3.5.3-Final
     </dependency.hibernate-annotations.version>
     <dependency.hibernate-validator.version>
-      3.1.0.GA
+      4.0.2.GA
     </dependency.hibernate-validator.version>
-    <dependency.hibernate-ejb3-persistence.version>
-      1.0.2.GA
-    </dependency.hibernate-ejb3-persistence.version>
+    <dependency.hibernate-jpa-2.0.version>
+      1.0.0.Final
+    </dependency.hibernate-jpa-2.0.version>
     <dependency.javassist.version>
       3.8.0.GA
     </dependency.javassist.version>
