@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:katari="http://www.globant.com/schema/katari"
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:katari="http://www.globant.com/schema/katari"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     http://www.globant.com/schema/katari
@@ -14,8 +14,36 @@
       <bean class="org.springframework.beans.factory.config.MapFactoryBean">
         <property name="sourceMap">
           <map>
+            <entry key="/assets/.*">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="com.globant.katari.core.web.StaticContentServlet" />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <!--
+                      WARNING: Be careful with the value
+                      staticContentPath: if it starts with '/' it won't
+                      work under Tomcat.
+                    -->
+                    <entry key="staticContentPath"
+                      value="com/globant/katari/gadgetcontainer/view/" />
+                    <entry key="debug" value-ref='debugMode' />
+                    <entry key="debugPrefix"
+                      value="../katari-gadget-container/src/main/resources" />
+                    <entry key="requestCacheContent" value="true" />
+                    <entry key="mimeType_png" value="image/png" />
+                    <entry key="mimeType_gif" value="image/gif" />
+                    <entry key="mimeType_css" value="text/css" />
+                    <entry key="mimeType_js" value="text/javascript" />
+                    <entry key="mimeType_ico" value="image/vnd.microsoft.icon" />
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
             <!-- The spring-mvc controller servlet -->
-            <entry key=".*\.do">
+            <entry key="(.*do|.*katariSocialCanvas.js)">
               <bean class="com.globant.katari.core.web.ServletAndParameters">
                 <constructor-arg index="0">
                   <bean class="org.springframework.web.servlet.DispatcherServlet" />
@@ -36,6 +64,36 @@
       </bean>
     </property>
   </bean>
-<!-- vim: set ts=2 sw=2 et ai: -->  
-</beans>
 
+  <!-- JPA classes -->
+  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+    <constructor-arg value='katari.persistentClasses' />
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.gadgetcontainer.domain.GadgetInstance
+        </value>
+        <value>com.globant.katari.gadgetcontainer.domain.GadgetGroup
+        </value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <!-- Repositories -->
+  <bean id='social.gadgetGroupRepository'
+    class='com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository'>
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
+  </bean>
+
+  <bean id='social.userService'
+    class='com.globant.katari.gadgetcontainer.domain.ContextUserService' />
+
+  <bean id='social.tokenService'
+    class='com.globant.katari.gadgetcontainer.application.BasicSecurityTokenService'>
+    <constructor-arg index="0" value="shindig" />
+    <constructor-arg index="1" value="default" />
+  </bean>
+
+  <!-- vim: set ts=2 sw=2 et ai: -->
+</beans>
