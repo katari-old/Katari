@@ -9,3 +9,14 @@ Katari - shindig integration
 
  Provides social features to a Katari based application.
 
+Integration
+
+* Activities
+
+ Katari provides KatariActivityService, an implementation of shindig
+ ActivityService, and the related Activity entities: KatariActivity and
+ KataryMediaItem. These entities are all mapped with hibernate.
+
+ As you can see, Katari uses the convention of prefixing 'Katari' to the name
+ of the shindig interfase that it implements.
+

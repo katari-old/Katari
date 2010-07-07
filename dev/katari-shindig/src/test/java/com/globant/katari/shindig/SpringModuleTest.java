@@ -2,54 +2,38 @@
 
 package com.globant.katari.shindig;
 
-import javax.servlet.ServletContext;
+import org.springframework.context.ApplicationContext;
 
-import org.springframework.web.context.support.XmlWebApplicationContext;
-import org.springframework.context.support.AbstractXmlApplicationContext;
-import org.springframework.core.io.FileSystemResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ByteArrayResource;
-
-import org.springframework.mock.web.MockServletContext;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.After;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
+import com.globant.katari.shindig.testsupport.SpringTestUtils;
+
+import com.globant.katari.tools.HibernateUtils;
+
 import com.globant.katari.core.web.ConfigurableModule;
 
-/** Tests the module.xml.
+/* Tests the module.xml.
  *
  * The test performed is very naive. Just verifies that the application context
  * can be created and the shindig.module bean is of the expected type.
  */
 public class SpringModuleTest {
 
-  private XmlWebApplicationContext appContext = null;
-
-  @Before
-  public void createContexts() throws Exception {
-
-    ServletContext sc;
-    sc = new MockServletContext(".", new FileSystemResourceLoader());
-    appContext = new XmlWebApplicationContext();
-    appContext.setServletContext(sc);
-    appContext.setConfigLocations(new String[] {
-      "classpath:com/globant/katari/shindig/applicationContext.xml" });
-    appContext.refresh();
-  }
-
   @Test
   public void testModuleType() {
-    Object logout = appContext.getBean("shindig.module");
-    assertThat(logout, instanceOf(ConfigurableModule.class));
+    ApplicationContext appContext = SpringTestUtils.getBeanFactory();
+    Object module = appContext.getBean("shindig.module");
+    assertThat(module, instanceOf(ConfigurableModule.class));
   }
 
-  @After
-  public void close() {
-    appContext.close();
+  /* Generates the ddl file from the hibernate mappings.
+   */
+  @Test
+  public void testGenerateDdl() throws Exception {
+    HibernateUtils.createDdlScript("target/shindig.ddl",
+        "classpath:/com/globant/katari/shindig/applicationContext.xml");
   }
 }
 

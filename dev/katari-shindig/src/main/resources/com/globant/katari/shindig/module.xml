@@ -232,6 +232,16 @@
   <bean id='shindig.authenticationFilter'
     class="org.apache.shindig.auth.AuthenticationServletFilter" />
 
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.persistentClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.shindig.domain.KatariActivity</value>
+        <value>com.globant.katari.shindig.domain.KatariMediaItem</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
   <!-- We cannot guarantee that gadgets generate well formed html, so we don't
        let katari validate them. -->
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
@@ -241,6 +251,38 @@
         <value>.*/module/shindig/gadgets/ifr.*</value>
       </list>
     </constructor-arg>
+  </bean>
+
+  <bean id='shindig.activityService'
+    class='com.globant.katari.shindig.application.KatariActivityService'>
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
+  </bean>
+
+  <bean class
+    ="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator">
+    <property name="proxyTargetClass" value="true" />
+    <property name="beanNames">
+      <list>
+        <value>shindig.activityService</value>
+      </list>
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>shindig.transactionInterceptor</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="shindig.transactionInterceptor"
+      class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    <property name="transactionManager" ref="katari.transactionManager" />
+    <property name="transactionAttributes">
+      <props>
+        <prop key="execute">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
   </bean>
 
   <!-- vim: set ts=2 sw=2 et ai: -->  

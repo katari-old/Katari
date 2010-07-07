@@ -10,6 +10,9 @@
   <!-- The katari global beans. -->
   <import resource="classpath:/com/globant/katari/core/beans-core.xml"/>
 
+  <!-- Katari hibernate support. -->
+  <import resource="classpath:/com/globant/katari/hibernate/beans-hibernate.xml"/>
+
   <!-- The social container module. -->
   <import resource="classpath:/com/globant/katari/shindig/module.xml"/>
 
