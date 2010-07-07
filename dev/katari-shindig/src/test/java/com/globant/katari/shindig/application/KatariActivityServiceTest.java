@@ -52,7 +52,7 @@ public class KatariActivityServiceTest {
   @Test
   public void testGetActivities_singleActivity() throws Exception {
     
-    createSampleActivity("1", "app-id", "body");
+    createSampleActivity("1", "app-id", "title");
     Set<UserId> userIds = new HashSet<UserId>();
     userIds.add(new UserId(UserId.Type.userId, "1"));
     
@@ -67,7 +67,7 @@ public class KatariActivityServiceTest {
         userIds, groupId, "app-id", null, options, token).get().getEntry();
     assertThat(activities.size(), is(1));
     assertThat(activities.get(0).getAppId(), is("app-id"));
-    assertThat(activities.get(0).getBody(), is("body"));
+    assertThat(activities.get(0).getTitle(), is("title"));
     assertThat(activities.get(0).getUserId(), is("1"));
   }
   
@@ -75,7 +75,7 @@ public class KatariActivityServiceTest {
   public void testGetActivities_paged() throws Exception {
     // Create 20 activities for the same user
     for (int i = 1; i <= 20; i ++) {
-      createSampleActivity("1", "app-id", "body-" + i);
+      createSampleActivity("1", "app-id", "title-" + i);
     }
     Set<UserId> userIds = new HashSet<UserId>();
     userIds.add(new UserId(UserId.Type.userId, "1"));
@@ -91,9 +91,9 @@ public class KatariActivityServiceTest {
 
     assertThat(activities.size(), is(10));
     assertThat(activities.get(0).getAppId(), is("app-id"));
-    assertThat(activities.get(0).getBody(), is("body-1"));
+    assertThat(activities.get(0).getTitle(), is("title-1"));
     assertThat(activities.get(0).getUserId(), is("1"));
-    assertThat(activities.get(9).getBody(), is("body-10"));
+    assertThat(activities.get(9).getTitle(), is("title-10"));
 
     // finds the last 10 activities.
     options.setFirst(10);
@@ -102,15 +102,15 @@ public class KatariActivityServiceTest {
 
     assertThat(activities.size(), is(10));
     assertThat(activities.get(0).getAppId(), is("app-id"));
-    assertThat(activities.get(0).getBody(), is("body-11"));
+    assertThat(activities.get(0).getTitle(), is("title-11"));
     assertThat(activities.get(0).getUserId(), is("1"));
-    assertThat(activities.get(9).getBody(), is("body-20"));
+    assertThat(activities.get(9).getTitle(), is("title-20"));
   }
 
   @Test
   public void testGetActivities_sorted() throws Exception {
-    createSampleActivity("1", "app-id", "body-1");
-    createSampleActivity("1", "app-id", "body-2");
+    createSampleActivity("1", "app-id", "title-1");
+    createSampleActivity("1", "app-id", "title-2");
     
     Set<UserId> userIds = new HashSet<UserId>();
     userIds.add(new UserId(UserId.Type.userId, "1"));    
@@ -122,45 +122,45 @@ public class KatariActivityServiceTest {
     
     List<Activity> activities;
 
-    options.setSortBy("body");
+    options.setSortBy("title");
     // Default sort order, should be asc.
     activities = service.getActivities(
         userIds, groupId, "app-id", null, options, token).get().getEntry();
 
     assertThat(activities.size(), is(2));
-    assertThat(activities.get(0).getBody(), is("body-1"));
-    assertThat(activities.get(1).getBody(), is("body-2"));
+    assertThat(activities.get(0).getTitle(), is("title-1"));
+    assertThat(activities.get(1).getTitle(), is("title-2"));
 
     options.setSortOrder(SortOrder.ascending);
     activities = service.getActivities(
         userIds, groupId, "app-id", null, options, token).get().getEntry();
 
     assertThat(activities.size(), is(2));
-    assertThat(activities.get(0).getBody(), is("body-1"));
-    assertThat(activities.get(1).getBody(), is("body-2"));
+    assertThat(activities.get(0).getTitle(), is("title-1"));
+    assertThat(activities.get(1).getTitle(), is("title-2"));
     
     options.setSortOrder(SortOrder.descending);
     activities = service.getActivities(
         userIds, groupId, "app-id", null, options, token).get().getEntry();
 
     assertThat(activities.size(), is(2));
-    assertThat(activities.get(0).getBody(), is("body-2"));
-    assertThat(activities.get(1).getBody(), is("body-1"));
+    assertThat(activities.get(0).getTitle(), is("title-2"));
+    assertThat(activities.get(1).getTitle(), is("title-1"));
   }
   
   @Test
   public void testGetActivities_withActivityId() throws Exception {
-    createSampleActivity("1", "app-id", "body-1");
-    createSampleActivity("1", "app-id", "body-2");
-    createSampleActivity("1", "app-id", "body-3");
+    createSampleActivity("1", "app-id", "title-1");
+    createSampleActivity("1", "app-id", "title-2");
+    createSampleActivity("1", "app-id", "title-3");
     
     List<?> idList = session.createQuery("select id from KatariActivity")
       .list();
 
     // These are here to make sure that we do not match the wrong user or
     // app-id.
-    createSampleActivity("1", "app-id-2", "body-3");
-    createSampleActivity("2", "app-id", "body-3");
+    createSampleActivity("1", "app-id-2", "title-3");
+    createSampleActivity("2", "app-id", "title-3");
     
     UserId userId = new UserId(UserId.Type.userId, "1");    
     GroupId groupId = new GroupId(GroupId.Type.self, null);
@@ -176,14 +176,14 @@ public class KatariActivityServiceTest {
     List<Activity> activities = service.getActivities(userId, groupId, "app-id",
         null, options, activityIds, token).get().getEntry();
     assertThat(activities.size(), is(3));
-    assertThat(activities.get(0).getBody(), is("body-1"));
-    assertThat(activities.get(1).getBody(), is("body-2"));
-    assertThat(activities.get(2).getBody(), is("body-3"));
+    assertThat(activities.get(0).getTitle(), is("title-1"));
+    assertThat(activities.get(1).getTitle(), is("title-2"));
+    assertThat(activities.get(2).getTitle(), is("title-3"));
   }
   
   @Test
   public void testGetActivity() throws Exception {
-    createSampleActivity("1", "app-id", "body");
+    createSampleActivity("1", "app-id", "title");
     String id = session.createQuery("select id from KatariActivity")
       .uniqueResult().toString();
 
@@ -196,17 +196,17 @@ public class KatariActivityServiceTest {
         null, id, token).get();
     
     assertThat(activity.getAppId(), is("app-id"));
-    assertThat(activity.getBody(), is("body"));
+    assertThat(activity.getTitle(), is("title"));
     assertThat(activity.getUserId(), is("1"));
   }
 
   @Test
   public void testCreateActivity() {
-    createSampleActivity("1", "app-id", "body");
+    createSampleActivity("1", "app-id", "title");
     KatariActivity activity = (KatariActivity) session.createQuery(
-        "from KatariActivity where body = 'body'").uniqueResult();
+        "from KatariActivity where title = 'title'").uniqueResult();
     assertThat(activity.getAppId(), is("app-id"));
-    assertThat(activity.getBody(), is("body"));
+    assertThat(activity.getTitle(), is("title"));
     assertThat(activity.getUserId(), is("1"));
   }
 
@@ -214,13 +214,19 @@ public class KatariActivityServiceTest {
   public void testDeleteActivities() {
   }
   
-  /** Creates a sample activity for the userid 1.
+  /** Creates a sample activity for the provided user id.
+   *
+   * @param userId the userId of the sample activity. It cannot be null.
+   *
+   * @param appId the appId of the sample activity. It cannot be null.
+   *
+   * @param title the activity title. It cannot be null.
    */
   private void createSampleActivity(final String userId, final String appId,
-      final String body) {
+      final String title) {
     Activity activity = new ActivityImpl();
     activity.setAppId(appId);
-    activity.setBody(body);
+    activity.setTitle(title);
 
     service.createActivity(new UserId(UserId.Type.userId, userId),
         new GroupId(GroupId.Type.self, "@self"), appId, null, activity, null);

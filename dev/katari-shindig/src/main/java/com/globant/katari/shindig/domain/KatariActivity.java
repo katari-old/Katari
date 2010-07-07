@@ -39,7 +39,7 @@ import javax.persistence.MapKeyColumn;
  * get/set operations.
  */
 @Entity
-@Table(name = "activity")
+@Table(name = "shindig_activities")
 public class KatariActivity implements Activity {
 
   /** The id of the activity.
@@ -51,19 +51,12 @@ public class KatariActivity implements Activity {
   @Column(name = "id", nullable = false)
   private long id = 0;
 
-  /** The hibernate version for optimistic locking.
-   */
-  @Version
-  @Column(name = "version")
-  protected long version;
-
-  /**
-   * model field.
+  /** model field.
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "app_id", length = 255)
-  protected String appId;
+  @Column(name = "app_id", length = 255, nullable = false)
+  private String appId;
 
   /**
    * model field.
@@ -71,7 +64,7 @@ public class KatariActivity implements Activity {
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "body", length = 255)
-  protected String body;
+  private String body;
 
   /**
    * model field.
@@ -79,7 +72,7 @@ public class KatariActivity implements Activity {
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "body_id", length = 255)
-  protected String bodyId;
+  private String bodyId;
 
   /**
    * model field.
@@ -87,7 +80,7 @@ public class KatariActivity implements Activity {
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "external_id", length = 255)
-  protected String externalId;
+  private String externalId;
 
   /** model field.
    *
@@ -95,7 +88,7 @@ public class KatariActivity implements Activity {
    */
   @Column(name = "updated")
   @Temporal(TemporalType.TIMESTAMP)
-  protected Date updated;
+  private Date updated;
 
   /**
    * A list of shared media items associated with this activity, joined by the
@@ -107,7 +100,7 @@ public class KatariActivity implements Activity {
   @JoinTable(name = "activity_media",
       joinColumns = @JoinColumn(name = "activity_id"),
       inverseJoinColumns = @JoinColumn(name = "media_item_id"))
-  protected List<MediaItem> mediaItems;
+  private List<MediaItem> mediaItems;
 
   /**
    * model field.
@@ -115,7 +108,7 @@ public class KatariActivity implements Activity {
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "posted_time")
-  protected Long postedTime;
+  private Long postedTime;
 
   /**
    * model field.
@@ -123,7 +116,7 @@ public class KatariActivity implements Activity {
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "priority")
-  protected Float priority;
+  private Float priority;
 
   /**
    * model field.
@@ -131,7 +124,7 @@ public class KatariActivity implements Activity {
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "stream_favicon_url", length = 255)
-  protected String streamFaviconUrl;
+  private String streamFaviconUrl;
 
   /**
    * model field.
@@ -139,14 +132,14 @@ public class KatariActivity implements Activity {
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "stream_source_url", length = 255)
-  protected String streamSourceUrl;
+  private String streamSourceUrl;
 
   /** model field.
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "stream_url", length = 255)
-  protected String streamUrl;
+  private String streamUrl;
 
   /**
    * model field.
@@ -154,7 +147,7 @@ public class KatariActivity implements Activity {
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "stream_title", length = 255)
-  protected String streamTitle;
+  private String streamTitle;
 
   /** The template parameters associated to this activity.
    *
@@ -172,8 +165,8 @@ public class KatariActivity implements Activity {
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "title", length = 255)
-  protected String title;
+  @Column(name = "title", length = 255, nullable = false)
+  private String title;
 
   /**
    * model field.
@@ -181,7 +174,7 @@ public class KatariActivity implements Activity {
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "title_id", length = 255)
-  protected String titleId;
+  private String titleId;
 
   /**
    * model field.
@@ -189,15 +182,15 @@ public class KatariActivity implements Activity {
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
   @Column(name = "url", length = 255)
-  protected String url;
+  private String url;
 
   /**
    * TODO This should be a fk to the user.
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "user_id", length = 255)
-  protected String userId;
+  @Column(name = "user_id", length = 255, nullable = false)
+  private String userId;
 
   /** Needed by hibernate.
    */
@@ -211,27 +204,33 @@ public class KatariActivity implements Activity {
    * provided source is 0, this is a new entity. Otherwise, the copy represents
    * an already persisted entity.
    *
-   * @param source The source activity. It cannot be null.
+   * @param applicationId the app id. It cannot be null.
+   *
+   * @param theUserId the user id. It cannot be null.
+   *
+   * @param source The source activity. It cannot be null. The source activity
+   * title must not be null. The id, userId, appId and postedTime of the source
+   * activity are ignored.
    */
   public KatariActivity(final long thePostedTime, final String applicationId,
       final String theUserId, final Activity source) {
 
+    Validate.notNull(applicationId, "The app id cannot be null.");
+    Validate.notNull(theUserId, "The user id cannot be null.");
     Validate.notNull(source, "The source activity cannot be null.");
+    Validate.notNull(source.getTitle(),
+        "The source activity title cannot be null.");
 
     postedTime = thePostedTime;
     appId = applicationId;
     userId = theUserId;
+    id = 0;
 
-    if (source.getId() == null) {
-      id = 0;
-    } else {
-      id = Long.parseLong(source.getId());
-    }
-    bodyId = source.getBodyId();
-    body = source.getBody();
-    externalId = source.getExternalId();
-    titleId = source.getTitleId();
     title = source.getTitle();
+    titleId = source.getTitleId();
+    body = source.getBody();
+    bodyId = source.getBodyId();
+    externalId = source.getExternalId();
     updated = new Date();
     priority = source.getPriority();
     streamFaviconUrl = source.getStreamFaviconUrl();
