@@ -19,6 +19,8 @@
               <!-- value>org.apache.shindig.social.sample.SampleModule</value -->
               <bean class='com.globant.katari.shindig.ShindigServicesModule'>
                 <constructor-arg ref='shindig.activityService'/>
+                <constructor-arg ref='shindig.blobCrypterDecoder'/>
+                <constructor-arg ref='shindig.tokenCrypter'/>
               </bean>
               <bean class='org.apache.shindig.gadgets.oauth.OAuthModule'/>
               <bean class='org.apache.shindig.common.cache.ehcache.EhCacheModule'/>
@@ -263,15 +265,14 @@
     </property>
   </bean>
 
-  <bean class
-    ="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator">
-    <property name="proxyTargetClass" value="true" />
-    <property name="beanNames">
+  <bean class='com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator'>
+    <property name='proxyTargetClass' value='true' />
+    <property name='beanNames'>
       <list>
         <value>shindig.activityService</value>
       </list>
     </property>
-    <property name="interceptorNames">
+    <property name='interceptorNames'>
       <list>
         <value>shindig.transactionInterceptor</value>
       </list>
@@ -286,6 +287,36 @@
         <prop key="execute">PROPAGATION_REQUIRED</prop>
       </props>
     </property>
+  </bean>
+
+  <bean id="shindig.blobCrypterDecoder" 
+    class="org.apache.shindig.auth.KatariBlobCrypterSecurityTokenDecoder">
+    <constructor-arg index="0" ref="shindig.containerName" />
+    <constructor-arg index="1" ref="shindig.tokenCrypter" />
+  </bean>
+
+  <bean id="shindig.tokenCrypter"
+    class="com.globant.katari.shindig.crypto.KatariBasicBlobCrypter">
+    <constructor-arg index="0" ref="shindig.tokenPassword" />  
+  </bean>
+
+  <bean id="shindig.tokenPassword"
+      class="com.globant.katari.core.spring.StringHolder">
+    <property name="value" value="0123456789012618" />
+  </bean>
+
+  <!-- This cannot be changed until we figure out how to configure container.js.
+   -->
+  <bean id="shindig.containerName"
+      class="com.globant.katari.core.spring.StringHolder">
+    <property name="value" value="default" />
+  </bean>
+
+  <!-- This cannot be changed until we figure out how to configure container.js.
+   -->
+  <bean id="shindig.containerDomain"
+      class="com.globant.katari.core.spring.StringHolder">
+    <property name="value" value="shindig" />
   </bean>
 
   <!-- vim: set ts=2 sw=2 et ai: -->  
