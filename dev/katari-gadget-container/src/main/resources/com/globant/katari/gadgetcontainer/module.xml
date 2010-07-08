@@ -17,8 +17,7 @@
             <entry key="/assets/.*">
               <bean class="com.globant.katari.core.web.ServletAndParameters">
                 <constructor-arg index="0">
-                  <bean
-                    class="com.globant.katari.core.web.StaticContentServlet" />
+                  <bean class="com.globant.katari.core.web.StaticContentServlet" />
                 </constructor-arg>
                 <constructor-arg index="1">
                   <map>
@@ -33,6 +32,7 @@
                     <entry key="debugPrefix"
                       value="../katari-gadget-container/src/main/resources" />
                     <entry key="requestCacheContent" value="true" />
+                    <entry key="mimeType_html" value="text/html" />
                     <entry key="mimeType_png" value="image/png" />
                     <entry key="mimeType_gif" value="image/gif" />
                     <entry key="mimeType_css" value="text/css" />
@@ -63,6 +63,16 @@
         </property>
       </bean>
     </property>
+  </bean>
+
+  <!-- Adds relay to html validation ignored list. -->
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.htmlValidator.ignoredUrlpatterns' />
+    <constructor-arg>
+      <list>
+        <value>.*/gadgetcontainer/assets/rpc_relay.html.*</value>
+      </list>
+    </constructor-arg>
   </bean>
 
   <!-- JPA classes -->
