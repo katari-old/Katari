@@ -14,11 +14,14 @@
         <bean class='com.globant.katari.shindig.GuiceInitializerListener'>
           <constructor-arg>
             <list>
-              <value>com.globant.katari.shindig.ShindigPropertiesModule</value>
-              <value>org.apache.shindig.gadgets.DefaultGuiceModule</value>
-              <value>org.apache.shindig.social.sample.SampleModule</value>
-              <value>org.apache.shindig.gadgets.oauth.OAuthModule</value>
-              <value>org.apache.shindig.common.cache.ehcache.EhCacheModule</value>
+              <bean class='com.globant.katari.shindig.ShindigPropertiesModule'/>
+              <bean class='org.apache.shindig.gadgets.DefaultGuiceModule'/>
+              <!-- value>org.apache.shindig.social.sample.SampleModule</value -->
+              <bean class='com.globant.katari.shindig.ShindigServicesModule'>
+                <constructor-arg ref='shindig.activityService'/>
+              </bean>
+              <bean class='org.apache.shindig.gadgets.oauth.OAuthModule'/>
+              <bean class='org.apache.shindig.common.cache.ehcache.EhCacheModule'/>
             </list>
           </constructor-arg>
         </bean>

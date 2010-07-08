@@ -20,3 +20,20 @@ Integration
  As you can see, Katari uses the convention of prefixing 'Katari' to the name
  of the shindig interfase that it implements.
 
+ http://localhost:8098/katari-sample/module/shindig/social/rest/activities/1/@self/1?sortBy=title
+
+ Without the sortBy:
+
+ Problem accessing
+ /katari-sample/module/shindig/social/rest/activities/1/@self/1. Reason:
+
+ could not resolve property: topFriends of:
+ com.globant.katari.shindig.domain.KatariActivity
+
+* Gadget rendering proxy
+
+ http://localhost:8098/katari-sample/module/shindig/gadgets/ifr?url=http://www.labpixies.com/campaigns/todo/todo.xml
+
+ http://localhost:8098/katari-sample/module/shindig/gadgets/ifr?url=http://www.labpixies.com/campaigns/minesweeper/minesweeper.xml
+
+

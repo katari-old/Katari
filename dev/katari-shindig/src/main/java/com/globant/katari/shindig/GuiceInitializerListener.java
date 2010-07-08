@@ -10,6 +10,10 @@ import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.WebApplicationContext;
+
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -39,22 +43,19 @@ public class GuiceInitializerListener implements ServletContextListener {
   private static Logger log =
     LoggerFactory.getLogger(GuiceInitializerListener.class);
 
-  /** The list of guice module names to initialize the injectors with.
+  /** The list of guice modules to initialize the injectors with.
    *
-   * Each module name corresponds to the name of a class that implements
-   * Module. This is never null.
+   * This is never null.
    */
-  private List<String> moduleNames;
+  private List<Module> modules;
 
   /** Creates a listener that initializes guice with the provided modules.
    *
-   * @param guiceModuleNames the list of guice module names. The name
-   * corresponds to a class that implements Module (from guice). It cannot be
-   * null.
+   * @param guiceModules the list of guice modules. It cannot be null.
    */
-  public GuiceInitializerListener(final List<String> guiceModuleNames) {
-    Validate.notNull(guiceModuleNames, "The list of modules cannot be null.");
-    moduleNames = guiceModuleNames;
+  public GuiceInitializerListener(final List<Module> guiceModules) {
+    Validate.notNull(guiceModules, "The list of modules cannot be null.");
+    modules = guiceModules;
   }
 
   /** Initializes the guice injector with the provided modules, and stores it
@@ -69,18 +70,6 @@ public class GuiceInitializerListener implements ServletContextListener {
     if (servletContext.getAttribute(INJECTOR_ATTRIBUTE_NAME) != null) {
       throw new RuntimeException("There already is an attribute named "
           + INJECTOR_ATTRIBUTE_NAME + " in the servlet context.");
-    }
-
-    List<Module> modules = new LinkedList<Module>();
-    for (String moduleName : moduleNames) {
-      try {
-        moduleName = moduleName.trim();
-        modules.add((Module) Class.forName(moduleName).newInstance());
-      } catch (RuntimeException e) {
-        throw e;
-      } catch (Exception e) {
-        throw new RuntimeException("Error adding new module to guice", e);
-      }
     }
     Injector injector = Guice.createInjector(Stage.PRODUCTION, modules);
     servletContext.setAttribute(INJECTOR_ATTRIBUTE_NAME, injector);
