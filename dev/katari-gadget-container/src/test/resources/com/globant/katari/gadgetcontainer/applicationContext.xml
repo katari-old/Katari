@@ -11,6 +11,7 @@
   <import resource="classpath:/com/globant/katari/core/beans-core.xml"/>
   <import resource="classpath:com/globant/katari/hibernate/beans-hibernate.xml"/>
   <import resource="classpath:com/globant/katari/gadgetcontainer/module.xml"/>
+  <import resource="classpath:com/globant/katari/shindig/module.xml"/>
   <import resource="classpath:com/globant/katari/gadgetcontainer/view/spring-servlet.xml"/>
   
   <bean id="dataSource"
