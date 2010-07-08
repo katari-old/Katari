@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.globant.katari.gadgetcontainer.view;
 
 import javax.servlet.http.HttpServletRequest;

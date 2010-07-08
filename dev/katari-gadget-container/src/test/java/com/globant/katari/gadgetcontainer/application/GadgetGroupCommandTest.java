@@ -27,11 +27,12 @@ public class GadgetGroupCommandTest {
    */
   @Test
   public void testExecute_pageNull() {
-    GadgetGroupCommand command = new GadgetGroupCommand(createMock(GadgetGroupRepository.class), 
+    GadgetGroupCommand command;
+    command = new GadgetGroupCommand(createMock(GadgetGroupRepository.class), 
         createMock(ContextUserService.class), createMock(TokenService.class));
     try {
       command.execute();
-      fail("shoudl failt because never set the pageName command property");
+      fail("should fail because we never set the pageName command property");
     } catch (Exception e) {
       
     }
@@ -46,11 +47,11 @@ public class GadgetGroupCommandTest {
     String pageName = "1";
     String userName = "1";
     
-    Set<GadgetInstance> gadgets = new HashSet<GadgetInstance>();
-    GadgetInstance gi = createMock(GadgetInstance.class);
-    gadgets.add(gi);
     
-    GadgetGroup gadgetGroup = new GadgetGroup(userName, pageName, gadgets);
+    GadgetGroup gadgetGroup = new GadgetGroup(userName, pageName);
+
+    GadgetInstance gi = createMock(GadgetInstance.class);
+    gadgetGroup.addGadget(gi);
     
     GadgetGroupRepository repository = createMock(GadgetGroupRepository.class);
     ContextUserService userService = createMock(ContextUserService.class);
@@ -58,7 +59,7 @@ public class GadgetGroupCommandTest {
     
     expect(userService.getCurrentUserId()).andReturn(userName);
     expect(repository.findPage(userName, pageName)).andReturn(gadgetGroup);
-    expect(tokenService.createSecurityToken(gi)).andReturn("token");
+    expect(tokenService.createSecurityToken(userName, gi)).andReturn("token");
     
     gi.associateToViewer("token", userName);
     
@@ -66,7 +67,8 @@ public class GadgetGroupCommandTest {
     replay(repository);
     replay(tokenService);
     
-    GadgetGroupCommand command = new GadgetGroupCommand(repository, userService, tokenService);
+    GadgetGroupCommand command;
+    command = new GadgetGroupCommand(repository, userService, tokenService);
     command.setGroupName(pageName);
 
     command.execute();
@@ -75,5 +77,5 @@ public class GadgetGroupCommandTest {
     verify(repository);
     verify(tokenService);
   }
-
 }
+

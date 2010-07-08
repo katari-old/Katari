@@ -1,6 +1,5 @@
-/**
- * 
- */
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.gadgetcontainer.application;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -16,7 +15,7 @@ import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 
 /**
  * Implementation of token service thay provides an strong encryption.
- * 
+ *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  *
  */
@@ -39,10 +38,11 @@ public class TokenService {
   private final String domain;
 
   /** Constructor.
-   * 
+   *
    * @param blobCrypter the object who crypt the token. It can not be null
-   * @param containerName the cotnainer name defined in the OS container. 
-   * Can not be null.
+   * @param containerName the cotnainer name defined in the OS container. Can
+   * not be null.
+   *
    * @param containerDomain the container name defined in the OS container.
    * Can not be null.
    */
@@ -60,18 +60,19 @@ public class TokenService {
 
   /**Creates a new security token encrypted with the strong implementation
    * define in katari-shindig.
-   * 
+   *
    * {@inheritDoc}
    */
-  public String createSecurityToken(final GadgetInstance gadgetInstance) {
+  public String createSecurityToken(final String user,
+      final GadgetInstance gadgetInstance) {
     BlobCrypterSecurityToken token = new BlobCrypterSecurityToken(
         crypter, container, domain);
     token.setActiveUrl(gadgetInstance.getUrl());
     token.setAppUrl(gadgetInstance.getUrl());
     token.setModuleId(0L);
-    token.setOwnerId(gadgetInstance.getUser());
+    token.setOwnerId(user);
     token.setTrustedJson("trusted");
-    token.setViewerId(gadgetInstance.getUser());
+    token.setViewerId(user);
     String cryptedToken;
     try {
       cryptedToken = Utils.urlEncode(token.encrypt());
@@ -80,6 +81,6 @@ public class TokenService {
     } catch (BlobCrypterException e) {
       throw new RuntimeException(e);
     }
-    
   }
 }
+

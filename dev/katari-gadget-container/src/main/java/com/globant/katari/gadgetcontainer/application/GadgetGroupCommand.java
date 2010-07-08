@@ -1,3 +1,5 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.gadgetcontainer.application;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -73,7 +75,7 @@ public class GadgetGroupCommand implements Command<GadgetGroup> {
   }
 
   /** Retrieve the user id from the spring security context then find the 
-   * page with the context user and the given {@link GadgetGroupCommand#groupName}.
+   * group with the context user and the given {@link GadgetGroupCommand#groupName}.
    * 
    * @see com.globant.katari.core.application.Command#execute()
    * @throws CanvasException if the {@link GadgetGroupCommand#groupName} is blank.
@@ -85,16 +87,15 @@ public class GadgetGroupCommand implements Command<GadgetGroup> {
     }
     String uid = userService.getCurrentUserId();
     log.debug("searching group name = " + groupName + "for the user:" + uid);
-    GadgetGroup page = gadgetGroupRepository.findPage(uid, groupName);
-    if(page != null) {
-      Iterator<GadgetInstance> gadgets = page.getGadgets().iterator();
-      while (gadgets.hasNext()) {
-        GadgetInstance gadgetInstance = (GadgetInstance) gadgets.next();
-        String token = tokenService.createSecurityToken(gadgetInstance);
+    GadgetGroup group = gadgetGroupRepository.findPage(uid, groupName);
+    if(group != null) {
+      String owner = group.getOwner();
+      for (GadgetInstance gadgetInstance : group.getGadgets()) {
+        String token = tokenService.createSecurityToken(owner, gadgetInstance);
         log.debug("generated new securityToken:" + token);
         gadgetInstance.associateToViewer(token, uid);
       }
     }
-    return page;
+    return group;
   }
 }

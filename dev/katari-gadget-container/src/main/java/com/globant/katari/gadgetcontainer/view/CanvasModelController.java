@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.globant.katari.gadgetcontainer.view;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +15,7 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
  */
 public class CanvasModelController extends ParameterizableViewController {
   
-  /**
-   * @see org.springframework.web.servlet.mvc.ParameterizableViewController
-   *  #handleRequestInternal(
-   *  javax.servlet.http.HttpServletRequest, 
-   *  javax.servlet.http.HttpServletResponse)
+  /** {@inheritDoc}
    */
   protected ModelAndView handleRequestInternal(final HttpServletRequest request,
       final HttpServletResponse response) throws Exception {

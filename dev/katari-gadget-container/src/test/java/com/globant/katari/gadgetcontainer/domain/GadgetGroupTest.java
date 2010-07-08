@@ -1,6 +1,5 @@
-/**
- * 
- */
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.gadgetcontainer.domain;
 
 import static org.junit.Assert.*;
@@ -19,34 +18,16 @@ public class GadgetGroupTest {
 
   @Test
   public void testConstructorOk() {
-    GadgetGroup cp = new GadgetGroup("oneUser", "pageName", new HashSet<GadgetInstance>());
-    assertTrue(cp.getCanvasUser().equals("oneUser"));
+    GadgetGroup cp = new GadgetGroup("oneUser", "pageName");
+    assertTrue(cp.getOwner().equals("oneUser"));
     assertTrue(cp.getId() == 0);
     assertTrue(cp.getName().equals("pageName"));
   }
 
   @Test
-  public void testConstructorWithNullUser() {
-    try {
-      new GadgetGroup(null, "pageName", new HashSet<GadgetInstance>());
-      fail("Should be an illegal argument exception because user is null");
-    } catch (IllegalArgumentException e) {
-    }
-  }
-  
-  @Test
-  public void testConstructorWithEmptyUser() {
-    try {
-      new GadgetGroup("", "pageName", new HashSet<GadgetInstance>());
-      fail("Should be an illegal argument exception because user is empty");
-    } catch (IllegalArgumentException e) {
-    }
-  }
-
-  @Test
   public void testConstructorWithNullPageName() {
     try {
-      new GadgetGroup("user", null, new HashSet<GadgetInstance>());
+      new GadgetGroup("user", null);
       fail("Should be an illegal argument exception because pagename is null");
     } catch (IllegalArgumentException e) {
     }
@@ -55,7 +36,7 @@ public class GadgetGroupTest {
   @Test
   public void testConstructorWithEmptyPageName() {
     try {
-      new GadgetGroup("user", "", new HashSet<GadgetInstance>());
+      new GadgetGroup("user", "");
       fail("Should be an illegal argument exception because pagename is empty");
     } catch (IllegalArgumentException e) {
     }
@@ -63,10 +44,10 @@ public class GadgetGroupTest {
   
   @Test
   public void testAddCanvasInstance() {
-    GadgetGroup page = new GadgetGroup("1", "1", new HashSet<GadgetInstance>());
-    GadgetInstance instance = new GadgetInstance("1", "a", "1");
+    GadgetGroup page = new GadgetGroup("1", "1");
+    GadgetInstance instance = new GadgetInstance("a", "1");
     page.addGadget(instance);
     assertTrue(page.getGadgets().contains(instance));
   }
-  
 }
+

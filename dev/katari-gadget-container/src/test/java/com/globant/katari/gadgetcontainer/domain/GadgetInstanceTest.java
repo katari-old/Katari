@@ -16,37 +16,16 @@ public class GadgetInstanceTest {
   
   @Test
   public void testConstructorOk() { 
-    GadgetInstance gi = new GadgetInstance("user", "url", "position");
+    GadgetInstance gi = new GadgetInstance("url", "position");
     assertTrue(gi.getUrl().equals("url"));
-    assertTrue(gi.getUser().equals("user"));
     assertTrue(gi.getGadgetPosition().equals("position"));
     assertTrue(gi.getId() == 0);
   }
   
   @Test
-  public void testConstructorWithNullCanvasUser() {
-    try {
-      new GadgetInstance(null, "1", "1");
-      fail("Should be an illegal argument exception because user is null");
-    } catch (IllegalArgumentException e) {
-      
-    }
-  }
-  
-  @Test
-  public void testConstructorWithEmptyCanvasUser() {
-    try {
-      new GadgetInstance("", "1", "1");
-      fail("Should be an illegal argument exception because user is null");
-    } catch (IllegalArgumentException e) {
-      
-    }
-  }
-  
-  @Test
   public void testConstructorWithNullGadgetUrl() {
     try {
-      new GadgetInstance("1", null, "1");
+      new GadgetInstance(null, "1");
       fail("Should be an illegal argument exception because gadget url is null");
     } catch (IllegalArgumentException e) {
       
@@ -56,7 +35,7 @@ public class GadgetInstanceTest {
   @Test
   public void testConstructorWithEmptyGadgetUrl() {
     try {
-      new GadgetInstance("1", "", "1");
+      new GadgetInstance("", "1");
       fail("Should be an illegal argument exception because gadget url is empty");
     } catch (IllegalArgumentException e) {
       
@@ -66,7 +45,7 @@ public class GadgetInstanceTest {
   @Test
   public void testConstructorWithNullPosition() {
     try {
-      new GadgetInstance("1", "1", null);
+      new GadgetInstance("1", null);
       fail("Should be an illegal argument exception because position is null");
     } catch (IllegalArgumentException e) {
       
@@ -76,7 +55,7 @@ public class GadgetInstanceTest {
   @Test
   public void testConstructorWithEmptyPosition() {
     try {
-      new GadgetInstance("1", "1", "");
+      new GadgetInstance("1", "");
       fail("Should be an illegal argument exception because position is empty");
     } catch (IllegalArgumentException e) {
       
@@ -85,7 +64,7 @@ public class GadgetInstanceTest {
   
   @Test
   public void testSetSecurityToken() {
-    GadgetInstance gi = new GadgetInstance("1", "1", "1");
+    GadgetInstance gi = new GadgetInstance("1", "1");
     try {
       gi.associateToViewer("", "viewer");
       fail("Should be an illegal argument exception because securityToken is empty");
@@ -107,7 +86,7 @@ public class GadgetInstanceTest {
   
   @Test
   public void testSetViewer() {
-    GadgetInstance gi = new GadgetInstance("1", "1", "1");
+    GadgetInstance gi = new GadgetInstance("1", "1");
     try {
       gi.associateToViewer("token","");
       fail("Should be an illegal argument exception because viewer is empty");
@@ -129,7 +108,7 @@ public class GadgetInstanceTest {
   
   @Test
   public void testChangePosition() {
-    GadgetInstance gi = new GadgetInstance("1", "1", "1");
+    GadgetInstance gi = new GadgetInstance("1", "1");
     try {
       gi.move("");
       fail("Should be an illegal argument exception because position is empty");
@@ -147,3 +126,4 @@ public class GadgetInstanceTest {
     assertTrue(gi.getGadgetPosition().equals(position));
   }
 }
+

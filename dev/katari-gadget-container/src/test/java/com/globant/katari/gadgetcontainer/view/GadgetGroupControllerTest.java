@@ -1,6 +1,5 @@
-/**
- * 
- */
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.gadgetcontainer.view;
 
 import static org.easymock.EasyMock.expect;
@@ -26,6 +25,8 @@ import com.globant.katari.gadgetcontainer.SpringTestUtils;
 import com.globant.katari.gadgetcontainer.application.GadgetGroupCommand;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
+import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
+
 import com.google.gson.Gson;
 
 /**
@@ -36,16 +37,14 @@ import com.google.gson.Gson;
  */
 public class GadgetGroupControllerTest {
   
-  MockHttpServletRequest request;
-  GadgetGroupController controller;
+  private MockHttpServletRequest request;
+  private GadgetGroupController controller;
 
-  /**
-   * @throws java.lang.Exception
-   */
   @Before
   public void setUp() throws Exception {
     request = new MockHttpServletRequest("GET", "socialPage.do");
-    controller = (GadgetGroupController) SpringTestUtils.getContext().getBean("/socialPage.do");
+    controller = (GadgetGroupController) SpringTestUtils.getContext().getBean(
+        "/socialPage.do");
   }
 
   /**
@@ -53,26 +52,21 @@ public class GadgetGroupControllerTest {
    * ModelAndView spec, so it's Ok and should always return null.
    */
   @Test
-  public void testHandleMvReturnsNullOk() {
+  public void testHandleMvReturnsNullOk() throws Exception {
     request.addParameter("groupName", "thePage");
-    try {
-      ModelAndView mv = controller.handleRequest(request,
-          new MockHttpServletResponse());
-      assertNull(mv);
-    } catch (Exception e) {
-      fail(e.getMessage());
-    }
+    ModelAndView mv;
+    mv = controller.handleRequest(request, new MockHttpServletResponse());
+    assertNull(mv);
   }
   
   @Test
-  public void testHandle() {
+  public void testHandle() throws Exception {
     String pageName = "thePage";
     String userId = "idUser";
     
-    GadgetInstance gi = new GadgetInstance(userId, "http://lala", "1");
-    Set<GadgetInstance> ins = new HashSet<GadgetInstance>();
-    ins.add(gi);
-    GadgetGroup page = new GadgetGroup(userId, pageName, ins);
+    GadgetGroup page = new GadgetGroup(userId, pageName);
+    GadgetInstance gi = new GadgetInstance("http://lala", "1");
+    page.addGadget(gi);
     
     GadgetGroupCommand command = createMock(GadgetGroupCommand.class);
     expect(command.execute()).andReturn(page);
@@ -81,27 +75,22 @@ public class GadgetGroupControllerTest {
     Gson gson = new Gson();
     String shouldResponse = gson.toJson(page);
     
-    try {
-      HttpServletResponse response = createMock(HttpServletResponse.class);
-      PrintWriter writer = createMock(PrintWriter.class);
-      
-      response.addHeader("Content-type", "application/json");
-      expect(response.getWriter()).andReturn(writer).times(2);
-      
-      writer.write(shouldResponse);
-      writer.close();
-      
-      replay(response);
-      replay(writer);
-      
-      controller.handle(request, response, command, null);
-      
-      EasyMock.verify(response);
-      EasyMock.verify(writer);
-    
-    } catch (Exception e) {
-      fail(e.getMessage());
-    }
+    HttpServletResponse response = createMock(HttpServletResponse.class);
+    PrintWriter writer = createMock(PrintWriter.class);
+
+    response.addHeader("Content-type", "application/json");
+    expect(response.getWriter()).andReturn(writer).times(2);
+
+    writer.write(shouldResponse);
+    writer.close();
+
+    replay(response);
+    replay(writer);
+
+    controller.handle(request, response, command, null);
+
+    EasyMock.verify(response);
+    EasyMock.verify(writer);
   }
-  
 }
+

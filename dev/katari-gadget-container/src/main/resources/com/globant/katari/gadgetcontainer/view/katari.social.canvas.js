@@ -1,7 +1,7 @@
 /**
  * Base canvas social container.
- * This library requires jquery 1.4.2. 
- * 
+ * This library requires jquery 1.4.2.
+ *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
 
@@ -38,10 +38,10 @@ KATARI.Console = {
  * @param sViewer
  * @param sOwner
  * @param sPosition
- * 
+ *
  */
 KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer, sOwner, sPosition) {
-  
+
   this.id = sId;
   this.gadgetContainerUrl = KATARI.SOCIAL.canvasConfig.container;
   this.rpcToken = KATARI.SOCIAL.canvasConfig.rpcToken;
@@ -54,7 +54,7 @@ KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer, sOwn
   this.position = sPosition;
   this.view = KATARI.SOCIAL.canvasConfig.defaultView;
   this.parent = KATARI.SOCIAL.canvasConfig.host;
-  
+
   this.buildGadgetUrl = function() {
     var url = [];
     url.push(this.gadgetContainerUrl);
@@ -74,7 +74,7 @@ KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer, sOwn
 };
 /**
  * Create a new social canvas.
- * 
+ *
  * @param {String} sContainer id of the container.
  */
 KATARI.SOCIAL.Canvas = function(sContainer, iColumns) {
@@ -82,7 +82,7 @@ KATARI.SOCIAL.Canvas = function(sContainer, iColumns) {
   var container = sContainer;
   var columns = [];
   var POSITION_SPLITTER = '#';
-  
+
   for (var i = 1; i <= iColumns; i++) {
     columns[i] = $('<div class="canvasColumn">');
   }
@@ -96,23 +96,22 @@ KATARI.SOCIAL.Canvas = function(sContainer, iColumns) {
     this.gadgets.push(objGadgetInstance);
     return this;
   };
-  
+
   /**
-   * 
+   *
    * @param {Object} objJson
    */
   this.addGadgetsFromJson = function(objJson) {
     for(m in objJson.gadgets) {
       var obj = objJson.gadgets[m];
-      this.addGadget(new KATARI.SOCIAL.GadgetInstance(obj.id, obj.url, obj.securityToken, 
-          obj.viewer, obj.owner, obj.gadgetPosition)
-      );    
+      this.addGadget(new KATARI.SOCIAL.GadgetInstance(obj.id, obj.url,
+        obj.securityToken, obj.viewer, objJson.owner, obj.gadgetPosition));
     }
     return this;
   };
   /**
    * Creates the application name.
-   * 
+   *
    * @param GadgetInstance gadgetInstance.
    */
   this.createApplicationId = function(oGadgetInstance) {
@@ -126,20 +125,12 @@ KATARI.SOCIAL.Canvas = function(sContainer, iColumns) {
     // sort the gadgets.
     this.gadgets.sort(
       function(a, b) {
-        var positionA = a.gadgetPosition.split(POSITION_SPLITTER);
-        var positionB = b.gadgetPosition.split(POSITION_SPLITTER);
+        var positionA = a.position.split(POSITION_SPLITTER);
+        var positionB = b.position.split(POSITION_SPLITTER);
         if(positionA[0] == positionB[0]) {
-          if(positionA[1] > positionB[1]) {
-            return 1;
-          } else {
-            return -1;
-          }
+          return positionA[1] - positionB[1];
         } else {
-          if(positionA[0] > positionB[0]) {
-            return 1;
-          } else {
-            return -1;
-          }
+          return positionA[0] - positionB[0];
         }
       }
     );
@@ -152,46 +143,47 @@ KATARI.SOCIAL.Canvas = function(sContainer, iColumns) {
       iFrame.attr("src", theGadget.buildGadgetUrl());
       iFrame.attr("id", theId);
       iFrame.attr("name", theId);
-      
+
       var titleDiv = $("<div></div>");
       titleDiv.attr("id", "header_" + theGadget.id)
       var localDiv = $("<div>");
-      
+
       localDiv.append(iFrame);
-      
+
       var position = theGadget.position.split(POSITION_SPLITTER);
       columns[position[0]].append(titleDiv);
       columns[position[0]].append(localDiv);
     }
-    
+
     var containerDiv = $('<div>');
-    
+
     for (item in columns) {
       containerDiv.append(columns[item]);
     }
-    
+    containerDiv.append("<div style='clear:both;'><!-- empty div --></div>");
+
     var canvasContainer = $('<div class="canvasContainer">').append(containerDiv);
     $('#' + container).append(canvasContainer);
-  
-    if (window.gadgets) { 
+
+    if (window.gadgets) {
       for (i in this.gadgets) {
         var appId = this.createApplicationId(this.gadgets[i]);
         gadgets.rpc.setRelayUrl(appId, KATARI.SOCIAL.canvasConfig.relayFile);
         gadgets.rpc.setAuthToken(appId, KATARI.SOCIAL.canvasConfig.rpcToken);
       }
     }
-    
+
   };
 };
 
 /**
  * OpenSocial container implementation.
- * 
+ *
  */
 KATARI.SOCIAL.Container = function() {
-  
+
   this.maxHeight = 4096;
-  
+
   gadgets.rpc.register('resize_iframe', this.setHeight);
   gadgets.rpc.register('set_pref', this.setUserPref);
   gadgets.rpc.register('set_title', this.setTitle);
@@ -282,7 +274,7 @@ $.extend({
     var hash = [];
     var hashes = window.location.href.slice(
         window.location.href.indexOf('?') + 1).split('&');
-    
+
     for (var i = 0; i < hashes.length; i++) {
       hash = hashes[i].split('=');
       vars.push(hash[0]);

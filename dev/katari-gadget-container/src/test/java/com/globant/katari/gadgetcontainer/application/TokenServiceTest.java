@@ -62,9 +62,8 @@ public class TokenServiceTest {
     TokenService ts = new TokenService(crypter, "name", "domain");
     GadgetInstance gi = createMock(GadgetInstance.class);
     expect(gi.getUrl()).andReturn("http://katari.com").times(2);
-    expect(gi.getUser()).andReturn("1").times(2);
     replay(gi);
-    String token = ts.createSecurityToken(gi);
+    String token = ts.createSecurityToken("user", gi);
     assertNotNull(token);
     verify(gi);
   }

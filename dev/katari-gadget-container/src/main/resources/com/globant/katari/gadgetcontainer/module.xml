@@ -6,7 +6,8 @@
     http://www.globant.com/schema/katari
     http://www.globant.com/schema/katari/katari.xsd">
 
-  <bean id="gadgetcontainer.module" class="com.globant.katari.core.web.ConfigurableModule">
+  <bean id="gadgetcontainer.module"
+    class="com.globant.katari.core.web.ConfigurableModule">
     <property name="entryPoints">
       <!--
         The servlet mappings. It maps the spring DispatcherServlet to *.do.
@@ -76,7 +77,7 @@
   </bean>
 
   <!-- JPA classes -->
-  <bean class='com.globant.katari.core.web.ListFactoryAdder'>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.persistentClasses' />
     <constructor-arg>
       <list>
