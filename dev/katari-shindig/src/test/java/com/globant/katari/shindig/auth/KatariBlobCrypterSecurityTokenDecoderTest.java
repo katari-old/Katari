@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,8 +67,6 @@ public class KatariBlobCrypterSecurityTokenDecoderTest {
     decoder = new KatariBlobCrypterSecurityTokenDecoder(container, crypter);
 
     String cryptedToken = token.encrypt();
-
-    cryptedToken = URLEncoder.encode(cryptedToken, "UTF-8");
 
     Map<String, String> tokenMap;
     tokenMap = ImmutableMap.of(SECURITY_TOKEN_NAME, cryptedToken);
