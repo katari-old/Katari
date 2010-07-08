@@ -67,10 +67,7 @@
   <!-- The console module. -->
   <katari:import module="com.globant.katari.console" />
 
-  <!-- The social server module. -->
-  <katari:import module="com.globant.katari.socialserver.socialserver" />
-
-  <!-- The gadget container for social server module. -->
+  <!-- The gadget container module. -->
   <katari:import module="com.globant.katari.gadgetcontainer" />
 
   <!-- The social graph module. -->

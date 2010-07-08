@@ -261,11 +261,6 @@
 
     <dependency>
       <groupId>com.globant.katari</groupId>
-      <artifactId>katari-socialserver</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.globant.katari</groupId>
       <artifactId>katari-gadget-container</artifactId>
     </dependency>
 

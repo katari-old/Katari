@@ -37,11 +37,7 @@ public class BasicSecurityTokenService implements TokenService {
     this.domain = domain;
     this.container = container;
   }
-  /**
-   * @see com.globant.katari.gadgetcontainer.application.
-   *  TokenService#createSecurityToken(
-   *  com.globant.katari.socialserver.domain.GadgetInstance)
-   */
+
   public String createSecurityToken(final GadgetInstance instance) {
     Validate.notNull(instance, "gadget instance can not be null");
     StringBuffer sb = new StringBuffer();

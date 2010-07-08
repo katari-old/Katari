@@ -62,8 +62,6 @@
     <module>katari-module-archetype</module>
     <!-- Katari site skin -->
     <module>katari-siteskin</module>
-    <!-- TODO: Remove this module. -->
-    <module>katari-socialserver</module>
     <!-- Katari open social gadget container. -->
     <module>katari-gadget-container</module>
     <!-- Katari open social container. -->
@@ -523,12 +521,6 @@
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-console</artifactId>
-        <version>${version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.globant.katari</groupId>
-        <artifactId>katari-socialserver</artifactId>
         <version>${version}</version>
       </dependency>
 
