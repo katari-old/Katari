@@ -49,22 +49,22 @@ public class KatariActivityService extends HibernateDaoSupport implements
     LoggerFactory.getLogger(KatariActivityService.class);
 
   /** @{inheritDoc}
-   * 
+   *
    * TODO: provide a hook to return the other groups: all, friends, groupId and
    * deleted.
-   * 
+   *
    * @param groupId only supports @self, that returns all the activities from all
    * the provided users. It cannot be null.
-   * 
+   *
    * @param appId The application id of activities. It cannot be null.
-   * 
+   *
    * @param fields The list of fields to return. It looks like the spec (1.0)
    * says nothing about this attribute. We ignore it here.
-   * 
+   *
    * @param options Options related to the resulting activities, like
    * filtering, number of returned activities, etc. It returns the
    * activities in the specified order. It cannot be null.
-   * 
+   *
    * @return the found activities, in the specified order. It never returns
    * null.
    */
@@ -90,7 +90,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
     // Obtains the count of activities that matches the search.
     long totalResults = (Long) criteria.setProjection(
         Projections.rowCount()).uniqueResult();
-    
+
     // Restore the original projection, removing the count.
     criteria.setProjection(null);
     criteria.setResultTransformer(Criteria.ROOT_ENTITY);
@@ -124,9 +124,9 @@ public class KatariActivityService extends HibernateDaoSupport implements
       final Set<String> fields, final CollectionOptions options,
       final Set<String> activityIds, final SecurityToken token)
       throws ProtocolException {
-    
+
     log.trace("Entering getActivities");
-    
+
     Validate.notNull(userId, "The user id cannot be null.");
     Validate.notNull(groupId, "The group id cannot be null.");
     Validate.notNull(appId, "The app id cannot be null.");
@@ -149,7 +149,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
     // Obtains the count of activities that matches the search.
     long totalResults = (Long) criteria.setProjection(
         Projections.rowCount()).uniqueResult();
-    
+
     // Restore the original projection, removing the count.
     criteria.setProjection(null);
     criteria.setResultTransformer(Criteria.ROOT_ENTITY);
@@ -171,7 +171,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
         activities, options.getFirst(), (int) totalResults,
         options.getMax()));
   }
-  
+
   /** @{inheritDoc}
    *
    * This implementation ignores the groupId, appId and the fields parameter.
@@ -201,7 +201,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
   }
 
   /** @{inheritDoc}
-   * 
+   *
    * This operation is not implemented, throws UnsupportedOperationException.
    */
   public Future<Void> deleteActivities(final UserId userId,
@@ -221,12 +221,12 @@ public class KatariActivityService extends HibernateDaoSupport implements
    *
    * Creates (and persists) a new activity, obtaining the fields from the
    * provided activity.
-   * 
+   *
    * @param fields this parameter is ignored in this implementation.
-   * 
+   *
    * @param token an opaque token that represents the logged in user. It cannot
    * be null.
-   * 
+   *
    * TODO: decide what to do with the groupId parameter, it is not used in this
    * implementation, nor in the sample ActivityServiceDb implementation.
    */
@@ -246,25 +246,25 @@ public class KatariActivityService extends HibernateDaoSupport implements
   }
 
   /** Creates a hibernate criteria for the provided conditions.
-   * 
+   *
    * This operation only considers the conditions that affect the number of
    * returned activities. The criteria is intended to be used to count the
    * number of matching activities and then add the sort conditions.
-   * 
+   *
    * @param userIds The user ids of the activities to search. It cannot be null.
-   * 
+   *
    * @param groupId only supports @self, that returns all the activities from all
    * the provided users. It cannot be null.
-   * 
+   *
    * @param appId The application id of activities. It cannot be null.
-   * 
+   *
    * @param options Options related to the resulting activities, like
    * filtering, etc. The returned criteria only contains the options that affect
    * the number or returned activities.. It cannot be null.
-   *     
+   *
    * @param token an opaque token that represents the logged in user. It cannot
    * be null.
-   * 
+   *
    * @return A criteria that matches the conditions inferred from the
    * parameters.
    */
@@ -281,18 +281,18 @@ public class KatariActivityService extends HibernateDaoSupport implements
         "You should ask for at least one row.");
 
     Criteria criteria = getSession().createCriteria(Activity.class);
-    
+
     List<String> userIdList = getUserIdList(userIds, token);
     if (userIdList.size() == 1) {
       criteria.add(Restrictions.eq("userId", userIdList.get(0)));
     } else {
       criteria.add(Restrictions.in("userId", userIdList));
     }
-    
+
     addGroupFilterToCriteria(criteria, userIds, groupId, token);
 
     criteria.add(Restrictions.eq("appId", appId));
-    
+
     if (options.getFilter() != null) {
       if (options.getFilterOperation() == null) {
         throw new ProtocolException(HttpServletResponse.SC_BAD_REQUEST,
@@ -325,25 +325,25 @@ public class KatariActivityService extends HibernateDaoSupport implements
   }
 
   /** Adds the group related query conditions to the criteria.
-   * 
+   *
    * @param criteria The criteria to modify. It cannot be null.
-   * 
+   *
    * @param userIds The user ids of the activities to search. It cannot be null.
-   * 
+   *
    * @param groupId only supports @self, that returns all the activities from
    * all the provided users. It cannot be null.
-   * 
+   *
    * @param token an opaque token that represents the logged in user. It cannot
    * be null.
-   * 
+   *
    * TODO: implement the other group types besides @self.
    */
   private void addGroupFilterToCriteria(final Criteria criteria,
       final Set<UserId> userIds, final GroupId groupId,
       final SecurityToken token) {
-    
+
     log.trace("Entering addGroupFilterToCriteria");
-    
+
     Validate.notNull(criteria, "The criteria cannot be null.");
     Validate.notNull(userIds, "The userIds cannot be null.");
     Validate.notNull(groupId, "The group id cannot be null.");
@@ -360,12 +360,12 @@ public class KatariActivityService extends HibernateDaoSupport implements
     }
     log.trace("Leaving addGroupFilterToCriteria");
   }
-  
+
   /** Adds the option to the criteria that are not related to the number of
    * elements that match the search, like sort order and min/max results.
-   *  
+   *
    * @param criteria The criteria to modify. It cannot be null.
-   * 
+   *
    * @param options The options to add to the criteria. The options that are
    * considered here do not change the number activities that match the search
    * conditions. It cannot be null.
@@ -374,10 +374,10 @@ public class KatariActivityService extends HibernateDaoSupport implements
       final CollectionOptions options) {
 
     log.trace("Entering addOptionsToCriteria");
-    
+
     Validate.notNull(criteria, "The criteria cannot be null.");
     Validate.notNull(options, "The options cannot be null.");
-    
+
     if (options.getSortBy() != null) {
       if (options.getSortOrder() == null) {
         criteria.addOrder(Order.asc(options.getSortBy()));
@@ -409,7 +409,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
   * application. It cannot be null.
   *
   * @return the list of user id, as a list of long. Never returns null.
-  * 
+  *
   * TODO This should probably be a list of long.
   */
  private List<String> getUserIdList(Set<UserId> userIds, SecurityToken token) {

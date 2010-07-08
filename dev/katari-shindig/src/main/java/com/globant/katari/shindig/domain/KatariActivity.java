@@ -25,7 +25,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Version;
 import javax.persistence.ElementCollection;
 import javax.persistence.CollectionTable;
 import javax.persistence.FetchType;
@@ -253,87 +252,55 @@ public class KatariActivity implements Activity {
     }
   }
 
-  public KatariActivity(long id, String userId) {
-    this.id = id;
-    this.userId = userId;
-  }
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getAppId()
+  /** {@inheritDoc}
    */
   public String getAppId() {
     return appId;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setAppId(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setAppId(String appId) {
-    this.appId = appId;
+  public void setAppId(final String applicationId) {
+    appId = applicationId;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getBody()
+  /** {@inheritDoc}
    */
   public String getBody() {
     return body;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setBody(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setBody(String body) {
-    this.body = body;
+  public void setBody(final String theBody) {
+    body = theBody;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getBodyId()
+  /** {@inheritDoc}
    */
   public String getBodyId() {
     return bodyId;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setBodyId(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setBodyId(String bodyId) {
-    this.bodyId = bodyId;
+  public void setBodyId(final String theBodyId) {
+    bodyId = theBodyId;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getExternalId()
+  /** {@inheritDoc}
    */
   public String getExternalId() {
     return externalId;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setExternalId(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setExternalId(String externalId) {
-    this.externalId = externalId;
+  public void setExternalId(final String theExternalId) {
+    externalId = theExternalId;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getId()
+  /** {@inheritDoc}
    */
   public String getId() {
     if (id == 0) {
@@ -353,10 +320,7 @@ public class KatariActivity implements Activity {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getUpdated()
+  /** {@inheritDoc}
    */
   public Date getUpdated() {
     if (updated == null) {
@@ -365,234 +329,158 @@ public class KatariActivity implements Activity {
     return new Date(updated.getTime());
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setUpdated(java.util.Date)
+  /** {@inheritDoc}
    */
-  public void setUpdated(Date updated) {
-    if (updated == null) {
-      this.updated = null;
+  public void setUpdated(final Date when) {
+    if (when == null) {
+      updated = null;
     } else {
-      this.updated = new Date(updated.getTime());
+      updated = new Date(when.getTime());
     }
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getMediaItems()
+  /** {@inheritDoc}
    */
   public List<MediaItem> getMediaItems() {
-    return null;
-    // return mediaItems;
+    return mediaItems;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setMediaItems(java.util.List)
+  /** {@inheritDoc}
    */
-  public void setMediaItems(List<MediaItem> mediaItems) {
-    // this.mediaItems = mediaItems;
+  public void setMediaItems(final List<MediaItem> theMediaItems) {
+    mediaItems = theMediaItems;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getPostedTime()
+  /** {@inheritDoc}
    */
   public Long getPostedTime() {
     return postedTime;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setPostedTime(java.lang.Long)
+  /** {@inheritDoc}
    */
-  public void setPostedTime(Long postedTime) {
-    this.postedTime = postedTime;
+  public void setPostedTime(final Long when) {
+    postedTime = when;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getPriority()
+  /** {@inheritDoc}
    */
   public Float getPriority() {
     return priority;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setPriority(java.lang.Float)
+  /** {@inheritDoc}
    */
-  public void setPriority(Float priority) {
-    this.priority = priority;
+  public void setPriority(final Float thePriority) {
+    priority = thePriority;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getStreamFaviconUrl()
+  /** {@inheritDoc}
    */
   public String getStreamFaviconUrl() {
     return streamFaviconUrl;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setStreamFaviconUrl(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setStreamFaviconUrl(String streamFaviconUrl) {
-    this.streamFaviconUrl = streamFaviconUrl;
+  public void setStreamFaviconUrl(final String url) {
+    streamFaviconUrl = url;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getStreamSourceUrl()
+  /** {@inheritDoc}
    */
   public String getStreamSourceUrl() {
     return streamSourceUrl;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setStreamSourceUrl(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setStreamSourceUrl(String streamSourceUrl) {
-    this.streamSourceUrl = streamSourceUrl;
+  public void setStreamSourceUrl(final String url) {
+    streamSourceUrl = url;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getStreamTitle()
+  /** {@inheritDoc}
    */
   public String getStreamTitle() {
     return streamTitle;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setStreamTitle(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setStreamTitle(String streamTitle) {
-    this.streamTitle = streamTitle;
+  public void setStreamTitle(final String titile) {
+    streamTitle = titile;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getStreamUrl()
+  /** {@inheritDoc}
    */
   public String getStreamUrl() {
     return streamUrl;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setStreamUrl(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setStreamUrl(String streamUrl) {
-    this.streamUrl = streamUrl;
+  public void setStreamUrl(final String url) {
+    streamUrl = url;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getTemplateParams()
+  /** {@inheritDoc}
    */
   public Map<String, String> getTemplateParams() {
     return templateParameters;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setTemplateParams(java.util.Map)
+  /** {@inheritDoc}
    */
-  public void setTemplateParams(Map<String, String> templateParams) {
+  public void setTemplateParams(final Map<String, String> templateParams) {
     templateParameters = templateParams;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getTitle()
+  /** {@inheritDoc}
    */
   public String getTitle() {
     return title;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setTitle(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setTitle(String title) {
-    this.title = title;
+  public void setTitle(final String theTitle) {
+    title = theTitle;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getTitleId()
+  /** {@inheritDoc}
    */
   public String getTitleId() {
     return titleId;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setTitleId(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setTitleId(String titleId) {
-    this.titleId = titleId;
+  public void setTitleId(final String id) {
+    titleId = id;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getUrl()
+  /** {@inheritDoc}
    */
   public String getUrl() {
     return url;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setUrl(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setUrl(String url) {
-    this.url = url;
+  public void setUrl(final String theUrl) {
+    url = theUrl;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#getUserId()
+  /** {@inheritDoc}
    */
   public String getUserId() {
     return userId;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity#setUserId(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setUserId(String userId) {
-    this.userId = userId;
+  public void setUserId(final String id) {
+    userId = id;
   }
 }
 
