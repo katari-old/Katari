@@ -48,7 +48,7 @@
         <katari:menuNode name='Institutional'>
           <katari:menuItem name='About'
             link='${editable-pages.module}/page/about' position='-1000' />
-          <katari:menuItem name='Confidential' link='confidential.do' />
+          <katari:menuItem name='Dashboard' link='dashboard.do' />
         </katari:menuNode>
       </katari:menuBar>
     </property>
@@ -60,7 +60,7 @@
             <property name="targetMapClass" value="java.util.LinkedHashMap"/>
             <property name="sourceMap">
               <map>
-                <entry key="/confidential.do">
+                <entry key="/dashboard.do">
                   <list>
                     <value>IS_AUTHENTICATED_REMEMBERED</value>
                   </list>

@@ -7,7 +7,7 @@
     <pattern>*/weblet/*</pattern>
     <!-- FCKEditor pages must not be decorated. -->
     <pattern>/module/ajax/fckeditor/editor/fckdialog.html</pattern>
-    <!-- Social should never be decorated -->
+    <!-- Social must not be decorated -->
     <pattern>/module/gadgetcontainer/assets/*</pattern>
     <pattern>/module/shindig/*</pattern>
   </excludes>

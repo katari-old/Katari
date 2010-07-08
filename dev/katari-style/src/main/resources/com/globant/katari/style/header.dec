@@ -12,7 +12,7 @@
       >Sign out</a>
     <span>Logged in as ${request.remoteUser}</span>
   <#else>    
-    <a class="leftMargin" href="${baseweb}/module/institutional/confidential.do">Sign in</a>
+    <a class="leftMargin" href="${baseweb}/module/institutional/dashboard.do">Sign in</a>
     <span>Not logged in</span>
   </#if>
 </div>

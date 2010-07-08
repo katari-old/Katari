@@ -5,3 +5,15 @@ insert into projects values ('2', 'Google CRM', '1');
 insert into activities values ('1', 'Coding', '1');
 insert into activities values ('2', 'Testing', '1');
 
+-- Adds 3 sample gadgets to the dashboard page.
+insert into gadget_groups (owner, name) values ('john.doe', 'page');
+insert into gadget_instances (gadget_position, url, gadget_group_id)
+ values ('1#1',
+ 'http://www.labpixies.com/campaigns/minesweeper/minesweeper.xml', 1);
+insert into gadget_instances (gadget_position, url, gadget_group_id)
+ values ('2#1',
+ 'http://www.labpixies.com/campaigns/minesweeper/minesweeper.xml', 1);
+insert into gadget_instances (gadget_position, url, gadget_group_id)
+ values ('1#2',
+ 'http://www.labpixies.com/campaigns/minesweeper/minesweeper.xml', 1);
+
