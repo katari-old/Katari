@@ -47,6 +47,11 @@
     </dependency>
 
     <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-shindig</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
     </dependency>

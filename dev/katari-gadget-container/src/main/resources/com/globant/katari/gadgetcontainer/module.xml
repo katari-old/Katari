@@ -90,9 +90,10 @@
     class='com.globant.katari.gadgetcontainer.domain.ContextUserService' />
 
   <bean id='social.tokenService'
-    class='com.globant.katari.gadgetcontainer.application.BasicSecurityTokenService'>
-    <constructor-arg index="0" value="shindig" />
-    <constructor-arg index="1" value="default" />
+    class='com.globant.katari.gadgetcontainer.application.TokenService'>
+    <constructor-arg index="0" ref="shindig.tokenCrypter" />
+    <constructor-arg index="1" ref="shindig.containerDomain" />
+    <constructor-arg index="2" ref="shindig.containerName" />
   </bean>
 
   <!-- vim: set ts=2 sw=2 et ai: -->

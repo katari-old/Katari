@@ -65,13 +65,13 @@ public class GadgetGroupCommand implements Command<GadgetGroup> {
   public String getGroupName() {
     return groupName;
   }
-  
+
   /** @param name {@link String} the groupName to set
    */
   public void setGroupName(final String name) {
     groupName = name;
   }
-  
+
   /** Retrieve the user id from the spring security context then find the 
    * page with the context user and the given {@link GadgetGroupCommand#groupName}.
    * 
