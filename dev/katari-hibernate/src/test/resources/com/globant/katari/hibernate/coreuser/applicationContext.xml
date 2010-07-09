@@ -10,8 +10,8 @@
       http://www.springframework.org/schema/util
       http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-  <!-- The role module. -->
-  <import resource="classpath:/com/globant/katari/hibernate/role/module.xml"/>
+  <!-- The core user module. -->
+  <import resource="classpath:/com/globant/katari/hibernate/coreuser/module.xml"/>
 
   <!-- Implementation of BeanPostProcessor to initialize modules. It looks for
   bean that implements the Module interfase. -->

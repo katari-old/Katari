@@ -3,8 +3,8 @@
 #set( $symbol_escape = '\' )
 package com.globant.${clientName}.${projectName}.web.user.view;
 
-import com.globant.katari.hibernate.role.domain.Role;
-import com.globant.katari.hibernate.role.domain.RoleRepository;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 
 import com.globant.katari.tools.FreemarkerTestEngine;
 import com.globant.${clientName}.${projectName}.web.testsupport.SpringTestUtils;

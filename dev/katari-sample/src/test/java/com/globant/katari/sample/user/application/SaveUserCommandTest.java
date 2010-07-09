@@ -12,8 +12,8 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
 import com.globant.katari.sample.testsupport.SecurityTestUtils;
-import com.globant.katari.hibernate.role.domain.Role;
-import com.globant.katari.hibernate.role.domain.RoleRepository;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.user.domain.User;
 import com.globant.katari.sample.user.domain.UserRepository;
@@ -45,7 +45,7 @@ public class SaveUserCommandTest extends TestCase {
     userRepository = (UserRepository) SpringTestUtils
       .getBeanFactory().getBean("userRepository");
     roleRepository = (RoleRepository) SpringTestUtils
-      .getBeanFactory().getBean("role.roleRepository");
+      .getBeanFactory().getBean("coreuser.roleRepository");
     saveUserCommand = (SaveUserCommand) SpringTestUtils
       .getBeanFactory().getBean("editUserCommand");
     changePasswordCommand = (SaveUserCommand) SpringTestUtils.getBeanFactory()

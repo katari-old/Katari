@@ -19,9 +19,9 @@ import org.easymock.classextension.EasyMock;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import com.globant.katari.hibernate.role.domain.Role;
-import com.globant.katari.hibernate.role.domain.RoleDetails;
-import com.globant.katari.hibernate.role.domain.RoleRepository;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.RoleDetails;
+import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.katari.report.domain.JasperReportGenerator;
 import com.globant.katari.report.domain.JasperReportRepository;
 import com.globant.katari.report.domain.ReportDefinition;
@@ -65,7 +65,7 @@ public class ReportsTestSupport {
    */
   public static void initTestReportSecurityContext(final String... roleNames) {
     RoleRepository roleRepository = (RoleRepository) getApplicationContext()
-        .getBean("role.roleRepository");
+        .getBean("coreuser.roleRepository");
 
     Set<Role> roles = new HashSet<Role>();
     for (String roleName : roleNames) {

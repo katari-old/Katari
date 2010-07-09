@@ -142,7 +142,7 @@
       <ref bean="user.userRepository" />
     </constructor-arg>
     <constructor-arg index="1" >
-      <ref bean="role.roleRepository" />
+      <ref bean="coreuser.roleRepository" />
     </constructor-arg>
     <constructor-arg index="2" >
       <ref bean="profile" />
@@ -155,7 +155,7 @@
       <ref bean="user.userRepository" />
     </constructor-arg>
     <constructor-arg index="1" >
-      <ref bean="role.roleRepository" />
+      <ref bean="coreuser.roleRepository" />
     </constructor-arg>
     <constructor-arg index="2" >
       <ref bean="profile" />
@@ -171,7 +171,7 @@
       <ref bean="user.userRepository" />
     </constructor-arg>
     <constructor-arg index="1" >
-      <ref bean="role.roleRepository" />
+      <ref bean="coreuser.roleRepository" />
     </constructor-arg>
     <constructor-arg index="2" >
       <ref bean="password" />

@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.globant.katari.hibernate.role.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.sample.user.application.DeleteUserCommand;
 import com.globant.katari.sample.user.application.Password;
 import com.globant.katari.sample.user.application.Profile;

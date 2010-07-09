@@ -10,7 +10,7 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
-import com.globant.katari.hibernate.role.domain.RoleRepository;
+import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.katari.report.ReportsTestSupport;
 import com.globant.katari.report.domain.JasperReportRepository;
 import com.globant.katari.report.domain.ReportDefinition;

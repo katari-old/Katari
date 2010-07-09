@@ -16,7 +16,7 @@ import com.globant.katari.tools.SecurityTestUtils;
 import com.globant.katari.search.SpringTestUtils;
 import com.globant.katari.search.domain.mock.User;
 import com.globant.katari.search.domain.mock.Activity;
-import com.globant.katari.hibernate.role.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.Role;
 
 public class IndexRepositoryTest {
 

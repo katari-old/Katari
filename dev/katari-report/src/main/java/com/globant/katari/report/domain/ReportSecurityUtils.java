@@ -9,8 +9,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.functors.OrPredicate;
 
-import com.globant.katari.hibernate.role.domain.Role;
-import com.globant.katari.hibernate.role.domain.RoleSecurityUtils;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.RoleSecurityUtils;
 
 /** Security utilities used by the report commands to check access permission.
  *

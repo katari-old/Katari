@@ -14,8 +14,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
-import com.globant.katari.hibernate.role.domain.Role;
-import com.globant.katari.hibernate.role.domain.RoleRepository;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.${clientName}.${projectName}.web.user.domain.User;
 import com.globant.${clientName}.${projectName}.web.user.domain.UserRepository;
 

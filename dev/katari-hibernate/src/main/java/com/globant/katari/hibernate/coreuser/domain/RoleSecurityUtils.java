@@ -1,4 +1,4 @@
-package com.globant.katari.hibernate.role.domain;
+package com.globant.katari.hibernate.coreuser.domain;
 
 import java.util.Set;
 

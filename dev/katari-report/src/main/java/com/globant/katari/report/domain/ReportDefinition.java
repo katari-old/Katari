@@ -28,7 +28,7 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.Validate;
 
-import com.globant.katari.hibernate.role.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.Role;
 
 /**
  * The <code>ReportDefinition</code> class represents a Report XML Template.

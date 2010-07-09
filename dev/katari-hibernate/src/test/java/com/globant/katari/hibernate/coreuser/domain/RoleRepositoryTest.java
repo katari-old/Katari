@@ -1,4 +1,4 @@
-package com.globant.katari.hibernate.role.domain;
+package com.globant.katari.hibernate.coreuser.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class RoleRepositoryTest extends
   @Override
   protected String[] getConfigLocations() {
     return new String[] {
-        "classpath:com/globant/katari/hibernate/role/applicationContext.xml" };
+        "classpath:com/globant/katari/hibernate/coreuser/applicationContext.xml" };
   }
 
   /**

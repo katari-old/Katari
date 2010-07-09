@@ -8,7 +8,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.util.List;
 
-import com.globant.katari.hibernate.role.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.Role;
 
 import com.globant.katari.search.domain.SearchResultElement;
 import com.globant.katari.search.domain.Action;

@@ -13,8 +13,8 @@
   <!-- The reports module.  -->
   <import resource="classpath:/com/globant/katari/report/module.xml"/>
 
-  <!-- The role module. -->
-  <import resource="classpath:/com/globant/katari/hibernate/role/module.xml"/>
+  <!-- The user core module. -->
+  <import resource="classpath:/com/globant/katari/hibernate/coreuser/module.xml"/>
 
   <!-- A sample datasource. Do not use this for production. -->
   <bean id="dataSource"

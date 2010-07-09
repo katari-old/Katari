@@ -10,13 +10,13 @@
       http://www.globant.com/schema/katari
       http://www.globant.com/schema/katari/katari.xsd">
 
-  <!-- The role module configuration file. This file must be included in the
-  application context to use this module. -->
+  <!-- The coreuser module configuration file. This file must be included in
+       the application context to use this module. -->
 
-  <!-- We expose the role repository as a public bean. It is used for the
-    security modules. -->
-  <bean id='role.roleRepository'
-    class='com.globant.katari.hibernate.role.domain.RoleRepository'>
+  <!-- We expose the coreuser repository as a public bean. It is used for the
+       security modules. -->
+  <bean id='coreuser.roleRepository'
+    class='com.globant.katari.hibernate.coreuser.domain.RoleRepository'>
     <property name='sessionFactory'>
       <ref bean='katari.sessionFactory' />
     </property>
@@ -26,7 +26,8 @@
     <constructor-arg value='katari.persistentClasses'/>
     <constructor-arg>
       <list>
-        <value>com.globant.katari.hibernate.role.domain.Role</value>
+        <value>com.globant.katari.hibernate.coreuser.domain.Role</value>
+        <value>com.globant.katari.hibernate.coreuser.domain.CoreUser</value>
       </list>
     </constructor-arg>
   </bean>

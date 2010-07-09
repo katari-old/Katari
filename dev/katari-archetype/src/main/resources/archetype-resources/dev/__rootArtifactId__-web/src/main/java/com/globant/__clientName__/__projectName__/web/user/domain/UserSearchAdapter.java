@@ -16,7 +16,7 @@ import com.globant.katari.search.domain.SearchAdapter;
 import com.globant.katari.search.domain.SearchResultElement;
 import com.globant.katari.search.domain.Action;
 
-import com.globant.katari.hibernate.role.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.Role;
 
 /** Converts User objects to SearchResultElement.
  *

@@ -40,8 +40,8 @@
   <!-- The user module. -->
   <katari:import module="com.globant.${clientName}.${projectName}.web.user"/>
 
-  <!-- The role module. -->
-  <katari:import module="com.globant.katari.hibernate.role"/>
+  <!-- The core user module. -->
+  <katari:import module="com.globant.katari.hibernate.coreuser"/>
 
   <!-- The reports module. -->
   <katari:import module="com.globant.katari.report"/>

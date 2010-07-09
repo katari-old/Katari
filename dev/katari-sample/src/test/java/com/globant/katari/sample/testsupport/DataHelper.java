@@ -8,8 +8,8 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.globant.katari.hibernate.role.domain.Role;
-import com.globant.katari.hibernate.role.domain.RoleRepository;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.katari.sample.time.domain.Activity;
 import com.globant.katari.sample.time.domain.Project;
 import com.globant.katari.sample.time.domain.TimeEntry;

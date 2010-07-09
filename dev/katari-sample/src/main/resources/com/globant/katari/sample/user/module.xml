@@ -92,7 +92,7 @@
     <constructor-arg>
       <list>
         <value>com.globant.katari.sample.user.domain.User</value>
-        <value>com.globant.katari.hibernate.role.domain.Role</value>
+        <value>com.globant.katari.hibernate.coreuser.domain.Role</value>
       </list>
     </constructor-arg>
   </bean>

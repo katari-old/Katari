@@ -28,7 +28,7 @@ public class DevelopmentDataBaseCheckerTest extends
   @Override
   protected String[] getConfigLocations() {
     return new String[] {
-        "classpath:com/globant/katari/hibernate/role/applicationContext.xml" };
+        "classpath:com/globant/katari/hibernate/coreuser/applicationContext.xml" };
   }
 
   /** Creates administrator role.

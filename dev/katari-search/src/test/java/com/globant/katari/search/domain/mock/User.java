@@ -23,7 +23,7 @@ import org.compass.annotations.SearchableId;
 import org.compass.annotations.SearchableProperty;
 import org.compass.annotations.SearchableComponent;
 
-import com.globant.katari.hibernate.role.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.Role;
 
 /** Defines a user entity to be used for testing.
  */

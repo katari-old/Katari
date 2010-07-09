@@ -14,7 +14,7 @@ import org.hibernate.Query;
 import org.hibernate.transform.AliasToBeanConstructorResultTransformer;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.globant.katari.hibernate.role.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.Role;
 
 /**
  * The Client repository. It provides access to the report definitions.

@@ -8,8 +8,8 @@ import java.util.Set;
 import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.lang.Validate;
 
-import com.globant.katari.hibernate.role.domain.Role;
-import com.globant.katari.hibernate.role.domain.RoleDetails;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.RoleDetails;
 import com.globant.katari.sample.user.domain.User;
 
 /** A user details service needed by acegi, that obtains the user information

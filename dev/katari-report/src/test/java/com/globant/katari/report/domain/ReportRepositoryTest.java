@@ -9,8 +9,8 @@ import org.apache.commons.collections.MapUtils;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
-import com.globant.katari.hibernate.role.domain.Role;
-import com.globant.katari.hibernate.role.domain.RoleRepository;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.katari.report.ReportsTestSupport;
 
 /**

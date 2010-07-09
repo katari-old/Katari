@@ -81,7 +81,7 @@
   <bean name="saveReportCommand" scope="prototype"
      class="com.globant.katari.report.application.SaveReportCommand">
      <constructor-arg index="0" ref="jasperReportRepository"/>
-     <constructor-arg index="1" ref="role.roleRepository"/>
+     <constructor-arg index="1" ref="coreuser.roleRepository"/>
   </bean>
 
   <bean name="retrieveReportContentCommand" scope="prototype"

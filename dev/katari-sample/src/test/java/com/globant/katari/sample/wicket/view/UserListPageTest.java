@@ -19,7 +19,7 @@ import org.apache.wicket.Component;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.globant.katari.hibernate.role.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.sample.testsupport.SecurityTestUtils;
 import com.globant.katari.sample.user.application.DeleteUserCommand;
 import com.globant.katari.sample.user.application.Password;

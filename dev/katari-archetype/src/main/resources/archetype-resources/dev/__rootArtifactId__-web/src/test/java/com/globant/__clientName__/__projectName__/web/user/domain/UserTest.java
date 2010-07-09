@@ -10,8 +10,8 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import com.globant.katari.hibernate.role.domain.Role;
-import com.globant.katari.hibernate.role.domain.RoleRepository;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.${clientName}.${projectName}.web.testsupport.SpringTestUtils;
 
 /* This class represents a TestCase of the user. In this class we will test all
@@ -33,7 +33,7 @@ public class UserTest extends TestCase {
     userRepository = (UserRepository) SpringTestUtils.getBeanFactory().getBean(
         "userRepository");
     roleRepository = (RoleRepository) SpringTestUtils.getBeanFactory().getBean(
-        "role.roleRepository");
+        "coreuser.roleRepository");
     addUsers();
   }
 

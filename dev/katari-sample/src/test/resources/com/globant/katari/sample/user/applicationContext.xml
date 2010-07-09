@@ -13,8 +13,8 @@
   <!-- The search module. -->
   <import resource="classpath:/com/globant/katari/search/module.xml"/>
 
-  <!-- The role module. -->
-  <import resource="classpath:/com/globant/katari/hibernate/role/module.xml"/>
+  <!-- The core user module. -->
+  <import resource="classpath:/com/globant/katari/hibernate/coreuser/module.xml"/>
 
   <!-- The user module. -->
   <import resource="classpath:/com/globant/katari/sample/user/module.xml"/>

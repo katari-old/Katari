@@ -10,8 +10,8 @@ import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.globant.katari.hibernate.role.domain.Role;
-import com.globant.katari.hibernate.role.domain.RoleRepository;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.katari.sample.testsupport.DataHelper;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.testsupport.VerifyHelper;
@@ -43,7 +43,7 @@ public class UserRepositoryTest extends TestCase {
     userRepository = (UserRepository) SpringTestUtils.getBeanFactory().getBean(
         "userRepository");
     roleRepository = (RoleRepository) SpringTestUtils.getBeanFactory().getBean(
-    "role.roleRepository");
+    "coreuser.roleRepository");
     verify = new VerifyHelper();
     addUsersAndRoles();
   }

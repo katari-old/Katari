@@ -14,7 +14,7 @@
   <!-- This module (search). -->
   <import resource="classpath:/com/globant/katari/search/module.xml"/>
 
-  <import resource="classpath:/com/globant/katari/hibernate/role/module.xml"/>
+  <import resource="classpath:/com/globant/katari/hibernate/coreuser/module.xml"/>
 
   <!-- Defines the searchable entities and their corresponding handlers for the
        search module -->
@@ -24,7 +24,7 @@
       <list>
         <value>com.globant.katari.search.domain.mock.User</value>
         <value>com.globant.katari.search.domain.mock.Activity</value>
-        <value>com.globant.katari.hibernate.role.domain.Role</value>
+        <value>com.globant.katari.hibernate.coreuser.domain.Role</value>
       </list>
     </constructor-arg>
   </bean>

@@ -8,12 +8,10 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.DiscriminatorValue;
 
 import org.apache.commons.lang.Validate;
 
@@ -22,18 +20,15 @@ import org.compass.annotations.SearchableId;
 import org.compass.annotations.SearchableProperty;
 import org.compass.annotations.SearchableComponent;
 
-import com.globant.katari.hibernate.role.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.Role;
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 /** Defines the user entity.
  */
 @Entity
-@Table(name = "users")
+@DiscriminatorValue("user")
 @Searchable
-public class User {
-
-  /** The length in characters of the user name.
-   */
-  private static final int USER_NAME_LENGTH = 50;
+public class User extends CoreUser {
 
   /** The length in characters of the email address.
    */
@@ -42,22 +37,6 @@ public class User {
   /** The length in characters of the password.
    */
   private static final int PASSWORD_LENGTH = 20;
-
-  /** The id of the user.
-   *
-   * This is 0 for a newly created user.
-   */
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id", nullable = false)
-  @SearchableId
-  private long id = 0;
-
-  /** The name of the user.
-   */
-  @Column(name = "name", nullable = false, length = USER_NAME_LENGTH)
-  @SearchableProperty
-  private String name;
 
   /** The email of the user.
    */
@@ -97,9 +76,8 @@ public class User {
    * @param theMail The user email address.
    */
   public User(final String theName, final String theMail) {
-    Validate.notNull(theName, "The user name cannot be null");
+    super(theName);
     Validate.notNull(theMail, "The user email cannot be null");
-    name = theName;
     email = theMail;
   }
 
@@ -110,9 +88,8 @@ public class User {
    * @param newEmail The new email of the user. It cannot be null.
    */
   public void modify(final String newName, final String newEmail) {
-    Validate.notNull(newName, "The user name cannot be null");
     Validate.notNull(newEmail, "The user email cannot be null");
-    name = newName;
+    setName(newName);
     email = newEmail;
   }
 
@@ -162,30 +139,6 @@ public class User {
     return password.equals(thePassword);
   }
 
-  /** Returns the id of the user.
-   *
-   * @return Returns the user id, 0 if the user was not persisted yet.
-   */
-  public long getId() {
-    return id;
-  }
-
-  /** Returns the name of the user.
-   *
-   * @return the name
-   */
-  public String getName() {
-    return name;
-  }
-
-  /** Sets the user name.
-   *
-   * @param theName The user name.  It cannot be null.
-   */
-  public void setName(final String theName) {
-    name = theName;
-  }
-
   /** Returns the password of the user.
    *
    * @return Returns the password. Never returns null.
@@ -200,14 +153,6 @@ public class User {
    */
   public String getEmail() {
     return email;
-  }
-
-  /** Set the email.
-   *
-   * @param theEmail The email. It cannot be null.
-   */
-  public void setEmail(final String theEmail) {
-    email = theEmail;
   }
 
   /** Returns the roles of the user.
