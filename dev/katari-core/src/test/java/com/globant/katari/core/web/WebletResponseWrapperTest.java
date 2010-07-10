@@ -7,7 +7,6 @@ import static org.easymock.EasyMock.*;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
-import org.junit.Before;
 import static org.junit.Assert.*;
 
 /* Tests the weblet response wrapper.

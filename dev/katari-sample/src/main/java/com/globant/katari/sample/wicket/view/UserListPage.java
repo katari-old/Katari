@@ -54,6 +54,7 @@ public class UserListPage extends WebPage {
     dataView = new DataView<User>("users", new UsersDataProvider()) {
       private static final long serialVersionUID = 7992666042888348658L;
 
+      @SuppressWarnings("serial")
       public void populateItem(final Item<User> listItem) {
         final User user = listItem.getModelObject();
         listItem.setModel(new CompoundPropertyModel<User>(user));
@@ -91,6 +92,10 @@ public class UserListPage extends WebPage {
    */
   private class UsersDataProvider implements IDataProvider<User> {
 
+    /** Serialization version.
+     */
+    private static final long serialVersionUID = 1L;
+
     /** Cache for the total number of users to show.
      */
     private int size = -1;
@@ -109,6 +114,7 @@ public class UserListPage extends WebPage {
 
     /** {@inheritDoc}.
      */
+    @SuppressWarnings("serial")
     public IModel<User> model(final User user) {
       return new LoadableDetachableModel<User>() {
         @Override

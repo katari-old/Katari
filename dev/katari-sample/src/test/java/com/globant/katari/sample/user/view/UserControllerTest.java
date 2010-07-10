@@ -70,7 +70,7 @@ public class UserControllerTest extends TestCase {
     ModelAndView modelAndView;
     modelAndView = editUserController.handleRequest(request, response);
 
-    Map model = modelAndView.getModel();
+    Map<?, ?> model = modelAndView.getModel();
     SaveUserCommand command = (SaveUserCommand) model.get("command");
     assertNotNull("Unexpected null command", command);
     assertEquals("UserTest", command.getProfile().getName());
@@ -96,7 +96,7 @@ public class UserControllerTest extends TestCase {
     ModelAndView modelAndView;
     modelAndView = editUserController.handleRequest(request, response);
 
-    Map model = modelAndView.getModel();
+    Map<?, ?> model = modelAndView.getModel();
     SaveUserCommand command = (SaveUserCommand) model.get("command");
     assertNotNull("Unexpected null command", command);
     assertEquals("UserTest", command.getProfile().getName());

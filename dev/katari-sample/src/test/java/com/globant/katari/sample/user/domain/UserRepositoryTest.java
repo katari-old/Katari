@@ -109,7 +109,7 @@ public class UserRepositoryTest extends TestCase {
     paging.setPageNumber(1);
     paging.setPageSize(2);
     userFilter.setPaging(paging);
-    List userList = userRepository.getUsers(userFilter);
+    List<User> userList = userRepository.getUsers(userFilter);
 
     // Verify the results.
     assertNotNull(userList);
@@ -133,7 +133,7 @@ public class UserRepositoryTest extends TestCase {
     containsFilter.setColumnName("name");
     containsFilter.setValue("nic");
     userFilter.setContainsFilter(containsFilter);
-    List userList = userRepository.getUsers(userFilter);
+    List<User> userList = userRepository.getUsers(userFilter);
 
     //Verify the results.
     for (Object object : userList) {
@@ -151,7 +151,7 @@ public class UserRepositoryTest extends TestCase {
     containsFilter.setColumnName("name");
     containsFilter.setValue("nicXXXXXXXXXX");
     userFilter.setContainsFilter(containsFilter);
-    List userList = userRepository.getUsers(userFilter);
+    List<User> userList = userRepository.getUsers(userFilter);
 
     assertEquals(0, userList.size());
   }

@@ -7,7 +7,6 @@ import static org.apache.commons.lang.Validate.notEmpty;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.PreDestroy;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

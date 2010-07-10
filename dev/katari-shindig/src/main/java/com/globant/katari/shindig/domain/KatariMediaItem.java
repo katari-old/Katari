@@ -28,6 +28,7 @@ public class KatariMediaItem implements MediaItem {
    *
    * This is 0 for a newly created item.
    */
+  @SuppressWarnings("unused")
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
@@ -103,7 +104,7 @@ public class KatariMediaItem implements MediaItem {
     url = source.getUrl();
   }
 
-  /** 
+  /**
    * {@inheritDoc}
    * @see org.apache.shindig.social.opensocial.model.MediaItem#getMimeType()
    */
@@ -111,7 +112,7 @@ public class KatariMediaItem implements MediaItem {
     return mimeType;
   }
 
-  /** 
+  /**
    * {@inheritDoc}
    * @see org.apache.shindig.social.opensocial.model.MediaItem#setMimeType(java.lang.String)
    */
@@ -119,7 +120,7 @@ public class KatariMediaItem implements MediaItem {
     this.mimeType = mimeType;
   }
 
-  /** 
+  /**
    * {@inheritDoc}
    * @see org.apache.shindig.social.opensocial.model.MediaItem#getType()
    */
@@ -127,7 +128,7 @@ public class KatariMediaItem implements MediaItem {
     return type;
   }
 
-  /** 
+  /**
    * {@inheritDoc}
    * @see org.apache.shindig.social.opensocial.model.MediaItem#setType(org.apache.shindig.social.opensocial.model.MediaItem.Type)
    */
@@ -135,7 +136,7 @@ public class KatariMediaItem implements MediaItem {
     this.type = type;
   }
 
-  /** 
+  /**
    * {@inheritDoc}
    * @see org.apache.shindig.social.opensocial.model.MediaItem#getUrl()
    */
@@ -143,7 +144,7 @@ public class KatariMediaItem implements MediaItem {
     return url;
   }
 
-  /** 
+  /**
    * {@inheritDoc}
    * @see org.apache.shindig.social.opensocial.model.MediaItem#setUrl(java.lang.String)
    */
@@ -151,7 +152,7 @@ public class KatariMediaItem implements MediaItem {
     this.url = url;
   }
 
-  /** 
+  /**
    * {@inheritDoc}
    * @see org.apache.shindig.social.opensocial.model.MediaItem#getThumbnailUrl()
    */
@@ -159,7 +160,7 @@ public class KatariMediaItem implements MediaItem {
     return thumbnailUrl;
   }
 
-  /** 
+  /**
    * {@inheritDoc}
    * @see org.apache.shindig.social.opensocial.model.MediaItem#setThumbnailUrl(java.lang.String)
    */

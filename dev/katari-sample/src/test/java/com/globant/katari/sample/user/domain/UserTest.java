@@ -55,7 +55,7 @@ public class UserTest extends TestCase {
   /* Tests the getUsers operation.
   */
   public final void testGetUsers() {
-    List users = userRepository.getUsers();
+    List<User> users = userRepository.getUsers();
     assertEquals(users.size(), 2);
   }
 

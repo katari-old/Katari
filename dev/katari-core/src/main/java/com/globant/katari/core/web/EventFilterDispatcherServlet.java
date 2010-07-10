@@ -21,6 +21,10 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 public class EventFilterDispatcherServlet extends DispatcherServlet {
 
+  /** The serialization version.
+   */
+  private static final long serialVersionUID = 1L;
+
   /** Receives a ContextRefreshedEvent and filters it out if it does not
    * originated from this DispatcherServlet application context.
    *

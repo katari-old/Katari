@@ -8,7 +8,7 @@ import java.lang.NoSuchFieldException;
 /** Convenience methods to deal with reflection.
  *
  * This class includes operations to obtain and set the value of private
- * fields. It looks for them up in the class hierarchy. 
+ * fields. It looks for them up in the class hierarchy.
  */
 public final class ReflectionUtils {
 
@@ -68,6 +68,7 @@ public final class ReflectionUtils {
    * @param attributeName The name of the attribute to search. It cannot be
    * null.
    */
+  @SuppressWarnings("unchecked")
   private static Field getField(final Class<?> theClass, final String
       attributeName) throws NoSuchFieldException {
     try {

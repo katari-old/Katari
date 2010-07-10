@@ -215,6 +215,7 @@ public class CustomAopProxyFactoryTest extends TestCase {
       this.behavior = behavior;
     }
 
+    @SuppressWarnings("unused")
     public MockAopProxy(Behavior< ? > behavior, String something) {
       this.behavior = behavior;
     }
@@ -227,6 +228,7 @@ public class CustomAopProxyFactoryTest extends TestCase {
       return null;
     }
 
+    @SuppressWarnings("unused")
     public void setConstructorArguments(Object[] arguments,
         Class< ? >[] argumentTypes) throws Throwable {
       if (this.behavior != null) {
@@ -265,5 +267,4 @@ public class CustomAopProxyFactoryTest extends TestCase {
       return null;
     }
   }
-
 }

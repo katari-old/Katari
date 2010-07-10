@@ -161,7 +161,7 @@ public abstract class BaseTimeController extends SimpleFormController {
    * @return A <code>Map</code> with the reference data.
    */
   @Override
-  protected Map referenceData(final HttpServletRequest request)
+  protected Map<String, Object> referenceData(final HttpServletRequest request)
       throws Exception {
     Map<String, Object> reference = new  LinkedHashMap<String, Object>();
     reference.put("request", request);

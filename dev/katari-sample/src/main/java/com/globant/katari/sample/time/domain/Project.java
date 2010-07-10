@@ -37,6 +37,7 @@ public class Project {
 
   /** Project's owner.
    */
+  @SuppressWarnings("unused")
   @ManyToOne(targetEntity = Client.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "client_id", nullable = false)
   private Client client;

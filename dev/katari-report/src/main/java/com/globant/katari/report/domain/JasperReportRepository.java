@@ -126,7 +126,7 @@ public class JasperReportRepository extends HibernateDaoSupport {
           + " ReportDefinition definition left join definition.roles as role"
           + " where role in(:roles) or role is null";
       query = getSession().createQuery(hqlQuery);
-      query.setParameterList("roles", roles, Hibernate.entity(Role.class));
+      query.setParameterList("roles", roles);
     }
     return query.list();
   }
@@ -166,7 +166,7 @@ public class JasperReportRepository extends HibernateDaoSupport {
    *
    * @return a list of options.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "deprecation" })
   public List<DropdownOptions> getDropdownOptions(final ParameterDefinition
       parameter, final Map<String, String> parameterValues) {
     Validate.notNull(parameter, "the parameter cannnot be null.");

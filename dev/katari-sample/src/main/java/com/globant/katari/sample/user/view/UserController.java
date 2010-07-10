@@ -75,8 +75,8 @@ public abstract class UserController extends SimpleFormController {
    * the request object as a request attribute.
    */
   @Override
-  protected Map referenceData(final HttpServletRequest request, final Object
-      command, final Errors errors) throws Exception {
+  protected Map<String, Object> referenceData(final HttpServletRequest request,
+      final Object command, final Errors errors) throws Exception {
     log.trace("Entering referenceData");
 
     Validate.notNull(request, "The request cannot be null");
@@ -107,7 +107,7 @@ public abstract class UserController extends SimpleFormController {
   protected void doSubmitAction(final Object command) throws Exception {
     log.trace("Entering doSubmitAction");
 
-    ((Command) command).execute();
+    ((Command<?>) command).execute();
 
     log.trace("Leaving doSubmitAction");
   }

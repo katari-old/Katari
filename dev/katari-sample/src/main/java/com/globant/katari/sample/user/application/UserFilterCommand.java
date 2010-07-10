@@ -5,8 +5,6 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.globant.katari.core.application.Command;
 import com.globant.katari.sample.user.domain.User;
@@ -22,10 +20,6 @@ import com.globant.katari.sample.user.domain.filter.Sorting;
  * @author nicolas.frontini
  */
 public class UserFilterCommand implements Command<List<User>> {
-
-  /** The class logger.
-   */
-  private static Log log = LogFactory.getLog(UserFilterCommand.class);
 
   /** The paging component.
    */

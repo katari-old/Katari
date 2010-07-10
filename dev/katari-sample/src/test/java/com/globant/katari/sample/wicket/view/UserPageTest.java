@@ -22,8 +22,6 @@ import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringResourceStream;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.sample.user.application.DeleteUserCommand;
@@ -36,8 +34,6 @@ import com.globant.katari.sample.user.domain.filter.Paging;
 import com.globant.katari.tools.KatariWicketTester;
 
 public class UserPageTest {
-
-  private static Logger log = LoggerFactory.getLogger(UserPageTest.class);
 
   private DeleteUserCommand deleteUser;
 

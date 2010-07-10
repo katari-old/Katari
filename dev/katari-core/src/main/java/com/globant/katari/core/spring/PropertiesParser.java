@@ -3,8 +3,6 @@
 package com.globant.katari.core.spring;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;

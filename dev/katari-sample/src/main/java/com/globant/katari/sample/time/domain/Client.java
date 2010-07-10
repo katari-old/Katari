@@ -57,6 +57,7 @@ public class Client {
    *
    * Two clients cannot have the same name. This is never null.
    */
+  @SuppressWarnings("unused")
   @Column(name = "name", nullable = false, unique = true, length = NAME_LENGTH)
   private String name = "";
 
@@ -64,6 +65,7 @@ public class Client {
    *
    * It is html content. It can be null when no description is available.
    */
+  @SuppressWarnings("unused")
   @Column(name = "description", nullable = true, unique = false, length =
       DESCRIPTION_LENGTH)
   private String description = "";
@@ -73,6 +75,7 @@ public class Client {
    *
    * It is never null.
    */
+  @SuppressWarnings("unused")
   @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false)
   @NotNull

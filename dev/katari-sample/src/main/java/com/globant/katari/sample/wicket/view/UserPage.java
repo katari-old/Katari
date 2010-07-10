@@ -66,6 +66,7 @@ public class UserPage extends WebPage {
    * parameter 'id', that is the id of the user to edit. Null if the page is
    * created for a new user.
    */
+  @SuppressWarnings("serial")
   public UserPage(final PageParameters params) {
     final IModel<String> titleModel = new AbstractReadOnlyModel<String>() {
       @Override
@@ -131,6 +132,10 @@ public class UserPage extends WebPage {
    * which case the link will point to a page to create a new user.
    */
   public static class Link extends BookmarkablePageLink<UserPage> {
+
+    /** Serialization version.
+     */
+    private static final long serialVersionUID = 1L;
 
     /** Creates a link to an empty user page.
      *

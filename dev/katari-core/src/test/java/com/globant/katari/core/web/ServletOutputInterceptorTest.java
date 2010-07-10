@@ -13,7 +13,6 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.junit.Before;
 import static org.junit.Assert.*;
 
 public class ServletOutputInterceptorTest {
