@@ -16,7 +16,7 @@
     </script>
 
      <style type="text/css">
-      
+
       .canvasContainer {
         display: inline;
       }
@@ -24,21 +24,21 @@
       .gadgetContainer iframe {
         border: 0px;
       }
-      
+
       .canvasColumn {
         float: left;
         width: 30%;
         margin: 10px;
         padding-top: 10px;
       }
-      
+
       #canvasDiv {
         width: 100%;
         height: 400px;
         border: 1px solid #000;
         text-align: center;
       }
-      
+
     </style>
   </head>
 
