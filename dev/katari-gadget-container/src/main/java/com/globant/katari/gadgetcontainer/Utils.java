@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.globant.katari.gadgetcontainer;
 
 import java.io.UnsupportedEncodingException;
@@ -11,7 +8,7 @@ import java.net.URLEncoder;
  *
  */
 public class Utils {
-  
+
   public static String urlEncode(final String valueToEncode) {
     try {
       return URLEncoder.encode(valueToEncode, "UTF-8");

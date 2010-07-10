@@ -56,7 +56,7 @@ public class GadgetGroupCommandTest {
     String pageName = "1";
     long userId = 1;
 
-    GadgetGroup gadgetGroup = new GadgetGroup(user, pageName);
+    GadgetGroup gadgetGroup = new GadgetGroup(user, pageName, 1);
 
     GadgetInstance gi = createMock(GadgetInstance.class);
     gadgetGroup.addGadget(gi);

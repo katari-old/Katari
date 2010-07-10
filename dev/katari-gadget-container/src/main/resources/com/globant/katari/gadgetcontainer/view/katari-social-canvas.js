@@ -1,3 +1,4 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
 /**
  * Base canvas social container.
  * This library requires jquery 1.4.2.
@@ -12,8 +13,10 @@ KATARI.SOCIAL.canvasConfig = KATARI.SOCIAL.canvasConfig || {};
 // This will be configured by the CanvasBuilder.
 KATARI.debugMode = false;
 KATARI.SOCIAL.canvasConfig.host = "http://localhost:8098/katari-sample";
-KATARI.SOCIAL.canvasConfig.container = KATARI.SOCIAL.canvasConfig.host + "/module/shindig/gadgets/ifr";
-KATARI.SOCIAL.canvasConfig.relayFile = KATARI.SOCIAL.canvasConfig.host + "/module/gadgetcontainer/assets/rpc_relay.html";
+KATARI.SOCIAL.canvasConfig.container = KATARI.SOCIAL.canvasConfig.host +
+  "/module/shindig/gadgets/ifr";
+KATARI.SOCIAL.canvasConfig.relayFile = KATARI.SOCIAL.canvasConfig.host +
+  "/module/gadgetcontainer/assets/rpc_relay.html";
 KATARI.SOCIAL.canvasConfig.rpcToken = "rpcToken";
 KATARI.SOCIAL.canvasConfig.applicationPrefix = "Application_";
 KATARI.SOCIAL.canvasConfig.socialContainer = "default";
@@ -31,16 +34,17 @@ KATARI.Console = {
   }
 };
 
-/**
+/** Constructor for GadgetInstances.
+ *
  * @param sId
  * @param sUrl
  * @param sSecurityToken
  * @param sViewer
  * @param sOwner
  * @param sPosition
- *
  */
-KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer, sOwner, sPosition) {
+KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer,
+    sOwner, sPosition) {
 
   this.id = sId;
   this.gadgetContainerUrl = KATARI.SOCIAL.canvasConfig.container;
@@ -55,6 +59,8 @@ KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer, sOwn
   this.view = KATARI.SOCIAL.canvasConfig.defaultView;
   this.parent = KATARI.SOCIAL.canvasConfig.host;
 
+  /** Creates the url for the gadget's iframe src.
+   */
   this.buildGadgetUrl = function() {
     var url = [];
     url.push(this.gadgetContainerUrl);
@@ -75,33 +81,30 @@ KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer, sOwn
 /**
  * Create a new social canvas.
  *
- * @param {String} sContainer id of the container.
+ * @param {String} sContainer id of the container, usualy a div.
  */
-KATARI.SOCIAL.Canvas = function(sContainer, iColumns) {
+KATARI.SOCIAL.Canvas = function(sContainer) {
   this.gadgets = [];
+  this.columns = [];
+
   var container = sContainer;
-  var columns = [];
   var POSITION_SPLITTER = '#';
 
-  for (var i = 1; i <= iColumns; i++) {
-    columns[i] = $('<div class="canvasColumn">');
-  }
-
-  /**
-   * Add a gadget instance.
-   * @param {Object} objGadgetInstance
-   * return this.
+  /** Add a gadget instance.  @param {Object} objGadgetInstance return this.
    */
   this.addGadget = function(objGadgetInstance) {
     this.gadgets.push(objGadgetInstance);
     return this;
   };
 
-  /**
-   *
-   * @param {Object} objJson
+  /** @param {Object} objJson
    */
   this.addGadgetsFromJson = function(objJson) {
+    // Create the empty columns.
+    for (var i = 1; i <= objJson.numberOfColumns; i++) {
+      this.columns[i] = $('<div class="canvasColumn">');
+    }
+    // And create all the gadgets.
     for(m in objJson.gadgets) {
       var obj = objJson.gadgets[m];
       this.addGadget(new KATARI.SOCIAL.GadgetInstance(obj.id, obj.url,
@@ -151,14 +154,14 @@ KATARI.SOCIAL.Canvas = function(sContainer, iColumns) {
       localDiv.append(iFrame);
 
       var position = theGadget.position.split(POSITION_SPLITTER);
-      columns[position[0]].append(titleDiv);
-      columns[position[0]].append(localDiv);
+      this.columns[position[0]].append(titleDiv);
+      this.columns[position[0]].append(localDiv);
     }
 
     var containerDiv = $('<div>');
 
-    for (item in columns) {
-      containerDiv.append(columns[item]);
+    for (item in this.columns) {
+      containerDiv.append(this.columns[item]);
     }
     containerDiv.append("<div style='clear:both;'><!-- empty div --></div>");
 

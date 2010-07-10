@@ -29,7 +29,7 @@ public class GadgetGroupTest {
 
   @Test
   public void testConstructorOk() {
-    GadgetGroup cp = new GadgetGroup(user, "groupName");
+    GadgetGroup cp = new GadgetGroup(user, "groupName", 1);
     assertThat(cp.getOwner(), is(user));
     assertTrue(cp.getId() == 0);
     assertTrue(cp.getName().equals("groupName"));
@@ -38,7 +38,7 @@ public class GadgetGroupTest {
   @Test
   public void testConstructorWithNullPageName() {
     try {
-      new GadgetGroup(user, null);
+      new GadgetGroup(user, null, 1);
       fail("Should be an illegal argument exception because pagename is null");
     } catch (IllegalArgumentException e) {
     }
@@ -47,7 +47,7 @@ public class GadgetGroupTest {
   @Test
   public void testConstructorWithEmptyPageName() {
     try {
-      new GadgetGroup(user, "");
+      new GadgetGroup(user, "", 1);
       fail("Should be an illegal argument exception because pagename is empty");
     } catch (IllegalArgumentException e) {
     }
@@ -55,7 +55,7 @@ public class GadgetGroupTest {
 
   @Test
   public void testAddCanvasInstance() {
-    GadgetGroup page = new GadgetGroup(user, "1");
+    GadgetGroup page = new GadgetGroup(user, "1", 1);
     GadgetInstance instance = new GadgetInstance("a", "1");
     page.addGadget(instance);
     assertTrue(page.getGadgets().contains(instance));

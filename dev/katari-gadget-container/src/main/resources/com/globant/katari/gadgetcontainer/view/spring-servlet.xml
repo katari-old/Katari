@@ -24,7 +24,7 @@
  
   <bean name='/katariSocialCanvas.js'
     class='com.globant.katari.gadgetcontainer.view.CanvasModelController'>
-    <property name="viewName" value="katari.social.canvas" />
+    <property name="viewName" value="katari-social-canvas" />
   </bean>
 
   <!-- Command definition -->

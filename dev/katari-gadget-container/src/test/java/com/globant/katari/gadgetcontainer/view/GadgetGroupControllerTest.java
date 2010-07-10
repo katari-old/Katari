@@ -61,7 +61,7 @@ public class GadgetGroupControllerTest {
     String pageName = "thePage";
     CoreUser userId = createMock(CoreUser.class);
 
-    GadgetGroup group = new GadgetGroup(userId, pageName);
+    GadgetGroup group = new GadgetGroup(userId, pageName, 1);
     GadgetInstance gi = new GadgetInstance("http://lala", "1");
     group.addGadget(gi);
 
