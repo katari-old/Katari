@@ -5,6 +5,7 @@ package com.globant.katari.sample.testsupport;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 
+import com.globant.katari.hibernate.coreuser.domain.CoreUserDetails;
 import com.globant.katari.sample.integration.DomainUserDetails;
 import com.globant.katari.sample.user.domain.User;
 

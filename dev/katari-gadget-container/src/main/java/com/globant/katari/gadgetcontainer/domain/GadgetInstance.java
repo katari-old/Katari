@@ -56,12 +56,12 @@ public class GadgetInstance {
   @Transient
   private String securityToken;
 
-  /** {@link String} with the user who is accessing to the application.
+  /** The user who is accessing to the application.
    *
-   * See the note on securityToken. This is never null.
+   * See the note on securityToken.
    */
   @Transient
-  private String viewer;
+  private long viewer;
 
   /**
    * Hibernate constructor.
@@ -95,9 +95,9 @@ public class GadgetInstance {
    * @param gadgetViewer {@link String} the viewer to set. Can not be empty.
    */
   public void associateToViewer(final String theSecurityToken,
-      final String theViewer) {
+      final long theViewer) {
     Validate.notEmpty(theSecurityToken, "securityToken can not be null");
-    Validate.notEmpty(theViewer, "viewer can not be null");
+    Validate.isTrue(theViewer != 0, "viewer can not be 0");
     viewer = theViewer;
     securityToken = theSecurityToken;
   }
@@ -122,7 +122,7 @@ public class GadgetInstance {
 
   /** @return @link{String} the current gadget viewer.
    */
-  public String getViewer() {
+  public long getViewer() {
     return viewer;
   }
 

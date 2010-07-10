@@ -5,10 +5,7 @@ package com.globant.katari.sample.user;
 import javax.servlet.ServletContext;
 
 import org.springframework.web.context.support.XmlWebApplicationContext;
-import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.core.io.FileSystemResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ByteArrayResource;
 
 import org.springframework.mock.web.MockServletContext;
 

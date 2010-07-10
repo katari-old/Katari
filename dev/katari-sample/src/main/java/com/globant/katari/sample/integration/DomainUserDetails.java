@@ -8,6 +8,7 @@ import java.util.Set;
 import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.lang.Validate;
 
+import com.globant.katari.hibernate.coreuser.domain.CoreUserDetails;
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.hibernate.coreuser.domain.RoleDetails;
 import com.globant.katari.sample.user.domain.User;
@@ -18,7 +19,7 @@ import com.globant.katari.sample.user.domain.User;
  * This implementation simply delegates the user details operations to the
  * wrapped user domain object.
  */
-public class DomainUserDetails implements RoleDetails {
+public class DomainUserDetails extends CoreUserDetails implements RoleDetails {
 
   /** The serialization version number.
    *
@@ -38,6 +39,7 @@ public class DomainUserDetails implements RoleDetails {
    * @param theUser The domain user object. It cannot be null.
    */
   public DomainUserDetails(final User theUser) {
+    super(theUser);
     Validate.notNull(theUser, "The user cannot be null");
     user = theUser;
   }

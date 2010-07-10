@@ -6,7 +6,7 @@ insert into activities values ('1', 'Coding', '1');
 insert into activities values ('2', 'Testing', '1');
 
 -- Adds 3 sample gadgets to the dashboard page.
-insert into gadget_groups (owner, name) values ('john.doe', 'page');
+insert into gadget_groups (owner_id, name) values (1, 'main');
 insert into gadget_instances (gadget_position, url, gadget_group_id)
  values ('1#1',
  'http://www.labpixies.com/campaigns/minesweeper/minesweeper.xml', 1);

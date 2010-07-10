@@ -63,7 +63,7 @@ public class TokenServiceTest {
     GadgetInstance gi = createMock(GadgetInstance.class);
     expect(gi.getUrl()).andReturn("http://katari.com").times(2);
     replay(gi);
-    String token = ts.createSecurityToken("user", gi);
+    String token = ts.createSecurityToken(1, gi);
     assertNotNull(token);
     verify(gi);
   }

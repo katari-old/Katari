@@ -2,12 +2,12 @@
 
 package com.globant.katari.gadgetcontainer.domain;
 
-import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang.Validate.notEmpty;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.PreDestroy;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,9 +15,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 /** Represents a group of gadgets that can be displayed on a web page.
  *
@@ -51,8 +54,8 @@ public class GadgetGroup {
    *
    * If null, this is a shared group that can be used by everybody.
    */
-  @Column(name = "owner")
-  private String owner;
+  @ManyToOne(optional = true, fetch = FetchType.EAGER)
+  private CoreUser owner;
 
   /** Hibernate constructor.
    */
@@ -66,7 +69,7 @@ public class GadgetGroup {
    *
    * @param groupName name of the group. It cannot be null
    */
-  public GadgetGroup(final String user, final String groupName) {
+  public GadgetGroup(final CoreUser user, final String groupName) {
     notEmpty(groupName, "group name can not be null nor empty");
     name = groupName;
     owner = user;
@@ -98,7 +101,7 @@ public class GadgetGroup {
 
   /** @return the group owner, null for a shared gadget group.
    */
-  public String getOwner() {
+  public CoreUser getOwner() {
     return owner;
   }
 }

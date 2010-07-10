@@ -1,15 +1,9 @@
 package com.globant.katari.sample.user.view;
 
-import com.globant.katari.hibernate.coreuser.domain.Role;
-import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
-
 import com.globant.katari.tools.FreemarkerTestEngine;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.user.application.SaveUserCommand;
-import com.globant.katari.sample.user.domain.User;
-import com.globant.katari.sample.user.domain.UserRepository;
 
-import freemarker.template.Configuration;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;

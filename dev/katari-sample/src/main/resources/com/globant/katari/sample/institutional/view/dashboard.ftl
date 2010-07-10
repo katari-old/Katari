@@ -54,7 +54,7 @@
 
         $.getJSON(
           KATARI.SOCIAL.canvasConfig.host +
-            '/module/gadgetcontainer/socialPage.do?groupName=page', 
+            '/module/gadgetcontainer/socialPage.do?groupName=main', 
           function(data) {
             gadgetGroup.addGadgetsFromJson(data);
             gadgetGroup.render();

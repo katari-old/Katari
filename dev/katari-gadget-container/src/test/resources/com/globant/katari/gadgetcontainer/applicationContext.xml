@@ -7,9 +7,9 @@
       http://www.globant.com/schema/katari
       http://www.globant.com/schema/katari/katari.xsd">
 
-
-  <import resource="classpath:/com/globant/katari/core/beans-core.xml"/>
+  <import resource="classpath:com/globant/katari/core/beans-core.xml"/>
   <import resource="classpath:com/globant/katari/hibernate/beans-hibernate.xml"/>
+  <import resource="classpath:com/globant/katari/hibernate/coreuser/module.xml"/>
   <import resource="classpath:com/globant/katari/gadgetcontainer/module.xml"/>
   <import resource="classpath:com/globant/katari/shindig/module.xml"/>
   <import resource="classpath:com/globant/katari/gadgetcontainer/view/spring-servlet.xml"/>
@@ -35,6 +35,18 @@
   </bean>
 
   <alias name="dataSource" alias="katari.dataSource"/>
+  
+  <!-- JPA classes -->
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.persistentClasses' />
+    <constructor-arg>
+      <list>
+        <value>
+          com.globant.katari.gadgetcontainer.domain.SampleUser
+        </value>
+      </list>
+    </constructor-arg>
+  </bean>
 
 </beans>
 

@@ -3,25 +3,18 @@
 package com.globant.katari.shindig;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import static org.easymock.classextension.EasyMock.*;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-
 import org.junit.Test;
 import org.junit.Before;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContext;
 
-import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
@@ -33,7 +26,7 @@ public class GuiceInitializerListenerTest {
 
   private ApplicationContext applicationContext
       = new GenericApplicationContext();
-  
+
   @Before
   public void setUp() throws Exception {
     context = createMock(ServletContext.class);
@@ -68,18 +61,6 @@ public class GuiceInitializerListenerTest {
     listener.contextInitialized(event);
   }
 
-  public class ContextAware implements ApplicationContextAware, Module  {
-
-    private ApplicationContext context = null;
-
-    public void setApplicationContext(final ApplicationContext ctx)
-        throws BeansException {
-      context = ctx;
-    }
-    public void configure(final Binder binder) {
-    }
-  }
-  
   @Test
   public void testContextDestroyed() throws Exception {
     reset(context);

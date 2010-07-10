@@ -1,6 +1,7 @@
 package com.globant.katari.gadgetcontainer.domain;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.util.UUID;
 
@@ -66,20 +67,20 @@ public class GadgetInstanceTest {
   public void testSetSecurityToken() {
     GadgetInstance gi = new GadgetInstance("1", "1");
     try {
-      gi.associateToViewer("", "viewer");
+      gi.associateToViewer("", 1);
       fail("Should be an illegal argument exception because securityToken is empty");
     } catch (IllegalArgumentException e) {
       // nothing
     }
     try {
-      gi.associateToViewer(null, "viewer");
+      gi.associateToViewer(null, 1);
       fail("Should be an illegal argument exception because securityToken is null");
     } catch (IllegalArgumentException e) {
       // nothing
     }
     
     String st = "theToken";
-    gi.associateToViewer(st, "viewer");
+    gi.associateToViewer(st, 1);
     
     assertTrue(gi.getSecurityToken().equals(st));
   }
@@ -88,22 +89,15 @@ public class GadgetInstanceTest {
   public void testSetViewer() {
     GadgetInstance gi = new GadgetInstance("1", "1");
     try {
-      gi.associateToViewer("token","");
+      gi.associateToViewer("token",0);
       fail("Should be an illegal argument exception because viewer is empty");
     } catch (IllegalArgumentException e) {
       // nothing
     }
-    try {
-      gi.associateToViewer("token", null);
-      fail("Should be an illegal argument exception because viewer is null");
-    } catch (IllegalArgumentException e) {
-      // nothing
-    }
     
-    String viewer = "theViewer";
-    gi.associateToViewer("token", viewer);
+    gi.associateToViewer("token", 1);
     
-    assertTrue(gi.getViewer().equals(viewer));
+    assertThat(gi.getViewer(), is(1l));
   }
   
   @Test

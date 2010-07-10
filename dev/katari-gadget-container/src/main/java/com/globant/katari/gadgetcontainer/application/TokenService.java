@@ -63,16 +63,16 @@ public class TokenService {
    *
    * {@inheritDoc}
    */
-  public String createSecurityToken(final String user,
+  public String createSecurityToken(final long user,
       final GadgetInstance gadgetInstance) {
     BlobCrypterSecurityToken token = new BlobCrypterSecurityToken(
         crypter, container, domain);
     token.setActiveUrl(gadgetInstance.getUrl());
     token.setAppUrl(gadgetInstance.getUrl());
     token.setModuleId(0L);
-    token.setOwnerId(user);
+    token.setOwnerId(Long.toString(user));
     token.setTrustedJson("trusted");
-    token.setViewerId(user);
+    token.setViewerId(Long.toString(user));
     String cryptedToken;
     try {
       cryptedToken = Utils.urlEncode(token.encrypt());

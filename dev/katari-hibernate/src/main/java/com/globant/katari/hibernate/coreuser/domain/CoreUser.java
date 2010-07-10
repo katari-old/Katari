@@ -15,10 +15,8 @@ import javax.persistence.DiscriminatorType;
 
 import org.apache.commons.lang.Validate;
 
-import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableId;
 import org.compass.annotations.SearchableProperty;
-import org.compass.annotations.SearchableComponent;
 
 /** Defines the minimum information needed by katari modules of a user.
  *

@@ -6,11 +6,8 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
 import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,18 +22,18 @@ import com.globant.katari.gadgetcontainer.SpringTestUtils;
 import com.globant.katari.gadgetcontainer.application.GadgetGroupCommand;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
-import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 import com.google.gson.Gson;
 
 /**
  * Test for the controller {@link GadgetGroupController}
- * 
+ *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
- * 
+ *
  */
 public class GadgetGroupControllerTest {
-  
+
   private MockHttpServletRequest request;
   private GadgetGroupController controller;
 
@@ -58,23 +55,23 @@ public class GadgetGroupControllerTest {
     mv = controller.handleRequest(request, new MockHttpServletResponse());
     assertNull(mv);
   }
-  
+
   @Test
   public void testHandle() throws Exception {
     String pageName = "thePage";
-    String userId = "idUser";
-    
-    GadgetGroup page = new GadgetGroup(userId, pageName);
+    CoreUser userId = createMock(CoreUser.class);
+
+    GadgetGroup group = new GadgetGroup(userId, pageName);
     GadgetInstance gi = new GadgetInstance("http://lala", "1");
-    page.addGadget(gi);
-    
+    group.addGadget(gi);
+
     GadgetGroupCommand command = createMock(GadgetGroupCommand.class);
-    expect(command.execute()).andReturn(page);
+    expect(command.execute()).andReturn(group);
     replay(command);
-    
+
     Gson gson = new Gson();
-    String shouldResponse = gson.toJson(page);
-    
+    String shouldResponse = gson.toJson(group);
+
     HttpServletResponse response = createMock(HttpServletResponse.class);
     PrintWriter writer = createMock(PrintWriter.class);
 

@@ -81,9 +81,11 @@
     <constructor-arg value='katari.persistentClasses' />
     <constructor-arg>
       <list>
-        <value>com.globant.katari.gadgetcontainer.domain.GadgetInstance
+        <value>
+          com.globant.katari.gadgetcontainer.domain.GadgetInstance
         </value>
-        <value>com.globant.katari.gadgetcontainer.domain.GadgetGroup
+        <value>
+          com.globant.katari.gadgetcontainer.domain.GadgetGroup
         </value>
       </list>
     </constructor-arg>

@@ -1,60 +1,56 @@
-/**
- * 
- */
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.gadgetcontainer.domain;
 
-import static org.acegisecurity.context.SecurityContextHolder.getContext;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 
-import org.acegisecurity.context.SecurityContext;
-import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * TODO this class is hardcoded because it need data non harcoded inside
- * the shindig implementation.
- * 
- * This implementation should work together with the new katari User 
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
+import com.globant.katari.hibernate.coreuser.domain.CoreUserDetails;
+
+/** This implementation should work together with the new katari User
  * implementation. Basically, should extract the user id assosiated with
  * the current thread.
- * 
- * @author waabox(emiliano[dot]arango[at]globant[dot]com)
  *
+ * @author waabox(emiliano[dot]arango[at]globant[dot]com)
  */
 public class ContextUserService {
-  
+
   /** The class logger.
    */
   private static Logger log = LoggerFactory.getLogger(ContextUserService.class);
-  
-  /** {@link SecurityContext} spring security context.
-   */
-  private final SecurityContext securityContext;
-  
-  /** Construct the object getting the context from the classpath, with the
-   *  class {@link org.acegisecurity.context.SecurityContextHolder#getContext()}
-   */
-  public ContextUserService() {
-    securityContext = getContext();
-  }
-  
-  /**
-   * @param theCecurityContext {@link SecurityContext}. Can not be null.
-   */
-  public ContextUserService(final SecurityContext theCecurityContext) {
-    Validate.notNull(theCecurityContext, "SecurityContext can not be null.");
-    securityContext = theCecurityContext;
-  }
-  
-  /** Retrieves from the context the user, and then access throw reflextion
-   * to his id.
-   * 
-   * @return {@link String} the userid.
+
+  /** Retrieves from the context the user.
+   *
+   * @return {@link String} the userId, 0 if the user was anonymous.
    * @throws CanvasException if the operation can not be completed.
    */
-  public String getCurrentUserId() {
-    String userId = "john.doe";
-    log.error("Using hardcoded implementation, returning user: " + userId);
-    return userId;
+  public long getCurrentUserId() {
+    log.trace("Entering getCurrentUserId");
+
+    UsernamePasswordAuthenticationToken authentication;
+    authentication = (UsernamePasswordAuthenticationToken)
+      SecurityContextHolder.getContext().getAuthentication();
+
+    if (authentication == null) {
+      log.trace("Leaving getCurrentUserId with 0");
+      return 0;
+    }
+    CoreUserDetails details = (CoreUserDetails) authentication.getPrincipal();
+    if (details == null) {
+      log.trace("Leaving getCurrentUserId with 0");
+      return 0;
+    }
+    CoreUser user = details.getCoreUser();
+    if (user == null) {
+      log.trace("Leaving getCurrentUserId with 0");
+      return 0;
+    }
+    log.trace("Leaving getCurrentUserId");
+    return user.getId();
   }
 }
+

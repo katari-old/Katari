@@ -10,13 +10,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import javax.persistence.DiscriminatorValue;
 
 import org.apache.commons.lang.Validate;
 
 import org.compass.annotations.Searchable;
-import org.compass.annotations.SearchableId;
 import org.compass.annotations.SearchableProperty;
 import org.compass.annotations.SearchableComponent;
 

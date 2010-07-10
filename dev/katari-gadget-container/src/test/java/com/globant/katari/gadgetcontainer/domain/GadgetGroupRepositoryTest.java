@@ -1,18 +1,20 @@
 package com.globant.katari.gadgetcontainer.domain;
+
 import static java.util.UUID.randomUUID;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.web.context.support.XmlWebApplicationContext;
+import org.springframework.context.ApplicationContext;
 
 import com.globant.katari.gadgetcontainer.SpringTestUtils;
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 /**
  * Test for the repository {@link GadgetGroupRepository}
@@ -23,84 +25,95 @@ import com.globant.katari.gadgetcontainer.SpringTestUtils;
 public class GadgetGroupRepositoryTest {
 
   private static final String REPOSITORY = "social.gadgetGroupRepository";
-  private GadgetGroupRepository gadgetGroupRepository;
-  private XmlWebApplicationContext appContext;
+  private GadgetGroupRepository repository;
+  private ApplicationContext appContext;
+  private Session session;
 
-  /**
-   * @throws java.lang.Exception
-   */
+  private CoreUser user;
+
   @Before
   public void setUp() throws Exception {
     appContext = SpringTestUtils.getContext();
-    gadgetGroupRepository = (GadgetGroupRepository) appContext.getBean(REPOSITORY);
+    repository = (GadgetGroupRepository) appContext.getBean(REPOSITORY);
+    user = new SampleUser("me");
+    session = ((SessionFactory) appContext.getBean("katari.sessionFactory"))
+        .openSession();
+    session.createQuery("delete from GadgetInstance").executeUpdate();
+    session.createQuery("delete from GadgetGroup").executeUpdate();
+    session.createQuery("delete from CoreUser").executeUpdate();
+    session.saveOrUpdate(user);
+    user = (CoreUser) session.createQuery("from CoreUser").uniqueResult();
   }
 
-  /** This test, persist a new page, and the search it back in the db.
-   *  check that the page has the same attributes.
+  @After
+  public void tearDown() {
+    session.close();
+  }
+
+  /** This test, persist a new group, and the search it back in the db.
+   *  check that the group has the same attributes.
    */
   @Test
   public void testFindPage() {
-    String userId = randomUUID().toString();
-    String pageName = randomUUID().toString();
+    String groupName = randomUUID().toString();
     String url = "http://" + randomUUID().toString();
-    storePage(userId, pageName, url, "1#3");
+    createGadgetGroup(user, groupName, url, "1#3");
 
-    GadgetGroup thePage = gadgetGroupRepository.findPage(userId, pageName);
+    GadgetGroup thePage = repository.findGadgetGroup(1, groupName);
 
     assertNotNull(thePage);
     assertFalse(thePage.getGadgets().isEmpty());
-    assertTrue(pageName.equals(thePage.getName()));
+    assertTrue(groupName.equals(thePage.getName()));
     assertTrue(thePage.getGadgets().iterator().next().getUrl().equals(url));
   }
 
-  /** This test, persist a new page, and the search it back in the db.
-   *  check that the page has the same attributes.
+  /** This test, persist a new group, and the search it back in the db.
+   *  check that the group has the same attributes.
    */
   @Test
   public void testFindPageNonExist() {
-    GadgetGroup thePage = gadgetGroupRepository.findPage("nonExist", "nonExist");
+    GadgetGroup thePage = repository.findGadgetGroup(-1, "nonExist");
     assertNull(thePage);
   }
 
-  /** This test creates a new page, then change the attribute of one of his
+  /** This test creates a new group, then change the attribute of one of his
    *  gadgets instances, then check the changes performed over the
    *  gadget instance.
    */
   @Test
   public void testUpdateGadgetInstance() {
-    String userId = randomUUID().toString();
-    String pageName = randomUUID().toString();
+    String groupName = randomUUID().toString();
     String url = "http://" + randomUUID().toString();
 
-    storePage(userId, pageName, url, "1#2");
+    createGadgetGroup(user, groupName, url, "1#2");
 
     String gadgetNewPosition = "3#3";
 
-    GadgetGroup page = gadgetGroupRepository.findPage(userId, pageName);
+    GadgetGroup group = repository.findGadgetGroup(user.getId(), groupName);
 
-    GadgetInstance i = page.getGadgets().iterator().next();
+    GadgetInstance i = group.getGadgets().iterator().next();
     i.move(gadgetNewPosition);
 
-    gadgetGroupRepository.savePage(page);
+    repository.save(group);
 
-    page = gadgetGroupRepository.findPage(userId, pageName);
+    group = repository.findGadgetGroup(user.getId(), groupName);
 
-    assertTrue(page.getGadgets().iterator().next().getGadgetPosition().equals(
+    assertTrue(group.getGadgets().iterator().next().getGadgetPosition().equals(
         gadgetNewPosition));
   }
 
-  /** Store a new page in the database.
+  /** Creates and persists a new group in the database.
    *
    * @param userId
-   * @param pageName
+   * @param groupName
    * @param gadgetUrl
    * @param gadgetPosition
    */
-  private void storePage(final String userId, final String pageName,
+  private void createGadgetGroup(final CoreUser userId, final String groupName,
       final String gadgetUrl, final String gadgetPosition) {
-    GadgetGroup group = new GadgetGroup(userId, pageName);
+    GadgetGroup group = new GadgetGroup(userId, groupName);
     group.addGadget(new GadgetInstance(gadgetUrl,  gadgetPosition));
-    gadgetGroupRepository.savePage(group);
+    repository.save(group);
   }
 }
 

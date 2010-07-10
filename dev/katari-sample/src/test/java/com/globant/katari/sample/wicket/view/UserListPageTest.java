@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.wicket.spring.test.ApplicationContextMock;
-import org.apache.wicket.Component;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +43,7 @@ public class UserListPageTest {
     // Change the id, otherwise the delete button will always be disabled.
     ReflectionUtils.setAttribute(user, "id", 1000);
     SecurityTestUtils.setContextUser(user);
- 
+
     List<User> firstPage = new LinkedList<User>();
     firstPage.add(new User("name1", "email1"));
     firstPage.add(new User("name2", "email2"));

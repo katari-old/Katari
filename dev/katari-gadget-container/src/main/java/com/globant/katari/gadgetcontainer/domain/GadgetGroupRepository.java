@@ -9,11 +9,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-/**
- * Repository for operations related with the canvas page.
+/** Repository for the gadget groups.
  *
  * @author waabox(emiliano[dot]arango[at]globant[dot]com)
- *
  */
 public class GadgetGroupRepository extends HibernateDaoSupport {
 
@@ -21,40 +19,40 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
    */
   private static Log log = LogFactory.getLog(GadgetGroupRepository.class);
 
-  /** Find the requested page by his name and related user.
+  /** Find the requested gadget group by name and user.
    *
-   * @param canvasUser {@link CanvasUser} the user. Can not be null.
-   * @param pageName {@link String} the page name. Can not be empty.
-   * @return {@link GadgetGroup} the first page found or null.
+   * @param userId the user. Can not be null.
+   * @param name the page name. Can not be empty.
+   * @return the gadget group found or null.
    */
   @SuppressWarnings("unchecked")
-  public GadgetGroup findPage(final String canvasUser, final String pageName) {
-    Validate.notEmpty(pageName, "pageName can not be empty");
-    Validate.notNull(canvasUser, "canvasUser can not be null");
-    log.debug("searching page for: " + canvasUser + " with name:" + pageName);
+  public GadgetGroup findGadgetGroup(final long userId, final String name) {
+    Validate.notEmpty(name, "pageName can not be empty");
+    Validate.notNull(userId, "canvasUser can not be null");
+    log.debug("searching page for: " + userId + " with name:" + name);
 
-    List<GadgetGroup> pages = getHibernateTemplate().find(
-        "from GadgetGroup where name = ? and owner = ?",
-        new String[]{ pageName, canvasUser} );
+    List<GadgetGroup> groups = getHibernateTemplate().find(
+        "from GadgetGroup where name = ? and owner.id = ?",
+        new Object[]{name, userId});
 
-    if(pages.isEmpty()) {
+    if(groups.isEmpty()) {
       return null;
     }
 
-    GadgetGroup page = pages.get(0);
-    if(page != null) {
-      log.debug("page found!");
-    }
-    return page;
+    GadgetGroup group = groups.get(0);
+    log.debug("page found!");
+
+    return group;
   }
 
-  /**Store the given canvas page in the db.
+  /** Saves the given group in the db.
    *
-   * @param page {@link GadgetGroup} the page to store. Can not be null.
+   * @param gadgetGroup {@link GadgetGroup} the group to store. Can not be
+   * null.
    */
-  public void savePage(final GadgetGroup page) {
+  public void save(final GadgetGroup gadgetGroup) {
     log.debug("storing new GadgetGroup");
-    Validate.notNull(page, "page can not be null");
-    getHibernateTemplate().saveOrUpdate(page);
+    Validate.notNull(gadgetGroup, "page can not be null");
+    getHibernateTemplate().saveOrUpdate(gadgetGroup);
   }
 }
