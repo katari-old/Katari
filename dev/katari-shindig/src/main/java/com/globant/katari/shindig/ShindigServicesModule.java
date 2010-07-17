@@ -5,6 +5,9 @@ package com.globant.katari.shindig;
 import org.apache.commons.lang.Validate;
 import org.apache.shindig.auth.SecurityTokenDecoder;
 import org.apache.shindig.common.crypto.BlobCrypter;
+import org.apache.shindig.config.ContainerConfig;
+import org.apache.shindig.gadgets.http.HttpFetcher;
+import org.apache.shindig.gadgets.render.DefaultServiceFetcher;
 import org.apache.shindig.social.opensocial.oauth.OAuthDataStore;
 import org.apache.shindig.social.opensocial.spi.ActivityService;
 import org.apache.shindig.social.opensocial.spi.AppDataService;
@@ -13,6 +16,8 @@ import org.apache.shindig.social.opensocial.spi.PersonService;
 import org.apache.shindig.social.sample.oauth.SampleOAuthDataStore;
 import org.apache.shindig.social.sample.spi.JsonDbOpensocialService;
 
+import com.globant.katari.shindig.application.FakeUserHttpFetcher;
+import com.google.inject.Provides;
 import com.google.inject.name.Names;
 
 /** Bindings for katari implementation of shindig services.
@@ -26,7 +31,7 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
    */
   private final ActivityService activityService;
 
-  /** Security token decoder. 
+  /** Security token decoder.
    */
   private final SecurityTokenDecoder tokenDecoder;
 
@@ -59,9 +64,9 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
   }
 
   /** Wires the shindig services to the corresponding Katari implementations.
-   * 
+   *
    * Katari services are obtained from the application context.
-   * 
+   *
    * This implementation only wires the ActivityService to Katari, the other
    * services get wired to the shindig provided mock.
    */
@@ -72,7 +77,6 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
     bind(ActivityService.class).toInstance(activityService);
     bind(SecurityTokenDecoder.class).toInstance(tokenDecoder);
     bind(BlobCrypter.class).toInstance(crypter);
-
     bind(String.class).annotatedWith(Names.named("shindig.canonical.json.db"))
         .toInstance("sampledata/canonicaldb.json");
     bind(AppDataService.class).to(JsonDbOpensocialService.class);
@@ -81,6 +85,14 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
 
     bind(OAuthDataStore.class).to(SampleOAuthDataStore.class);
 
+  }
+
+  @Provides
+  DefaultServiceFetcher provideServiceFetcher(final ContainerConfig config,
+      final HttpFetcher fetcher, final BlobCrypter crypter) {
+    DefaultServiceFetcher serviceFetcher = new DefaultServiceFetcher(config,
+          new FakeUserHttpFetcher(config, fetcher, crypter));
+    return serviceFetcher;
   }
 }
 
