@@ -10,11 +10,14 @@ insert into gadget_groups (owner_id, name, number_of_columns)
  values (1, 'main', 3);
 insert into gadget_instances (gadget_position, url, gadget_group_id)
  values ('1#1',
- 'http://www.labpixies.com/campaigns/minesweeper/minesweeper.xml', 1);
+ 'http://www.labpixies.com/campaigns/todo/todo.xml', 1);
 insert into gadget_instances (gadget_position, url, gadget_group_id)
  values ('2#1',
  'http://www.labpixies.com/campaigns/minesweeper/minesweeper.xml', 1);
 insert into gadget_instances (gadget_position, url, gadget_group_id)
  values ('1#2',
- 'http://www.labpixies.com/campaigns/minesweeper/minesweeper.xml', 1);
+ 'http://www.labpixies.com/campaigns/flood/flood.xml', 1);
+insert into gadget_instances (gadget_position, url, gadget_group_id)
+ values ('2#2',
+ 'http://localhost:8098/katari-sample/module/gadget/ActivityTest.xml', 1);
 

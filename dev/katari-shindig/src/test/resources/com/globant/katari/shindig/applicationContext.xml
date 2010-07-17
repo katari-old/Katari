@@ -13,8 +13,11 @@
   <!-- Katari hibernate support. -->
   <import resource="classpath:/com/globant/katari/hibernate/beans-hibernate.xml"/>
 
+  <!-- The core user support module. -->
+  <katari:import module="com.globant.katari.hibernate.coreuser"/>
+
   <!-- The social container module. -->
-  <import resource="classpath:/com/globant/katari/shindig/module.xml"/>
+  <katari:import module="com.globant.katari.shindig"/>
 
   <!-- A sample datasource. Do not use this for production. -->
   <bean id="dataSource"

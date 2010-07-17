@@ -73,6 +73,9 @@
   <!-- The social graph module. -->
   <katari:import module="com.globant.katari.shindig" />
 
+  <!-- Module with sample gadgets. -->
+  <katari:import module="com.globant.katari.sample.gadget" />
+
   <!-- The hibernate properties. They are referenced from the hibernate bean. -->
   <bean id="katari.hibernateProperties"
     class="org.springframework.beans.factory.config.PropertiesFactoryBean">

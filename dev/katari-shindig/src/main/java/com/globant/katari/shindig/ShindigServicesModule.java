@@ -27,6 +27,11 @@ import com.google.inject.name.Names;
  */
 public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
 
+  
+  /** The person service implementation, never null.
+   */
+  private final PersonService personService;
+  
   /** The implementation of the activity service, never null.
    */
   private final ActivityService activityService;
@@ -50,14 +55,19 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
    * @param decoder The implementation of the BlobCrypter.
    * It cannot be null.
    */
-  public ShindigServicesModule(final ActivityService activityServiceImpl,
+  public ShindigServicesModule(final PersonService personServiceImpl,
+      final ActivityService activityServiceImpl,
       final SecurityTokenDecoder decoder, final BlobCrypter blobCrypter) {
+
+    Validate.notNull(personServiceImpl,
+        "The person service implementation cannot be null.");
     Validate.notNull(activityServiceImpl,
         "The activity service implementation cannot be null.");
     Validate.notNull(decoder,
         "The token decoder implementation cannot be null.");
     Validate.notNull(blobCrypter,
-    "The blob crypter implementation cannot be null.");
+        "The blob crypter implementation cannot be null.");
+    personService = personServiceImpl;
     activityService = activityServiceImpl;
     tokenDecoder = decoder;
     crypter = blobCrypter;
@@ -74,17 +84,17 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
   protected void configure() {
     super.configure();
 
+    bind(PersonService.class).toInstance(personService);
     bind(ActivityService.class).toInstance(activityService);
     bind(SecurityTokenDecoder.class).toInstance(tokenDecoder);
     bind(BlobCrypter.class).toInstance(crypter);
+
     bind(String.class).annotatedWith(Names.named("shindig.canonical.json.db"))
         .toInstance("sampledata/canonicaldb.json");
     bind(AppDataService.class).to(JsonDbOpensocialService.class);
-    bind(PersonService.class).to(JsonDbOpensocialService.class);
     bind(MessageService.class).to(JsonDbOpensocialService.class);
 
     bind(OAuthDataStore.class).to(SampleOAuthDataStore.class);
-
   }
 
   @Provides

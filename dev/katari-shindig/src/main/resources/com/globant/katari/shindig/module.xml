@@ -19,6 +19,7 @@
               <!-- value>org.apache.shindig.social.sample.SampleModule</value -->
               <bean class='com.globant.katari.shindig.ShindigServicesModule'>
                 <constructor-arg ref='shindig.activityService'/>
+                <constructor-arg ref='shindig.personService'/>
                 <constructor-arg ref='shindig.blobCrypterDecoder'/>
                 <constructor-arg ref='shindig.tokenCrypter'/>
               </bean>
@@ -256,6 +257,13 @@
         <value>.*/module/shindig/gadgets/ifr.*</value>
       </list>
     </constructor-arg>
+  </bean>
+
+  <bean id='shindig.personService'
+    class='com.globant.katari.shindig.application.KatariPersonService'>
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
   </bean>
 
   <bean id='shindig.activityService'

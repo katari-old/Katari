@@ -29,6 +29,7 @@ import org.apache.shindig.auth.SecurityToken;
 import org.apache.shindig.protocol.ProtocolException;
 import org.apache.shindig.protocol.RestfulCollection;
 import org.apache.shindig.protocol.model.FilterOperation;
+import org.apache.shindig.protocol.model.SortOrder;
 import org.apache.shindig.social.opensocial.model.Activity;
 
 import org.apache.shindig.social.opensocial.spi.ActivityService;
@@ -83,6 +84,13 @@ public class KatariActivityService extends HibernateDaoSupport implements
     Validate.notNull(token, "The security token cannot be null.");
     Validate.isTrue(options.getMax() > 0,
         "You should ask for at least one row.");
+
+    // Workaround: shindig sets this to topFriends if no sort order is
+    // specified.
+    if ("topFriends".equals(options.getSortBy())) {
+      options.setSortBy("id");
+      options.setSortOrder(SortOrder.descending);
+    }
 
     Criteria criteria;
     criteria = createCriteriaFor(userIds, groupId, appId, options, token);
