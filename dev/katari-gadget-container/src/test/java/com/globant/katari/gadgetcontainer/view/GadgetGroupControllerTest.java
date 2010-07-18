@@ -30,11 +30,9 @@ import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 import com.globant.katari.gadgetcontainer.application.TokenService;
 
-/**
- * Test for the controller {@link GadgetGroupController}
+/** Test for the controller {@link GadgetGroupController}
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
- *
  */
 public class GadgetGroupControllerTest {
 

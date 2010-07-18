@@ -88,17 +88,17 @@
   </bean>
 
   <!-- Repositories -->
-  <bean id='social.gadgetGroupRepository'
+  <bean id='gadgetcontainer.gadgetGroupRepository'
     class='com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository'>
     <property name='sessionFactory'>
       <ref bean='katari.sessionFactory' />
     </property>
   </bean>
 
-  <bean id='social.userService'
+  <bean id='gadgetcontainer.userService'
     class='com.globant.katari.gadgetcontainer.domain.ContextUserService' />
 
-  <bean id='social.tokenService'
+  <bean id='gadgetcontainer.tokenService'
     class='com.globant.katari.gadgetcontainer.application.TokenService'>
     <constructor-arg index="0" ref="shindig.tokenCrypter" />
     <constructor-arg index="1" ref="shindig.containerDomain" />
@@ -107,3 +107,4 @@
 
   <!-- vim: set ts=2 sw=2 et ai: -->
 </beans>
+

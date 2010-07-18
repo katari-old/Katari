@@ -19,8 +19,8 @@
 
   <bean name='/socialPage.do'
     class='com.globant.katari.gadgetcontainer.view.GadgetGroupController'>
-    <constructor-arg ref="social.userService" />
-    <constructor-arg ref="social.tokenService" />
+    <constructor-arg ref="userService" />
+    <constructor-arg ref="tokenService" />
     <lookup-method name="createCommandBean" bean="viewSocialPageCommand" />
   </bean>
  
@@ -32,9 +32,9 @@
   <!-- Command definition -->
   <bean name="viewSocialPageCommand" scope="prototype"
     class="com.globant.katari.gadgetcontainer.application.GadgetGroupCommand">
-    <constructor-arg index="0" ref="social.gadgetGroupRepository" />
-    <constructor-arg index="1" ref="social.userService" />
-    <constructor-arg index="2" ref="social.tokenService" />
+    <constructor-arg index="0" ref="gadgetGroupRepository" />
+    <constructor-arg index="1" ref="userService" />
+    <constructor-arg index="2" ref="tokenService" />
   </bean>
 
   <bean
@@ -62,5 +62,23 @@
     </property>
   </bean>
 
+  <bean id='gadgetGroupRepository'
+    class='com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository'>
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
+  </bean>
+
+  <bean id='userService'
+    class='com.globant.katari.gadgetcontainer.domain.ContextUserService' />
+
+  <bean id='tokenService'
+    class='com.globant.katari.gadgetcontainer.application.TokenService'>
+    <constructor-arg index="0" ref="shindig.tokenCrypter" />
+    <constructor-arg index="1" ref="shindig.containerDomain" />
+    <constructor-arg index="2" ref="shindig.containerName" />
+  </bean>
+
   <!-- vim: set ts=2 sw=2 et ai: -->
 </beans>
+

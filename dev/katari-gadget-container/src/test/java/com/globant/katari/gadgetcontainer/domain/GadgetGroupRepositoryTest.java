@@ -1,3 +1,5 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.gadgetcontainer.domain;
 
 import static java.util.UUID.randomUUID;
@@ -25,7 +27,8 @@ import com.globant.katari.shindig.domain.Application;
  */
 public class GadgetGroupRepositoryTest {
 
-  private static final String REPOSITORY = "social.gadgetGroupRepository";
+  private static final String REPOSITORY
+    = "gadgetcontainer.gadgetGroupRepository";
   private GadgetGroupRepository repository;
   private ApplicationContext appContext;
   private Session session;
