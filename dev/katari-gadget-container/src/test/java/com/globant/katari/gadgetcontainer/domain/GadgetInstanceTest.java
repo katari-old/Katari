@@ -9,6 +9,8 @@ import java.util.UUID;
 
 import org.junit.Test;
 
+import com.globant.katari.shindig.domain.Application;
+
 /**
  * Test for the bean  {@link GadgetInstance}
  *

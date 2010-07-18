@@ -56,6 +56,8 @@ public abstract class GadgetGroupController extends AbstractCommandController {
    *
    * If the gadget group is found, it writes a json of the form:
    *
+   * TODO The viewer id should probably go at the gadget group level.
+   *
    * <pre>
    * {
    *   "id":<long>,

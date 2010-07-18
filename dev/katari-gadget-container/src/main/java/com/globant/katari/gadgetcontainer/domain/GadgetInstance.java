@@ -2,6 +2,8 @@
 
 package com.globant.katari.gadgetcontainer.domain;
 
+import org.apache.commons.lang.Validate;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Column;
@@ -12,10 +14,9 @@ import javax.persistence.Transient;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 
-import org.apache.commons.lang.Validate;
+import com.globant.katari.shindig.domain.Application;
 
-/**
- * Represents an instance of a {@link Gadget}.
+/** Represents an instance of a {@link Gadget}.
  *
  * This one contains the information that the xml-to-html shinding
  * implementations needs to perform the rendering, also gives the rpc support.

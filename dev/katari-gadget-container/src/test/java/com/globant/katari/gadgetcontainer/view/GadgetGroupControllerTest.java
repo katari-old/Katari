@@ -2,33 +2,33 @@
 
 package com.globant.katari.gadgetcontainer.view;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.*;
+
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import com.globant.katari.tools.ReflectionUtils;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.easymock.classextension.EasyMock;
-import org.hamcrest.CoreMatchers;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.globant.katari.gadgetcontainer.SpringTestUtils;
 import com.globant.katari.gadgetcontainer.application.GadgetGroupCommand;
-import com.globant.katari.gadgetcontainer.domain.Application;
+
+import com.globant.katari.shindig.domain.Application;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
+
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
+import com.globant.katari.gadgetcontainer.application.TokenService;
 
 import com.google.gson.Gson;
 
@@ -42,12 +42,20 @@ public class GadgetGroupControllerTest {
 
   private MockHttpServletRequest request;
   private GadgetGroupController controller;
+  private TokenService tokenService;
 
   @Before
   public void setUp() throws Exception {
     request = new MockHttpServletRequest("GET", "socialPage.do");
     controller = (GadgetGroupController) SpringTestUtils.getContext().getBean(
         "/socialPage.do");
+
+    tokenService = createMock(TokenService.class);
+    expect(tokenService.createSecurityToken(eq(0L), eq(0L),
+        isA(GadgetInstance.class))).andReturn("mockToken").anyTimes();
+    replay(tokenService);
+
+    ReflectionUtils.setAttribute(controller, "tokenService", tokenService);
   }
 
   @Test
@@ -101,10 +109,12 @@ public class GadgetGroupControllerTest {
 
     writer.flush();
     assertThat(os.toString(), is(baselineJson()));
-    EasyMock.verify(response);
+    verify(response);
   }
 
   /** Creates the baseline json string, a string with a sample json object.
+   *
+   * TODO revisit the json structure
    *
    * @return the json string.
    *
@@ -117,13 +127,14 @@ public class GadgetGroupControllerTest {
       groupJson.put("name", "theGroup");
       groupJson.put("ownerId", 0);
       groupJson.put("numberOfColumns", 1);
-      groupJson.put("viewerId", 150);
 
       JSONObject gadgetJson = new JSONObject();
       gadgetJson.put("id", 0);
       gadgetJson.put("appId", 0);
       gadgetJson.put("position", "1#2");
       gadgetJson.put("url", "http://lala");
+      gadgetJson.put("viewer", 0);
+      gadgetJson.put("securityToken", "mockToken");
       groupJson.append("gadgets", gadgetJson);
       return groupJson.toString();
     } catch(JSONException e) {

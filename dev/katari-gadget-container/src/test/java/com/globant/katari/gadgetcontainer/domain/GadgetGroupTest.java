@@ -25,6 +25,8 @@ import com.google.gson.JsonSerializer;
 
 import org.json.JSONObject;
 
+import com.globant.katari.shindig.domain.Application;
+
 /**
  * Test for the bean {@link GadgetGroup}
  *

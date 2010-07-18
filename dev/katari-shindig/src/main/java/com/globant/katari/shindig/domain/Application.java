@@ -1,6 +1,6 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
 
-package com.globant.katari.gadgetcontainer.domain;
+package com.globant.katari.shindig.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

@@ -242,6 +242,7 @@
     <constructor-arg value='katari.persistentClasses'/>
     <constructor-arg>
       <list>
+        <value>com.globant.katari.shindig.domain.Application</value>
         <value>com.globant.katari.shindig.domain.KatariActivity</value>
         <value>com.globant.katari.shindig.domain.KatariMediaItem</value>
       </list>
@@ -273,7 +274,8 @@
     </property>
   </bean>
 
-  <bean class='com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator'>
+  <bean 
+    class='com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator'>
     <property name='proxyTargetClass' value='true' />
     <property name='beanNames'>
       <list>

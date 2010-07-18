@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.globant.katari.gadgetcontainer.SpringTestUtils;
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
+import com.globant.katari.shindig.domain.Application;
 
 /**
  * Test for the repository {@link GadgetGroupRepository}
