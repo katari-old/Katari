@@ -6,8 +6,6 @@ import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 import static org.easymock.classextension.EasyMock.*;
 
@@ -19,8 +17,6 @@ import org.apache.shindig.gadgets.http.HttpRequest;
 import org.apache.shindig.gadgets.http.HttpResponse;
 
 public class FakeUserHttpFetcherTest {
-
-  private KatariActivityService service;
 
   ContainerConfig config;
   BlobCrypter crypter;

@@ -30,8 +30,6 @@ import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 import com.globant.katari.gadgetcontainer.application.TokenService;
 
-import com.google.gson.Gson;
-
 /**
  * Test for the controller {@link GadgetGroupController}
  *
@@ -93,9 +91,6 @@ public class GadgetGroupControllerTest {
     GadgetGroupCommand command = createMock(GadgetGroupCommand.class);
     expect(command.execute()).andReturn(group);
     replay(command);
-
-    Gson gson = new Gson();
-    String shouldResponse = gson.toJson(group);
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     PrintWriter writer = new PrintWriter(os);
