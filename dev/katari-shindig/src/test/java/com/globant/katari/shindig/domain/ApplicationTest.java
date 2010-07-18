@@ -3,8 +3,6 @@
 package com.globant.katari.shindig.domain;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-
 import org.junit.Test;
 
 public class ApplicationTest {
@@ -28,7 +26,7 @@ public class ApplicationTest {
   @Test
   public void testConstructor_emptyGadgetUrl() {
     try {
-      Application app = new Application("");
+      new Application("");
       fail("Should be an illegal argument exception because gadget url is empty");
     } catch (IllegalArgumentException e) {
     }

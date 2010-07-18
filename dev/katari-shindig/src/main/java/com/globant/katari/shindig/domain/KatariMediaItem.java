@@ -21,7 +21,7 @@ import java.util.List;
  * activities and are related to people.
  */
 @Entity
-@Table(name = "media_item")
+@Table(name = "media_items")
 public class KatariMediaItem implements MediaItem {
 
   /** The id of the media item.

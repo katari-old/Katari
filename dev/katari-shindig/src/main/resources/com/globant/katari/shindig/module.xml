@@ -269,6 +269,14 @@
 
   <bean id='shindig.activityService'
     class='com.globant.katari.shindig.application.KatariActivityService'>
+    <constructor-arg index='0' ref='shindig.applicationRepository'/>
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
+  </bean>
+
+  <bean id='shindig.applicationRepository'
+    class='com.globant.katari.shindig.domain.ApplicationRepository'>
     <property name='sessionFactory'>
       <ref bean='katari.sessionFactory' />
     </property>
@@ -280,6 +288,7 @@
     <property name='beanNames'>
       <list>
         <value>shindig.activityService</value>
+        <value>shindig.personService</value>
       </list>
     </property>
     <property name='interceptorNames'>

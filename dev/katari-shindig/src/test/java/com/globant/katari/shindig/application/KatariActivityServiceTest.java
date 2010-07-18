@@ -14,25 +14,28 @@ import org.junit.After;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import com.globant.katari.shindig.domain.KatariActivity;
-import com.globant.katari.shindig.testsupport.SpringTestUtils;
-
 import org.apache.shindig.auth.SecurityToken;
 import org.apache.shindig.common.testing.FakeGadgetToken;
 import org.apache.shindig.protocol.model.SortOrder;
 import org.apache.shindig.social.opensocial.spi.CollectionOptions;
 import org.apache.shindig.social.opensocial.spi.UserId;
 import org.apache.shindig.social.opensocial.spi.GroupId;
-
 import org.apache.shindig.social.opensocial.model.Activity;
-
 import org.apache.shindig.social.core.model.ActivityImpl;
+
+import com.globant.katari.shindig.testsupport.SpringTestUtils;
+
+import com.globant.katari.shindig.domain.Application;
+import com.globant.katari.shindig.domain.KatariActivity;
 
 public class KatariActivityServiceTest {
 
   private KatariActivityService service;
-  
-  Session session;
+
+  // This is the same applicationId but in string format.
+  private String appId;
+
+  private Session session;
 
   @Before
   public void setUp() {
@@ -42,8 +45,13 @@ public class KatariActivityServiceTest {
     session = ((SessionFactory) SpringTestUtils.getBeanFactory()
         .getBean("katari.sessionFactory")).openSession();
     session.createQuery("delete from KatariActivity").executeUpdate();
+    // Creates a sample application.
+    session.createQuery("delete from Application").executeUpdate();
+    Application app = new Application("http://somewhere/something.xml");
+    session.saveOrUpdate(app);
+    appId = "http://somewhere/something.xml";
   }
-  
+
   @After
   public void tearDown() {
     session.close();
@@ -51,31 +59,31 @@ public class KatariActivityServiceTest {
 
   @Test
   public void testGetActivities_singleActivity() throws Exception {
-    
-    createSampleActivity("1", "app-id", "title");
+
+    createSampleActivity("1", "title");
     Set<UserId> userIds = new HashSet<UserId>();
     userIds.add(new UserId(UserId.Type.userId, "1"));
-    
+
     GroupId groupId = new GroupId(GroupId.Type.self, null);
-    
+
     CollectionOptions options = new CollectionOptions();
     options.setMax(10);
-    
+
     SecurityToken token = new FakeGadgetToken();
 
     List<Activity> activities = service.getActivities(
-        userIds, groupId, "app-id", null, options, token).get().getEntry();
+        userIds, groupId, appId, null, options, token).get().getEntry();
     assertThat(activities.size(), is(1));
-    assertThat(activities.get(0).getAppId(), is("app-id"));
+    assertThat(activities.get(0).getAppId(), is(appId));
     assertThat(activities.get(0).getTitle(), is("title"));
     assertThat(activities.get(0).getUserId(), is("1"));
   }
-  
+
   @Test
   public void testGetActivities_paged() throws Exception {
     // Create 20 activities for the same user
     for (int i = 1; i <= 20; i ++) {
-      createSampleActivity("1", "app-id", "title-" + i);
+      createSampleActivity("1", "title-" + i);
     }
     Set<UserId> userIds = new HashSet<UserId>();
     userIds.add(new UserId(UserId.Type.userId, "1"));
@@ -87,10 +95,10 @@ public class KatariActivityServiceTest {
     // finds the first 10 activities.
     options.setFirst(0);
     List<Activity> activities = service.getActivities(
-        userIds, groupId, "app-id", null, options, token).get().getEntry();
+        userIds, groupId, appId, null, options, token).get().getEntry();
 
     assertThat(activities.size(), is(10));
-    assertThat(activities.get(0).getAppId(), is("app-id"));
+    assertThat(activities.get(0).getAppId(), is(appId));
     assertThat(activities.get(0).getTitle(), is("title-1"));
     assertThat(activities.get(0).getUserId(), is("1"));
     assertThat(activities.get(9).getTitle(), is("title-10"));
@@ -98,10 +106,11 @@ public class KatariActivityServiceTest {
     // finds the last 10 activities.
     options.setFirst(10);
     activities = service.getActivities(
-        userIds, groupId, "app-id", null, options, token).get().getEntry();
+        userIds, groupId, appId, null, options, token)
+      .get().getEntry();
 
     assertThat(activities.size(), is(10));
-    assertThat(activities.get(0).getAppId(), is("app-id"));
+    assertThat(activities.get(0).getAppId(), is(appId));
     assertThat(activities.get(0).getTitle(), is("title-11"));
     assertThat(activities.get(0).getUserId(), is("1"));
     assertThat(activities.get(9).getTitle(), is("title-20"));
@@ -109,23 +118,23 @@ public class KatariActivityServiceTest {
 
   @Test
   public void testGetActivities_sorted() throws Exception {
-    createSampleActivity("1", "app-id", "title-1");
-    createSampleActivity("1", "app-id", "title-2");
-    
+    createSampleActivity("1", "title-1");
+    createSampleActivity("1", "title-2");
+
     Set<UserId> userIds = new HashSet<UserId>();
-    userIds.add(new UserId(UserId.Type.userId, "1"));    
+    userIds.add(new UserId(UserId.Type.userId, "1"));
     GroupId groupId = new GroupId(GroupId.Type.self, null);
     CollectionOptions options = new CollectionOptions();
     // Looks like the default, by looking at shindig sources.
     options.setMax(20);
     SecurityToken token = new FakeGadgetToken();
-    
+
     List<Activity> activities;
 
     options.setSortBy("title");
     // Default sort order, should be asc.
     activities = service.getActivities(
-        userIds, groupId, "app-id", null, options, token).get().getEntry();
+        userIds, groupId, appId, null, options, token).get().getEntry();
 
     assertThat(activities.size(), is(2));
     assertThat(activities.get(0).getTitle(), is("title-1"));
@@ -133,36 +142,36 @@ public class KatariActivityServiceTest {
 
     options.setSortOrder(SortOrder.ascending);
     activities = service.getActivities(
-        userIds, groupId, "app-id", null, options, token).get().getEntry();
+        userIds, groupId, appId, null, options, token).get().getEntry();
 
     assertThat(activities.size(), is(2));
     assertThat(activities.get(0).getTitle(), is("title-1"));
     assertThat(activities.get(1).getTitle(), is("title-2"));
-    
+
     options.setSortOrder(SortOrder.descending);
     activities = service.getActivities(
-        userIds, groupId, "app-id", null, options, token).get().getEntry();
+        userIds, groupId, appId, null, options, token).get().getEntry();
 
     assertThat(activities.size(), is(2));
     assertThat(activities.get(0).getTitle(), is("title-2"));
     assertThat(activities.get(1).getTitle(), is("title-1"));
   }
-  
+
   @Test
   public void testGetActivities_withActivityId() throws Exception {
-    createSampleActivity("1", "app-id", "title-1");
-    createSampleActivity("1", "app-id", "title-2");
-    createSampleActivity("1", "app-id", "title-3");
-    
-    List<?> idList = session.createQuery("select id from KatariActivity")
-      .list();
+    createSampleActivity("1", "title-1");
+    createSampleActivity("1", "title-2");
+    createSampleActivity("1", "title-3");
+
+    List<?> idList;
+    idList = session.createQuery("select id from KatariActivity").list();
 
     // These are here to make sure that we do not match the wrong user or
     // app-id.
-    createSampleActivity("1", "app-id-2", "title-3");
-    createSampleActivity("2", "app-id", "title-3");
-    
-    UserId userId = new UserId(UserId.Type.userId, "1");    
+    createSampleActivity("1", "title-3");
+    createSampleActivity("2", "title-3");
+
+    UserId userId = new UserId(UserId.Type.userId, "1");
     GroupId groupId = new GroupId(GroupId.Type.self, null);
     CollectionOptions options = new CollectionOptions();
     // Looks like the default, by looking at shindig sources.
@@ -173,39 +182,39 @@ public class KatariActivityServiceTest {
     for (Object o: idList) {
       activityIds.add(o.toString());
     }
-    List<Activity> activities = service.getActivities(userId, groupId, "app-id",
+    List<Activity> activities = service.getActivities(userId, groupId, appId,
         null, options, activityIds, token).get().getEntry();
     assertThat(activities.size(), is(3));
     assertThat(activities.get(0).getTitle(), is("title-1"));
     assertThat(activities.get(1).getTitle(), is("title-2"));
     assertThat(activities.get(2).getTitle(), is("title-3"));
   }
-  
+
   @Test
   public void testGetActivity() throws Exception {
-    createSampleActivity("1", "app-id", "title");
+    createSampleActivity("1", "title");
     String id = session.createQuery("select id from KatariActivity")
       .uniqueResult().toString();
 
-    UserId userId = (new UserId(UserId.Type.userId, "1"));    
+    UserId userId = (new UserId(UserId.Type.userId, "1"));
     GroupId groupId = new GroupId(GroupId.Type.self, null);
     // Looks like the default, by looking at shindig sources.
     SecurityToken token = new FakeGadgetToken();
 
-    Activity activity = service.getActivity(userId, groupId, "app-id",
+    Activity activity = service.getActivity(userId, groupId, appId,
         null, id, token).get();
-    
-    assertThat(activity.getAppId(), is("app-id"));
+
+    assertThat(activity.getAppId(), is(appId));
     assertThat(activity.getTitle(), is("title"));
     assertThat(activity.getUserId(), is("1"));
   }
 
   @Test
   public void testCreateActivity() {
-    createSampleActivity("1", "app-id", "title");
+    createSampleActivity("1", "title");
     KatariActivity activity = (KatariActivity) session.createQuery(
         "from KatariActivity where title = 'title'").uniqueResult();
-    assertThat(activity.getAppId(), is("app-id"));
+    assertThat(activity.getAppId(), is(appId));
     assertThat(activity.getTitle(), is("title"));
     assertThat(activity.getUserId(), is("1"));
   }
@@ -213,19 +222,15 @@ public class KatariActivityServiceTest {
   @Test
   public void testDeleteActivities() {
   }
-  
+
   /** Creates a sample activity for the provided user id.
    *
    * @param userId the userId of the sample activity. It cannot be null.
    *
-   * @param appId the appId of the sample activity. It cannot be null.
-   *
    * @param title the activity title. It cannot be null.
    */
-  private void createSampleActivity(final String userId, final String appId,
-      final String title) {
+  private void createSampleActivity(final String userId, final String title) {
     Activity activity = new ActivityImpl();
-    activity.setAppId(appId);
     activity.setTitle(title);
 
     service.createActivity(new UserId(UserId.Type.userId, userId),

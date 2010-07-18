@@ -38,9 +38,13 @@ import org.apache.shindig.social.opensocial.spi.GroupId;
 import org.apache.shindig.social.opensocial.spi.CollectionOptions;
 
 import com.globant.katari.shindig.domain.KatariActivity;
+import com.globant.katari.shindig.domain.Application;
+import com.globant.katari.shindig.domain.ApplicationRepository;
 
 /** An implementation of shindig ActivityService that persists the activities
  * to a database with hibernate.
+ *
+ * Shindig uses the application url as the appId.
  */
 public class KatariActivityService extends HibernateDaoSupport implements
     ActivityService {
@@ -48,6 +52,24 @@ public class KatariActivityService extends HibernateDaoSupport implements
   /** The class logger. */
   private static Logger log =
     LoggerFactory.getLogger(KatariActivityService.class);
+
+  /** The application repository.
+   *
+   * This is never null.
+   */
+  ApplicationRepository applicationRepository;
+
+  /** Constructor, builds a KatariActivityService.
+   *
+   * @param theApplicationRepository the application repository. It cannot be
+   * null.
+   */
+  public KatariActivityService(final ApplicationRepository
+      theApplicationRepository) {
+    Validate.notNull(theApplicationRepository, "the application repository"
+        + " cannot be null");
+    applicationRepository = theApplicationRepository;
+  }
 
   /** @{inheritDoc}
    *
@@ -193,7 +215,11 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
     Criteria criteria = getSession().createCriteria(Activity.class);
     criteria.add(Restrictions.eq("id", Long.parseLong(activityId)));
-    criteria.add(Restrictions.eq("appId", appId));
+
+    Application app;
+    app = applicationRepository.findApplicationByUrl(appId);
+    criteria.add(Restrictions.eq("application", app));
+
     Set<UserId> userIds = new HashSet<UserId>();
     userIds.add(userId);
     addGroupFilterToCriteria(criteria, userIds, groupId, token);
@@ -245,8 +271,11 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
     log.trace("Entering createActivity");
 
+    Application application;
+    application = applicationRepository.findApplicationByUrl(appId);
+
     KatariActivity newActivity = new KatariActivity(new Date().getTime(),
-        appId, userId.getUserId(token), activity);
+        application, userId.getUserId(token), activity);
     getHibernateTemplate().saveOrUpdate(newActivity);
 
     log.trace("Leaving createActivity");
@@ -299,7 +328,9 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
     addGroupFilterToCriteria(criteria, userIds, groupId, token);
 
-    criteria.add(Restrictions.eq("appId", appId));
+    Application app;
+    app = applicationRepository.findApplicationByUrl(appId);
+    criteria.add(Restrictions.eq("application", app));
 
     if (options.getFilter() != null) {
       if (options.getFilterOperation() == null) {

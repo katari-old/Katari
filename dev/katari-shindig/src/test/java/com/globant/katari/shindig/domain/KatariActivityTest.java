@@ -32,8 +32,9 @@ public class KatariActivityTest {
     activity.setUrl("url");
 
     KatariActivity newActivity = new KatariActivity(new Date().getTime(),
-        "appid", "user-id", activity);
+        new Application("some-url"), "user-id", activity);
 
+    assertThat(newActivity.getAppId(), is("some-url"));
     assertThat(newActivity.getBodyId(), is("body-id"));
     assertThat(newActivity.getBody(), is("body"));
     assertThat(newActivity.getExternalId(), is("external-id"));

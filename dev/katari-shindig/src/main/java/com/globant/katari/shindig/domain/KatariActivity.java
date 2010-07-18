@@ -22,6 +22,7 @@ import javax.persistence.Column;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -50,12 +51,12 @@ public class KatariActivity implements Activity {
   @Column(name = "id", nullable = false)
   private long id = 0;
 
-  /** model field.
+  /** The application that generated this activity.
    *
-   * @see org.apache.shindig.social.opensocial.model.Activity
+   * This is never null.
    */
-  @Column(name = "app_id", length = 255, nullable = false)
-  private String appId;
+  @ManyToOne(optional = false, fetch = FetchType.EAGER)
+  private Application application;
 
   /**
    * model field.
@@ -203,7 +204,11 @@ public class KatariActivity implements Activity {
    * provided source is 0, this is a new entity. Otherwise, the copy represents
    * an already persisted entity.
    *
-   * @param applicationId the app id. It cannot be null.
+   * @param thePostedTime when the activity was posted, as the number of
+   * milliseconds since the epoch.
+   *
+   * @param theApplication the application that generated the activity. It
+   * cannot be null.
    *
    * @param theUserId the user id. It cannot be null.
    *
@@ -211,17 +216,18 @@ public class KatariActivity implements Activity {
    * title must not be null. The id, userId, appId and postedTime of the source
    * activity are ignored.
    */
-  public KatariActivity(final long thePostedTime, final String applicationId,
-      final String theUserId, final Activity source) {
+  public KatariActivity(final long thePostedTime,
+      final Application theApplication, final String theUserId,
+      final Activity source) {
 
-    Validate.notNull(applicationId, "The app id cannot be null.");
+    Validate.notNull(theApplication, "The application cannot be null.");
     Validate.notNull(theUserId, "The user id cannot be null.");
     Validate.notNull(source, "The source activity cannot be null.");
     Validate.notNull(source.getTitle(),
         "The source activity title cannot be null.");
 
     postedTime = thePostedTime;
-    appId = applicationId;
+    application = theApplication;
     userId = theUserId;
     id = 0;
 
@@ -252,16 +258,19 @@ public class KatariActivity implements Activity {
     }
   }
 
-  /** {@inheritDoc}
+  /** Shindig expects this to the the application url.
+   *
+   * {@inheritDoc}
    */
   public String getAppId() {
-    return appId;
+    return application.getUrl();
   }
 
   /** {@inheritDoc}
    */
   public void setAppId(final String applicationId) {
-    appId = applicationId;
+    throw new RuntimeException("This is not supported."
+       + " Call the constructor instead.");
   }
 
   /** {@inheritDoc}
