@@ -1,57 +1,133 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.gadgetcontainer.view;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.Validate;
+
+import org.json.JSONObject;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 
 import com.globant.katari.core.application.Command;
 import com.globant.katari.gadgetcontainer.application.GadgetGroupCommand;
+import com.globant.katari.gadgetcontainer.domain.ContextUserService;
+import com.globant.katari.gadgetcontainer.application.TokenService;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
-import com.google.gson.Gson;
+import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 
 /**
  * Retrieve the representation for the requested {@link GadgetGroup}
- * 
+ *
  * @author waabox(emiliano[dot]arango[at]globant[dot]com)
- * 
+ *
  */
 public abstract class GadgetGroupController extends AbstractCommandController {
-  
+
+  /** Used to retrieve the current logged in user.
+   *
+   * This is never null.
+   */
+  private final ContextUserService userService;
+
+  /** The open social token service implementation.
+   *
+   * This is never null.
+   */
+  private final TokenService tokenService;
+
+  /** Constructor.
+   *
+   * @param theTokenService the token generator service. It can not be null.
+   */
+  public GadgetGroupController(final ContextUserService theUserService,
+      final TokenService theTokenService) {
+    Validate.notNull(theUserService, "user service can not be null");
+    Validate.notNull(theTokenService, "token service can not be null");
+    userService = theUserService;
+    tokenService = theTokenService;
+  }
+
   /** Write directly on the servlet output the json representation of
-   * the requested page.
-   * 
-   * Note: This controller always returns null, because write directly
-   * to the response.
-   * 
-   * @see org.springframework.web.servlet.mvc.AbstractCommandController
-   *      #handle(
-   *      javax.servlet.http.HttpServletRequest,
-   *      javax.servlet.http.HttpServletResponse, 
-   *      java.lang.Object,
-   *      org.springframework.validation.BindException)
+   * the requested group.
+   *
+   * If the gadget group is found, it writes a json of the form:
+   *
+   * <pre>
+   * {
+   *   "id":<long>,
+   *   "name":"<string>"
+   *   "ownerId":<long>,
+   *   "numberOfColumns":<int>,
+   *   "gadgets":[
+   *     {
+   *       "id":<long>,
+   *       "appId":<int>,
+   *       "gadgetPosition":"row#col",
+   *       "viewer":<long>,
+   *       "securityToken":"token"
+   *       "url":"url"
+   *     }
+   *   ],
+   * }
+   * </pre>
+   *
+   * Otherwise, it writes an empty json object ({}).
+   *
+   * {@inheritDoc}
+   *
+   * Note: This controller always returns null, because write directly to the
+   * response.
    */
   @Override
   protected ModelAndView handle(final HttpServletRequest request,
       final HttpServletResponse response, final Object command,
       final BindException errors) throws Exception {
-    Gson gson = new Gson();
+
     GadgetGroupCommand gadgetGroupCommand = (GadgetGroupCommand) command;
-    GadgetGroup page = gadgetGroupCommand.execute();
+    GadgetGroup group = gadgetGroupCommand.execute();
+
     response.addHeader("Content-type", "application/json");
-    response.getWriter().write(gson.toJson(page));
-    response.getWriter().close();
+
+    // The id of the logged in user (viewer).
+    long uid = userService.getCurrentUserId();
+
+    JSONObject groupJson = new JSONObject();
+    if (group != null) {
+      long owner = group.getOwner().getId();
+      groupJson = new JSONObject();
+      groupJson.put("id", group.getId());
+      groupJson.put("name", group.getName());
+      groupJson.put("ownerId", owner);
+      groupJson.put("numberOfColumns", group.getNumberOfColumns());
+
+      for (GadgetInstance gadget : group.getGadgets()) {
+        JSONObject gadgetJson = new JSONObject();
+        gadgetJson.put("id", gadget.getId());
+        gadgetJson.put("appId", gadget.getApplication().getId());
+        gadgetJson.put("position", gadget.getGadgetPosition());
+        gadgetJson.put("url", gadget.getApplication().getUrl());
+        gadgetJson.put("viewer", uid);
+        String token = tokenService.createSecurityToken(uid, owner, gadget);
+        gadgetJson.put("securityToken", token);
+
+        groupJson.append("gadgets", gadgetJson);
+      }
+    }
+
+    groupJson.write(response.getWriter());
     return null;
   }
-  
+
   /** @return {@link Command<GadgetGroup>}
    */
   protected abstract Command<GadgetGroup> createCommandBean();
-  
+
   /** Create a new {@link Command} instance.
-   * 
+   *
    * @see org.springframework.web.servlet.mvc.BaseCommandController#getCommand(
    *  javax.servlet.http.HttpServletRequest)
    */
@@ -61,3 +137,4 @@ public abstract class GadgetGroupController extends AbstractCommandController {
     return createCommandBean();
   }
 }
+

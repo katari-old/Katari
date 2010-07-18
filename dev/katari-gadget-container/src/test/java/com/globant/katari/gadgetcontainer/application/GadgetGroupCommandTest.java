@@ -1,6 +1,5 @@
-/**
- *
- */
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.gadgetcontainer.application;
 
 import static org.junit.Assert.*;
@@ -31,9 +30,6 @@ public class GadgetGroupCommandTest {
     replay(user);
   }
 
-  /** Test method for
-   *{@link com.globant.katari.gadgetcontainer.application.GadgetGroupCommand#execute()}.
-   */
   @Test
   public void testExecute_pageNull() {
     GadgetGroupCommand command;
@@ -43,13 +39,9 @@ public class GadgetGroupCommandTest {
       command.execute();
       fail("should fail because we never set the pageName command property");
     } catch (Exception e) {
-
     }
   }
 
-  /** Test method for
-   *{@link com.globant.katari.gadgetcontainer.application.GadgetGroupCommand#execute()}.
-   */
   @Test
   public void testExecute() {
 
@@ -67,7 +59,8 @@ public class GadgetGroupCommandTest {
 
     expect(userService.getCurrentUserId()).andReturn(userId);
     expect(repository.findGadgetGroup(userId, pageName)).andReturn(gadgetGroup);
-    expect(tokenService.createSecurityToken(userId, gi)).andReturn("token");
+    expect(tokenService.createSecurityToken(userId, userId, gi))
+      .andReturn("token");
 
     gi.associateToViewer("token", userId);
 
@@ -84,6 +77,11 @@ public class GadgetGroupCommandTest {
     verify(userService);
     verify(repository);
     verify(tokenService);
+  }
+
+  @Test
+  public void testToJson() {
+
   }
 }
 

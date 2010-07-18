@@ -50,7 +50,7 @@ public class GadgetGroup {
    * If null, this is a shared group that can be used by everybody.
    */
   @ManyToOne(optional = true, fetch = FetchType.EAGER)
-  private CoreUser owner;
+  private CoreUser owner = null;
 
   /** The gadgets in this group.
    *

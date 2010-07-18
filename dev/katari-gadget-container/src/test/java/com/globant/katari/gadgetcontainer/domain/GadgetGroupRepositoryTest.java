@@ -112,7 +112,10 @@ public class GadgetGroupRepositoryTest {
   private void createGadgetGroup(final CoreUser userId, final String groupName,
       final String gadgetUrl, final String gadgetPosition) {
     GadgetGroup group = new GadgetGroup(userId, groupName, 1);
-    group.addGadget(new GadgetInstance(gadgetUrl,  gadgetPosition));
+    Application app = new Application(gadgetUrl);
+    // Test friendly hack: never use the repository like this.
+    repository.getHibernateTemplate().saveOrUpdate(app);
+    group.addGadget(new GadgetInstance(app,  gadgetPosition));
     repository.save(group);
   }
 }

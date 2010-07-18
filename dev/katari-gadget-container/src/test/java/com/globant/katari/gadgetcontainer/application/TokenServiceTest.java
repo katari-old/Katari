@@ -29,31 +29,26 @@ public class TokenServiceTest {
       new TokenService(null, "name", "domain");
       fail("should fail because blobcrypter can not be null");
     } catch (IllegalArgumentException e) {
-      // TODO:nothing here
     }
     try {
       new TokenService(crypter, null, "domain");
       fail("should fail because container name can not be null");
     }catch (IllegalArgumentException e) {
-      // TODO:nothing here
     }
     try {
       new TokenService(crypter, "", "domain");
       fail("should fail because container name can not be empty");
     } catch (IllegalArgumentException e) {
-      // TODO:nothing here
     }
     try {
       new TokenService(crypter, "asd", null);
       fail("should fail because container domain can not be null");
     } catch (IllegalArgumentException e) {
-      // TODO:nothing here
     }
     try {
       new TokenService(crypter, "asd", "");
       fail("should fail because container domain can not be empty");
     } catch (IllegalArgumentException e) {
-      // TODO:nothing here
     }
   }
 
@@ -63,8 +58,9 @@ public class TokenServiceTest {
     GadgetInstance gi = createMock(GadgetInstance.class);
     expect(gi.getUrl()).andReturn("http://katari.com").times(2);
     replay(gi);
-    String token = ts.createSecurityToken(1, gi);
+    String token = ts.createSecurityToken(1, 1, gi);
     assertNotNull(token);
     verify(gi);
   }
 }
+

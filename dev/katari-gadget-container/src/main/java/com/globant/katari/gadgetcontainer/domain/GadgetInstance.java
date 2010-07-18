@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
 
 import org.apache.commons.lang.Validate;
 
@@ -30,12 +32,12 @@ public class GadgetInstance {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
 
-  /** {@link String} that identifies the url of the gadget xml spec.
+  /** The application corresponding to this gadget instance.
    *
    * It is never null.
    */
-  @Column(nullable = false)
-  private String url;
+  @ManyToOne(optional = false, fetch = FetchType.EAGER)
+  private Application application;
 
   /** {@link String} that defines the position on the UI, eg: 1#1.
    *
@@ -71,16 +73,18 @@ public class GadgetInstance {
 
   /** Creates a new Gadget instance.
    *
-   * @param gadgetUrl {@link String} with the url of the gadget xml.
-   * Cannot be empty.
-   * @param position {@link String} representation of the gadget position
-   * in the page. The format is defined by the client side implementation (for
+   * @param theApplication the application for this gadget instance. Cannot be
+   * null.
+   *
+   * @param position {@link String} representation of the gadget position in
+   * the page. The format is defined by the client side implementation (for
    * example, "3#2" for a column based layout. It cannot be empty.
    */
-  public GadgetInstance(final String gadgetUrl, final String position) {
-    Validate.notEmpty(gadgetUrl, "gadget url can not be empty");
+  public GadgetInstance(final Application theApplication,
+      final String position) {
+    Validate.notNull(theApplication, "the application can not be null");
     Validate.notEmpty(position, "position can not be null");
-    url = gadgetUrl;
+    application = theApplication;
     gadgetPosition = position;
   }
 
@@ -110,8 +114,16 @@ public class GadgetInstance {
 
   /** @return {@link String} location of the gadget xml spec.
    */
+  public Application getApplication() {
+    return application;
+  }
+
+  /** Returns the url for the gadget xml.
+   *
+   * @return the url, never null.
+   */
   public String getUrl() {
-    return url;
+    return application.getUrl();
   }
 
   /** @return @link{String} the securityToken

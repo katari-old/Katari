@@ -58,21 +58,21 @@ public class TokenService {
     domain = containerDomain;
   }
 
-  /**Creates a new security token encrypted with the strong implementation
+  /** Creates a new security token encrypted with the strong implementation
    * define in katari-shindig.
    *
    * {@inheritDoc}
    */
-  public String createSecurityToken(final long user,
+  public String createSecurityToken(final long viewerId, final long ownerId,
       final GadgetInstance gadgetInstance) {
     BlobCrypterSecurityToken token = new BlobCrypterSecurityToken(
         crypter, container, domain);
     token.setActiveUrl(gadgetInstance.getUrl());
     token.setAppUrl(gadgetInstance.getUrl());
     token.setModuleId(0L);
-    token.setOwnerId(Long.toString(user));
+    token.setOwnerId(Long.toString(ownerId));
+    token.setViewerId(Long.toString(viewerId));
     token.setTrustedJson("trusted");
-    token.setViewerId(Long.toString(user));
     String cryptedToken;
     try {
       cryptedToken = Utils.urlEncode(token.encrypt());

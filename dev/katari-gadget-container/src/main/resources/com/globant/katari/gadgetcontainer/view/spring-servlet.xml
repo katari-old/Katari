@@ -19,6 +19,8 @@
 
   <bean name='/socialPage.do'
     class='com.globant.katari.gadgetcontainer.view.GadgetGroupController'>
+    <constructor-arg ref="social.userService" />
+    <constructor-arg ref="social.tokenService" />
     <lookup-method name="createCommandBean" bean="viewSocialPageCommand" />
   </bean>
  

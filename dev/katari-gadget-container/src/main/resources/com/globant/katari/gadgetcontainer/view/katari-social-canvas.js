@@ -108,7 +108,7 @@ KATARI.SOCIAL.Canvas = function(sContainer) {
     for(m in objJson.gadgets) {
       var obj = objJson.gadgets[m];
       this.addGadget(new KATARI.SOCIAL.GadgetInstance(obj.id, obj.url,
-        obj.securityToken, obj.viewer, objJson.owner, obj.gadgetPosition));
+        obj.securityToken, obj.viewer, objJson.owner, obj.position));
     }
     return this;
   };

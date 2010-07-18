@@ -3,7 +3,6 @@
 package com.globant.katari.gadgetcontainer.application;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
 
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
@@ -52,9 +51,9 @@ public class GadgetGroupCommand implements Command<GadgetGroup> {
       final ContextUserService theUserService,
       final TokenService theTokenService) {
 
-    notNull(thePageRepository, "page repository can not be null");
-    notNull(theUserService, "user service can not be null");
-    notNull(theTokenService, "token service can not be null");
+    Validate.notNull(thePageRepository, "page repository can not be null");
+    Validate.notNull(theUserService, "user service can not be null");
+    Validate.notNull(theTokenService, "token service can not be null");
 
     gadgetGroupRepository = thePageRepository;
     userService = theUserService;
@@ -91,7 +90,8 @@ public class GadgetGroupCommand implements Command<GadgetGroup> {
       Validate.notNull(group.getOwner(), "This is a shared gadget group");
       long owner = group.getOwner().getId();
       for (GadgetInstance gadgetInstance : group.getGadgets()) {
-        String token = tokenService.createSecurityToken(owner, gadgetInstance);
+        String token;
+        token = tokenService.createSecurityToken(uid, owner, gadgetInstance);
         log.debug("generated new securityToken:" + token);
         gadgetInstance.associateToViewer(token, uid);
       }
