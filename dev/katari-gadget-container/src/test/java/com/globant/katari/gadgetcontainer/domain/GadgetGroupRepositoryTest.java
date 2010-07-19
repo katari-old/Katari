@@ -61,7 +61,7 @@ public class GadgetGroupRepositoryTest {
   public void testFindPage() {
     String groupName = randomUUID().toString();
     String url = "http://" + randomUUID().toString();
-    createGadgetGroup(user, groupName, url, "1#3");
+    createGadgetGroup(user, groupName, url);
 
     GadgetGroup thePage = repository.findGadgetGroup(1, groupName);
 
@@ -80,32 +80,6 @@ public class GadgetGroupRepositoryTest {
     assertNull(thePage);
   }
 
-  /** This test creates a new group, then change the attribute of one of his
-   *  gadgets instances, then check the changes performed over the
-   *  gadget instance.
-   */
-  @Test
-  public void testUpdateGadgetInstance() {
-    String groupName = randomUUID().toString();
-    String url = "http://" + randomUUID().toString();
-
-    createGadgetGroup(user, groupName, url, "1#2");
-
-    String gadgetNewPosition = "3#3";
-
-    GadgetGroup group = repository.findGadgetGroup(user.getId(), groupName);
-
-    GadgetInstance i = group.getGadgets().iterator().next();
-    i.move(gadgetNewPosition);
-
-    repository.save(group);
-
-    group = repository.findGadgetGroup(user.getId(), groupName);
-
-    assertTrue(group.getGadgets().iterator().next().getGadgetPosition().equals(
-        gadgetNewPosition));
-  }
-
   /** Creates and persists a new group in the database.
    *
    * @param userId
@@ -114,12 +88,12 @@ public class GadgetGroupRepositoryTest {
    * @param gadgetPosition
    */
   private void createGadgetGroup(final CoreUser userId, final String groupName,
-      final String gadgetUrl, final String gadgetPosition) {
-    GadgetGroup group = new GadgetGroup(userId, groupName, 1);
+      final String gadgetUrl) {
+    GadgetGroup group = new GadgetGroup(userId, groupName, 2);
     Application app = new Application(gadgetUrl);
     // Test friendly hack: never use the repository like this.
     repository.getHibernateTemplate().saveOrUpdate(app);
-    group.addGadget(new GadgetInstance(app,  gadgetPosition));
+    group.addGadget(new GadgetInstance(app, 1, 2));
     repository.save(group);
   }
 }

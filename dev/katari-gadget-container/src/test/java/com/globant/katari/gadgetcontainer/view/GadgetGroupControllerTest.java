@@ -81,9 +81,9 @@ public class GadgetGroupControllerTest {
     String groupName = "theGroup";
     CoreUser userId = createMock(CoreUser.class);
 
-    GadgetGroup group = new GadgetGroup(userId, groupName, 1);
+    GadgetGroup group = new GadgetGroup(userId, groupName, 3);
     Application app = new Application("http://lala");
-    GadgetInstance gi = new GadgetInstance(app, "1#2");
+    GadgetInstance gi = new GadgetInstance(app, 1, 2);
     group.addGadget(gi);
 
     GadgetGroupCommand command = createMock(GadgetGroupCommand.class);
@@ -119,14 +119,15 @@ public class GadgetGroupControllerTest {
       groupJson.put("id", 0);
       groupJson.put("name", "theGroup");
       groupJson.put("ownerId", 0);
-      groupJson.put("numberOfColumns", 1);
+      groupJson.put("viewerId", 0);
+      groupJson.put("numberOfColumns", 3);
 
       JSONObject gadgetJson = new JSONObject();
       gadgetJson.put("id", 0);
       gadgetJson.put("appId", 0);
-      gadgetJson.put("position", "1#2");
+      gadgetJson.put("column", 1);
+      gadgetJson.put("order", 2);
       gadgetJson.put("url", "http://lala");
-      gadgetJson.put("viewer", 0);
       gadgetJson.put("securityToken", "mockToken");
       groupJson.append("gadgets", gadgetJson);
       return groupJson.toString();

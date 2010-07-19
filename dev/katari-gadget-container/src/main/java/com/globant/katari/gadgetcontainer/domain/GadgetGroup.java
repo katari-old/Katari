@@ -111,9 +111,17 @@ public class GadgetGroup {
     return gadgets;
   }
 
-  /** @param instance the gadget to add to this group. It cannot be null.
+  /**  Adds a gadget to the group.
+   *
+   * The gadget's column must be between 0 and the number of columns in this
+   * group.
+   *
+   * @param instance the gadget to add to this group. It cannot be null.
    */
   public void addGadget(final GadgetInstance instance) {
+    Validate.notNull(instance, "The gadget instance cannot be null.");
+    Validate.isTrue(instance.getColumn() < numberOfColumns,
+        "You cannot add a gadget for column greater than the gadget group's.");
     gadgets.add(instance);
   }
 

@@ -21,7 +21,7 @@
     class='com.globant.katari.gadgetcontainer.view.GadgetGroupController'>
     <constructor-arg ref="userService" />
     <constructor-arg ref="tokenService" />
-    <lookup-method name="createCommandBean" bean="viewSocialPageCommand" />
+    <lookup-method name="createCommandBean" bean="gadgetGroupCommand" />
   </bean>
  
   <bean name='/katariSocialCanvas.js'
@@ -30,11 +30,10 @@
   </bean>
 
   <!-- Command definition -->
-  <bean name="viewSocialPageCommand" scope="prototype"
+  <bean name="gadgetGroupCommand" scope="prototype"
     class="com.globant.katari.gadgetcontainer.application.GadgetGroupCommand">
     <constructor-arg index="0" ref="gadgetGroupRepository" />
     <constructor-arg index="1" ref="userService" />
-    <constructor-arg index="2" ref="tokenService" />
   </bean>
 
   <bean
@@ -42,7 +41,7 @@
     <property name="proxyTargetClass" value="true" />
     <property name="beanNames">
       <list>
-        <value>viewSocialPageCommand</value>
+        <value>gadgetGroupCommand</value>
       </list>
     </property>
     <property name="interceptorNames">

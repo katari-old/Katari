@@ -33,10 +33,6 @@ public class GadgetGroupCommand implements Command<GadgetGroup> {
    */
   private final ContextUserService userService;
 
-  /** {@link TokenService} the open social token service implementation.
-   */
-  private final TokenService tokenService;
-
   /** {@link String} the page name to search.
    */
   private String groupName;
@@ -48,16 +44,13 @@ public class GadgetGroupCommand implements Command<GadgetGroup> {
    * @param theTokenService {@link TokenService}. Can not be null.
    */
   public GadgetGroupCommand(final GadgetGroupRepository thePageRepository,
-      final ContextUserService theUserService,
-      final TokenService theTokenService) {
+      final ContextUserService theUserService) {
 
     Validate.notNull(thePageRepository, "page repository can not be null");
     Validate.notNull(theUserService, "user service can not be null");
-    Validate.notNull(theTokenService, "token service can not be null");
 
     gadgetGroupRepository = thePageRepository;
     userService = theUserService;
-    tokenService = theTokenService;
   }
 
   /** @return @link{String} the groupName. Never returns null.
@@ -86,16 +79,7 @@ public class GadgetGroupCommand implements Command<GadgetGroup> {
     long uid = userService.getCurrentUserId();
     log.debug("searching group name = " + groupName + "for the user:" + uid);
     GadgetGroup group = gadgetGroupRepository.findGadgetGroup(uid, groupName);
-    if(group != null) {
-      Validate.notNull(group.getOwner(), "This is a shared gadget group");
-      long owner = group.getOwner().getId();
-      for (GadgetInstance gadgetInstance : group.getGadgets()) {
-        String token;
-        token = tokenService.createSecurityToken(uid, owner, gadgetInstance);
-        log.debug("generated new securityToken:" + token);
-        gadgetInstance.associateToViewer(token, uid);
-      }
-    }
     return group;
   }
 }
+

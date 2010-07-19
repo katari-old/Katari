@@ -21,6 +21,8 @@ import com.globant.katari.shindig.domain.Application;
  * This one contains the information that the xml-to-html shinding
  * implementations needs to perform the rendering, also gives the rpc support.
  *
+ * Even there are no mutators, this class is intended to be eventually mutable.
+ *
  * @author waabox(emiliano[dot]arango[at]globant[dot]com)
  */
 @Entity
@@ -40,12 +42,15 @@ public class GadgetInstance {
   @ManyToOne(optional = false, fetch = FetchType.EAGER)
   private Application application;
 
-  /** {@link String} that defines the position on the UI, eg: 1#1.
-   *
-   * It is never null.
+  /** The column where the gadget is to be positioned in the group.
    */
-  @Column(name = "gadget_position", nullable = false)
-  private String gadgetPosition;
+  @Column(name = "group_column", nullable = false)
+  private int column;
+
+  /** The order of the gadget is its column.
+   */
+  @Column(name = "group_order", nullable = false)
+  private int order;
 
   /** {@link String} that identifies the user and the application when the
    * gadget accesses the open social container.
@@ -77,34 +82,19 @@ public class GadgetInstance {
    * @param theApplication the application for this gadget instance. Cannot be
    * null.
    *
-   * @param position {@link String} representation of the gadget position in
-   * the page. The format is defined by the client side implementation (for
-   * example, "3#2" for a column based layout. It cannot be empty.
+   * @param theColumn the column where the gadget is to be positioned in the
+   * group. It starts from 0, and must be smaller than the number of columns in
+   * the containing group.
+   *
+   * @param theOrder the order of the gadget in the column. Two gadgets with
+   * the same vaule appears in an undefined order.
    */
-  public GadgetInstance(final Application theApplication,
-      final String position) {
+  public GadgetInstance(final Application theApplication, final int theColumn,
+      final int theOrder) {
     Validate.notNull(theApplication, "the application can not be null");
-    Validate.notEmpty(position, "position can not be null");
     application = theApplication;
-    gadgetPosition = position;
-  }
-
-  /** Sets the security token for the current user and application, also
-   * sets the person who is requesting access to the application.
-   *
-   * This operation is intended to be called only when the user requests the
-   * page.
-   *
-   * @param theSecurityToken {@link String} the securityToken to set.
-   * Cannot be empty.
-   * @param gadgetViewer {@link String} the viewer to set. Can not be empty.
-   */
-  public void associateToViewer(final String theSecurityToken,
-      final long theViewer) {
-    Validate.notEmpty(theSecurityToken, "securityToken can not be null");
-    Validate.isTrue(theViewer != 0, "viewer can not be 0");
-    viewer = theViewer;
-    securityToken = theSecurityToken;
+    column = theColumn;
+    order = theOrder;
   }
 
   /** @return long the id of the gadget instance.
@@ -139,17 +129,25 @@ public class GadgetInstance {
     return viewer;
   }
 
-  /** @return @link{String} the position inside the page of this gadget.
+  /** The column where the gadget is to be positioned in the group.
+   * 
+   * It starts from 0, and must be smaller than the number of columns in the
+   * containing group.
+   *
+   * @return the column of the gadget.
    */
-  public String getGadgetPosition() {
-    return gadgetPosition;
-  }
-
-  /** Change the actual position of the gadget.
-   * @param newPosition {@link String} the new position. Can not be empty.
+   public int getColumn() {
+     return column;
+   }
+ 
+   /** The order of the gadget in the column.
+    *
+    * Two gadgets with the same vaule appears in an undefined order.
+    *
+    * @return the order of the gadget.
    */
-  public void move(final String newPosition) {
-    Validate.notEmpty(newPosition, "the gadget new position can not be empty");
-    gadgetPosition = newPosition;
-  }
+   public int getOrder() {
+     return order;
+   }
 }
+

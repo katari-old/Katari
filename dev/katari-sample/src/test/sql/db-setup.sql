@@ -15,13 +15,13 @@ insert into applications (id, url) values
 insert into applications (id, url) values
  (4, 'http://www.labpixies.com/campaigns/flood/flood.xml');
 insert into gadget_groups (owner_id, name, number_of_columns)
- values (1, 'main', 3);
-insert into gadget_instances (gadget_position, application_id, gadget_group_id)
- values ('1#1', 1, 1);
-insert into gadget_instances (gadget_position, application_id, gadget_group_id)
- values ('2#1', 2, 1);
-insert into gadget_instances (gadget_position, application_id, gadget_group_id)
- values ('1#2', 3, 1);
-insert into gadget_instances (gadget_position, application_id, gadget_group_id)
- values ('2#2', 4, 1);
+ values (1, 'main', 2);
+insert into gadget_instances (application_id, gadget_group_id, group_column,
+ group_order) values (1, 1, 0, 0);
+insert into gadget_instances (application_id, gadget_group_id, group_column,
+ group_order) values (2, 1, 1, 0);
+insert into gadget_instances (application_id, gadget_group_id, group_column,
+ group_order) values (3, 1, 0, 1);
+insert into gadget_instances (application_id, gadget_group_id, group_column,
+ group_order) values (4, 1, 1, 1);
 

@@ -41,10 +41,13 @@ KATARI.Console = {
  * @param sSecurityToken
  * @param sViewer
  * @param sOwner
- * @param sPosition
+ *
+ * @param sColumn
+ *
+ * @param sOrder
  */
 KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer,
-    sOwner, sPosition) {
+    sOwner, sColumn, sOrder) {
 
   this.id = sId;
   this.gadgetContainerUrl = KATARI.SOCIAL.canvasConfig.container;
@@ -55,7 +58,8 @@ KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer,
   this.synId = KATARI.SOCIAL.canvasConfig.synId;
   this.viewer = sViewer;
   this.owner = sOwner;
-  this.position = sPosition;
+  this.column = sColumn;
+  this.order = sOrder;
   this.view = KATARI.SOCIAL.canvasConfig.defaultView;
   this.parent = KATARI.SOCIAL.canvasConfig.host;
 
@@ -78,8 +82,8 @@ KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer,
     return url.join('');
   };
 };
-/**
- * Create a new social canvas.
+
+/** Create a new social canvas.
  *
  * @param {String} sContainer id of the container, usualy a div.
  */
@@ -88,30 +92,37 @@ KATARI.SOCIAL.Canvas = function(sContainer) {
   this.columns = [];
 
   var container = sContainer;
-  var POSITION_SPLITTER = '#';
 
-  /** Add a gadget instance.  @param {Object} objGadgetInstance return this.
+  /** Add a gadget instance.
+   *
+   * @param {Object} objGadgetInstance
+   *
+   * return this.
    */
   this.addGadget = function(objGadgetInstance) {
     this.gadgets.push(objGadgetInstance);
     return this;
   };
 
-  /** @param {Object} objJson
+  /** Adds a gadgets to the canvas from the groupSpec.
+   *
+   * @param groupSpec
    */
-  this.addGadgetsFromJson = function(objJson) {
+  this.addGadgetsFromJson = function(groupSpec) {
     // Create the empty columns.
-    for (var i = 1; i <= objJson.numberOfColumns; i++) {
+    for (var i = 0; i < groupSpec.numberOfColumns; i++) {
       this.columns[i] = $('<div class="canvasColumn">');
     }
     // And create all the gadgets.
-    for(m in objJson.gadgets) {
-      var obj = objJson.gadgets[m];
+    for(m in groupSpec.gadgets) {
+      var obj = groupSpec.gadgets[m];
       this.addGadget(new KATARI.SOCIAL.GadgetInstance(obj.id, obj.url,
-        obj.securityToken, obj.viewer, objJson.owner, obj.position));
+            obj.securityToken, groupSpec.viewerId, groupSpec.ownerId,
+            obj.column, obj.order));
     }
     return this;
   };
+
   /**
    * Creates the application name.
    *
@@ -128,12 +139,10 @@ KATARI.SOCIAL.Canvas = function(sContainer) {
     // sort the gadgets.
     this.gadgets.sort(
       function(a, b) {
-        var positionA = a.position.split(POSITION_SPLITTER);
-        var positionB = b.position.split(POSITION_SPLITTER);
-        if(positionA[0] == positionB[0]) {
-          return positionA[1] - positionB[1];
+        if(a.column == b.column) {
+          return a.order - b.order;
         } else {
-          return positionA[0] - positionB[0];
+          return a.column - b.column;
         }
       }
     );
@@ -153,9 +162,8 @@ KATARI.SOCIAL.Canvas = function(sContainer) {
 
       localDiv.append(iFrame);
 
-      var position = theGadget.position.split(POSITION_SPLITTER);
-      this.columns[position[0]].append(titleDiv);
-      this.columns[position[0]].append(localDiv);
+      this.columns[theGadget.column].append(titleDiv);
+      this.columns[theGadget.column].append(localDiv);
     }
 
     var containerDiv = $('<div>');

@@ -63,13 +63,14 @@ public abstract class GadgetGroupController extends AbstractCommandController {
    *   "id":<long>,
    *   "name":"<string>"
    *   "ownerId":<long>,
+   *   "viewerId":<long>,
    *   "numberOfColumns":<int>,
    *   "gadgets":[
    *     {
    *       "id":<long>,
-   *       "appId":<int>,
-   *       "gadgetPosition":"row#col",
-   *       "viewer":<long>,
+   *       "appId":<long>,
+   *       "column":<int>,
+   *       "order":<int>,
    *       "securityToken":"token"
    *       "url":"url"
    *     }
@@ -104,15 +105,16 @@ public abstract class GadgetGroupController extends AbstractCommandController {
       groupJson.put("id", group.getId());
       groupJson.put("name", group.getName());
       groupJson.put("ownerId", owner);
+      groupJson.put("viewerId", uid);
       groupJson.put("numberOfColumns", group.getNumberOfColumns());
 
       for (GadgetInstance gadget : group.getGadgets()) {
         JSONObject gadgetJson = new JSONObject();
         gadgetJson.put("id", gadget.getId());
         gadgetJson.put("appId", gadget.getApplication().getId());
-        gadgetJson.put("position", gadget.getGadgetPosition());
+        gadgetJson.put("column", gadget.getColumn());
+        gadgetJson.put("order", gadget.getOrder());
         gadgetJson.put("url", gadget.getApplication().getUrl());
-        gadgetJson.put("viewer", uid);
         String token = tokenService.createSecurityToken(uid, owner, gadget);
         gadgetJson.put("securityToken", token);
 

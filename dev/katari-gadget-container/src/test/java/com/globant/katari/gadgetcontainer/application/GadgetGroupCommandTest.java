@@ -32,12 +32,12 @@ public class GadgetGroupCommandTest {
 
   @Test
   public void testExecute_pageNull() {
-    GadgetGroupCommand command;
-    command = new GadgetGroupCommand(createMock(GadgetGroupRepository.class),
-        createMock(ContextUserService.class), createMock(TokenService.class));
+    GadgetGroupCommand command = new GadgetGroupCommand(
+        createMock(GadgetGroupRepository.class),
+        createMock(ContextUserService.class));
     try {
       command.execute();
-      fail("should fail because we never set the pageName command property");
+      fail("should fail because we never set the groupName command property");
     } catch (Exception e) {
     }
   }
@@ -45,43 +45,31 @@ public class GadgetGroupCommandTest {
   @Test
   public void testExecute() {
 
-    String pageName = "1";
+    String groupName = "1";
     long userId = 1;
 
-    GadgetGroup gadgetGroup = new GadgetGroup(user, pageName, 1);
-
     GadgetInstance gi = createMock(GadgetInstance.class);
+
+    GadgetGroup gadgetGroup = new GadgetGroup(user, groupName, 1);
     gadgetGroup.addGadget(gi);
 
     GadgetGroupRepository repository = createMock(GadgetGroupRepository.class);
-    ContextUserService userService = createMock(ContextUserService.class);
-    TokenService tokenService = createMock(TokenService.class);
-
-    expect(userService.getCurrentUserId()).andReturn(userId);
-    expect(repository.findGadgetGroup(userId, pageName)).andReturn(gadgetGroup);
-    expect(tokenService.createSecurityToken(userId, userId, gi))
-      .andReturn("token");
-
-    gi.associateToViewer("token", userId);
-
-    replay(userService);
+    expect(repository.findGadgetGroup(userId, groupName))
+      .andReturn(gadgetGroup);
     replay(repository);
-    replay(tokenService);
+
+    ContextUserService userService = createMock(ContextUserService.class);
+    expect(userService.getCurrentUserId()).andReturn(userId);
+    replay(userService);
 
     GadgetGroupCommand command;
-    command = new GadgetGroupCommand(repository, userService, tokenService);
-    command.setGroupName(pageName);
+    command = new GadgetGroupCommand(repository, userService);
+    command.setGroupName(groupName);
 
     command.execute();
 
     verify(userService);
     verify(repository);
-    verify(tokenService);
-  }
-
-  @Test
-  public void testToJson() {
-
   }
 }
 
