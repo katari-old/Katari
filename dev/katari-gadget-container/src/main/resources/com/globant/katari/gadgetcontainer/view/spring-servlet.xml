@@ -15,7 +15,8 @@
 
   <bean id="freemarkerViewResolver"
     class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
-    p:prefix="/" p:suffix=".js" p:exposeSpringMacroHelpers='true' />
+    p:prefix="/" p:suffix=".js" p:exposeSpringMacroHelpers='true'
+    p:exposeRequestAttributes='true'/>
 
   <bean name='/socialPage.do'
     class='com.globant.katari.gadgetcontainer.view.GadgetGroupController'>

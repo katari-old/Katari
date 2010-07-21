@@ -12,7 +12,7 @@ KATARI.SOCIAL.canvasConfig = KATARI.SOCIAL.canvasConfig || {};
 
 // This will be configured by the CanvasBuilder.
 KATARI.debugMode = false;
-KATARI.SOCIAL.canvasConfig.host = "http://localhost:8098/katari-sample";
+KATARI.SOCIAL.canvasConfig.host = "${baseweb}";
 KATARI.SOCIAL.canvasConfig.container = KATARI.SOCIAL.canvasConfig.host +
   "/module/shindig/gadgets/ifr";
 KATARI.SOCIAL.canvasConfig.relayFile = KATARI.SOCIAL.canvasConfig.host +
