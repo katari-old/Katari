@@ -159,7 +159,7 @@
   FCKEditor menu bar. -->
   <bean id='editable-pages.fckEditorConfiguration'
     class='com.globant.katari.editablepages.view.FckEditorConfiguration'/>
-  
+
   <!-- Adds editable pages to html validation ignored list. -->
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.htmlValidator.ignoredUrlpatterns' />
@@ -168,7 +168,7 @@
         <value>.*editable-pages/page/.*</value>
       </list>
     </constructor-arg>
-  </bean>    
+  </bean>
 
   <!-- vim: set ts=2 et sw=2 ai ft=xml: -->
 </beans>

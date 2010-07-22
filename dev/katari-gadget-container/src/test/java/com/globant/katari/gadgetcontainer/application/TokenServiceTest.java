@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.globant.katari.gadgetcontainer.application;
 
 import static org.easymock.EasyMock.expect;
@@ -20,8 +17,9 @@ import com.globant.katari.shindig.crypto.KatariBasicBlobCrypter;
  *
  */
 public class TokenServiceTest {
-  
-  KatariBasicBlobCrypter crypter = new KatariBasicBlobCrypter("1234567890123456");
+
+  KatariBasicBlobCrypter crypter
+      = new KatariBasicBlobCrypter("1234567890123456");
 
   @Test
   public void testConstructor() {

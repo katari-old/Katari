@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.apache.shindig.auth;
 
 import java.util.Map;
@@ -11,18 +8,19 @@ import org.apache.shindig.common.crypto.BlobCrypterException;
 
 /**
  * Implementation of token decoder.
- * 
+ *
  * This is a hack because shindig's BlobCrypterSecurityToken#decrypt is package
  * access.
  *
  * @see {@link org.apache.shindig.auth.BlobCrypterSecurityTokenDecoder}
- * 
+ *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  *
  */
-public class KatariBlobCrypterSecurityTokenDecoder implements SecurityTokenDecoder {
+public class KatariBlobCrypterSecurityTokenDecoder
+      implements SecurityTokenDecoder {
 
-  /** {@link String} the name of the domain related with this decoder. 
+  /** {@link String} the name of the domain related with this decoder.
    * Never null.
    */
   private final String domain;
@@ -33,12 +31,12 @@ public class KatariBlobCrypterSecurityTokenDecoder implements SecurityTokenDecod
   private final BlobCrypter crypter;
 
   /** Constructor.
-   * 
+   *
    * @param containerDomain {@linkString} the domain related with this decoder.
    * Can not be empty.
    * @param blobCrypter {@link BlobCrypter} the token crypter. Can not be null.
    */
-  public KatariBlobCrypterSecurityTokenDecoder(final String containerDomain, 
+  public KatariBlobCrypterSecurityTokenDecoder(final String containerDomain,
       final BlobCrypter blobCrypter) {
 
     Validate.notEmpty(containerDomain, "domain can not be blank");
@@ -65,13 +63,13 @@ public class KatariBlobCrypterSecurityTokenDecoder implements SecurityTokenDecod
     Validate.notNull(tokenParameters);
 
     String token = tokenParameters.get(SECURITY_TOKEN_NAME);
-    
+
     if (token == null || token.trim().length() == 0) {
       return new AnonymousSecurityToken();
     }
 
     String[] fields = token.split(":");
-    
+
     if (fields.length != 2) {
       throw new SecurityTokenException("Invalid security token " + token);
     }

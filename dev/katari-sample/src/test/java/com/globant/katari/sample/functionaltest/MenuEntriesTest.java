@@ -48,7 +48,7 @@ public class MenuEntriesTest extends ParentRunner<MenuNode> {
   }
 
   /** Returns the list of tests.
-   * 
+   *
    * This runner considers a menu node to be a test. This method returns all
    * the nodes that has links.
    */

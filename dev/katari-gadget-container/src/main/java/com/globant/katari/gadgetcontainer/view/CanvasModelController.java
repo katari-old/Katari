@@ -7,14 +7,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 /**
- * This controller serves the javascript needed for the container js that 
+ * This controller serves the javascript needed for the container js that
  * interacts with the shindig module.
- * 
- * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  *
+ * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
 public class CanvasModelController extends ParameterizableViewController {
-  
+
   /** {@inheritDoc}
    */
   protected ModelAndView handleRequestInternal(final HttpServletRequest request,
@@ -24,3 +23,4 @@ public class CanvasModelController extends ParameterizableViewController {
     return mav;
   }
 }
+

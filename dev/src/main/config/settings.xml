@@ -1,15 +1,17 @@
 <!-- vim: set ts=2 et sw=2 : -->
 <settings>
-  <!-- Use only inside Globant network -->
+  <!-- Uncomment to use inside Globant network.
+  Be careful not to put a space around the , in mirrorOf. Some versions of
+  maven dont work with it -->
+  <!--
   <mirrors>
     <mirror>
       <id>nexus</id>
       <url>http://maven.corp.globant.com/nexus/content/groups/public</url>
-      <!-- Don't put a space after the , or some versions of maven won't work
-           correctly. -->
       <mirrorOf>*,!sonar</mirrorOf>
     </mirror>
   </mirrors>
+  -->
 
   <profiles>
     <profile>
@@ -18,10 +20,13 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <!-- Use cargo.tomcatLocation only inside globant network -->
+        <!-- Uncomment to use cargo.tomcatLocation when working inside globant
+        network -->
+        <!--
         <cargo.tomcatLocation>
           http://maven.corp.globant.com/tools/containers/apache-tomcat-5.5.17.zip
         </cargo.tomcatLocation>
+        -->
         <katari.datasource.url>
           jdbc:mysql://localhost/katari
         </katari.datasource.url>
@@ -31,12 +36,17 @@
         <katari.datasource.password>
           katari
         </katari.datasource.password>
-        <!-- Starts cargo with jpda enabled for remote debugging in port 8000.
-             -->
+        <!-- Uncomment to start cargo with jpda enabled for remote debugging in
+        port 8000.
+        WARNING: with this enabled, builds will fail because cargo will not be
+        able to stop the container. See
+        http://jira.codehaus.org/browse/CARGO-624  -->
+        <!--
         <katari.cargo.jvmargs>
           -Xdebug -Xnoagent -Djava.compiler=NONE
           -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n
         </katari.cargo.jvmargs>
+        -->
         <!-- You can add log4j configuration options here. -->
         <katari.log4j>
           log4j.logger.com.globant.katari.sample=TRACE

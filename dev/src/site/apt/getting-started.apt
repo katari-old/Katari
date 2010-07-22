@@ -24,7 +24,7 @@ mvn archetype:generate -DarchetypeArtifactId=katari-archetype \
 ----
 
  This will ask for the following information:
- 
+
  * the client name
 
  * the project name
@@ -36,7 +36,7 @@ mvn archetype:generate -DarchetypeArtifactId=katari-archetype \
  * the artifact id
 
  * the project version.
- 
+
  []
 
  For consistency, we recommend that the artifactId is of the form
@@ -159,7 +159,7 @@ Creating your first module
  This creates a new maven module under the directory acme-coyote-hello. This
  directory now contains a maven project with acme-coyote-hello artifactId. The
  directory structure created by the archetype is:
- 
+
 ----
 acme-coyote-hello
 |-- pom.xml
@@ -268,7 +268,7 @@ src/main/resources/com/globant/acme/coyote/web/hello/module.xml:
  corresponding servlet.
 
  This module declares a spring dispatcher servlet configured in:
- 
+
 ----
 src/main/resources/com/globant/acme/coyote/web/hello/view/spring-servlet.xml
 ----
@@ -316,7 +316,7 @@ src/main/resources/com/globant/acme/coyote/web/hello/view/spring-servlet.xml
  system if debug mode is enabled. This makes it very convenient to edit ftl and
  view the result in the browser on the fly. This feature is enabled with the
  debug and debugPrefix properties. debugPrefix is the path relative to the web
- application were katari will search for the ftl files. 
+ application were katari will search for the ftl files.
 
  This file must be included in your main application context,
  webapp/WEB-INF/applicationContext.xml. When the application loads, it
@@ -331,23 +331,18 @@ src/main/resources/com/globant/acme/coyote/web/hello/view/spring-servlet.xml
  A module can be packaged in its own jar and reused in other applications. The
  Katari core takes care of integrating the module features.
 
-
-
-
-
-
- The module archetype creates a hello world page. This 
+ The module archetype creates a hello world page.
 
  Our hello world page will have the view and application layers. Create a new
  package for both layers (application and view) under the hello package.
- 
- 
+
+
  The archetype creates a controller named HelloController in the view package
  that extends AbstractController.
 
  This class implements handleRequestInternal and returns a ModelAndView
  instance for the 'hello' view:
- 
+
 ----
 package com.globant.acme.coyote.hello.view;
 

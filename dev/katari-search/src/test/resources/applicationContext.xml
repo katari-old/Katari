@@ -110,7 +110,7 @@
   </bean>
 
   <bean name="repository"
-    class="com.globant.katari.search.domain.TestRepository" 
+    class="com.globant.katari.search.domain.TestRepository"
     p:sessionFactory-ref='katari.sessionFactory' />
 
   <bean class="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator">

@@ -12,7 +12,6 @@ import com.globant.katari.core.application.Command;
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
-import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 
 /**
  * Command that perform the search page execution.
@@ -66,10 +65,11 @@ public class GadgetGroupCommand implements Command<GadgetGroup> {
   }
 
   /** Retrieve the user id from the spring security context then find the
-   * group with the context user and the given {@link GadgetGroupCommand#groupName}.
+   * group with the context user and the given groupName.
    *
    * @see com.globant.katari.core.application.Command#execute()
-   * @throws CanvasException if the {@link GadgetGroupCommand#groupName} is blank.
+   * @throws CanvasException if the {@link GadgetGroupCommand#groupName} is
+   * blank.
    */
   public GadgetGroup execute() {
 

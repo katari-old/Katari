@@ -22,9 +22,8 @@ import com.google.common.collect.ImmutableMap;
 
 /**
  * Test for the token decoder.
- * 
+ *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
- * 
  */
 public class KatariBlobCrypterSecurityTokenDecoderTest {
 
@@ -54,7 +53,7 @@ public class KatariBlobCrypterSecurityTokenDecoderTest {
     String trustedJson = "trusted";
     String container = "default";
     // End token Data.
-    
+
     BlobCrypterSecurityToken token = new BlobCrypterSecurityToken(crypter,
         container, null);
 

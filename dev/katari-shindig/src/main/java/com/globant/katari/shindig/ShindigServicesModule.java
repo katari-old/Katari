@@ -31,11 +31,10 @@ import com.globant.katari.shindig.SpringJsonContainerConfig;
  */
 public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
 
-  
   /** The person service implementation, never null.
    */
   private final PersonService personService;
-  
+
   /** The implementation of the activity service, never null.
    */
   private final ActivityService activityService;
@@ -99,7 +98,7 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
   @Override
   protected void configure() {
     super.configure();
-    
+
     bind(String.class).annotatedWith(Names.named("katari.contextPath"))
         .toInstance(contextPath);
     bind(ContainerConfig.class).to(SpringJsonContainerConfig.class);
@@ -123,7 +122,7 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
    * @param config The container config, provided by shindig.
    *
    * @param fetcher The original fetcher. It cannot be null.
-   * 
+   *
    * @param blobCrypter The implementation of the BlobCrypter. It cannot be
    * null.
    */

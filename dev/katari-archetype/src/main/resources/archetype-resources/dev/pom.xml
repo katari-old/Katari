@@ -330,7 +330,7 @@
 
       As of this writing, itext is in version 2.1.7. Using it brings
       bouncycastle:bctsp-jdk14:jar:138, not yet available in globant maven repo.
-      --> 
+      -->
       <dependency>
         <groupId>com.lowagie</groupId>
         <artifactId>itext</artifactId>

@@ -1,4 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/maven-v4_0_0.xsd">
   <!-- vim: set ts=2 et sw=2 ai: -->
 
   <parent>
@@ -324,6 +327,9 @@
                 <properties>
                   <reloadable>true</reloadable>
                   <cargo.servlet.port>8099</cargo.servlet.port>
+                  <cargo.rmi.port>8090</cargo.rmi.port>
+                  <cargo.tomcat.ajp.port>8091</cargo.tomcat.ajp.port>
+                  <cargo.jvmargs>${katari.cargo.jvmargs}</cargo.jvmargs>
                 </properties>
                 <deployables>
                   <deployable>
@@ -349,6 +355,8 @@
                 <home>${project.build.directory}/tmp/cargo</home>
                 <properties>
                   <cargo.servlet.port>8099</cargo.servlet.port>
+                  <cargo.rmi.port>8090</cargo.rmi.port>
+                  <cargo.tomcat.ajp.port>8091</cargo.tomcat.ajp.port>
                 </properties>
               </configuration>
             </configuration>
@@ -372,7 +380,8 @@
           <configuration>
             <properties>
               <cargo.servlet.port>8099</cargo.servlet.port>
-              <cargo.jvmargs>${katari.cargo.jvmargs}</cargo.jvmargs>
+              <cargo.rmi.port>8090</cargo.rmi.port>
+              <cargo.tomcat.ajp.port>8091</cargo.tomcat.ajp.port>
             </properties>
           </configuration>
 

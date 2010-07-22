@@ -3,13 +3,13 @@
  * Implements the CodeMirror constructor and prototype, which take care
  * of initializing the editor frame, and providing the outside interface.
  */
- 
+
 // The CodeMirrorConfig object is used to specify a default
 // configuration. If you specify such an object before loading this
 // file, the values you put into it will override the defaults given
 // below. You can also assign to it after loading.
 var CodeMirrorConfig = window.CodeMirrorConfig || {};
- 
+
 var CodeMirror = (function(){
   function setDefaults(object, defaults) {
     for (var option in defaults) {
@@ -21,7 +21,7 @@ var CodeMirror = (function(){
     for (var i = 0; i < array.length; i++)
       action(array[i]);
   }
- 
+
   // These default options can be overridden by passing a set of
   // options to a specific CodeMirror constructor. See manual.html for
   // their meaning.
@@ -34,7 +34,7 @@ var CodeMirror = (function(){
     passDelay: 200,
     continuousScanning: false,
     saveFunction: null,
-    submitFunction: null,         
+    submitFunction: null,
     onChange: null,
     undoDepth: 50,
     undoDelay: 800,
@@ -51,7 +51,7 @@ var CodeMirror = (function(){
     lineNumbers: false,
     indentUnit: 2
   });
- 
+
   function wrapLineNumberDiv(place) {
     return function(node) {
       var container = document.createElement("DIV"),
@@ -71,11 +71,11 @@ var CodeMirror = (function(){
       nums.appendChild(scroller);
     }
   }
- 
+
   function applyLineNumbers(frame) {
     var win = frame.contentWindow, doc = win.document,
         nums = frame.nextSibling, scroller = nums.firstChild;
- 
+
     var nextNum = 1, barWidth = null;
     function sizeBar() {
       if (nums.offsetWidth != barWidth) {
@@ -96,16 +96,16 @@ var CodeMirror = (function(){
     win.addEventHandler(win, "scroll", update);
     setInterval(sizeBar, 500);
   }
- 
+
   function CodeMirror(place, options) {
     // Backward compatibility for deprecated options.
     if (options.dumbTabs) options.tabMode = "spaces";
     else if (options.normalTab) options.tabMode = "default";
- 
+
     // Use passed options, if any, to override defaults.
     this.options = options = options || {};
     setDefaults(options, CodeMirrorConfig);
- 
+
     var frame = this.frame = document.createElement("IFRAME");
     frame.frameBorder = 0;
     frame.src = "javascript:false;";
@@ -115,24 +115,24 @@ var CodeMirror = (function(){
     // display: block occasionally suppresses some Firefox bugs, so we
     // always add it, redundant as it sounds.
     frame.style.display = "block";
- 
+
     if (place.appendChild) {
       var node = place;
       place = function(n){node.appendChild(n);};
     }
     if (options.lineNumbers) place = wrapLineNumberDiv(place);
     place(frame);
- 
+
     // Link back to this object, so that the editor can fetch options
     // and add a reference to itself.
     frame.CodeMirror = this;
     this.win = frame.contentWindow;
- 
+
     if (typeof options.parserfile == "string")
       options.parserfile = [options.parserfile];
     if (typeof options.stylesheet == "string")
       options.stylesheet = [options.stylesheet];
- 
+
     var html = ["<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head>"];
     forEach(options.stylesheet, function(file) {
       html.push("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + file + "\"/>");
@@ -142,24 +142,24 @@ var CodeMirror = (function(){
     });
     html.push("</head><body style=\"border-width: 0;\" class=\"editbox\" spellcheck=\"" +
               (options.disableSpellcheck ? "false" : "true") + "\"></body></html>");
- 
+
     var doc = this.win.document;
     doc.open();
     doc.write(html.join(""));
     doc.close();
   }
- 
+
   CodeMirror.prototype = {
     init: function() {
       if (this.options.initCallback) this.options.initCallback(this);
       if (this.options.lineNumbers) applyLineNumbers(this.frame);
     },
- 
+
     getCode: function() {return this.editor.getCode();},
     setCode: function(code) {this.editor.importCode(code);},
     selection: function() {return this.editor.selectedText();},
     reindent: function() {this.editor.reindent();},
- 
+
     focus: function() {
       this.win.focus();
       if (this.editor.selectionSnapshot) // IE hack
@@ -176,14 +176,14 @@ var CodeMirror = (function(){
     getSearchCursor: function(string, fromCursor) {
       return this.editor.getSearchCursor(string, fromCursor);
     },
- 
+
     undo: function() {this.editor.history.undo();},
     redo: function() {this.editor.history.redo();},
     historySize: function() {return this.editor.history.historySize();},
- 
+
     grabKeys: function(callback, filter) {this.editor.grabKeys(callback, filter);},
     ungrabKeys: function() {this.editor.ungrabKeys();},
- 
+
     cursorPosition: function(start) {
       if (this.win.select.ie_selection) this.focus();
       return this.editor.cursorPosition(start);
@@ -213,7 +213,7 @@ var CodeMirror = (function(){
       }
       return num;
     },
- 
+
     // Old number-based line interface
     jumpToLine: function(n) {
       this.selectLines(this.nthLine(n), 0);
@@ -223,9 +223,9 @@ var CodeMirror = (function(){
       return this.lineNumber(this.cursorPosition().line);
     }
   };
- 
+
   CodeMirror.InvalidLineHandle = {toString: function(){return "CodeMirror.InvalidLineHandle";}};
- 
+
   CodeMirror.replace = function(element) {
     if (typeof element == "string")
       element = document.getElementById(element);
@@ -233,16 +233,16 @@ var CodeMirror = (function(){
       element.parentNode.replaceChild(newElement, element);
     };
   };
- 
+
   CodeMirror.fromTextArea = function(area, options) {
     if (typeof area == "string")
       area = document.getElementById(area);
- 
+
     options = options || {};
     if (area.style.width) options.width = area.style.width;
     if (area.style.height) options.height = area.style.height;
     if (options.content == null) options.content = area.value;
- 
+
     if (area.form) {
       function updateField() {
         area.value = mirror.getCode();
@@ -252,19 +252,19 @@ var CodeMirror = (function(){
       else
         area.form.attachEvent("onsubmit", updateField);
     }
- 
+
     function insert(frame) {
       if (area.nextSibling)
         area.parentNode.insertBefore(frame, area.nextSibling);
       else
         area.parentNode.appendChild(frame);
     }
- 
+
     area.style.display = "none";
     var mirror = new CodeMirror(insert, options);
     return mirror;
   };
- 
+
   CodeMirror.isProbablySupported = function() {
     // This is rather awful, but can be useful.
     var match;
@@ -281,6 +281,6 @@ var CodeMirror = (function(){
     else
       return null;
   };
- 
+
   return CodeMirror;
 })();

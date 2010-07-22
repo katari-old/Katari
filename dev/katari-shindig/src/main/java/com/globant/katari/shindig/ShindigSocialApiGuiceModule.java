@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.globant.katari.shindig;
 
 import static com.google.inject.name.Names.named;
@@ -30,16 +27,16 @@ import com.google.inject.TypeLiteral;
 
 /**
  * Shindig base Social API Module.
- * 
+ *
  * This module, defines the handlers and the outputs format converters (xml,
  * json, etc).
- * 
+ *
  * NOTE: When upgrading to next Shindig versions, CHECK the file
  * inside: org.apache.shindig.social.core.config.SocialApiGuiceModule and DOUBLE
  * CHECK the differences.
- * 
+ *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
- * 
+ *
  */
 public class ShindigSocialApiGuiceModule extends AbstractModule {
 
@@ -55,14 +52,14 @@ public class ShindigSocialApiGuiceModule extends AbstractModule {
       .toInstance(Boolean.FALSE);
 
     bind(XStreamConfiguration.class).to(XStream081Configuration.class);
-    
+
     bind(BeanConverter.class)
       .annotatedWith(named("shindig.bean.converter.xml")).to(
       BeanXStreamConverter.class);
-    
+
     bind(BeanConverter.class).annotatedWith(
       named("shindig.bean.converter.json")).to(BeanJsonConverter.class);
-    
+
     bind(BeanConverter.class).annotatedWith(
       named("shindig.bean.converter.atom"))
       .to(BeanXStreamAtomConverter.class);
@@ -87,3 +84,4 @@ public class ShindigSocialApiGuiceModule extends AbstractModule {
         AppDataHandler.class, PersonHandler.class, MessageHandler.class);
   }
 }
+

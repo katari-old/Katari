@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.globant.katari.shindig.crypto;
 
 import java.io.UnsupportedEncodingException;
@@ -10,23 +7,22 @@ import org.apache.shindig.common.crypto.BasicBlobCrypter;
 
 /**
  * Wrapper for easy construction of {@link BasicBlobCrypter}
- * 
- * @see {@link org.apache.shindig.common.crypto.BasicBlobCrypter}
- * 
- * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  *
+ * @see {@link org.apache.shindig.common.crypto.BasicBlobCrypter}
+ *
+ * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
 public class KatariBasicBlobCrypter extends BasicBlobCrypter {
-  
+
   /**Constructor
-   * 
+   *
    * @param key {@link String} the key to use to creates security tokens.
    * Can not be empty. Also shouls have at least 16 bytes of lenght.
    */
   public KatariBasicBlobCrypter(final String key) {
     super(getBytes(key));
   }
-  
+
   /** Validate and get bytes with specific charset (UTF-8)
    * @param key {@link String} the key to encode the tokens.
    * @return byte[] with utf-8 charset

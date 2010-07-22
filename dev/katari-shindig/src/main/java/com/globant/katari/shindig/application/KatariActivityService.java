@@ -76,8 +76,8 @@ public class KatariActivityService extends HibernateDaoSupport implements
    * TODO: provide a hook to return the other groups: all, friends, groupId and
    * deleted.
    *
-   * @param groupId only supports @self, that returns all the activities from all
-   * the provided users. It cannot be null.
+   * @param groupId only supports @self, that returns all the activities from
+   * all the provided users. It cannot be null.
    *
    * @param appId The application id of activities. It cannot be null.
    *
