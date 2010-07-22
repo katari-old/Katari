@@ -12,11 +12,11 @@ KATARI.SOCIAL.canvasConfig = KATARI.SOCIAL.canvasConfig || {};
 
 // This will be configured by the CanvasBuilder.
 KATARI.debugMode = false;
-KATARI.SOCIAL.canvasConfig.host = "${baseweb}";
+KATARI.SOCIAL.canvasConfig.host = location.protocol + "//" + location.host;
 KATARI.SOCIAL.canvasConfig.container = KATARI.SOCIAL.canvasConfig.host +
-  "/module/shindig/gadgets/ifr";
+  "${baseweb}/module/shindig/gadgets/ifr?debug=true";
 KATARI.SOCIAL.canvasConfig.relayFile = KATARI.SOCIAL.canvasConfig.host +
-  "/module/gadgetcontainer/assets/rpc_relay.html";
+  "${baseweb}/module/gadgetcontainer/assets/rpc_relay.html";
 KATARI.SOCIAL.canvasConfig.rpcToken = "rpcToken";
 KATARI.SOCIAL.canvasConfig.applicationPrefix = "Application_";
 KATARI.SOCIAL.canvasConfig.socialContainer = "default";
@@ -61,14 +61,15 @@ KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer,
   this.column = sColumn;
   this.order = sOrder;
   this.view = KATARI.SOCIAL.canvasConfig.defaultView;
-  this.parent = KATARI.SOCIAL.canvasConfig.host;
+  // this.parent = KATARI.SOCIAL.canvasConfig.host;
+  this.parent = location.protocol + "//" + location.host;
 
   /** Creates the url for the gadget's iframe src.
    */
   this.buildGadgetUrl = function() {
     var url = [];
     url.push(this.gadgetContainerUrl);
-    url.push("?url=", sUrl);
+    url.push("&url=", sUrl);
     url.push("#rpctoken=", this.rpcToken);
     url.push("&st=", this.token);
     url.push("&mid=", this.rpcToken);

@@ -14,7 +14,9 @@
         <bean class='com.globant.katari.shindig.GuiceInitializerListener'>
           <constructor-arg>
             <list>
-              <bean class='com.globant.katari.shindig.ShindigPropertiesModule'/>
+              <bean class='com.globant.katari.shindig.ShindigPropertiesModule'>
+                <constructor-arg ref='shindig.contextPath'/>
+              </bean>
               <bean class='org.apache.shindig.gadgets.DefaultGuiceModule'/>
               <!-- value>org.apache.shindig.social.sample.SampleModule</value -->
               <bean class='com.globant.katari.shindig.ShindigServicesModule'>
@@ -22,6 +24,7 @@
                 <constructor-arg ref='shindig.personService'/>
                 <constructor-arg ref='shindig.blobCrypterDecoder'/>
                 <constructor-arg ref='shindig.tokenCrypter'/>
+                <constructor-arg ref='shindig.contextPath'/>
               </bean>
               <bean class='org.apache.shindig.gadgets.oauth.OAuthModule'/>
               <bean class='org.apache.shindig.common.cache.ehcache.EhCacheModule'/>
@@ -336,6 +339,11 @@
   <bean id="shindig.containerDomain"
       class="com.globant.katari.core.spring.StringHolder">
     <property name="value" value="shindig" />
+  </bean>
+
+  <bean id="shindig.contextPath"
+      class="com.globant.katari.core.spring.StringHolder">
+      <property name="value" value="/katari-sample" />
   </bean>
 
   <!-- vim: set ts=2 sw=2 et ai: -->  
