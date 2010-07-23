@@ -27,6 +27,7 @@ import com.globant.katari.shindig.testsupport.SpringTestUtils;
 
 import com.globant.katari.shindig.domain.Application;
 import com.globant.katari.shindig.domain.KatariActivity;
+import com.globant.katari.shindig.domain.SampleUser;
 
 public class KatariActivityServiceTest {
 
@@ -34,6 +35,9 @@ public class KatariActivityServiceTest {
 
   // This is the same applicationId but in string format.
   private String appId;
+
+  private String userId1;
+  private String userId2;
 
   private Session session;
 
@@ -50,6 +54,18 @@ public class KatariActivityServiceTest {
     Application app = new Application("http://somewhere/something.xml");
     session.saveOrUpdate(app);
     appId = "http://somewhere/something.xml";
+
+    session.createQuery("delete from CoreUser").executeUpdate();
+    SampleUser user = new SampleUser("test1");
+    session.saveOrUpdate(user);
+    userId1 = session.createQuery("select id from CoreUser").uniqueResult()
+      .toString();
+
+    user = new SampleUser("test2");
+    session.saveOrUpdate(user);
+    userId2 = session.createQuery(
+        "select id from CoreUser where name = 'test2'").uniqueResult()
+        .toString();
   }
 
   @After
@@ -60,9 +76,9 @@ public class KatariActivityServiceTest {
   @Test
   public void testGetActivities_singleActivity() throws Exception {
 
-    createSampleActivity("1", "title");
+    createSampleActivity(userId1, "title");
     Set<UserId> userIds = new HashSet<UserId>();
-    userIds.add(new UserId(UserId.Type.userId, "1"));
+    userIds.add(new UserId(UserId.Type.userId, userId1));
 
     GroupId groupId = new GroupId(GroupId.Type.self, null);
 
@@ -76,17 +92,17 @@ public class KatariActivityServiceTest {
     assertThat(activities.size(), is(1));
     assertThat(activities.get(0).getAppId(), is(appId));
     assertThat(activities.get(0).getTitle(), is("title"));
-    assertThat(activities.get(0).getUserId(), is("1"));
+    assertThat(activities.get(0).getUserId(), is(userId1));
   }
 
   @Test
   public void testGetActivities_paged() throws Exception {
     // Create 20 activities for the same user
     for (int i = 1; i <= 20; i ++) {
-      createSampleActivity("1", "title-" + i);
+      createSampleActivity(userId1, "title-" + i);
     }
     Set<UserId> userIds = new HashSet<UserId>();
-    userIds.add(new UserId(UserId.Type.userId, "1"));
+    userIds.add(new UserId(UserId.Type.userId, userId1));
     GroupId groupId = new GroupId(GroupId.Type.self, null);
     CollectionOptions options = new CollectionOptions();
     options.setMax(10);
@@ -100,7 +116,7 @@ public class KatariActivityServiceTest {
     assertThat(activities.size(), is(10));
     assertThat(activities.get(0).getAppId(), is(appId));
     assertThat(activities.get(0).getTitle(), is("title-1"));
-    assertThat(activities.get(0).getUserId(), is("1"));
+    assertThat(activities.get(0).getUserId(), is(userId1));
     assertThat(activities.get(9).getTitle(), is("title-10"));
 
     // finds the last 10 activities.
@@ -112,17 +128,17 @@ public class KatariActivityServiceTest {
     assertThat(activities.size(), is(10));
     assertThat(activities.get(0).getAppId(), is(appId));
     assertThat(activities.get(0).getTitle(), is("title-11"));
-    assertThat(activities.get(0).getUserId(), is("1"));
+    assertThat(activities.get(0).getUserId(), is(userId1));
     assertThat(activities.get(9).getTitle(), is("title-20"));
   }
 
   @Test
   public void testGetActivities_sorted() throws Exception {
-    createSampleActivity("1", "title-1");
-    createSampleActivity("1", "title-2");
+    createSampleActivity(userId1, "title-1");
+    createSampleActivity(userId1, "title-2");
 
     Set<UserId> userIds = new HashSet<UserId>();
-    userIds.add(new UserId(UserId.Type.userId, "1"));
+    userIds.add(new UserId(UserId.Type.userId, userId1));
     GroupId groupId = new GroupId(GroupId.Type.self, null);
     CollectionOptions options = new CollectionOptions();
     // Looks like the default, by looking at shindig sources.
@@ -159,19 +175,19 @@ public class KatariActivityServiceTest {
 
   @Test
   public void testGetActivities_withActivityId() throws Exception {
-    createSampleActivity("1", "title-1");
-    createSampleActivity("1", "title-2");
-    createSampleActivity("1", "title-3");
+    createSampleActivity(userId1, "title-1");
+    createSampleActivity(userId1, "title-2");
+    createSampleActivity(userId1, "title-3");
 
     List<?> idList;
     idList = session.createQuery("select id from KatariActivity").list();
 
     // These are here to make sure that we do not match the wrong user or
     // app-id.
-    createSampleActivity("1", "title-3");
-    createSampleActivity("2", "title-3");
+    createSampleActivity(userId1, "title-3");
+    createSampleActivity(userId2, "title-3");
 
-    UserId userId = new UserId(UserId.Type.userId, "1");
+    UserId userId = new UserId(UserId.Type.userId, userId1);
     GroupId groupId = new GroupId(GroupId.Type.self, null);
     CollectionOptions options = new CollectionOptions();
     // Looks like the default, by looking at shindig sources.
@@ -192,11 +208,11 @@ public class KatariActivityServiceTest {
 
   @Test
   public void testGetActivity() throws Exception {
-    createSampleActivity("1", "title");
+    createSampleActivity(userId1, "title");
     String id = session.createQuery("select id from KatariActivity")
       .uniqueResult().toString();
 
-    UserId userId = (new UserId(UserId.Type.userId, "1"));
+    UserId userId = (new UserId(UserId.Type.userId, userId1));
     GroupId groupId = new GroupId(GroupId.Type.self, null);
     // Looks like the default, by looking at shindig sources.
     SecurityToken token = new FakeGadgetToken();
@@ -206,17 +222,17 @@ public class KatariActivityServiceTest {
 
     assertThat(activity.getAppId(), is(appId));
     assertThat(activity.getTitle(), is("title"));
-    assertThat(activity.getUserId(), is("1"));
+    assertThat(activity.getUserId(), is(userId1));
   }
 
   @Test
   public void testCreateActivity() {
-    createSampleActivity("1", "title");
+    createSampleActivity(userId1, "title");
     KatariActivity activity = (KatariActivity) session.createQuery(
         "from KatariActivity where title = 'title'").uniqueResult();
     assertThat(activity.getAppId(), is(appId));
     assertThat(activity.getTitle(), is("title"));
-    assertThat(activity.getUserId(), is("1"));
+    assertThat(activity.getUserId(), is(userId1));
   }
 
   @Test

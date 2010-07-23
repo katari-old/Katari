@@ -4,9 +4,6 @@ package com.globant.katari.shindig.domain;
 
 import org.apache.commons.lang.Validate;
 
-import org.apache.shindig.social.opensocial.model.Activity;
-import org.apache.shindig.social.opensocial.model.MediaItem;
-
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -30,6 +27,11 @@ import javax.persistence.ElementCollection;
 import javax.persistence.CollectionTable;
 import javax.persistence.FetchType;
 import javax.persistence.MapKeyColumn;
+
+import org.apache.shindig.social.opensocial.model.Activity;
+import org.apache.shindig.social.opensocial.model.MediaItem;
+
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 /** An implementation of the shindig Activity interfase, that represents an
  * open social activity.
@@ -57,6 +59,13 @@ public class KatariActivity implements Activity {
    */
   @ManyToOne(optional = false, fetch = FetchType.EAGER)
   private Application application;
+
+  /** The user that generated this activity.
+   *
+   * This is never null.
+   */
+  @ManyToOne(optional = false, fetch = FetchType.EAGER)
+  private CoreUser user;
 
   /**
    * model field.
@@ -184,14 +193,6 @@ public class KatariActivity implements Activity {
   @Column(name = "url", length = 255)
   private String url;
 
-  /**
-   * TODO This should be a fk to the user.
-   *
-   * @see org.apache.shindig.social.opensocial.model.Activity
-   */
-  @Column(name = "user_id", length = 255, nullable = false)
-  private String userId;
-
   /** Needed by hibernate.
    */
   KatariActivity() {
@@ -210,25 +211,25 @@ public class KatariActivity implements Activity {
    * @param theApplication the application that generated the activity. It
    * cannot be null.
    *
-   * @param theUserId the user id. It cannot be null.
+   * @param theUser the user that generated this activity. It cannot be null.
    *
    * @param source The source activity. It cannot be null. The source activity
    * title must not be null. The id, userId, appId and postedTime of the source
    * activity are ignored.
    */
   public KatariActivity(final long thePostedTime,
-      final Application theApplication, final String theUserId,
+      final Application theApplication, final CoreUser theUser,
       final Activity source) {
 
     Validate.notNull(theApplication, "The application cannot be null.");
-    Validate.notNull(theUserId, "The user id cannot be null.");
+    Validate.notNull(theUser, "The user cannot be null.");
     Validate.notNull(source, "The source activity cannot be null.");
     Validate.notNull(source.getTitle(),
         "The source activity title cannot be null.");
 
     postedTime = thePostedTime;
     application = theApplication;
-    userId = theUserId;
+    user = theUser;
     id = 0;
 
     title = source.getTitle();
@@ -483,13 +484,14 @@ public class KatariActivity implements Activity {
   /** {@inheritDoc}
    */
   public String getUserId() {
-    return userId;
+    return Long.toString(user.getId());
   }
 
   /** {@inheritDoc}
    */
   public void setUserId(final String id) {
-    userId = id;
+    throw new RuntimeException("This is not supported."
+       + " Call the constructor instead.");
   }
 }
 

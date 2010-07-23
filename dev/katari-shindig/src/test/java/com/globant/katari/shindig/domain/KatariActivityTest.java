@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.util.Date;
 
+import com.globant.katari.shindig.domain.SampleUser;
 import org.apache.shindig.social.opensocial.model.Activity;
 
 public class KatariActivityTest {
@@ -15,6 +16,7 @@ public class KatariActivityTest {
   @Test
   public void testActivity_copy() {
     Activity activity = new KatariActivity();
+    SampleUser user = new SampleUser("test");
 
     Date updated = new Date();
 
@@ -32,7 +34,7 @@ public class KatariActivityTest {
     activity.setUrl("url");
 
     KatariActivity newActivity = new KatariActivity(new Date().getTime(),
-        new Application("some-url"), "user-id", activity);
+        new Application("some-url"), user, activity);
 
     assertThat(newActivity.getAppId(), is("some-url"));
     assertThat(newActivity.getBodyId(), is("body-id"));

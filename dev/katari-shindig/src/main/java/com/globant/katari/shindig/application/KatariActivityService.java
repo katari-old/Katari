@@ -37,6 +37,7 @@ import org.apache.shindig.social.opensocial.spi.UserId;
 import org.apache.shindig.social.opensocial.spi.GroupId;
 import org.apache.shindig.social.opensocial.spi.CollectionOptions;
 
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 import com.globant.katari.shindig.domain.KatariActivity;
 import com.globant.katari.shindig.domain.Application;
 import com.globant.katari.shindig.domain.ApplicationRepository;
@@ -204,7 +205,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
   /** @{inheritDoc}
    *
-   * This implementation ignores the groupId, appId and the fields parameter.
+   * This implementation ignores the groupId and the fields parameter.
    */
   public Future<Activity> getActivity(final UserId userId,
       final GroupId groupId, final String appId,
@@ -273,9 +274,12 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
     Application application;
     application = applicationRepository.findApplicationByUrl(appId);
+    
+    CoreUser user = (CoreUser) applicationRepository.getHibernateTemplate().get(
+        CoreUser.class, Long.parseLong(userId.getUserId(token)));
 
     KatariActivity newActivity = new KatariActivity(new Date().getTime(),
-        application, userId.getUserId(token), activity);
+        application, user, activity);
     getHibernateTemplate().saveOrUpdate(newActivity);
 
     log.trace("Leaving createActivity");
@@ -318,13 +322,6 @@ public class KatariActivityService extends HibernateDaoSupport implements
         "You should ask for at least one row.");
 
     Criteria criteria = getSession().createCriteria(Activity.class);
-
-    List<String> userIdList = getUserIdList(userIds, token);
-    if (userIdList.size() == 1) {
-      criteria.add(Restrictions.eq("userId", userIdList.get(0)));
-    } else {
-      criteria.add(Restrictions.in("userId", userIdList));
-    }
 
     addGroupFilterToCriteria(criteria, userIds, groupId, token);
 
@@ -390,8 +387,13 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
     switch (groupId.getType()) {
     case self:
-      // Get all the user's activities.
-      criteria.add(Restrictions.in("userId", getUserIdList(userIds, token)));
+      List<Long> userIdList = getUserIdList(userIds, token);
+      if (userIdList.size() == 1) {
+        criteria.createCriteria("user")
+          .add(Restrictions.eq("id", userIdList.get(0)));
+      } else {
+        criteria.createCriteria("user").add(Restrictions.in("id", userIdList));
+      }
       break;
     default:
       throw new ProtocolException(HttpServletResponse.SC_BAD_REQUEST,
@@ -451,14 +453,14 @@ public class KatariActivityService extends HibernateDaoSupport implements
   *
   * TODO This should probably be a list of long.
   */
- private List<String> getUserIdList(Set<UserId> userIds, SecurityToken token) {
+ private List<Long> getUserIdList(Set<UserId> userIds, SecurityToken token) {
     Validate.notNull(userIds, "The user ids cannot be null.");
     Validate.notNull(token, "The token cannot be null.");
-    List<String> result = new ArrayList<String>();
+    List<Long> result = new ArrayList<Long>();
     for (UserId userId: userIds) {
       String uid = userId.getUserId(token);
       if (uid != null) {
-        result.add(uid);
+        result.add(Long.parseLong(uid));
       }
     }
     return result;
