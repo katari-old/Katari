@@ -3,7 +3,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
     http://maven.apache.org/maven-v4_0_0.xsd">
-  <!-- vim: set ts=2 et sw=2 ai tw=80: -->
 
   <parent>
     <groupId>com.globant.katari</groupId>
@@ -870,6 +869,11 @@ try {
           </query>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>
     </plugins>
   </reporting>
 
@@ -925,4 +929,6 @@ try {
     </dependency.jetty-plugin.version>
   </properties>
 
+<!-- vim: set ts=2 et sw=2 ai tw=80: -->
 </project>
+
