@@ -105,9 +105,36 @@ public class GadgetGroupControllerTest {
     verify(response);
   }
 
+  @Test
+  public void testHandle_staticGroup() throws Exception {
+    String groupName = "theGroup";
+    CoreUser userId = createMock(CoreUser.class);
+
+    GadgetGroup group = new GadgetGroup(null, groupName, 3);
+    Application app = new Application("http://lala");
+    GadgetInstance gi = new GadgetInstance(app, 1, 2);
+    group.addGadget(gi);
+
+    GadgetGroupCommand command = createMock(GadgetGroupCommand.class);
+    expect(command.execute()).andReturn(group);
+    replay(command);
+
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+    PrintWriter writer = new PrintWriter(os);
+
+    HttpServletResponse response = createMock(HttpServletResponse.class);
+    response.addHeader("Content-type", "application/json");
+    expect(response.getWriter()).andReturn(writer).times(1);
+    replay(response);
+
+    controller.handle(request, response, command, null);
+
+    writer.flush();
+    assertThat(os.toString(), is(baselineJson()));
+    verify(response);
+  }
+
   /** Creates the baseline json string, a string with a sample json object.
-   *
-   * TODO revisit the json structure
    *
    * @return the json string.
    *

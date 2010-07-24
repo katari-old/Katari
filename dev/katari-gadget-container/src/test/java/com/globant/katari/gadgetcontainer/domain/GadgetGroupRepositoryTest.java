@@ -54,45 +54,51 @@ public class GadgetGroupRepositoryTest {
     session.close();
   }
 
-  /** This test, persist a new group, and the search it back in the db.
-   *  check that the group has the same attributes.
-   */
   @Test
-  public void testFindPage() {
-    String groupName = randomUUID().toString();
-    String url = "http://" + randomUUID().toString();
-    createGadgetGroup(user, groupName, url);
+  public void testFindGadgetGroup() {
+    String url = "http://somewhere/gadget.xml";
+    createGadgetGroups(url);
 
-    GadgetGroup thePage = repository.findGadgetGroup(1, groupName);
+    GadgetGroup group = repository.findGadgetGroup(user.getId(), "for user");
 
-    assertNotNull(thePage);
-    assertFalse(thePage.getGadgets().isEmpty());
-    assertTrue(groupName.equals(thePage.getName()));
-    assertTrue(thePage.getGadgets().iterator().next().getUrl().equals(url));
+    assertNotNull(group);
+    assertFalse(group.getGadgets().isEmpty());
+    assertTrue("for user".equals(group.getName()));
+    assertTrue(group.getGadgets().iterator().next().getUrl().equals(url));
   }
 
-  /** This test, persist a new group, and the search it back in the db.
-   *  check that the group has the same attributes.
-   */
   @Test
-  public void testFindPageNonExist() {
-    GadgetGroup thePage = repository.findGadgetGroup(-1, "nonExist");
-    assertNull(thePage);
+  public void testFindGadgetGroup_forEverybody() {
+    String url = "http://somewhere/gadget.xml";
+    createGadgetGroups(url);
+
+    GadgetGroup group = repository.findGadgetGroup(user.getId(),
+        "for everybody");
+
+    assertNotNull(group);
+    assertFalse(group.getGadgets().isEmpty());
+    assertTrue("for everybody".equals(group.getName()));
+    assertTrue(group.getGadgets().iterator().next().getUrl().equals(url));
   }
 
-  /** Creates and persists a new group in the database.
-   *
-   * @param userId
-   * @param groupName
-   * @param gadgetUrl
-   * @param gadgetPosition
+  @Test
+  public void testFindGadgetGroup_nonExisting() {
+    GadgetGroup group = repository.findGadgetGroup(user.getId(), "nonExist");
+    assertNull(group);
+  }
+
+  /** Creates one gadget group for the user (named 'for user'), and another for
+   * everybody (named 'for everybody').
    */
-  private void createGadgetGroup(final CoreUser userId, final String groupName,
-      final String gadgetUrl) {
-    GadgetGroup group = new GadgetGroup(userId, groupName, 2);
+  private void createGadgetGroups(final String gadgetUrl) {
+    GadgetGroup group = new GadgetGroup(user, "for user", 2);
     Application app = new Application(gadgetUrl);
     // Test friendly hack: never use the repository like this.
     repository.getHibernateTemplate().saveOrUpdate(app);
+    group.addGadget(new GadgetInstance(app, 1, 2));
+    repository.save(group);
+
+    group = new GadgetGroup(user, "for everybody", 2);
     group.addGadget(new GadgetInstance(app, 1, 2));
     repository.save(group);
   }

@@ -100,7 +100,10 @@ public abstract class GadgetGroupController extends AbstractCommandController {
 
     JSONObject groupJson = new JSONObject();
     if (group != null) {
-      long owner = group.getOwner().getId();
+      long owner = 0;
+      if (group.getOwner() != null) {
+        owner = group.getOwner().getId();
+      }
       groupJson = new JSONObject();
       groupJson.put("id", group.getId());
       groupJson.put("name", group.getName());

@@ -26,6 +26,9 @@ import com.globant.katari.hibernate.coreuser.domain.CoreUser;
  * Gadgets are intended to be shown in a page in a column layout. Each gadget
  * defines the column and the position in that column.
  *
+ * Gadgets can be static or customizable. Static gadget groups do not have an
+ * owner. If it is customizable, it always has an owner.
+ *
  * @author waabox(emiliano[dot]arango[at]globant[dot]com)
  */
 @Entity
@@ -47,7 +50,7 @@ public class GadgetGroup {
 
   /** {@link String} the owner of this gadget group.
    *
-   * If null, this is a shared group that can be used by everybody.
+   * If null, this is a static group.
    */
   @ManyToOne(optional = true, fetch = FetchType.EAGER)
   private CoreUser owner = null;
@@ -70,7 +73,7 @@ public class GadgetGroup {
 
   /** Constructor.
    *
-   * @param user the user that owns the gadget group. If null, it is a shared
+   * @param user the user that owns the gadget group. If null, it is a static
    * group.
    *
    * @param groupName name of the group. It cannot be null
@@ -99,7 +102,12 @@ public class GadgetGroup {
     return name;
   }
 
-  /** @return the group owner, null for a shared gadget group.
+  /** Returns the owner of a customizable group, or null if this is as static
+   * group.
+   *
+   * If the group is customizable, this never returns null.
+   *
+   * @return the group owner, null for a static gadget group.
    */
   public CoreUser getOwner() {
     return owner;
@@ -131,6 +139,14 @@ public class GadgetGroup {
    */
   public int getNumberOfColumns() {
     return numberOfColumns;
+  }
+
+  /** Tells if this gadget group is static or customizable.
+   *
+   * @return true if the gadget group is static, false otherwise.
+   */
+  public boolean isStatic() {
+    return owner == null;
   }
 }
 
