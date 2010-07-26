@@ -20,7 +20,7 @@ KATARI.SOCIAL.canvasConfig.relayFile = KATARI.SOCIAL.canvasConfig.host +
 KATARI.SOCIAL.canvasConfig.rpcToken = "rpcToken";
 KATARI.SOCIAL.canvasConfig.applicationPrefix = "Application_";
 KATARI.SOCIAL.canvasConfig.socialContainer = "default";
-KATARI.SOCIAL.canvasConfig.defaultView = "default";
+KATARI.SOCIAL.canvasConfig.defaultView = "home";
 KATARI.SOCIAL.canvasConfig.synId = "0";
 
 KATARI.Console = {
@@ -116,10 +116,12 @@ KATARI.SOCIAL.Canvas = function(sContainer) {
     }
     // And create all the gadgets.
     for(m in groupSpec.gadgets) {
-      var obj = groupSpec.gadgets[m];
-      this.addGadget(new KATARI.SOCIAL.GadgetInstance(obj.id, obj.url,
-            obj.securityToken, groupSpec.viewerId, groupSpec.ownerId,
-            obj.column, obj.order));
+      if (groupSpec.gadgets.hasOwnProperty(m)) {
+        var obj = groupSpec.gadgets[m];
+        this.addGadget(new KATARI.SOCIAL.GadgetInstance(obj.id, obj.url,
+              obj.securityToken, groupSpec.viewerId, groupSpec.ownerId,
+              obj.column, obj.order));
+      }
     }
     return this;
   };
@@ -149,28 +151,35 @@ KATARI.SOCIAL.Canvas = function(sContainer) {
     );
     KATARI.Console.log(this.gadgets);
     // add the gadgets
+    //
+    // TODO: is this iterating over an array? If that is the case, it is not
+    // good.
     for (i in this.gadgets) {
-      var theGadget = this.gadgets[i];
-      var iFrame = $("<iframe>");
-      var theId = this.createApplicationId(theGadget);
-      iFrame.attr("src", theGadget.buildGadgetUrl());
-      iFrame.attr("id", theId);
-      iFrame.attr("name", theId);
+      if (this.gadgets.hasOwnProperty(i)) {
+        var theGadget = this.gadgets[i];
+        var iFrame = $("<iframe>");
+        var theId = this.createApplicationId(theGadget);
+        iFrame.attr("src", theGadget.buildGadgetUrl());
+        iFrame.attr("id", theId);
+        iFrame.attr("name", theId);
 
-      var titleDiv = $("<div></div>");
-      titleDiv.attr("id", "header_" + theGadget.id)
-      var localDiv = $("<div>");
+        var titleDiv = $("<div></div>");
+        titleDiv.attr("id", "header_" + theGadget.id);
+        var localDiv = $("<div>");
 
-      localDiv.append(iFrame);
+        localDiv.append(iFrame);
 
-      this.columns[theGadget.column].append(titleDiv);
-      this.columns[theGadget.column].append(localDiv);
+        this.columns[theGadget.column].append(titleDiv);
+        this.columns[theGadget.column].append(localDiv);
+      }
     }
 
     var containerDiv = $('<div>');
 
     for (item in this.columns) {
-      containerDiv.append(this.columns[item]);
+      if (this.columns.hasOwnProperty(item)) {
+        containerDiv.append(this.columns[item]);
+      }
     }
     containerDiv.append("<div style='clear:both;'><!-- empty div --></div>");
 
@@ -179,9 +188,11 @@ KATARI.SOCIAL.Canvas = function(sContainer) {
 
     if (window.gadgets) {
       for (i in this.gadgets) {
-        var appId = this.createApplicationId(this.gadgets[i]);
-        gadgets.rpc.setRelayUrl(appId, KATARI.SOCIAL.canvasConfig.relayFile);
-        gadgets.rpc.setAuthToken(appId, KATARI.SOCIAL.canvasConfig.rpcToken);
+        if (this.gadgets.hasOwnProperty(i)) {
+          var appId = this.createApplicationId(this.gadgets[i]);
+          gadgets.rpc.setRelayUrl(appId, KATARI.SOCIAL.canvasConfig.relayFile);
+          gadgets.rpc.setAuthToken(appId, KATARI.SOCIAL.canvasConfig.rpcToken);
+        }
       }
     }
 
@@ -215,15 +226,17 @@ KATARI.SOCIAL.Container.prototype.setHeight = function(height) {
 
 KATARI.SOCIAL.Container.prototype.setTitle = function(title) {
   var element = $('#header_' + this.f);
-  if (element != undefined) {
+  if (element !== undefined) {
     element.text(title.replace(/&/g, '&amp;').replace(/</g, '&lt;'));
   }
 };
 
 KATARI.SOCIAL.Container.prototype._parseIframeUrl = function(url) {
-  var ret = new Object();
+  var ret = {};
   var hashParams = url.replace(/#.*$/, '').split('&');
-  var param = key = val = '';
+  var param = '';
+  var key = '';
+  var val = '';
   for (i = 0; i < hashParams.length; i++) {
     param = hashParams[i];
     key = param.substr(0, param.indexOf('='));
@@ -234,6 +247,7 @@ KATARI.SOCIAL.Container.prototype._parseIframeUrl = function(url) {
 };
 
 KATARI.SOCIAL.Container.prototype.setUserPref = function(editToken, name, value) {
+  /*
   if ($(this.f) != undefined) {
     var params = gadgets.container._parseIframeUrl($(this.f).src);
     new Ajax.Request('/prefs/set', {
@@ -245,6 +259,7 @@ KATARI.SOCIAL.Container.prototype.setUserPref = function(editToken, name, value)
       }
     });
   }
+  */
 };
 
 KATARI.SOCIAL.Container.prototype._getUrlForView = function(view, person, app, mod) {
@@ -260,7 +275,7 @@ KATARI.SOCIAL.Container.prototype._getUrlForView = function(view, person, app, m
 };
 
 KATARI.SOCIAL.Container.prototype.requestNavigateTo = function(view, opt_params) {
-  if ($(this.f) != undefined) {
+  if ($(this.f) !== undefined) {
     var params = gadgets.container._parseIframeUrl($(this.f).src);
     var url = gadgets.container._getUrlForView(view, params.owner, params.aid,
         params.mid);

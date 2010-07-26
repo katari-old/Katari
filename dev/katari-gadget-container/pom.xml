@@ -111,12 +111,12 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>c3p0</groupId>
       <artifactId>c3p0</artifactId>
     </dependency>
- 
+
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
@@ -124,5 +124,28 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <!-- Package you JS files as resources in target jar. -->
+    <!-- This is not that nice, it would be better not to specify the default
+         resources directory. -->
+    <resources>
+      <resource>
+        <directory>src/main/js</directory>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>gr.abiss.mvn.plugins</groupId>
+        <artifactId>maven-jstools-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 
 </project>

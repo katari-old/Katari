@@ -869,13 +869,15 @@ try {
           </query>
         </configuration>
       </plugin>
+      <!-- Generates used declared, used undeclared, unused declared dependency
+           report. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.1</version>
       </plugin>
     </plugins>
-  </reporting>
+   </reporting>
 
   <!-- The location where deploy and site-deploy leaves the artifacts.
        repositoryRoot is defined in globant parent pom. We override the parent
