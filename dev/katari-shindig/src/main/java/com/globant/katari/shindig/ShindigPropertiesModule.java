@@ -18,7 +18,7 @@ public class ShindigPropertiesModule extends PropertiesModule {
 
     Validate.notNull(theContextPath, "The context path cannot be null.");
     contextPath = theContextPath;
-    
+
     Properties properties = getProperties();
     for (Object o : properties.keySet()) {
       String key = (String) o;

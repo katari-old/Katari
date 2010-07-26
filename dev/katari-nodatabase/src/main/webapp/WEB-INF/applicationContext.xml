@@ -33,7 +33,7 @@
 
   <!-- The style module. It provides a sample style and serves the static
   content used in the application.
-  
+
   TODO This was removed from here because the default style included weblets
   that needs the database. Create a new style module embedded in the war. -->
   <!-- import resource="classpath:/com/globant/katari/style/module.xml"/ -->

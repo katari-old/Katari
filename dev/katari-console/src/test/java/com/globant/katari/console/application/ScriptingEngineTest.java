@@ -19,14 +19,14 @@ import org.junit.Before;
 import com.globant.katari.console.application.ScriptingEngine;
 
 public class ScriptingEngineTest {
-  
+
   private static final String UTF8 = "UTF-8";
-  
+
   private ScriptingEngine scriptingEngine;
   private ApplicationContext applicationContext;
   private ByteArrayOutputStream output;
   private ByteArrayOutputStream error;
-  
+
   @Before
   public void setUp() {
     applicationContext = createMock(ApplicationContext.class);
@@ -35,7 +35,7 @@ public class ScriptingEngineTest {
     output = new ByteArrayOutputStream();
     error = new ByteArrayOutputStream();
   }
-  
+
   @Test
   public void testExecute() throws UnsupportedEncodingException {
     String helloWorld = "class Greeter {\n def greet = { name ->\n"
@@ -46,7 +46,7 @@ public class ScriptingEngineTest {
     assertThat(error.size(), is(0));
     assertThat(output.toString(UTF8), containsString("Hello, World!"));
   }
-  
+
   @Test
   public void testExecuteTypo() {
     String helloWorld = "class Greeter {\n def gret = { name ->\n"
@@ -57,7 +57,7 @@ public class ScriptingEngineTest {
     assertThat(output.size(), is(0));
     assertThat(error.size(), not(0));
   }
-  
+
   @Test
   public void testExecuteResult() throws UnsupportedEncodingException {
     String code = "1 == 2";
@@ -65,28 +65,28 @@ public class ScriptingEngineTest {
     scriptingEngine.execute(code, output, error);
     assertThat(output.toString(UTF8), containsString("false"));
     assertThat(error.size(), is(0));
-    
+
     code = "5*8";
-    
+
     output.reset();
     error.reset();
-    
+
     scriptingEngine.execute(code, output, error);
     assertThat(output.toString(UTF8), containsString("40"));
     assertThat(error.size(), is(0));
   }
-  
+
   @Test
   public void testExecuteAppContextAccess()
       throws UnsupportedEncodingException {
     String code = "def testBean = applicationContext.getBean(\"testBean\");"
         + "\ntestBean.toString();";
-    
+
     expect(applicationContext.getBean("testBean")).andReturn("testOK");
     replay(applicationContext);
-    
+
     scriptingEngine.execute(code, output, error);
-    
+
     assertThat(output.toString(UTF8), containsString("testOK"));
     assertThat(error.size(), is(0));
   }

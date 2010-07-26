@@ -184,7 +184,7 @@ public class SecureUrlAccessHelperTest extends TestCase {
 
   @SuppressWarnings("serial")
   private static class DenyAccess extends ConfigAttributeDefinition{}
-  
+
   @SuppressWarnings("serial")
   private static class GrantAccess extends ConfigAttributeDefinition{}
 }

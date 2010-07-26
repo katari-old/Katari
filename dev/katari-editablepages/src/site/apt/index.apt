@@ -106,7 +106,7 @@ FCKConfig.ImageUploadAllowedExtensions = ".(jpg|gif|jpeg|png)$" ;
  the editor loads /module/decorator/css/fck-editorarea.css. Make sure to make
  this file available in that location if you do not change the editorAreaCss
  parameter.
- 
+
  [configurationUrl:] The url (relative to the context path) for the fck config
  javascrip file. See the FckEditor documentation related to the configuration
  file (fckconfig.js).

@@ -53,7 +53,7 @@ Security considerations
  independent of the specific object that will be viewed. The search module will
  use katari standard security mechanism (using acegi security) to check if the
  logged on user has access to that url.
- 
+
 Preparing a module to index its content
 
  A module that wants to integrate with the search module must provide two
@@ -151,7 +151,7 @@ public class UserSearchAdapter implements SearchAdapter {
  The last step to index the module content is to register the objects and the
  adapters in the search module. For that, add the following lines in your
  module.xml:
- 
+
 ------
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='search.indexableClasses'/>

@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
- 
+
 import com.globant.${clientName}.${projectName}.web.testsupport.SecurityTestUtils;
 
 import com.globant.${clientName}.${projectName}.web.testsupport.SpringTestUtils;

@@ -56,7 +56,7 @@
       </bean>
     </property>
   </bean>
-  
+
   <!-- Adds fckeditor and dojo to html validation ignored list. -->
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.htmlValidator.ignoredUrlpatterns' />

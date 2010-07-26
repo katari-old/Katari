@@ -78,7 +78,7 @@
         </tbody>
       </#if>
     </table>
-    
+
     <#-- Paging -->
     <div class="paginator">
       <#if 0 < userFilter.paging.pageNumber>

@@ -274,7 +274,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
     Application application;
     application = applicationRepository.findApplicationByUrl(appId);
-    
+
     CoreUser user = (CoreUser) applicationRepository.getHibernateTemplate().get(
         CoreUser.class, Long.parseLong(userId.getUserId(token)));
 

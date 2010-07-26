@@ -22,7 +22,7 @@
 
   <!-- The classic menu module. -->
   <katari:import module="com.globant.katari.menu.classic"/>
-  
+
   <!--  The editable-pages module -->
   <katari:import module="com.globant.katari.editablepages"/>
 

@@ -5,11 +5,11 @@ Menu support
  Katari has support for declarative menus. Modules declare menu entries that
  Katari merges together. The menus can be defined using a special syntax in
  spring.
- 
+
  The responsibility of drawing a menu is delegated to a module, it is not part
  of Katari's core. The module katari-classic-menu is one possible module that
  draws the menu in the page.
- 
+
  This is the structure of a menu declaration:
 
 --------------------

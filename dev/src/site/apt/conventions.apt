@@ -2,7 +2,7 @@
 
  Katari coding conventions are based on Sun Java Coding conventions with some
  changes. Here you will find the differences with that document.
- 
+
  * Use 2 spaces instead of 4 for identation. Never use tabs.
 
  * Servlet initialization parameters follow the same conventions as normal java

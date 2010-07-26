@@ -95,7 +95,7 @@ public class KatariWrapperServletTest {
         Assert.assertEquals("true", addedParam);
         return true;
       }
-      
+
       public void appendTo(StringBuffer buffer) {
         buffer.append("Matching with a delegating servlet " +
         		"config and a ScopedServletContext");

@@ -28,7 +28,7 @@
   <bean name='/home.do'
       class='com.globant.katari.console.view.HomeController'>
   </bean>
-  
+
   <bean name='/execute.do'
       class='com.globant.katari.console.view.ScriptExecutionController'>
     <constructor-arg ref="scriptingEngine" />

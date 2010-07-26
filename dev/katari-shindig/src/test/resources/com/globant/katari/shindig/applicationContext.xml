@@ -50,7 +50,7 @@
 
   <!-- The katari data source as an alias to dataSource. -->
   <alias name="dataSource" alias="katari.dataSource"/>
- 
+
   <!-- Adds a sample user entity to hibernate. -->
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.persistentClasses'/>

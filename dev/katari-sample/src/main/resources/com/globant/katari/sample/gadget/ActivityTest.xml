@@ -8,7 +8,7 @@
 
    <Require feature="opensocial-0.7"></Require>
    <Require feature="dynamic-height"></Require>
-   
+
  </ModulePrefs>
 
  <Content type="html">
@@ -137,14 +137,14 @@
     if (!viewer) {
       viewer = dataResponse.get('viewer').getData();
     }
-    
+
     activities = dataResponse.get('viewerActivities')
       .getData()['activities'].asArray();
-    
+
     document.getElementById('stream').style.display = 'block';
 
     var html = '';
-    
+
     if (!activities || activities.length == 0) {
       document.getElementById('stream').innerHTML =
         'You do not have any activities yet';

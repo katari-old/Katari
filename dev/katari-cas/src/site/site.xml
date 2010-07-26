@@ -6,7 +6,7 @@
     <artifactId>katari-siteskin</artifactId>
     <version>${version}</version>
   </skin>
- 
+
   <bannerLeft>
     <name>Katari</name>
     <src>images/mainLogo.png</src>
