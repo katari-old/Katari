@@ -144,6 +144,12 @@
       <plugin>
         <groupId>gr.abiss.mvn.plugins</groupId>
         <artifactId>maven-jstools-plugin</artifactId>
+        <configuration>
+          <!-- Workaround: muiltimodule site build fails without this, with an
+               error saying that src/main/js was not found. Run mvn site in the
+               parent directory to verify. -->
+          <jsDir>${basedir}/src/main/js</jsDir>
+        </configuration>
       </plugin>
     </plugins>
   </reporting>
