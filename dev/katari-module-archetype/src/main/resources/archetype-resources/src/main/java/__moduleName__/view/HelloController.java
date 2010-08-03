@@ -33,11 +33,11 @@ public class HelloController extends AbstractController {
    *
    * {@inheritDoc}
    */
-	@Override
+  @Override
   protected ModelAndView handleRequestInternal(final HttpServletRequest
       request, final HttpServletResponse response) throws Exception {
     log.trace("Entering handleRequestInternal");
-		ModelAndView mav = new ModelAndView("hello");
+    ModelAndView mav = new ModelAndView("hello");
 
     Authentication authentication;
     authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,7 +49,7 @@ public class HelloController extends AbstractController {
     mav.addObject("userName", userName);
 
     log.trace("Leaving handleRequestInternal");
-		return mav;
-	}
+    return mav;
+  }
 }
 

@@ -24,7 +24,8 @@ import com.globant.katari.tools.DatabaseTestSupport;
 public class OracleDropAllObjects extends DatabaseTestSupport {
 
   /** The class logger. */
-  private final Logger log = LoggerFactory.getLogger(OracleDropAllObjects.class);
+  private final Logger log = LoggerFactory.getLogger(
+      OracleDropAllObjects.class);
 
   /** ALL_TABLES_QUERY. */
   private static final String ALL_TABLES_QUERY =
@@ -89,7 +90,6 @@ public class OracleDropAllObjects extends DatabaseTestSupport {
     /* Drops all sequences. */
     Statement st = conn.createStatement();
     ResultSet rs = st.executeQuery(ALL_SEQ_QUERY);
-    rs = st.executeQuery(ALL_SEQ_QUERY);
     List<String> sequenceNames = new ArrayList<String>();
     while (rs.next()) {
       sequenceNames.add(rs.getString(1));

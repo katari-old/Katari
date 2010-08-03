@@ -91,15 +91,25 @@ public final class ModuleFilterProxy implements Filter {
     sort();
   }
 
+  /** Comparator for filter priority, used in sort().
+   */
+  private static class PriorityComparator
+      implements Comparator<FilterMapping> {
+
+    /** @{inheritDoc}
+     *
+     * Lower priority comes first.
+     */
+    public int compare(final FilterMapping o1, final FilterMapping o2) {
+      return o1.getPriority() - o2.getPriority();
+    }
+  }
+
   /** Sorts the list of filters according to their priority.
    */
   private void sort() {
     // Sort the list of filters.
-    Collections.sort(filterMaps, new Comparator<FilterMapping>() {
-      public int compare(final FilterMapping o1, final FilterMapping o2) {
-        return o1.getPriority() - o2.getPriority();
-      }
-    });
+    Collections.sort(filterMaps, new PriorityComparator());
   }
 
   /** Called by the servlet container to indicate to a servlet that it is being

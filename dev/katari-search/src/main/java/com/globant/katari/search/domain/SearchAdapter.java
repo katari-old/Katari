@@ -6,7 +6,7 @@ package com.globant.katari.search.domain;
  *
  * The search module needs a way to render each object found and to filter the
  * possible objects with security constraints.
- * 
+ *
  * Modules implement this interface and registers it in the search module,
  * appending it to the list named 'search.converters' in spring.
  *

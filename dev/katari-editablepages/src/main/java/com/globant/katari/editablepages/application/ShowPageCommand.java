@@ -49,7 +49,7 @@ public class ShowPageCommand implements Initializable {
    * It is null for a new page.
    */
   private String content = null;
-  
+
   /** The unpublished content of the page.
   *
   * It is null for a new page.
@@ -130,7 +130,7 @@ public class ShowPageCommand implements Initializable {
   public String getContent() {
     return content;
   }
-  
+
   /** Returns the page unpublished content.
   *
   * @return Returns the page unpublished content.

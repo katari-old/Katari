@@ -86,7 +86,8 @@ public class FreemarkerTestEngine {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(FreemarkerTestEngine.class);
+  private static Logger log = LoggerFactory.getLogger(
+      FreemarkerTestEngine.class);
 
   /** Freemarker configuration.
    *

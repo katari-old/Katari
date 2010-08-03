@@ -24,7 +24,8 @@ public final class WebletSupportFilter implements Filter {
 
   /** The class logger.
   */
-  private static Logger log = LoggerFactory.getLogger(WebletSupportFilter.class);
+  private static Logger log = LoggerFactory.getLogger(
+      WebletSupportFilter.class);
 
   /** The servlet context.
    *

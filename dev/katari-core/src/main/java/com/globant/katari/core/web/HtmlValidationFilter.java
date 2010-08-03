@@ -188,6 +188,11 @@ public class HtmlValidationFilter implements Filter {
           "This filter can only be applied to http requests.");
     }
 
+    if (!(request instanceof HttpServletRequest)) {
+      throw new ServletException(
+          "This filter can only be applied to http requests.");
+    }
+
     HttpServletResponse httpResponse = (HttpServletResponse) response;
 
     String requestUri = ((HttpServletRequest) request).getRequestURI();

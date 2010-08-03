@@ -25,7 +25,8 @@ public class MySqlDropAllObjects extends DatabaseTestSupport {
 
   /** A logger.
    */
-  private static Logger log = LoggerFactory.getLogger(MySqlDropAllObjects.class);
+  private static Logger log = LoggerFactory.getLogger(
+      MySqlDropAllObjects.class);
 
   /** string to see al the tables.
    */

@@ -183,7 +183,7 @@ public class IndexRepository {
     } else {
       result = new SearchResult();
       log.trace("Leaving find with no results");
-      return new SearchResult();
+      return result;
     }
   }
 

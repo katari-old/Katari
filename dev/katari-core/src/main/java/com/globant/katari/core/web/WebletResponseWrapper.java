@@ -19,7 +19,8 @@ public class WebletResponseWrapper extends ServletOutputInterceptor {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(WebletResponseWrapper.class);
+  private static Logger log = LoggerFactory.getLogger(
+      WebletResponseWrapper.class);
 
   /** A stream that gets the data and buffers it in a byte array.
    *

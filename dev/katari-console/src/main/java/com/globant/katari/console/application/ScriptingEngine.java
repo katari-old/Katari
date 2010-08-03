@@ -66,7 +66,7 @@ public class ScriptingEngine implements ApplicationContextAware {
     Object result = null;
     try {
       result = groovyShell.evaluate(code);
-    } catch (Throwable cause) {
+    } catch (Exception cause) {
       errorPrintStream.println(cause.getMessage());
     } finally {
       System.setOut(originalOut);
@@ -86,7 +86,7 @@ public class ScriptingEngine implements ApplicationContextAware {
   public void setApplicationContext(
       final ApplicationContext theApplicationContext) {
     Validate.notNull(theApplicationContext, "The application context can't be"
-    		+ " null");
+      + " null");
     applicationContext = theApplicationContext;
   }
 }

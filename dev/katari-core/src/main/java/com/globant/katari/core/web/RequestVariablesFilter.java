@@ -25,7 +25,8 @@ public final class RequestVariablesFilter implements Filter {
 
   /** The class logger.
   */
-  private static Logger log = LoggerFactory.getLogger(RequestVariablesFilter.class);
+  private static Logger log = LoggerFactory.getLogger(
+      RequestVariablesFilter.class);
 
   /** {@inheritDoc}
    *
