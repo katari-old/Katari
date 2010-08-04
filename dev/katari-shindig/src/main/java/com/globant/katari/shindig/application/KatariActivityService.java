@@ -72,10 +72,13 @@ public class KatariActivityService extends HibernateDaoSupport implements
     applicationRepository = theApplicationRepository;
   }
 
-  /** @{inheritDoc}
+  /** {@inheritDoc}
    *
    * TODO: provide a hook to return the other groups: all, friends, groupId and
    * deleted.
+   *
+   * @param userIds The list of user ids that generated the requested
+   * activities. It cannot be null.
    *
    * @param groupId only supports @self, that returns all the activities from
    * all the provided users. It cannot be null.
@@ -89,8 +92,13 @@ public class KatariActivityService extends HibernateDaoSupport implements
    * filtering, number of returned activities, etc. It returns the
    * activities in the specified order. It cannot be null.
    *
+   * @param token the security token of the currently logged on user or
+   * application. It cannot be null.
+   *
    * @return the found activities, in the specified order. It never returns
    * null.
+   *
+   * @throws ProtocolException in case of error.
    */
   @SuppressWarnings("unchecked")
   public Future<RestfulCollection<Activity>> getActivities(
@@ -144,7 +152,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
         options.getMax()));
   }
 
-  /** @{inheritDoc}
+  /** {@inheritDoc}
    *
    * Returns the activities for a single user. See javadoc for the overloaded
    * getActivity operation.
@@ -172,7 +180,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
     Criteria criteria;
     criteria = createCriteriaFor(userIds, groupId, appId, options, token);
     List<Long> activityIdAsLongs = new ArrayList<Long>(activityIds.size());
-    for (String id: activityIds) {
+    for (String id : activityIds) {
       activityIdAsLongs.add(Long.parseLong(id));
     }
     criteria.add(Restrictions.in("id", activityIdAsLongs));
@@ -203,7 +211,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
         options.getMax()));
   }
 
-  /** @{inheritDoc}
+  /** {@inheritDoc}
    *
    * This implementation ignores the groupId and the fields parameter.
    */
@@ -235,7 +243,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
     return ImmediateFuture.newInstance(activity);
   }
 
-  /** @{inheritDoc}
+  /** {@inheritDoc}
    *
    * This operation is not implemented, throws UnsupportedOperationException.
    */
@@ -252,7 +260,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
     */
   }
 
-  /** @{inheritDoc}
+  /** {@inheritDoc}
    *
    * Creates (and persists) a new activity, obtaining the fields from the
    * provided activity.
@@ -453,11 +461,12 @@ public class KatariActivityService extends HibernateDaoSupport implements
   *
   * TODO This should probably be a list of long.
   */
- private List<Long> getUserIdList(Set<UserId> userIds, SecurityToken token) {
+ private List<Long> getUserIdList(final Set<UserId> userIds,
+     final SecurityToken token) {
     Validate.notNull(userIds, "The user ids cannot be null.");
     Validate.notNull(token, "The token cannot be null.");
     List<Long> result = new ArrayList<Long>();
-    for (UserId userId: userIds) {
+    for (UserId userId : userIds) {
       String uid = userId.getUserId(token);
       if (uid != null) {
         result.add(Long.parseLong(uid));

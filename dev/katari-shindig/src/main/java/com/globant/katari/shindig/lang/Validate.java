@@ -56,8 +56,8 @@ public class Validate {
    *
    * @throws ProtocolException if the precondition is not met.
    */
-  public static final void isTrue(boolean expression, final String message)
-    throws ProtocolException {
+  public static final void isTrue(final boolean expression,
+      final String message) throws ProtocolException {
     if (expression == false) {
       throw new ProtocolException(DEFAULT_CODE, message);
     }

@@ -83,19 +83,24 @@ public class KatariMediaItem implements MediaItem {
   KatariMediaItem() {
   }
 
-  /**
-   * Create a media item specifying the mimeType, type and url.
-   * @param mimeType the mime type of the media item.
-   * @param type the type of the media items (see the specification)
-   * @param url the url pointing to the media item.
+  /** Create a media item specifying the mimeType, type and url.
+   *
+   * @param theMimeType the mime type of the media item.
+   *
+   * @param theType the type of the media items (see the specification)
+   *
+   * @param theUrl the url pointing to the media item.
    */
-  public KatariMediaItem(String mimeType, Type type, String url) {
-    this.mimeType = mimeType;
-    this.type = type;
-    this.url = url;
+  public KatariMediaItem(final String theMimeType, final Type theType,
+      final String theUrl) {
+    mimeType = theMimeType;
+    type = theType;
+    url = theUrl;
   }
 
   /** Creates a media item with all the attributes copied from source.
+   *
+   * @param source The original media item. It cannot be null.
    */
   public KatariMediaItem(final MediaItem source) {
     mimeType = source.getMimeType();
@@ -104,67 +109,51 @@ public class KatariMediaItem implements MediaItem {
     url = source.getUrl();
   }
 
-  /**
-   * {@inheritDoc}
-   * @see org.apache.shindig.social.opensocial.model.MediaItem#getMimeType()
+  /** {@inheritDoc}
    */
   public String getMimeType() {
     return mimeType;
   }
 
-  /**
-   * {@inheritDoc}
-   * @see org.apache.shindig.social.opensocial.model.MediaItem#setMimeType(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setMimeType(String mimeType) {
-    this.mimeType = mimeType;
+  public void setMimeType(final String theMimeType) {
+    mimeType = theMimeType;
   }
 
-  /**
-   * {@inheritDoc}
-   * @see org.apache.shindig.social.opensocial.model.MediaItem#getType()
+  /** {@inheritDoc}
    */
   public Type getType() {
     return type;
   }
 
-  /**
-   * {@inheritDoc}
-   * @see org.apache.shindig.social.opensocial.model.MediaItem#setType(org.apache.shindig.social.opensocial.model.MediaItem.Type)
+  /** {@inheritDoc}
    */
-  public void setType(Type type) {
-    this.type = type;
+  public void setType(final Type theType) {
+    type = theType;
   }
 
-  /**
-   * {@inheritDoc}
-   * @see org.apache.shindig.social.opensocial.model.MediaItem#getUrl()
+  /** {@inheritDoc}
    */
   public String getUrl() {
     return url;
   }
 
-  /**
-   * {@inheritDoc}
-   * @see org.apache.shindig.social.opensocial.model.MediaItem#setUrl(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setUrl(String url) {
-    this.url = url;
+  public void setUrl(final String theUrl) {
+    url = theUrl;
   }
 
-  /**
-   * {@inheritDoc}
-   * @see org.apache.shindig.social.opensocial.model.MediaItem#getThumbnailUrl()
+  /** {@inheritDoc}
    */
   public String getThumbnailUrl() {
     return thumbnailUrl;
   }
 
-  /**
-   * {@inheritDoc}
-   * @see org.apache.shindig.social.opensocial.model.MediaItem#setThumbnailUrl(java.lang.String)
+  /** {@inheritDoc}
    */
-  public void setThumbnailUrl(String url) {
+  public void setThumbnailUrl(final String url) {
     this.thumbnailUrl = url;
   }
 }

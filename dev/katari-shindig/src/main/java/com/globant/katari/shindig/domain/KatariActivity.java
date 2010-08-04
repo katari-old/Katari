@@ -163,7 +163,7 @@ public class KatariActivity implements Activity {
    * This is never null.
    */
   @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable( name="template_parameters",
+  @CollectionTable(name = "template_parameters",
       joinColumns = @JoinColumn(name = "activity_id"))
   @MapKeyColumn(name = "name")
   @Column(name = "value")
@@ -245,9 +245,9 @@ public class KatariActivity implements Activity {
     streamUrl = source.getStreamUrl();
     url = source.getUrl();
 
-    if(source.getMediaItems() != null) {
+    if (source.getMediaItems() != null) {
       List<MediaItem> items = new ArrayList<MediaItem>();
-      for(MediaItem sourceItem : source.getMediaItems()) {
+      for (MediaItem sourceItem : source.getMediaItems()) {
         KatariMediaItem mediaItem = new KatariMediaItem(sourceItem);
         items.add(mediaItem);
       }

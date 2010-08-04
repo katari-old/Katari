@@ -63,6 +63,8 @@ public class GadgetGroup {
   @JoinColumn(name = "gadget_group_id")
   private Set<GadgetInstance> gadgets = new HashSet<GadgetInstance>();
 
+  /** The number of columns of the gadget group.
+   */
   @Column(name = "number_of_columns", nullable = false)
   private int numberOfColumns = 1;
 

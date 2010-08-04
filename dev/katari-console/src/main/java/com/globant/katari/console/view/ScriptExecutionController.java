@@ -74,7 +74,7 @@ public class ScriptExecutionController extends AbstractController {
     StringBuffer output = new StringBuffer();
     for (int i = 0; i < input.length(); i++) {
       char ch = input.charAt(i);
-      switch(ch){
+      switch(ch) {
       case '"':
         output.append("\\\"");
         break;
@@ -108,7 +108,7 @@ public class ScriptExecutionController extends AbstractController {
         if (isUnicodeChar) {
           String ss = Integer.toHexString(ch);
           output.append("\\u");
-          for (int k = 0; k < 4-ss.length(); k++){
+          for (int k = 0; k < 4 - ss.length(); k++) {
             output.append('0');
           }
           output.append(ss.toUpperCase());
@@ -120,3 +120,4 @@ public class ScriptExecutionController extends AbstractController {
     return output.toString();
   }
 }
+

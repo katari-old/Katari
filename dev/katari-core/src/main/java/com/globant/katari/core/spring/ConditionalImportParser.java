@@ -59,13 +59,16 @@ public class ConditionalImportParser implements BeanDefinitionParser {
   /** Constant for the module name. */
   private static final String KATARI_MODULE_NAME = "module.xml";
 
+  /** The prefix to add to the module name, so that spring loads it from the
+   * classpath.
+   */
   private static final String CLASSPATH_PREFIX = "classpath:";
 
   private PropertiesParser propertiesParser;
 
-  public ConditionalImportParser(PropertiesParser propertiesParser) {
+  public ConditionalImportParser(final PropertiesParser thePropertiesParser) {
     super();
-    this.propertiesParser = propertiesParser;
+    this.propertiesParser = thePropertiesParser;
   }
 
   /** Parses an import element.
@@ -152,3 +155,4 @@ public class ConditionalImportParser implements BeanDefinitionParser {
     return null;
   }
 }
+

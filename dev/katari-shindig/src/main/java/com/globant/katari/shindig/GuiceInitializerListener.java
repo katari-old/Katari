@@ -75,7 +75,7 @@ public class GuiceInitializerListener implements ServletContextListener {
    *
    * This implementation destroys the guice injector.
    */
-  public void contextDestroyed(ServletContextEvent event) {
+  public void contextDestroyed(final ServletContextEvent event) {
     log.trace("Entering destroy");
     ServletContext context = event.getServletContext();
     context.removeAttribute(INJECTOR_ATTRIBUTE_NAME);

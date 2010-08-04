@@ -19,11 +19,9 @@ import com.globant.katari.gadgetcontainer.application.TokenService;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 
-/**
- * Retrieve the representation for the requested {@link GadgetGroup}
+/** Retrieve the representation for the requested {@link GadgetGroup}.
  *
  * @author waabox(emiliano[dot]arango[at]globant[dot]com)
- *
  */
 public abstract class GadgetGroupController extends AbstractCommandController {
 
@@ -60,17 +58,17 @@ public abstract class GadgetGroupController extends AbstractCommandController {
    *
    * <pre>
    * {
-   *   "id":<long>,
-   *   "name":"<string>"
-   *   "ownerId":<long>,
-   *   "viewerId":<long>,
-   *   "numberOfColumns":<int>,
+   *   "id":&lt;long&gt;,
+   *   "name":"&lt;string&gt;"
+   *   "ownerId":&lt;long&gt;,
+   *   "viewerId":&lt;long&gt;,
+   *   "numberOfColumns":&lt;int&gt;,
    *   "gadgets":[
    *     {
-   *       "id":<long>,
-   *       "appId":<long>,
-   *       "column":<int>,
-   *       "order":<int>,
+   *       "id":&lt;long&gt;,
+   *       "appId":&lt;long&gt;,
+   *       "column":&lt;int&gt;,
+   *       "order":&lt;int&gt;,
    *       "securityToken":"token"
    *       "url":"url"
    *     }
@@ -129,7 +127,9 @@ public abstract class GadgetGroupController extends AbstractCommandController {
     return null;
   }
 
-  /** @return {@link Command<GadgetGroup>}
+  /** {@inheritDoc}
+   *
+   * @return {@link Command&lt;GadgetGroup&gt;}
    */
   protected abstract Command<GadgetGroup> createCommandBean();
 
