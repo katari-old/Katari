@@ -39,7 +39,8 @@ public final class SpringBootstrapFilter implements Filter {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(SpringBootstrapFilter.class);
+  private static Logger log = LoggerFactory.getLogger(
+      SpringBootstrapFilter.class);
 
   /** The target filter that this filter delegates all requests.
    *
