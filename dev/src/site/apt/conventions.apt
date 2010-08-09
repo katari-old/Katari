@@ -8,3 +8,11 @@
  * Servlet initialization parameters follow the same conventions as normal java
  variables, for example: 'contextConfigLocation'.
 
+Conventions for Javascript
+
+ If using jquery:
+
+ * Avoid using $, use jquery instead.
+
+ * Make use of jQuery.each to iterate over arrays or maps (objects).
+
