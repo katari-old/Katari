@@ -13,8 +13,9 @@
  */
 var katari = katari || {};
 
-// TODO: make this configured in the server.
-katari.debugMode = true;
+/** Set by the java counterpart.
+ */
+katari.debugMode = ${debug?string("true", "false")};
 
 /** All social related js stuff will go in the social 'namespace' under katari.
  */

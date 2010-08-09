@@ -9,3 +9,7 @@ Katari - gadget container
 
  An open social compliant gadget container.
 
+ If debugMode.value is set to true in the configuration property file, then the
+ container does not cache the gadget xml spec and does not compress the social
+ javascript files.
+

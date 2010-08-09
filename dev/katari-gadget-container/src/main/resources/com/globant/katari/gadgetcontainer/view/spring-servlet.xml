@@ -28,8 +28,9 @@
   </bean>
  
   <bean name='/katariSocialCanvas.js'
-    class='com.globant.katari.gadgetcontainer.view.CanvasModelController'>
-    <property name="viewName" value="katari-social-canvas" />
+    class='com.globant.katari.gadgetcontainer.view.CanvasModelController'
+    p:viewName="katari-social-canvas">
+    <constructor-arg ref='debugMode'/>
   </bean>
 
   <!-- Command definition -->
