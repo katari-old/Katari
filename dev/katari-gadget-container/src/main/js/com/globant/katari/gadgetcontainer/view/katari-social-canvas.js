@@ -1,31 +1,30 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
-/**
- * Base canvas social container.
- * This library requires jquery 1.4.2.
+
+/** Base canvas social container.
+ *
+ * This library requires jquery 1.4.2 and shindig's rpc.js.
+ *
+ * It uses jQuery instead of $, so it is safe to use with jQuery.noConflict().
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
 
-var KATARI = KATARI || {};
-KATARI.SOCIAL = KATARI.SOCIAL|| {};
-KATARI.SOCIAL.canvasConfig = KATARI.SOCIAL.canvasConfig || {};
+/** All katari related js stuff will go in the katari 'namespace'.
+ */
+var katari = katari || {};
 
-// This will be configured by the CanvasBuilder.
-KATARI.debugMode = false;
-KATARI.SOCIAL.canvasConfig.host = location.protocol + "//" + location.host;
-KATARI.SOCIAL.canvasConfig.container = KATARI.SOCIAL.canvasConfig.host +
-  "${baseweb}/module/shindig/gadgets/ifr?debug=true";
-KATARI.SOCIAL.canvasConfig.relayFile = KATARI.SOCIAL.canvasConfig.host +
-  "${baseweb}/module/gadgetcontainer/assets/rpc_relay.html";
-KATARI.SOCIAL.canvasConfig.rpcToken = "rpcToken";
-KATARI.SOCIAL.canvasConfig.applicationPrefix = "Application_";
-KATARI.SOCIAL.canvasConfig.socialContainer = "default";
-KATARI.SOCIAL.canvasConfig.defaultView = "home";
-KATARI.SOCIAL.canvasConfig.synId = "0";
+// TODO: make this configured in the server.
+katari.debugMode = true;
 
-KATARI.Console = {
+/** All social related js stuff will go in the social 'namespace' under katari.
+ */
+katari.social = katari.social || {};
+
+/** TODO Decide where should the console be defined. How does this work?
+ */
+katari.console = {
   log : function(objLog) {
-    if(KATARI.debugMode) {
+    if(katari.debugMode) {
       try {
         console.log(objLog);
       } catch(e){
@@ -34,65 +33,157 @@ KATARI.Console = {
   }
 };
 
+/** The canvas configuration.
+ *
+ * This is an object with:
+ *
+ * host: the base location of the server.
+ *
+ * container: the url of the gadget iframe.
+ *
+ * relayFile: the url of the rpc_relay.html.
+ *
+ * TODO: Document the rest of the parameters.
+ */
+
+/* Initializes the canvasConfig element in katari.social. It is a closure to
+ * avoid polluting the global namespace.
+ */
+(function() {
+
+  var host = location.protocol + "//" + location.host;
+
+  katari.social = {
+    canvasConfig: {
+      /** The base location of the server, up to the port number.
+       */
+      host: host,
+      /** The url of the iframe that will contain the gadget.
+       */
+      container: host + "${baseweb}/module/shindig/gadgets/ifr",
+      /** The rpc_relay.html location, used for rpc in older Gecko engines (ff
+       * 2 and possibly others). See rpc.js for more info.
+       */
+      relayFile: host + "${baseweb}/module/gadgetcontainer/assets/rpc_relay.html",
+      /** The prefix of id of the frame that contains the gadget.
+       *
+       * Gadgets iframes has an id of the form [applicationPrefix] +
+       * [gadgetId]. 
+       */
+      applicationPrefix: "Application-",
+      socialContainer: "default",
+      defaultView: "home",
+      synId: "0"
+    }
+  };
+
+})();
+
 /** Constructor for GadgetInstances.
  *
- * @param sId
- * @param sUrl
- * @param sSecurityToken
- * @param sViewer
- * @param sOwner
+ * TODO: decide if it is better to receive a gagdetSpec. Beware that the
+ * gadgetSpec will be held by reference.
  *
- * @param sColumn
+ * Takes a gadget specification object.
  *
- * @param sOrder
+ * @param sId The gadget id. It is used to identify the gadget in rpc/rest
+ * requests.
+ *
+ * @param sUrl The url of the gadget specification xml.
+ *
+ * @param sSecurityToken A token that identifies the user and the gadget to the
+ * rpc/rest services.
+ *
+ * @param sViewer The id of the logged in user.
+ *
+ * @param sOwner The id of the owner of the gadget instance.
+ *
+ * @param sColumn The column where the gadget will be displayed.
+ *
+ * @param sOrder The position of the gadget in the column.
  */
-KATARI.SOCIAL.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer,
+katari.social.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer,
     sOwner, sColumn, sOrder) {
 
-  this.id = sId;
-  this.gadgetContainerUrl = KATARI.SOCIAL.canvasConfig.container;
-  this.rpcToken = KATARI.SOCIAL.canvasConfig.rpcToken;
-  this.url = sUrl;
-  this.token = sSecurityToken;
-  this.container = KATARI.SOCIAL.canvasConfig.socialContainer;
-  this.synId = KATARI.SOCIAL.canvasConfig.synId;
-  this.viewer = sViewer;
-  this.owner = sOwner;
-  this.column = sColumn;
-  this.order = sOrder;
-  this.view = KATARI.SOCIAL.canvasConfig.defaultView;
-  // this.parent = KATARI.SOCIAL.canvasConfig.host;
-  this.parent = location.protocol + "//" + location.host;
-
-  /** Creates the url for the gadget's iframe src.
+  /** The id of the gadget instance, usually as retrieved from the backend.
    */
-  this.buildGadgetUrl = function() {
+  var id = sId;
+
+  /** The id of the html iframe that contains this gadget.
+   *
+   * This id is also used as the rpc torken for gadget to container
+   * communication. It is the same as the iframe id to implement a workaround
+   * in ie6/ie7 where the rezise event does not receive the iframe id.
+   */
+  var applicationId = katari.social.canvasConfig.applicationPrefix + sId;
+
+  /** The url used to render the gadget, that is, the value of the src
+   * attribute of the iframe that contains the gadget.
+   */
+  this.getGadgetUrl = function() {
     var url = [];
-    url.push(this.gadgetContainerUrl);
-    url.push("&url=", sUrl);
-    url.push("#rpctoken=", this.rpcToken);
-    url.push("&st=", this.token);
-    url.push("&mid=", this.rpcToken);
-    url.push("&synd=", this.synId);
-    url.push("&container=", this.container);
-    url.push("&viewer=", this.viewer);
-    url.push("&owner=", this.owner);
-    url.push("&aid=", this.id);
-    url.push("&parent=", this.parent);
-    url.push("&view=", this.view);
+    url.push(katari.social.canvasConfig.container);
+    if (katari.debugMode) {
+      url.push("?debug=true");
+      url.push("&nocache=1&");
+    } else {
+      url.push("?");
+    }
+    url.push("url=", sUrl);
+    url.push("#rpctoken=", applicationId);
+    url.push("&st=", sSecurityToken);
+    url.push("&mid=", id);
+    url.push("&synd=", katari.social.canvasConfig.synId);
+    url.push("&container=", katari.social.canvasConfig.socialContainer);
+    url.push("&viewer=", sViewer);
+    url.push("&owner=", sOwner);
+    url.push("&aid=", id);
+    url.push("&parent=", katari.social.canvasConfig.host);
+    url.push("&view=", katari.social.canvasConfig.defaultView);
     return url.join('');
   };
+
+  /** Returns the id of the gadget instance, usually as retrieved from the
+   * backend.
+   */
+  this.getId = function() {
+    return id;
+  }
+
+  /** Returns the id of the html iframe that contains this gadget.
+   */
+  this.getApplicationId = function() {
+    return applicationId;
+  }
+
+  /** The column where this gadget will be displayed.
+   */
+  this.column = sColumn;
+
+  /** The position of the gadget in the column.
+   */
+  this.order = sOrder;
 };
 
-/** Create a new social canvas.
+/** Create a new gadget group.
  *
- * @param {String} sContainer id of the container, usualy a div.
+ * @param {String} sContainer id of the container, usually a div, that will
+ * contain all the gadgets in the group.
  */
-KATARI.SOCIAL.Canvas = function(sContainer) {
-  this.gadgets = [];
-  this.columns = [];
+katari.social.GadgetGroup = function(sContainer) {
 
+  /** The id of the html element (usually a div) that will contain all the
+   * gadgets in this group.
+   */
   var container = sContainer;
+
+  /** A list of GadgetInstance.
+   */
+  this.gadgets = [];
+
+  /** A list of divs, one for each column.
+   */
+  this.columns = [];
 
   /** Add a gadget instance.
    *
@@ -105,106 +196,96 @@ KATARI.SOCIAL.Canvas = function(sContainer) {
     return this;
   };
 
-  /** Adds a gadgets to the canvas from the groupSpec.
+  /** Adds a gadgets to the group from the groupSpec.
    *
    * @param groupSpec
    */
   this.addGadgetsFromJson = function(groupSpec) {
+    var that = this;
     // Create the empty columns.
     for (var i = 0; i < groupSpec.numberOfColumns; i++) {
-      this.columns[i] = $('<div class="canvasColumn">');
+      this.columns[i] = jQuery('<div class="canvasColumn">');
     }
     // And create all the gadgets.
-    for(m in groupSpec.gadgets) {
-      if (groupSpec.gadgets.hasOwnProperty(m)) {
-        var obj = groupSpec.gadgets[m];
-        this.addGadget(new KATARI.SOCIAL.GadgetInstance(obj.id, obj.url,
-              obj.securityToken, groupSpec.viewerId, groupSpec.ownerId,
-              obj.column, obj.order));
-      }
-    }
+    jQuery.each(groupSpec.gadgets, function(i, gadgetSpec) {
+      that.addGadget(new katari.social.GadgetInstance(gadgetSpec.id,
+          gadgetSpec.url, gadgetSpec.securityToken, groupSpec.viewerId,
+          groupSpec.ownerId, gadgetSpec.column, gadgetSpec.order));
+    });
     return this;
   };
 
-  /**
-   * Creates the application name.
+  /** Renders the group in the container, the html element with the id provided
+   * to the gadget group.
    *
-   * @param GadgetInstance gadgetInstance.
-   */
-  this.createApplicationId = function(oGadgetInstance) {
-    return KATARI.SOCIAL.canvasConfig.applicationPrefix + oGadgetInstance.id;
-  };
-  /**
-   * Render the canvas
-   * return void
+   * The structure of the rendered html is:
+   *
+   * (container) -> {n times} div(class='canvasColumn) -> {n times}
+   * div(id='header_N') + div -> iframe(id='Application_N)
+   *
+   * The container has a final clear div after all the columns.
+   *
+   * TODO Review the structure.
    */
   this.render = function() {
     // sort the gadgets.
     this.gadgets.sort(
       function(a, b) {
-        if(a.column == b.column) {
+        if(a.column === b.column) {
           return a.order - b.order;
         } else {
           return a.column - b.column;
         }
       }
     );
-    KATARI.Console.log(this.gadgets);
+
+    katari.console.log(this.gadgets);
+
     // add the gadgets
-    //
-    // TODO: is this iterating over an array? If that is the case, it is not
-    // good.
-    for (i in this.gadgets) {
-      if (this.gadgets.hasOwnProperty(i)) {
-        var theGadget = this.gadgets[i];
-        var iFrame = $("<iframe>");
-        var theId = this.createApplicationId(theGadget);
-        iFrame.attr("src", theGadget.buildGadgetUrl());
-        iFrame.attr("id", theId);
-        iFrame.attr("name", theId);
+    var that = this;
+    jQuery.each(this.gadgets, function(i, gadget) {
+      var iframe = jQuery("<iframe>");
+      iframe.attr("src", gadget.getGadgetUrl());
+      iframe.attr("id", gadget.getApplicationId());
+      iframe.attr("name", gadget.getApplicationId());
+      iframe.attr("frameborder", 0);
 
-        var titleDiv = $("<div></div>");
-        titleDiv.attr("id", "header_" + theGadget.id);
-        var localDiv = $("<div>");
+      var titleDiv = jQuery("<div></div>");
+      titleDiv.attr("id", "header_" + gadget.getApplicationId());
+      var localDiv = jQuery("<div></div>");
 
-        localDiv.append(iFrame);
+      localDiv.append(iframe);
 
-        this.columns[theGadget.column].append(titleDiv);
-        this.columns[theGadget.column].append(localDiv);
-      }
-    }
+      that.columns[gadget.column].append(titleDiv);
+      that.columns[gadget.column].append(localDiv);
+    });
 
-    var containerDiv = $('<div>');
-
-    for (item in this.columns) {
-      if (this.columns.hasOwnProperty(item)) {
-        containerDiv.append(this.columns[item]);
-      }
-    }
+    // Adds all the columns to the provided container.
+    var containerDiv = jQuery('#' + container);
+    jQuery.each(this.columns, function(index, column) {
+      containerDiv.append(column);
+    });
+    // Add a clear div to the container.
     containerDiv.append("<div style='clear:both;'><!-- empty div --></div>");
 
-    var canvasContainer = $('<div class="canvasContainer">').append(containerDiv);
-    $('#' + container).append(canvasContainer);
-
+    // Now, we iterate over all gagdets (again) to initialize the rpc
+    // mechanism.
     if (window.gadgets) {
-      for (i in this.gadgets) {
-        if (this.gadgets.hasOwnProperty(i)) {
-          var appId = this.createApplicationId(this.gadgets[i]);
-          gadgets.rpc.setRelayUrl(appId, KATARI.SOCIAL.canvasConfig.relayFile);
-          gadgets.rpc.setAuthToken(appId, KATARI.SOCIAL.canvasConfig.rpcToken);
-        }
-      }
+      jQuery.each(this.gadgets, function(i, gadget) {
+        gadgets.rpc.setupReceiver(gadget.getApplicationId());
+      });
     }
-
   };
 };
 
-/**
- * OpenSocial container implementation.
- *
+/** OpenSocial container implementation.
  */
-KATARI.SOCIAL.Container = function() {
+katari.social.Container = function() {
 
+  /** The maximum height for each gadged.
+   *
+   * TODO: this should be configured somewhere else.
+   */
   this.maxHeight = 4096;
 
   gadgets.rpc.register('resize_iframe', this.setHeight);
@@ -214,24 +295,46 @@ KATARI.SOCIAL.Container = function() {
 
 };
 
-KATARI.SOCIAL.Container.prototype.setHeight = function(height) {
+/** Called by the gadget to request a height change.
+ *
+ * Sets the new height if it lower than maxHeight, otherwise it sets it to
+ * maxHeight.
+ *
+ * @param height The new requested height.
+ */
+katari.social.Container.prototype.setHeight = function(height) {
   if (height > gadgets.container.maxHeight) {
     height = gadgets.container.maxHeight;
   }
-  var element = document.getElementById(this.f);
+
+  // HACK: in ie 6 and 7, this.f is empty, so I use this.t (rpcToken) as the
+  // iframe Id.
+  var elementId = this.f || this.t;
+
+  var element = document.getElementById(elementId);
   if (element) {
     element.height = height;
   }
+
+  // ie6 hack (from here:
+  // http://stackoverflow.com/questions/33837/ie-css-bug-how-do-i-maintain-a-positionabsolute-when-dynamic-javascript-conten)
+  //
+  // The footer is not positioned correctly under ie6 without this. Seems to
+  // have no visible effect on other browsers.
+  var content = document.getElementById('footer');
+  content.style.zoom = '1';
+  content.style.zoom = '';
 };
 
-KATARI.SOCIAL.Container.prototype.setTitle = function(title) {
-  var element = $('#header_' + this.f);
+katari.social.Container.prototype.setTitle = function(title) {
+  var elementId = this.f || this.t;
+  var element = jQuery('#header_' + elementId);
   if (element !== undefined) {
     element.text(title.replace(/&/g, '&amp;').replace(/</g, '&lt;'));
   }
 };
 
-KATARI.SOCIAL.Container.prototype._parseIframeUrl = function(url) {
+katari.social.Container.prototype._parseIframeUrl = function(url) {
   var ret = {};
   var hashParams = url.replace(/#.*$/, '').split('&');
   var param = '';
@@ -246,10 +349,10 @@ KATARI.SOCIAL.Container.prototype._parseIframeUrl = function(url) {
   return ret;
 };
 
-KATARI.SOCIAL.Container.prototype.setUserPref = function(editToken, name, value) {
+katari.social.Container.prototype.setUserPref = function(editToken, name, value) {
   /*
-  if ($(this.f) != undefined) {
-    var params = gadgets.container._parseIframeUrl($(this.f).src);
+  if (jQuery('#' + this.f) != undefined) {
+    var params = gadgets.container._parseIframeUrl(jQuery('#' + this.f).src);
     new Ajax.Request('/prefs/set', {
       method : 'get',
       parameters : {
@@ -262,7 +365,7 @@ KATARI.SOCIAL.Container.prototype.setUserPref = function(editToken, name, value)
   */
 };
 
-KATARI.SOCIAL.Container.prototype._getUrlForView = function(view, person, app, mod) {
+katari.social.Container.prototype._getUrlForView = function(view, person, app, mod) {
   if (view === 'home') {
     return '/home';
   } else if (view === 'profile') {
@@ -274,9 +377,9 @@ KATARI.SOCIAL.Container.prototype._getUrlForView = function(view, person, app, m
   }
 };
 
-KATARI.SOCIAL.Container.prototype.requestNavigateTo = function(view, opt_params) {
-  if ($(this.f) !== undefined) {
-    var params = gadgets.container._parseIframeUrl($(this.f).src);
+katari.social.Container.prototype.requestNavigateTo = function(view, opt_params) {
+  if (jQuery('#' + this.f) !== undefined) {
+    var params = gadgets.container._parseIframeUrl(jQuery('#' + this.f).src);
     var url = gadgets.container._getUrlForView(view, params.owner, params.aid,
         params.mid);
     if (opt_params) {
@@ -291,11 +394,13 @@ KATARI.SOCIAL.Container.prototype.requestNavigateTo = function(view, opt_params)
   }
 };
 
-$(document).ready(function() {
-  gadgets.container = new KATARI.SOCIAL.Container();
+jQuery(document).ready(function() {
+  // Override shindig container configuration.
+  gadgets.container = new katari.social.Container();
 });
 
-$.extend({
+/*
+jQuery.extend({
   getUrlVars: function(){
     var vars = [];
     var hash = [];
@@ -310,9 +415,11 @@ $.extend({
     return vars;
   },
   getUrlVar: function(name){
-    return $.getUrlVars()[name];
+    return jQuery.getUrlVars()[name];
   },
   getWindowLocation : function() {
    return window.location.href;
   }
 });
+*/
+

@@ -50,10 +50,10 @@
 
     <script type='text/javascript'>
       $(document).ready(function() {
-        gadgetGroup = new KATARI.SOCIAL.Canvas('gadgets-div', 2);
+        gadgetGroup = new katari.social.GadgetGroup('gadgets-div');
 
         $.getJSON(
-          KATARI.SOCIAL.canvasConfig.host +
+          katari.social.canvasConfig.host +
             '${baseweb}/module/gadgetcontainer/socialPage.do?groupName=main', 
           function(data) {
             gadgetGroup.addGadgetsFromJson(data);

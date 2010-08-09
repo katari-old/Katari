@@ -6,70 +6,21 @@
     title="Activities Example"
     icon="http://localhost:8098/katari-sample/module/gadgets/activities.png">
 
+   
+   <!-- TODO: Migrate to latest version supported by shindig -->
    <Require feature="opensocial-0.7"></Require>
    <Require feature="dynamic-height"></Require>
+   <Require feature="settitle"></Require>
 
  </ModulePrefs>
 
  <Content type="html">
    <![CDATA[
    <style type="text/css">
-     .streamtitle,
-     .socialHeading {
-       font-family:arial,helvetica,sans-serif;
-       font-size:13pt;
-       font-weight:bold;
+
+     body {
+       font-size: 0.8em;
      }
-
-     .streamtitle {
-       background-color: #E0ECFF;
-       border-top: 1px solid blue;
-       padding: .25em;
-     }
-
-     .socialDescription a {
-       color:#999999;
-     }
-
-     .streamdescription,
-     .streamdescription a,
-     .streamdescription a:visited {
-       color:#408BFE;
-       font-size:12pt;
-       font-weight:bold;
-       text-decoration:underline;
-       font-family:arial,helvetica,sans-serif;
-     }
-
-    .streamurl a {
-      color:#008000;
-      font-size:10pt;
-      font-family:arial,helvetica,sans-serif;
-      text-decoration:underline;
-    }
-
-    .streamrow {
-      clear: both;
-    }
-
-    .streamrowline {
-      border-bottom:1px solid #DDE9F5;
-      clear:both;
-      height:0px;
-      margin:5px;
-    }
-
-    .streamcontents {
-      padding: .5em;
-    }
-
-    .streamhtmlcontents {
-      color:#333333;
-      font-size:10pt;
-      line-height:130%;
-      padding:2px 0pt 3px 10px;
-      font-family:arial,helvetica,sans-serif;
-    }
 
     .mediaitems {
       padding-left: 5em;
@@ -77,7 +28,6 @@
 
     .addActivityDiv {
       clear:both;
-      padding-bottom:15px;
     }
 
     #addActivityText {
@@ -87,134 +37,145 @@
       font-family:arial,helvetica,sans-serif;
     }
 
-    .leftcolumn {
-      float: left;
-      width: 47%;
-    }
-
-    .rightcolumn {
-      float: right;
-      width: 47%;
-    }
-
     #addActivity {
       display:none;
-      border: 2px solid blue;
       padding: .5em;
     }
   </style>
 
   <script type="text/javascript">
 
-  gadgets.util.registerOnLoadHandler(refreshActivities);
+    gadgets.util.registerOnLoadHandler(refreshActivities);
 
-  function refreshActivities() {
-    var req = opensocial.newDataRequest();
-    if (!viewer) {
-      req.add(req.newFetchPersonRequest('VIEWER'), 'viewer');
-    }
-    req.add(req.newFetchActivitiesRequest('VIEWER'), 'viewerActivities');
-    req.send(handleActivities);
-  }
+    gadgets.window.setTitle("Activities");
 
-  function postNewActivity() {
-    var activityElement = document.getElementById('newActivity');
-    var mediaItem = new Array(opensocial.newActivityMediaItem("image",
-      "http://localhost:8098/katari-sample/module/decorator/image/mainLogo.png",
-      {'type' : 'image'}));
-    var activity = opensocial.newActivity({
-      'title' : viewer.getDisplayName() + ' wrote: ' + activityElement.value,
-      'body' : 'activity created!', 'mediaItems' : mediaItem});
-
-    activityElement.value = '';
-    opensocial.requestCreateActivity(activity, "HIGH", refreshActivities);
-  }
-
-  var viewer;
-  var activities;
-  function handleActivities(dataResponse) {
-
-    if (!viewer) {
-      viewer = dataResponse.get('viewer').getData();
+    function refreshActivities() {
+      var req = opensocial.newDataRequest();
+      if (!viewer) {
+        req.add(req.newFetchPersonRequest('VIEWER'), 'viewer');
+      }
+      req.add(req.newFetchActivitiesRequest('VIEWER'), 'viewerActivities');
+      req.send(handleActivities);
     }
 
-    activities = dataResponse.get('viewerActivities')
-      .getData()['activities'].asArray();
+    function postNewActivity() {
+      var activityElement = document.getElementById('newActivity');
+      var mediaItem = new Array(opensocial.newActivityMediaItem("image",
+        "http://localhost:8098/katari-sample/module/decorator/image/mainLogo.png",
+        {'type' : 'image'}));
+      var activity = opensocial.newActivity({
+        'title' : viewer.getDisplayName() + ' wrote: ' + activityElement.value,
+        'body' : 'activity created!', 'mediaItems' : mediaItem});
 
-    document.getElementById('stream').style.display = 'block';
-
-    var html = '';
-
-    if (!activities || activities.length == 0) {
-      document.getElementById('stream').innerHTML =
-        'You do not have any activities yet';
-      return;
+      activityElement.value = '';
+      opensocial.requestCreateActivity(activity, "HIGH", refreshActivities);
     }
 
-    for (var i = 0; i < activities.length; i++) {
-      html += '<div class="streamrow">';
+    var viewer;
+    var activities;
+    function handleActivities(dataResponse) {
 
-      html += '<div class="streamdescription"><a href="' +
-          activities[i].url + '">' + activities[i].getField('title') +
-          '</a></div>';
+      if (!viewer) {
+        viewer = dataResponse.get('viewer').getData();
+      }
 
-      html += '<div class="streamcontents">';
-      html += '>>>';
+      var viewerActivities = dataResponse.get('viewerActivities');
 
-      var body = activities[i].getField('body') || '';
-      html += '<span class="streamhtmlcontents">' + body + '</span>';
-      html += '</div>';
+      // There was an error obtaining the activities, show it to the user.
+      if (viewerActivities.hadError()) {
+        var html = 'Error processing response: ' +
+          viewerActivities.getErrorCode();
+        if (viewerActivities.getErrorMessage() != undefined) {
+          html += " " + viewerActivities.getErrorMessage();
+        }
+        document.getElementById('stream').innerHTML = '<li>' + html + '</li>';
+        document.getElementById('stream').style.display = 'block';
+        return;
+      }
+      activities = viewerActivities.getData()['activities'].asArray();
 
-      html += '<div class="mediaitems">';
-      var mediaItems = activities[i].getField('mediaItems');
-      if (mediaItems) {
-        for (var j = 0; j < mediaItems.length; j++) {
-          if (mediaItems[j].getField('type') == 'image') {
-            html += '<img height="150px" style="padding-right:.5em;"' +
-              ' src="' + mediaItems[j].getField('url') + '"/>';
+      document.getElementById('stream').style.display = 'block';
+
+      var html = '';
+
+      if (!activities || activities.length == 0) {
+        document.getElementById('stream').innerHTML =
+          '<li>You do not have any activities yet</li>';
+        return;
+      }
+
+      gadgets.window.setTitle("Activities - last " + activities.length +
+        " shown");
+
+      for (var i = 0; i < activities.length; i++) {
+        html += '<li>On ';
+        html += new Date(activities[i].getField('postedTime')).toDateString()
+          + ', ';
+        html += activities[i].getField('title');
+
+        /*
+        html += '<div class="streamdescription"><a href="' +
+            activities[i].url + '">' + activities[i].getField('title') +
+            '</a></div>';
+        */
+        /*
+        html += '<div class="streamcontents">';
+        html += '>>>';
+
+        var body = activities[i].getField('body') || '';
+        html += '<span class="streamhtmlcontents">' + body + '</span>';
+        html += '</div>';
+        */
+
+        html += '<div class="mediaitems">';
+        var mediaItems = activities[i].getField('mediaItems');
+        if (mediaItems) {
+          for (var j = 0; j < mediaItems.length; j++) {
+            if (mediaItems[j].getField('type') == 'image') {
+              html += '<img height="150px" style="padding-right:.5em;"' +
+                ' src="' + mediaItems[j].getField('url') + '"/>';
+            }
           }
         }
-      }
-      html += '</div>';
+        html += '</div>';
 
-      var shortUrl = activities[i].getField('url');
-      if (shortUrl) {
-        if (shortUrl.indexOf('http://') == 0) {
-          shortUrl = shortUrl.substring(7);
+        var shortUrl = activities[i].getField('url');
+        if (shortUrl) {
+          if (shortUrl.indexOf('http://') == 0) {
+            shortUrl = shortUrl.substring(7);
+          }
+          html += '<div class="streamurl"><a href="'
+              + activities[i].getField('url') + '">' + shortUrl + '</a></div>';
         }
-        html += '<div class="streamurl"><a href="'
-            + activities[i].getField('url') + '">' + shortUrl + '</a></div>';
+
+        html += '</li>';
       }
-
-      html += '</div>';
-      html += '<div class="streamrowline"></div>';
+      document.getElementById('stream').innerHTML = html;
+      gadgets.window.adjustHeight();
     }
-    document.getElementById('stream').innerHTML = html;
-    gadgets.window.adjustHeight();
-  }
 
-  function hideShowDiv(divToShow, divToHide) {
-    document.getElementById(divToShow).style.display = 'block';
-    document.getElementById(divToHide).style.display = 'none';
-  }
+    function hideShowDiv(divToShow, divToHide) {
+      document.getElementById(divToShow).style.display = 'block';
+      document.getElementById(divToHide).style.display = 'none';
+      gadgets.window.adjustHeight();
+    }
   </script>
 
-  <div class="streamtitle">Activities</div>
   <div class="addActivityDiv">
     <a id="addActivityText"
       href="#"
       onclick="hideShowDiv('addActivity','addActivityText'); return false;">
       Add your own activity
     </a>
-    <span id="addActivity">
+    <div id="addActivity">
       <input id="newActivity" type="text"/>
       <input type="button" onclick="postNewActivity(); return false;" value="add"/>
       <input type="button"
         onclick="hideShowDiv('addActivityText','addActivity'); return false;"
         value="cancel"/>
-    </span>
+    </div>
   </div>
-  <div id="stream" style="display:none"></div>
+  <ul id="stream" style="display:none"></ul>
 
   ]]>
   </Content>
