@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
   xmlns:katari="http://www.globant.com/schema/katari"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
@@ -8,9 +9,10 @@
       http://www.globant.com/schema/katari/katari.xsd">
 
   <!-- freemarker config -->
-  <bean id="freemarkerConfig" class="com.globant.katari.core.web.FreeMarkerConfigurer"
+  <bean id="freemarkerConfig"
+    class="com.globant.katari.core.web.FreeMarkerConfigurer"
     p:templateLoaderPath="classpath:/com/globant/katari/gadgetcontainer/view"
-    p:debugPrefix='../katari-gadget-container/src/main/resources'
+    p:debugPrefix='../katari-gadget-container/src/main/js'
     p:debug-ref='debugMode' />
 
   <bean id="freemarkerViewResolver"
