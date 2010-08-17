@@ -327,8 +327,11 @@ public class ConstructorArgumentsBeanNameAutoProxyCreator extends
       for (int i = 0; i < parameterTypes.length; i++) {
         ValueHolder argValue = constructorArgs.getIndexedArgumentValue(i,
             parameterTypes[i]);
+        if (argValue == null) {
+          throw new RuntimeException("Could not find value for argument " + i);
+        }
         if (log.isDebugEnabled()) {
-          log.debug("Obtained value holder for argumente: " + argValue);
+          log.debug("Obtained value holder for argument: " + argValue);
         }
         Object actualValue = getActualValue(argValue);
         if (!parameterTypes[i].isInstance(actualValue)) {
@@ -346,15 +349,15 @@ public class ConstructorArgumentsBeanNameAutoProxyCreator extends
       return argValues.toArray();
     }
 
-    /**
-     * Extracts the actual value from the given {@link ValueHolder}, resolving
+    /** Extracts the actual value from the given {@link ValueHolder}, resolving
      * bean references through the bean factory.
      *
-     * @param holder
-     *          The holder to resolve
+     * @param holder The holder to resolve
+     *
      * @return The actual value of the holder
      */
     protected Object getActualValue(final ValueHolder holder) {
+      Validate.notNull(holder, "The value holder cannot be null.");
       log.trace("Start getActualValue");
       Object value = holder.getValue();
       if (value instanceof BeanDefinitionHolder) {
