@@ -145,18 +145,31 @@ public class GadgetInstance {
    *
    * @return the column of the gadget.
    */
-   public int getColumn() {
-     return column;
-   }
+  public int getColumn() {
+    return column;
+  }
  
-   /** The order of the gadget in the column.
-    *
-    * Two gadgets with the same vaule appears in an undefined order.
-    *
-    * @return the order of the gadget.
+  /** The order of the gadget in the column.
+   *
+   * Two gadgets with the same vaule appears in an undefined order.
+   *
+   * @return the order of the gadget.
    */
-   public int getOrder() {
-     return order;
-   }
+  public int getOrder() {
+    return order;
+  }
+
+  /** Moves the gadget to the specified column and order.
+   *
+   * This is intended to be called only from GadgetGroup.
+   *
+   * @param newColumn the column to move the gadget to.
+   *
+   * @param newOrder the new position of the gadget in the column.
+   */
+  void move(final int newColumn, final int newOrder) {
+    column = newColumn;
+    order = newOrder;
+  }
 }
 

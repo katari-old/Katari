@@ -4,8 +4,15 @@ package com.globant.katari.gadgetcontainer.domain;
 
 import org.apache.commons.lang.Validate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.LinkedList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,6 +41,10 @@ import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 @Entity
 @Table(name = "gadget_groups")
 public class GadgetGroup {
+
+  /** The class logger.
+   */
+  private static Logger log = LoggerFactory.getLogger(GadgetGroup.class);
 
   /** The id of the gadget group, 0 for a newly created gadget group.
    */
@@ -115,10 +126,12 @@ public class GadgetGroup {
     return owner;
   }
 
-  /** @return the gadgets. It never returns null.
+  /** Returns an unmodifiable view of the gadget instances of this group.
+   *
+   * @return the gadgets. It never returns null.
    */
   public Set<GadgetInstance> getGadgets() {
-    return gadgets;
+    return Collections.unmodifiableSet(gadgets);
   }
 
   /**  Adds a gadget to the group.
@@ -156,6 +169,9 @@ public class GadgetGroup {
 
   /** Moves a gadget in the group to a new column and position in the column.
    *
+   * The gadget instance id must exist in the gadget group, this group must be
+   * customizable, and the column must be lower than numberOfColumns.
+   *
    * @param gadgetInstanceId The id of the gadget instance to move.
    *
    * @param column The column to move the gadget to, starting from 0.
@@ -164,7 +180,58 @@ public class GadgetGroup {
    */
   public void move(final long gadgetInstanceId, final int column, final int
       order) {
-    throw new RuntimeException("Not implemented yet");
+    Validate.isTrue(isCustomizable(), "The group is not customizable");
+    Validate.isTrue(column < numberOfColumns,
+        "You cannot move past the last column");
+    Validate.isTrue(column >= 0, "Negative columns are not accepted.");
+    Validate.isTrue(column >= 0, "Negative orders are not accepted.");
+
+    log.trace("Entering move({}, ...)", gadgetInstanceId);
+
+    // The list of gadgets in the target column.
+    List<GadgetInstance> gadgetsInColumn = new LinkedList<GadgetInstance>();
+
+    // Finds all the gagdets in the same column. Also find the gadget to move.
+    // The gadget to move is not in gadgetsInColumn.
+    GadgetInstance gadgetToMove = null;
+    for (GadgetInstance gadget : gadgets) {
+      if (gadget.getId() == gadgetInstanceId) {
+        gadgetToMove = gadget;
+      } else if (gadget.getColumn() == column) {
+        log.debug("Adding gadget id = {} for column {}.", gadget.getId(),
+            column);
+        gadgetsInColumn.add(gadget);
+      }
+    }
+
+    Validate.notNull(gadgetToMove, "The gadget to move was not found.");
+
+    // Sorts them by order.
+    Collections.sort(gadgetsInColumn, new Comparator<GadgetInstance>() {
+      public int compare(final GadgetInstance g1, final GadgetInstance g2) {
+        return g1.getOrder() - g2.getOrder();
+      }
+    });
+
+    // Inserts the new gadget.
+    if (order < gadgetsInColumn.size()) {
+      log.debug("Inserting gadget id = {} in position {}.",
+          gadgetToMove.getId(), order);
+      gadgetsInColumn.add(order, gadgetToMove);
+    } else {
+      log.debug("Adding gadget id = {} at the end of the column.",
+          gadgetToMove.getId());
+      gadgetsInColumn.add(gadgetToMove);
+    }
+
+    // Renumbers the gadgets.
+    int newOrder = 0;
+    for (GadgetInstance gadget : gadgetsInColumn) {
+      log.debug("Moving gadget with id {} to {}.", gadget.getId(), newOrder);
+      gadget.move(column, newOrder);
+      ++ newOrder;
+    }
+    log.trace("Leaving move");
   }
 }
 

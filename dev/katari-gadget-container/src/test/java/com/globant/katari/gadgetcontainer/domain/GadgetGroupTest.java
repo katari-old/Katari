@@ -11,15 +11,15 @@ import org.junit.Test;
 
 import java.io.File;
 
+import com.globant.katari.tools.ReflectionUtils;
+
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 import com.globant.katari.shindig.domain.Application;
 
-/**
- * Test for the bean {@link GadgetGroup}
+/** Test for the bean {@link GadgetGroup}
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
- *
  */
 public class GadgetGroupTest {
 
@@ -28,11 +28,15 @@ public class GadgetGroupTest {
 
   private CoreUser user;
 
+  Application application;
+
   @Before
   public void setUp() {
     user = createNiceMock(CoreUser.class);
     expect(user.getId()).andReturn(1L);
     replay(user);
+
+    application = new Application(gadgetXmlUrl);
   }
 
   @Test
@@ -64,8 +68,7 @@ public class GadgetGroupTest {
   @Test
   public void testAddGadget() {
     GadgetGroup group = new GadgetGroup(user, "1", 1);
-    Application app = new Application(gadgetXmlUrl);
-    GadgetInstance instance = new GadgetInstance(app, 0, 0);
+    GadgetInstance instance = new GadgetInstance(application, 0, 0);
     group.addGadget(instance);
     assertTrue(group.getGadgets().contains(instance));
   }
@@ -73,9 +76,128 @@ public class GadgetGroupTest {
   @Test(expected = RuntimeException.class)
   public void testAddGadget_columnTooLarge() {
     GadgetGroup group = new GadgetGroup(user, "1", 1);
-    Application app = new Application(gadgetXmlUrl);
-    GadgetInstance instance = new GadgetInstance(app, 1, 0);
+    GadgetInstance instance = new GadgetInstance(application, 1, 0);
     group.addGadget(instance);
+  }
+
+  @Test
+  public void move_pastLastColumn() {
+    GadgetGroup group = new GadgetGroup(user, "name", 1);
+    GadgetInstance instance;
+     
+    instance = new GadgetInstance(application, 0, 0);
+    ReflectionUtils.setAttribute(instance, "id", 1);
+    group.addGadget(instance);
+
+    instance = new GadgetInstance(application, 0, 1);
+    ReflectionUtils.setAttribute(instance, "id", 2);
+    group.addGadget(instance);
+
+    // Should fail because there is only 1 column in the group.
+    try {
+      group.move(2, 1, 0);
+      fail("Moved passed the last column should have failed.");
+    } catch (RuntimeException e) {
+    }
+  }
+
+  @Test
+  public void move_wrongGadget() {
+    GadgetGroup group = new GadgetGroup(user, "name", 1);
+    GadgetInstance instance;
+     
+    instance = new GadgetInstance(application, 0, 0);
+    ReflectionUtils.setAttribute(instance, "id", 1);
+    group.addGadget(instance);
+
+    instance = new GadgetInstance(application, 0, 1);
+    ReflectionUtils.setAttribute(instance, "id", 2);
+    group.addGadget(instance);
+
+    // Should fail because gadget 100 is not in the group.
+    try {
+      group.move(100, 0, 0);
+      fail("Moved passed the last column should have failed.");
+    } catch (RuntimeException e) {
+    }
+  }
+
+  @Test
+  public void move_sameColumn() {
+    GadgetGroup group = new GadgetGroup(user, "name", 1);
+     
+    GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
+    ReflectionUtils.setAttribute(col0Order0, "id", 1);
+    group.addGadget(col0Order0);
+
+    GadgetInstance col0Order1 = new GadgetInstance(application, 0, 1);
+    ReflectionUtils.setAttribute(col0Order1, "id", 2);
+    group.addGadget(col0Order1);
+
+    // Move the second gadget to the begining of the column.
+    group.move(2, 0, 0);
+    assertThat(col0Order0.getColumn(), is(0));
+    assertThat(col0Order0.getOrder(), is(1));
+    assertThat(col0Order1.getColumn(), is(0));
+    assertThat(col0Order1.getOrder(), is(0));
+  }
+
+  @Test
+  public void move_toEmptyColumn() {
+    GadgetGroup group = new GadgetGroup(user, "name", 2);
+     
+    GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
+    ReflectionUtils.setAttribute(col0Order0, "id", 1);
+    group.addGadget(col0Order0);
+
+    GadgetInstance col0Order1 = new GadgetInstance(application, 0, 1);
+    ReflectionUtils.setAttribute(col0Order1, "id", 2);
+    group.addGadget(col0Order1);
+
+    // Move the second gadget to the begining of the column.
+    group.move(2, 1, 0);
+    assertThat(col0Order0.getColumn(), is(0));
+    assertThat(col0Order0.getOrder(), is(0));
+    assertThat(col0Order1.getColumn(), is(1));
+    assertThat(col0Order1.getOrder(), is(0));
+  }
+
+  @Test
+  public void move_toLargeColumn() {
+    GadgetGroup group = new GadgetGroup(user, "name", 2);
+     
+    GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
+    ReflectionUtils.setAttribute(col0Order0, "id", 1);
+    group.addGadget(col0Order0);
+
+    GadgetInstance col0Order1 = new GadgetInstance(application, 0, 1);
+    ReflectionUtils.setAttribute(col0Order1, "id", 2);
+    group.addGadget(col0Order1);
+
+    GadgetInstance col1Order0 = new GadgetInstance(application, 1, 1);
+    ReflectionUtils.setAttribute(col1Order0, "id", 3);
+    group.addGadget(col1Order0);
+
+    GadgetInstance col1Order1 = new GadgetInstance(application, 1, 2);
+    ReflectionUtils.setAttribute(col1Order1, "id", 4);
+    group.addGadget(col1Order1);
+
+    GadgetInstance col1Order2 = new GadgetInstance(application, 1, 3);
+    ReflectionUtils.setAttribute(col1Order2, "id", 5);
+    group.addGadget(col1Order2);
+
+    // Move the second gadget to the begining of the column.
+    group.move(2, 1, 1);
+    assertThat(col0Order0.getColumn(), is(0));
+    assertThat(col0Order0.getOrder(), is(0));
+    assertThat(col1Order0.getColumn(), is(1));
+    assertThat(col1Order0.getOrder(), is(0));
+    assertThat(col0Order1.getColumn(), is(1));
+    assertThat(col0Order1.getOrder(), is(1));
+    assertThat(col1Order1.getColumn(), is(1));
+    assertThat(col1Order1.getOrder(), is(2));
+    assertThat(col1Order2.getColumn(), is(1));
+    assertThat(col1Order2.getOrder(), is(3));
   }
 }
 
