@@ -25,6 +25,11 @@
     <lookup-method name="createCommandBean" bean="gadgetGroupCommand" />
   </bean>
  
+  <bean name='/moveGadget.do'
+    class='com.globant.katari.gadgetcontainer.view.JsonCommandController'>
+    <lookup-method name="createCommandBean" bean="moveGadgetCommand" />
+  </bean>
+
   <bean name='/katariSocialCanvas.js'
     class='com.globant.katari.gadgetcontainer.view.CanvasModelController'
     p:viewName="katari-social-canvas">
@@ -37,6 +42,12 @@
     <constructor-arg index="0" ref="gadgetGroupRepository" />
     <constructor-arg index="1" ref="userService" />
     <constructor-arg index='2' ref="tokenService" />
+  </bean>
+
+  <bean name="moveGadgetCommand" scope="prototype"
+    class="com.globant.katari.gadgetcontainer.application.MoveGadgetCommand">
+    <constructor-arg index="0" ref="gadgetGroupRepository" />
+    <constructor-arg index="1" ref="userService" />
   </bean>
 
   <bean

@@ -287,6 +287,7 @@ katari.social.GadgetGroup = function(sContainer) {
       this.columns[i] = column;
     }
     this.isCustomizable = groupSpec.customizable;
+    this.name = groupSpec.name;
     // And create all the gadgets.
     jQuery.each(groupSpec.gadgets, function(i, gadgetSpec) {
       that.addGadget(new katari.social.GadgetInstance(gadgetSpec.id,
@@ -377,8 +378,15 @@ katari.social.GadgetGroup = function(sContainer) {
    * to. The first gadget in the column has position 0.
    */
   this.move = function(gadgetInstance, newColumn, newPosition) {
-    katari.console.log('TODO: Move ' + gadgetInstance.getId() + ' to col:' +
-        newColumn + ', row: ' + newPosition);
+    var parameters = 'groupName=' + this.name + '&gadgetInstanceId=' +
+      gadgetInstance.getId() + '&column=' + newColumn + '&order=' +
+      newPosition;
+    katari.console.log('TODO: Move ' + parameters);
+    $.getJSON(katari.social.canvasConfig.host +
+        '${baseweb}/module/gadgetcontainer/moveGadget.do?' + parameters,
+        function(data) {
+          katari.console.log(data);
+        });
   }
 };
 
