@@ -153,5 +153,18 @@ public class GadgetGroup {
   public boolean isCustomizable() {
     return owner != null;
   }
+
+  /** Moves a gadget in the group to a new column and position in the column.
+   *
+   * @param gadgetInstanceId The id of the gadget instance to move.
+   *
+   * @param column The column to move the gadget to, starting from 0.
+   *
+   * @param order The position of the gadget in the column, starting from 0.
+   */
+  public void move(final long gadgetInstanceId, final int column, final int
+      order) {
+    throw new RuntimeException("Not implemented yet");
+  }
 }
 
