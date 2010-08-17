@@ -259,6 +259,7 @@
     <constructor-arg>
       <list>
         <value>.*/module/shindig/gadgets/ifr.*</value>
+        <value>.*/module/shindig/gadgets/proxy.*</value>
       </list>
     </constructor-arg>
   </bean>
