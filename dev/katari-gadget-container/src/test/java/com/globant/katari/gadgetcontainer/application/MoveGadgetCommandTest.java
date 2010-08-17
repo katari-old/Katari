@@ -97,6 +97,7 @@ public class MoveGadgetCommandTest {
   public void testExecute_customizable() {
 
     expect(gadgetGroup.isCustomizable()).andReturn(true);
+    expect(gadgetGroup.getNumberOfColumns()).andReturn(4);
     gadgetGroup.move(0, 3, 4);
     replay(gadgetGroup);
 

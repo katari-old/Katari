@@ -166,6 +166,9 @@ public class MoveGadgetCommand implements Command<JSONObject> {
     } else if (!group.isCustomizable()) {
       throw new RuntimeException(
           "The group you are trying to modify is not configurable.");
+    } else if (!(0 < column && column < group.getNumberOfColumns())) {
+      throw new RuntimeException(
+          "Trying to move the gadget to a non existing column.");
     } else {
       group.move(gadgetInstanceId, column, order);
       log.trace("Leaving execute");
