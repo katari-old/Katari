@@ -66,12 +66,7 @@ katari.console = {
        * 2 and possibly others). See rpc.js for more info.
        */
       relayFile: host + "${baseweb}/module/gadgetcontainer/assets/rpc_relay.html",
-      /** The prefix of id of the frame that contains the gadget.
-       *
-       * Gadgets iframes has an id of the form [applicationPrefix] +
-       * [gadgetId]. 
-       */
-      applicationPrefix: "Application-",
+
       socialContainer: "default",
       defaultView: "home",
       synId: "0"
@@ -103,8 +98,8 @@ katari.console = {
  *
  * @param sOrder The position of the gadget in the column.
  */
-katari.social.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer,
-    sOwner, sColumn, sOrder) {
+katari.social.GadgetInstance = function(sId, sUrl, sTitle, sSecurityToken,
+    sViewer, sOwner, sColumn, sOrder) {
 
   /** The id of the gadget instance, usually as retrieved from the backend.
    */
@@ -116,12 +111,12 @@ katari.social.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer,
    * communication. It is the same as the iframe id to implement a workaround
    * in ie6/ie7 where the rezise event does not receive the iframe id.
    */
-  var applicationId = katari.social.canvasConfig.applicationPrefix + sId;
+  var applicationId = 'Application-' + sId;
 
   /** The url used to render the gadget, that is, the value of the src
    * attribute of the iframe that contains the gadget.
    */
-  this.getGadgetUrl = function() {
+  var getGadgetUrl = function() {
     var url = [];
     url.push(katari.social.canvasConfig.container);
     if (katari.debugMode) {
@@ -157,6 +152,82 @@ katari.social.GadgetInstance = function(sId, sUrl, sSecurityToken, sViewer,
     return applicationId;
   }
 
+  /** Renders the gadget in a container.
+   *
+   * This method creates the following structure in the container:
+   *
+   * div(id='gadget_Application-N)
+   * +-> div(id='header_Application-N')
+   * +-> iframe(id='Application-N)
+   *
+   * Finally, it stores the gadget (this) under the 'katariGadget' jquery data
+   * key of the parent div. So, if you have a jQuery object fo the gadget div,
+   * you can use:
+   *
+   * jQuery('#gadget_Application-N').data().gadgetInstance;
+   *
+   * @param containerElement the jQuery wrapped dom object where to render the
+   * gadget.
+   */
+  this.render = function(containerElement) {
+    var gadgetDiv = jQuery("<div class='gadgetPortlet'></div>");
+    var iframe = jQuery("<iframe>");
+
+    iframe.attr("src", getGadgetUrl());
+    iframe.attr("id", this.getApplicationId());
+    iframe.attr("name", this.getApplicationId());
+    iframe.attr("frameborder", 0);
+
+    gadgetDiv.attr("id", "gadget_" + this.getApplicationId());
+    gadgetDiv.append(this.createTitleBar(iframe));
+    gadgetDiv.append(iframe);
+
+    gadgetDiv.data('gadgetInstance', this);
+
+    containerElement.append(gadgetDiv);
+  }
+
+  /** Creates a title bar for this gadget instance.
+   *
+   * The title bar contains the gadget title and a min/restore button.
+   *
+   * @param contentToHandle The jquery wrapped element to min/restore.
+   */
+  this.createTitleBar = function(contentToHandle) {
+    var titleBar;
+    var buttons;
+    var minimize;
+    var titleDiv;
+
+    var isMinimized = false;
+
+    titleBar = jQuery("<div class='titleBar'></div>");
+
+    minimize = jQuery("<a class='minimizeButton'>^</a>");
+    minimize.click(function(event) {
+      if (isMinimized) {
+        contentToHandle.show();
+        isMinimized = false;
+        minimize.attr('class', 'minimizeButton');
+      } else {
+        contentToHandle.hide();
+        isMinimized = true;
+        minimize.attr('class', 'restoreButton');
+      }
+    });
+
+    titleDiv = jQuery("<h2>" + sTitle + "</h2>");
+    titleDiv.attr("id", "header_" + this.getApplicationId());
+
+    buttons = jQuery("<div></div>");
+    buttons.append(minimize);
+
+    titleBar.append(buttons);
+    titleBar.append(titleDiv);
+
+    return titleBar;
+  }
+
   /** The column where this gadget will be displayed.
    */
   this.column = sColumn;
@@ -186,6 +257,10 @@ katari.social.GadgetGroup = function(sContainer) {
    */
   this.columns = [];
 
+  /** Whether the GadgetGroup is customizable or not.
+   */
+  this.isCustomizable = false;
+
   /** Add a gadget instance.
    *
    * @param {Object} objGadgetInstance
@@ -203,15 +278,21 @@ katari.social.GadgetGroup = function(sContainer) {
    */
   this.addGadgetsFromJson = function(groupSpec) {
     var that = this;
+    var i;
+    var column;
     // Create the empty columns.
-    for (var i = 0; i < groupSpec.numberOfColumns; i++) {
-      this.columns[i] = jQuery('<div class="canvasColumn">');
+    for (i = 0; i < groupSpec.numberOfColumns; i++) {
+      column = jQuery('<div class="canvasColumn">');
+      column.data('columnNumber', i);
+      this.columns[i] = column;
     }
+    this.isCustomizable = groupSpec.customizable;
     // And create all the gadgets.
     jQuery.each(groupSpec.gadgets, function(i, gadgetSpec) {
       that.addGadget(new katari.social.GadgetInstance(gadgetSpec.id,
-          gadgetSpec.url, gadgetSpec.securityToken, groupSpec.viewerId,
-          groupSpec.ownerId, gadgetSpec.column, gadgetSpec.order));
+          gadgetSpec.url, gadgetSpec.title, gadgetSpec.securityToken,
+          groupSpec.viewerId, groupSpec.ownerId, gadgetSpec.column,
+          gadgetSpec.order));
     });
     return this;
   };
@@ -225,8 +306,6 @@ katari.social.GadgetGroup = function(sContainer) {
    * div(id='header_N') + div -> iframe(id='Application_N)
    *
    * The container has a final clear div after all the columns.
-   *
-   * TODO Review the structure.
    */
   this.render = function() {
     // sort the gadgets.
@@ -245,20 +324,7 @@ katari.social.GadgetGroup = function(sContainer) {
     // add the gadgets
     var that = this;
     jQuery.each(this.gadgets, function(i, gadget) {
-      var iframe = jQuery("<iframe>");
-      iframe.attr("src", gadget.getGadgetUrl());
-      iframe.attr("id", gadget.getApplicationId());
-      iframe.attr("name", gadget.getApplicationId());
-      iframe.attr("frameborder", 0);
-
-      var titleDiv = jQuery("<div></div>");
-      titleDiv.attr("id", "header_" + gadget.getApplicationId());
-      var localDiv = jQuery("<div></div>");
-
-      localDiv.append(iframe);
-
-      that.columns[gadget.column].append(titleDiv);
-      that.columns[gadget.column].append(localDiv);
+      gadget.render(that.columns[gadget.column]);
     });
 
     // Adds all the columns to the provided container.
@@ -276,7 +342,44 @@ katari.social.GadgetGroup = function(sContainer) {
         gadgets.rpc.setupReceiver(gadget.getApplicationId());
       });
     }
+
+    this.makeSortable(containerDiv, container);
   };
+
+  /** Configure the jquery sortables in portlet mode.
+   */
+  this.makeSortable = function(gadgetGroupElement, gadgetGroupElementId) {
+    if (this.isCustomizable) {
+      var that = this;
+      var containers = jQuery(".canvasColumn", gadgetGroupElement);
+      containers.sortable({
+        connectWith: '#' + gadgetGroupElementId + ' .canvasColumn',
+        update: function(event, ui) {
+          if (ui.sender === null) {
+            var newColumn = ui.item.parent().data().columnNumber;
+            var newPosition = jQuery.inArray(ui.item.attr('id'), 
+                ui.item.parent().sortable('toArray'));
+            that.move(ui.item.data().gadgetInstance, newColumn, newPosition);
+          }
+        },
+      });
+      containers.disableSelection();
+    }
+  };
+
+  /** Moves tha gadget to a new posititon in the gadget group.
+   *
+   * @param gadgetInstance the gadget to move.
+   *
+   * @param newColumn the new column, starting from 0, to move the gadget to.
+   *
+   * @param newColumn the new position, in the new column, to move the gadget
+   * to. The first gadget in the column has position 0.
+   */
+  this.move = function(gadgetInstance, newColumn, newPosition) {
+    katari.console.log('TODO: Move ' + gadgetInstance.getId() + ' to col:' +
+        newColumn + ', row: ' + newPosition);
+  }
 };
 
 /** OpenSocial container implementation.

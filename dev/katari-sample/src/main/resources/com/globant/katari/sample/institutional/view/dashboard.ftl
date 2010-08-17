@@ -8,6 +8,10 @@
     </script>
 
     <script type='text/javascript'
+      src='${baseweb}/module/gadgetcontainer/assets/js/jquery-ui-1.8.4.custom.min.js'>
+    </script>
+
+    <script type='text/javascript'
       src='${baseweb}/module/shindig/gadgets/js/rpc.js'>
     </script>
 
@@ -27,7 +31,7 @@
 
       .canvasColumn {
         float: left;
-        width: 30%;
+        width: 45%;
         margin: 10px;
         padding-top: 10px;
       }
@@ -39,25 +43,60 @@
         text-align: center;
       }
 
+      .ui-sortable-placeholder {
+        border: 1px dotted black;
+        visibility: visible !important;
+        height: 50px !important;
+      }
+
+      .ui-sortable-placeholder * {
+        visibility: hidden;
+      }
+
+      .titleBar div {
+        float: left;
+      }
+
+      .titleBar a.minimizeButton {
+        border: 0px solid;
+      }
+
+      .titleBar a.restoreButton {
+        border: 1px solid;
+      }
+
     </style>
   </head>
 
   <body>
 
-    <div id='gadgets-div'>
+    <div id='top-gadgets'>
+      <!-- will hold open social gadgets. -->
+    </div>
+
+    <div id='custom-gadgets'>
       <!-- will hold open social gadgets. -->
     </div>
 
     <script type='text/javascript'>
       $(document).ready(function() {
-        gadgetGroup = new katari.social.GadgetGroup('gadgets-div');
+        var topGadgets = new katari.social.GadgetGroup('top-gadgets');
 
+        $.getJSON(
+          katari.social.canvasConfig.host +
+            '${baseweb}/module/gadgetcontainer/socialPage.do?groupName=top', 
+          function(data) {
+            topGadgets.addGadgetsFromJson(data);
+            topGadgets.render();
+          });
+
+        var mainGadgets = new katari.social.GadgetGroup('custom-gadgets');
         $.getJSON(
           katari.social.canvasConfig.host +
             '${baseweb}/module/gadgetcontainer/socialPage.do?groupName=main', 
           function(data) {
-            gadgetGroup.addGadgetsFromJson(data);
-            gadgetGroup.render();
+            mainGadgets.addGadgetsFromJson(data);
+            mainGadgets.render();
           });
       });
     </script>

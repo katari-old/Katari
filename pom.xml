@@ -116,12 +116,18 @@
       <name>globant-public-releases</name>
       <!-- If I use ${repositoryRoot}, maven does not find the parent pom. -->
       <url>https://projects.globant.com/nexus/content/repositories/globant</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </repository>
     <!-- The jboss repository, mainly for hibernate -->
     <repository>
       <id>jboss-releases</id>
       <name>Jboss Releases</name>
       <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </repository>
   </repositories>
 
