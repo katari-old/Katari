@@ -21,9 +21,7 @@
     p:exposeRequestAttributes='true'/>
 
   <bean name='/socialPage.do'
-    class='com.globant.katari.gadgetcontainer.view.GadgetGroupController'>
-    <constructor-arg ref="userService" />
-    <constructor-arg ref="tokenService" />
+    class='com.globant.katari.gadgetcontainer.view.JsonCommandController'>
     <lookup-method name="createCommandBean" bean="gadgetGroupCommand" />
   </bean>
  
@@ -38,6 +36,7 @@
     class="com.globant.katari.gadgetcontainer.application.GadgetGroupCommand">
     <constructor-arg index="0" ref="gadgetGroupRepository" />
     <constructor-arg index="1" ref="userService" />
+    <constructor-arg index='2' ref="tokenService" />
   </bean>
 
   <bean

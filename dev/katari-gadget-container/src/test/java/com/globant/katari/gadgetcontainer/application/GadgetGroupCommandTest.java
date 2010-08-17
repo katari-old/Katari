@@ -3,38 +3,44 @@
 package com.globant.katari.gadgetcontainer.application;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import static org.easymock.classextension.EasyMock.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
+import com.globant.katari.gadgetcontainer.application.TokenService;
+
+import com.globant.katari.shindig.domain.Application;
+
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
-import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
-/**
- * @author waabox (emiliano[dot]arango[at]globant[dot]com)
- *
- */
 public class GadgetGroupCommandTest {
 
-  private CoreUser user;
+  private TokenService tokenService;
 
   @Before
   public void setUp() throws Exception {
-    user = createMock(CoreUser.class);
-    expect(user.getId()).andReturn(1l);
-    replay(user);
+    tokenService = createMock(TokenService.class);
+    expect(tokenService.createSecurityToken(eq(0L), eq(0L),
+        isA(GadgetInstance.class))).andReturn("mockToken").anyTimes();
+    replay(tokenService);
   }
 
   @Test
-  public void testExecute_pageNull() {
+  public void testExecute_nullGroup() {
     GadgetGroupCommand command = new GadgetGroupCommand(
         createMock(GadgetGroupRepository.class),
-        createMock(ContextUserService.class));
+        createMock(ContextUserService.class),
+        createMock(TokenService.class));
     try {
       command.execute();
       fail("should fail because we never set the groupName command property");
@@ -43,33 +49,91 @@ public class GadgetGroupCommandTest {
   }
 
   @Test
-  public void testExecute() {
+  public void testExecute() throws Exception {
 
-    String groupName = "1";
-    long userId = 1;
+    String groupName = "theGroup";
 
-    GadgetInstance gi = createMock(GadgetInstance.class);
+    CoreUser userId = createMock(CoreUser.class);
 
-    GadgetGroup gadgetGroup = new GadgetGroup(user, groupName, 1);
-    gadgetGroup.addGadget(gi);
+    GadgetGroup gadgetGroup = new GadgetGroup(userId, groupName, 3);
+    Application application = new Application("http://lala");
+    GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
+    gadgetGroup.addGadget(gadgetInstance);
 
     GadgetGroupRepository repository = createMock(GadgetGroupRepository.class);
-    expect(repository.findGadgetGroup(userId, groupName))
-      .andReturn(gadgetGroup);
+    expect(repository.findGadgetGroup(0, groupName)).andReturn(gadgetGroup);
     replay(repository);
 
     ContextUserService userService = createMock(ContextUserService.class);
-    expect(userService.getCurrentUserId()).andReturn(userId);
+    expect(userService.getCurrentUserId()).andReturn(0L);
     replay(userService);
 
     GadgetGroupCommand command;
-    command = new GadgetGroupCommand(repository, userService);
+    command = new GadgetGroupCommand(repository, userService, tokenService);
     command.setGroupName(groupName);
 
-    command.execute();
+    assertThat(command.execute().toString(), is(baselineJson()));
 
     verify(userService);
     verify(repository);
+  }
+
+  @Test
+  public void testExecute_staticGroup() throws Exception {
+    String groupName = "theGroup";
+
+    CoreUser userId = createMock(CoreUser.class);
+
+    GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, 3);
+    Application application = new Application("http://lala");
+    GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
+    gadgetGroup.addGadget(gadgetInstance);
+
+    GadgetGroupRepository repository = createMock(GadgetGroupRepository.class);
+    expect(repository.findGadgetGroup(0, groupName)).andReturn(gadgetGroup);
+    replay(repository);
+
+    ContextUserService userService = createMock(ContextUserService.class);
+    expect(userService.getCurrentUserId()).andReturn(0L);
+    replay(userService);
+
+    GadgetGroupCommand command;
+    command = new GadgetGroupCommand(repository, userService, tokenService);
+    command.setGroupName(groupName);
+
+    assertThat(command.execute().toString(), is(baselineJson()));
+
+    verify(userService);
+    verify(repository);
+  }
+
+  /** Creates the baseline json string, a string with a sample json object.
+   *
+   * @return the json string.
+   *
+   * @throws JSONException
+   */
+  private String baselineJson() throws JSONException {
+    try {
+      JSONObject groupJson = new JSONObject();
+      groupJson.put("id", 0);
+      groupJson.put("name", "theGroup");
+      groupJson.put("ownerId", 0);
+      groupJson.put("viewerId", 0);
+      groupJson.put("numberOfColumns", 3);
+
+      JSONObject gadgetJson = new JSONObject();
+      gadgetJson.put("id", 0);
+      gadgetJson.put("appId", 0);
+      gadgetJson.put("column", 1);
+      gadgetJson.put("order", 2);
+      gadgetJson.put("url", "http://lala");
+      gadgetJson.put("securityToken", "mockToken");
+      groupJson.append("gadgets", gadgetJson);
+      return groupJson.toString();
+    } catch(JSONException e) {
+      throw new RuntimeException("Error generating json", e);
+    }
   }
 }
 
