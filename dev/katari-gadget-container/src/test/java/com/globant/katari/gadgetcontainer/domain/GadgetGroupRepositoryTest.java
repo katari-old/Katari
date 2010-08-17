@@ -73,8 +73,8 @@ public class GadgetGroupRepositoryTest {
   public void testFindGadgetGroup_forEverybody() {
     createGadgetGroups(url);
 
-    GadgetGroup group = repository.findGadgetGroup(user.getId(),
-        "for everybody");
+    GadgetGroup group;
+    group = repository.findGadgetGroup(Long.MAX_VALUE, "for everybody");
 
     assertNotNull(group);
     assertFalse(group.getGadgets().isEmpty());
@@ -99,7 +99,7 @@ public class GadgetGroupRepositoryTest {
     group.addGadget(new GadgetInstance(app, 1, 2));
     repository.save(group);
 
-    group = new GadgetGroup(user, "for everybody", 2);
+    group = new GadgetGroup(null, "for everybody", 2);
     group.addGadget(new GadgetInstance(app, 1, 2));
     repository.save(group);
   }
