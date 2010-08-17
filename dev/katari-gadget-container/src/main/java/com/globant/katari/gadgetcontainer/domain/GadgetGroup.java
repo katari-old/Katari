@@ -143,12 +143,15 @@ public class GadgetGroup {
     return numberOfColumns;
   }
 
-  /** Tells if this gadget group is static or customizable.
+  /** Tells if this gadget group is customizable.
    *
-   * @return true if the gadget group is static, false otherwise.
+   * A customizable gadget group allows the user to move, add and remove
+   * gadgets.
+   *
+   * @return true if the gadget group is customizable, false otherwise.
    */
-  public boolean isStatic() {
-    return owner == null;
+  public boolean isCustomizable() {
+    return owner != null;
   }
 }
 

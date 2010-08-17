@@ -109,6 +109,15 @@ public class GadgetInstance {
     return application;
   }
 
+  /** The title of the gadget.
+   *
+   * @return The title of gadget, usually obtained from the gadget xml
+   * specification. Null if not known.
+   */
+  public String getTitle() {
+    return application.getTitle();
+  }
+
   /** Returns the url for the gadget xml.
    *
    * @return the url, never null.

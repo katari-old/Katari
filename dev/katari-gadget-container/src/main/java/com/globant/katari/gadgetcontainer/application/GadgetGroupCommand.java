@@ -17,11 +17,9 @@ import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
-/** Command that looks for a gadget group.
+/** Looks for a gadget group by name, for the currently logged on user.
  *
- * This command generates the json representation for the gadget group.
- *
- * @author waabox(emiliano[dot]arango[at]globant[dot]com)
+ * It generates the json representation for the gadget group.
  */
 public class GadgetGroupCommand implements Command<JSONObject> {
 
@@ -29,11 +27,15 @@ public class GadgetGroupCommand implements Command<JSONObject> {
    */
   private static Logger log = LoggerFactory.getLogger(GadgetGroupCommand.class);
 
-  /** {@link GadgetGroupRepository} the DAO for page.
+  /** The repository for gadget groups.
+   *
+   * This is never null.
    */
   private final GadgetGroupRepository gadgetGroupRepository;
 
-  /** {@link ContextUserService} retrieve the current user.
+  /** Service used to obtain the currently logged on user.
+   *
+   * This is never null.
    */
   private final ContextUserService userService;
 
@@ -43,43 +45,52 @@ public class GadgetGroupCommand implements Command<JSONObject> {
    */
   private final TokenService tokenService;
 
-  /** {@link String} the page name to search.
+  /** The name of the gadget group to search, as provided by the user.
    */
   private String groupName;
 
   /** Constructor.
    *
-   * @param thePageRepository {@link GadgetGroupRepository}. Can not be null.
-   * @param theUserService {@link ContextUserService}. Can not be null.
-   * @param theTokenService {@link TokenService}. Can not be null.
+   * @param theGroupRepository Cannot be null.
+   *
+   * @param theUserService Cannot be null.
+   *
+   * @param theTokenService Cannot be null.
    */
-  public GadgetGroupCommand(final GadgetGroupRepository thePageRepository,
+  public GadgetGroupCommand(final GadgetGroupRepository theGroupRepository,
       final ContextUserService theUserService,
       final TokenService theTokenService) {
 
-    Validate.notNull(thePageRepository, "page repository can not be null");
+    Validate.notNull(theGroupRepository, "gadget repository can not be null");
     Validate.notNull(theUserService, "user service can not be null");
     Validate.notNull(theTokenService, "token service can not be null");
 
-    gadgetGroupRepository = thePageRepository;
+    gadgetGroupRepository = theGroupRepository;
     userService = theUserService;
     tokenService = theTokenService;
   }
 
-  /** @return @link{String} the groupName. Never returns null.
+  /** Obtains the group name, as provided by the user.
+   *
+   * @return the groupName.
    */
   public String getGroupName() {
     return groupName;
   }
 
-  /** @param name {@link String} the groupName to set
+  /** The name of the group to search for, as provided by the user.
+   *
+   * @param name the groupName to set. It must be called with a non empty
+   * string before calling execute.
    */
   public void setGroupName(final String name) {
     groupName = name;
   }
 
-  /** Retrieve the user id from the spring security context then find the
-   * group with the context user and the given groupName.
+  /** Find the group with the given group name for the currently logged in
+   * user.
+   *
+   * Call setGroupName with a non empty string before calling execute.
    *
    * The json structure is:
    *
@@ -90,9 +101,11 @@ public class GadgetGroupCommand implements Command<JSONObject> {
    *   "ownerId":&lt;long&gt;,
    *   "viewerId":&lt;long&gt;,
    *   "numberOfColumns":&lt;int&gt;,
+   *   "customizable":&lt;true|false&gt;,
    *   "gadgets":[
    *     {
    *       "id":&lt;long&gt;,
+   *       "title":&lt;string&gt;,
    *       "appId":&lt;long&gt;,
    *       "column":&lt;int&gt;,
    *       "order":&lt;int&gt;,
@@ -103,6 +116,8 @@ public class GadgetGroupCommand implements Command<JSONObject> {
    * }
    * </pre>
    *
+   * If the gadget was not found, it returns an empty json object ({}).
+   *
    * @return a json object, never returns null.
    */
   public JSONObject execute() {
@@ -111,7 +126,7 @@ public class GadgetGroupCommand implements Command<JSONObject> {
       throw new IllegalArgumentException("groupName can not be blank");
     }
     long uid = userService.getCurrentUserId();
-    log.debug("searching group name = " + groupName + "for the user:" + uid);
+    log.debug("searching group name = " + groupName + " for the user:" + uid);
     GadgetGroup group = gadgetGroupRepository.findGadgetGroup(uid, groupName);
     try {
       if (group != null) {
@@ -146,10 +161,12 @@ public class GadgetGroupCommand implements Command<JSONObject> {
       groupJson.put("ownerId", owner);
       groupJson.put("viewerId", uid);
       groupJson.put("numberOfColumns", group.getNumberOfColumns());
+      groupJson.put("customizable", group.isCustomizable());
 
       for (GadgetInstance gadget : group.getGadgets()) {
         JSONObject gadgetJson = new JSONObject();
         gadgetJson.put("id", gadget.getId());
+        gadgetJson.put("title", gadget.getTitle());
         gadgetJson.put("appId", gadget.getApplication().getId());
         gadgetJson.put("column", gadget.getColumn());
         gadgetJson.put("order", gadget.getOrder());

@@ -77,7 +77,7 @@ public class GadgetGroupCommandTest {
     command = new GadgetGroupCommand(repository, userService, tokenService);
     command.setGroupName(groupName);
 
-    assertThat(command.execute().toString(), is(baselineJson()));
+    assertThat(command.execute().toString(), is(baselineJson(true)));
 
     verify(userService);
     verify(repository);
@@ -106,7 +106,7 @@ public class GadgetGroupCommandTest {
     command = new GadgetGroupCommand(repository, userService, tokenService);
     command.setGroupName(groupName);
 
-    assertThat(command.execute().toString(), is(baselineJson()));
+    assertThat(command.execute().toString(), is(baselineJson(false)));
 
     verify(userService);
     verify(repository);
@@ -118,7 +118,8 @@ public class GadgetGroupCommandTest {
    *
    * @throws JSONException
    */
-  private String baselineJson() throws JSONException {
+  private String baselineJson(final boolean isCustomizable)
+    throws JSONException {
     try {
       JSONObject groupJson = new JSONObject();
       groupJson.put("id", 0);
@@ -126,9 +127,11 @@ public class GadgetGroupCommandTest {
       groupJson.put("ownerId", 0);
       groupJson.put("viewerId", 0);
       groupJson.put("numberOfColumns", 3);
+      groupJson.put("customizable", isCustomizable);
 
       JSONObject gadgetJson = new JSONObject();
       gadgetJson.put("id", 0);
+      gadgetJson.put("title", "Test title");
       gadgetJson.put("appId", 0);
       gadgetJson.put("column", 1);
       gadgetJson.put("order", 2);
