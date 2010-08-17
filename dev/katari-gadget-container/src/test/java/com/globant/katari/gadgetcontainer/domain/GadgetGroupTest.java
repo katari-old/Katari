@@ -9,6 +9,8 @@ import static org.easymock.classextension.EasyMock.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 import com.globant.katari.shindig.domain.Application;
@@ -20,6 +22,9 @@ import com.globant.katari.shindig.domain.Application;
  *
  */
 public class GadgetGroupTest {
+
+  private String gadgetXmlUrl = "file://" + new File(
+      "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   private CoreUser user;
 
@@ -59,7 +64,7 @@ public class GadgetGroupTest {
   @Test
   public void testAddGadget() {
     GadgetGroup group = new GadgetGroup(user, "1", 1);
-    Application app = new Application("a");
+    Application app = new Application(gadgetXmlUrl);
     GadgetInstance instance = new GadgetInstance(app, 0, 0);
     group.addGadget(instance);
     assertTrue(group.getGadgets().contains(instance));
@@ -68,7 +73,7 @@ public class GadgetGroupTest {
   @Test(expected = RuntimeException.class)
   public void testAddGadget_columnTooLarge() {
     GadgetGroup group = new GadgetGroup(user, "1", 1);
-    Application app = new Application("a");
+    Application app = new Application(gadgetXmlUrl);
     GadgetInstance instance = new GadgetInstance(app, 1, 0);
     group.addGadget(instance);
   }

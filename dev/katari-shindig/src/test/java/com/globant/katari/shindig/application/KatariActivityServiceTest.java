@@ -14,6 +14,8 @@ import org.junit.After;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
+import java.io.File;
+
 import org.apache.shindig.auth.SecurityToken;
 import org.apache.shindig.common.testing.FakeGadgetToken;
 import org.apache.shindig.protocol.model.SortOrder;
@@ -33,6 +35,9 @@ public class KatariActivityServiceTest {
 
   private KatariActivityService service;
 
+  private String gadgetXmlUrl = "file://" + new File(
+      "target/test-classes/SampleGadget.xml").getAbsolutePath();
+
   // This is the same applicationId but in string format.
   private String appId;
 
@@ -51,9 +56,9 @@ public class KatariActivityServiceTest {
     session.createQuery("delete from KatariActivity").executeUpdate();
     // Creates a sample application.
     session.createQuery("delete from Application").executeUpdate();
-    Application app = new Application("http://somewhere/something.xml");
+    Application app = new Application(gadgetXmlUrl);
     session.saveOrUpdate(app);
-    appId = "http://somewhere/something.xml";
+    appId = gadgetXmlUrl;
 
     session.createQuery("delete from CoreUser").executeUpdate();
     SampleUser user = new SampleUser("test1");

@@ -7,15 +7,20 @@ import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.Test;
 
+import java.io.File;
+
 import com.globant.katari.shindig.domain.Application;
 
 public class GadgetInstanceTest {
 
+  private String gadgetXmlUrl = "file://" + new File(
+      "target/test-classes/SampleGadget.xml").getAbsolutePath();
+
   @Test
   public void testConstructor_ok() {
-    Application app = new Application("url");
+    Application app = new Application(gadgetXmlUrl);
     GadgetInstance gi = new GadgetInstance(app, 1, 1);
-    assertThat(gi.getUrl(), is("url"));
+    assertThat(gi.getUrl(), is(gadgetXmlUrl));
     assertThat(gi.getColumn(), is(1));
     assertThat(gi.getOrder(), is(1));
     assertThat(gi.getId(), is(0L));

@@ -10,6 +10,8 @@ import static org.easymock.classextension.EasyMock.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,6 +28,9 @@ import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 public class GadgetGroupCommandTest {
 
   private TokenService tokenService;
+
+  private String gadgetXmlUrl = "file://" + new File(
+      "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   @Before
   public void setUp() throws Exception {
@@ -56,7 +61,7 @@ public class GadgetGroupCommandTest {
     CoreUser userId = createMock(CoreUser.class);
 
     GadgetGroup gadgetGroup = new GadgetGroup(userId, groupName, 3);
-    Application application = new Application("http://lala");
+    Application application = new Application(gadgetXmlUrl);
     GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
     gadgetGroup.addGadget(gadgetInstance);
 
@@ -85,7 +90,7 @@ public class GadgetGroupCommandTest {
     CoreUser userId = createMock(CoreUser.class);
 
     GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, 3);
-    Application application = new Application("http://lala");
+    Application application = new Application(gadgetXmlUrl);
     GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
     gadgetGroup.addGadget(gadgetInstance);
 
@@ -127,7 +132,7 @@ public class GadgetGroupCommandTest {
       gadgetJson.put("appId", 0);
       gadgetJson.put("column", 1);
       gadgetJson.put("order", 2);
-      gadgetJson.put("url", "http://lala");
+      gadgetJson.put("url", gadgetXmlUrl);
       gadgetJson.put("securityToken", "mockToken");
       groupJson.append("gadgets", gadgetJson);
       return groupJson.toString();

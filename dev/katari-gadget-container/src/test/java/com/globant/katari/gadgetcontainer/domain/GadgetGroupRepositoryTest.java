@@ -8,6 +8,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -19,11 +21,9 @@ import com.globant.katari.gadgetcontainer.SpringTestUtils;
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 import com.globant.katari.shindig.domain.Application;
 
-/**
- * Test for the repository {@link GadgetGroupRepository}
+/** Test for the repository {@link GadgetGroupRepository}
  *
  * @author waabox(emiliano[dot]arango[at]globant[dot]com)
- *
  */
 public class GadgetGroupRepositoryTest {
 
@@ -34,6 +34,9 @@ public class GadgetGroupRepositoryTest {
   private Session session;
 
   private CoreUser user;
+
+  private String url = "file://" + new File(
+      "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   @Before
   public void setUp() throws Exception {
@@ -56,7 +59,6 @@ public class GadgetGroupRepositoryTest {
 
   @Test
   public void testFindGadgetGroup() {
-    String url = "http://somewhere/gadget.xml";
     createGadgetGroups(url);
 
     GadgetGroup group = repository.findGadgetGroup(user.getId(), "for user");
@@ -69,7 +71,6 @@ public class GadgetGroupRepositoryTest {
 
   @Test
   public void testFindGadgetGroup_forEverybody() {
-    String url = "http://somewhere/gadget.xml";
     createGadgetGroups(url);
 
     GadgetGroup group = repository.findGadgetGroup(user.getId(),

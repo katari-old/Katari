@@ -6,12 +6,16 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
+import java.io.File;
 import java.util.Date;
 
 import com.globant.katari.shindig.domain.SampleUser;
 import org.apache.shindig.social.opensocial.model.Activity;
 
 public class KatariActivityTest {
+
+  private String gadgetXmlUrl = "file://" + new File(
+      "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   @Test
   public void testActivity_copy() {
@@ -34,9 +38,9 @@ public class KatariActivityTest {
     activity.setUrl("url");
 
     KatariActivity newActivity = new KatariActivity(new Date().getTime(),
-        new Application("some-url"), user, activity);
+        new Application(gadgetXmlUrl), user, activity);
 
-    assertThat(newActivity.getAppId(), is("some-url"));
+    assertThat(newActivity.getAppId(), is(gadgetXmlUrl));
     assertThat(newActivity.getBodyId(), is("body-id"));
     assertThat(newActivity.getBody(), is("body"));
     assertThat(newActivity.getExternalId(), is("external-id"));

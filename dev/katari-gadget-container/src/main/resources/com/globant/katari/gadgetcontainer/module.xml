@@ -9,6 +9,7 @@
 
   <bean id="gadgetcontainer.module"
     class="com.globant.katari.core.web.ConfigurableModule">
+    <!-- Gadget container module -->
     <property name="entryPoints">
       <!--
         The servlet mappings. It maps the spring DispatcherServlet to *.do.
