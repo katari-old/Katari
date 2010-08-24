@@ -362,7 +362,7 @@ katari.social.GadgetGroup = function(sContainer) {
                 ui.item.parent().sortable('toArray'));
             that.move(ui.item.data().gadgetInstance, newColumn, newPosition);
           }
-        },
+        }
       });
       containers.disableSelection();
     }
