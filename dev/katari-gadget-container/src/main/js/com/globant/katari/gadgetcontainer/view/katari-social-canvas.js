@@ -160,16 +160,24 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sSecurityToken,
    * +-> div(id='header_Application-N')
    * +-> iframe(id='Application-N)
    *
-   * Finally, it stores the gadget (this) under the 'katariGadget' jquery data
-   * key of the parent div. So, if you have a jQuery object fo the gadget div,
-   * you can use:
+   * Finally, it stores as jquery data in the parent div:
+   * 
+   * - the gadget (this) under the 'gadgetInstance'.
+   *
+   * - the gadget group under the 'gadgetGroup'.
+   *   
+   * So, if you have a jQuery object fo the gadget div, you can use:
    *
    * jQuery('#gadget_Application-N').data().gadgetInstance;
+   *
+   * jQuery('#gadget_Application-N').data().gadgetGroup;
+   *
+   * @param gadgetGroup the gadget group that contains the gadget to render.
    *
    * @param containerElement the jQuery wrapped dom object where to render the
    * gadget.
    */
-  this.render = function(containerElement) {
+  this.render = function(gadgetGroup, containerElement) {
     var gadgetDiv = jQuery("<div class='gadgetPortlet'></div>");
     var iframe = jQuery("<iframe>");
 
@@ -178,51 +186,77 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sSecurityToken,
     iframe.attr("name", this.getApplicationId());
     iframe.attr("frameborder", 0);
 
-    gadgetDiv.attr("id", "gadget_" + this.getApplicationId());
-    gadgetDiv.append(this.createTitleBar(iframe));
-    gadgetDiv.append(iframe);
-
     gadgetDiv.data('gadgetInstance', this);
+    gadgetDiv.data('gadgetGroup', gadgetGroup);
+
+    gadgetDiv.attr("id", "gadget_" + this.getApplicationId());
+    gadgetDiv.append(this.createTitleBar(gadgetDiv, iframe));
+    gadgetDiv.append(iframe);
 
     containerElement.append(gadgetDiv);
   }
 
   /** Creates a title bar for this gadget instance.
    *
-   * The title bar contains the gadget title and a min/restore button.
+   * The title bar contains the gadget title, a min/restore button and a close
+   * button.
    *
-   * @param contentToHandle The jquery wrapped element to min/restore.
+   * @param contentToClose The jquery wrapped element to remove when closing
+   * the gadget. This dom object must contain a 'gadgetGroup' jquery data
+   * element.
+   * 
+   * @param contentToMinMax The jquery wrapped element to minimize or restore.
    */
-  this.createTitleBar = function(contentToHandle) {
+  this.createTitleBar = function(contentToClose, contentToMinMax) {
     var titleBar;
     var buttons;
     var minimize;
     var titleDiv;
 
+    var close;
+    var minimize;
+
     var isMinimized = false;
+    var gadgetGroup = contentToClose.data().gadgetGroup;
+    var that = this;
 
     titleBar = jQuery("<div class='titleBar'></div>");
 
-    minimize = jQuery("<a class='minimizeButton'>^</a>");
-    minimize.click(function(event) {
-      if (isMinimized) {
-        contentToHandle.show();
-        isMinimized = false;
-        minimize.attr('class', 'minimizeButton');
-      } else {
-        contentToHandle.hide();
-        isMinimized = true;
-        minimize.attr('class', 'restoreButton');
-      }
-    });
+    if (gadgetGroup.isCustomizable) {
+      minimize = jQuery("<a class='minimizeButton'>^</a>");
+      minimize.click(function(event) {
+        if (isMinimized) {
+          contentToMinMax.show();
+          isMinimized = false;
+          minimize.attr('class', 'minimizeButton');
+        } else {
+          contentToMinMax.hide();
+          isMinimized = true;
+          minimize.attr('class', 'restoreButton');
+        }
+      });
+
+      close = jQuery("<a class='closeButton'>X</a>");
+      close.click(function(event) {
+        if (confirm("Remove this gadget ?")) {
+          katari.console.log(contentToClose.data().gadgetGroup);
+          var gadgetGroup = contentToClose.data().gadgetGroup;
+          gadgetGroup.remove(that.getId(), function() {
+            contentToClose.remove();
+          });
+        }
+      });
+
+      buttons = jQuery("<div></div>");
+      buttons.append(minimize);
+      buttons.append(close);
+
+      titleBar.append(buttons);
+    }
 
     titleDiv = jQuery("<h2>" + sTitle + "</h2>");
     titleDiv.attr("id", "header_" + this.getApplicationId());
 
-    buttons = jQuery("<div></div>");
-    buttons.append(minimize);
-
-    titleBar.append(buttons);
     titleBar.append(titleDiv);
 
     return titleBar;
@@ -298,6 +332,20 @@ katari.social.GadgetGroup = function(sContainer) {
     return this;
   };
 
+  /** Removes the gadget instance from the group.
+   *
+   * @param groupName The name of the group that this gadget instance belongs
+   * to.
+   */
+  this.remove = function(instanceId, callback) {
+    var parameters = 'groupName=' + this.name + '&gadgetId=' + instanceId;
+    katari.console.log('Remove: ' +  parameters);
+    jQuery.getJSON(
+      '${baseweb}/module/gadgetcontainer/removeApplicationFromGroup.do?' +
+        parameters,
+      callback);
+  }
+
   /** Renders the group in the container, the html element with the id provided
    * to the gadget group.
    *
@@ -309,6 +357,9 @@ katari.social.GadgetGroup = function(sContainer) {
    * The container has a final clear div after all the columns.
    */
   this.render = function() {
+
+    var that = this;
+
     // sort the gadgets.
     this.gadgets.sort(
       function(a, b) {
@@ -323,9 +374,8 @@ katari.social.GadgetGroup = function(sContainer) {
     katari.console.log(this.gadgets);
 
     // add the gadgets
-    var that = this;
     jQuery.each(this.gadgets, function(i, gadget) {
-      gadget.render(that.columns[gadget.column]);
+      gadget.render(that, that.columns[gadget.column]);
     });
 
     // Adds all the columns to the provided container.
@@ -381,7 +431,7 @@ katari.social.GadgetGroup = function(sContainer) {
     var parameters = 'groupName=' + this.name + '&gadgetInstanceId=' +
       gadgetInstance.getId() + '&column=' + newColumn + '&order=' +
       newPosition;
-    katari.console.log('TODO: Move ' + parameters);
+    katari.console.log('Move: ' + parameters);
     $.getJSON(katari.social.canvasConfig.host +
         '${baseweb}/module/gadgetcontainer/moveGadget.do?' + parameters,
         function(data) {
