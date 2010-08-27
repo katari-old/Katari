@@ -10,17 +10,17 @@ import static org.hamcrest.CoreMatchers.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.globant.katari.core.application.Command;
 
 import org.json.JSONObject;
+import com.globant.katari.gadgetcontainer.application.JsonRepresentation;
 
 /** Test for the controller {@link JsonCommandController}
  *
@@ -40,10 +40,10 @@ public class JsonCommandControllerTest {
   public void testHandle() throws Exception {
 
     JsonCommandController controller = new JsonCommandController() {
-      protected Command<JSONObject> createCommandBean() {
-        return new Command<JSONObject>() {
-          public JSONObject execute() {
-            return new JSONObject();
+      protected Command<JsonRepresentation> createCommandBean() {
+        return new Command<JsonRepresentation>() {
+          public JsonRepresentation execute() {
+            return new JsonRepresentation(new JSONObject());
           }
         };
       }

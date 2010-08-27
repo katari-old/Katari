@@ -30,13 +30,18 @@
     <lookup-method name="createCommandBean" bean="moveGadgetCommand" />
   </bean>
 
+  <bean name='/listApplications.do'
+    class='com.globant.katari.gadgetcontainer.view.JsonCommandController'>
+    <lookup-method name="createCommandBean" bean="listApplicationsCommand" />
+  </bean>
+
   <bean name='/katariSocialCanvas.js'
     class='com.globant.katari.gadgetcontainer.view.CanvasModelController'
     p:viewName="katari-social-canvas">
     <constructor-arg ref='debugMode'/>
   </bean>
 
-  <!-- Command definition -->
+  <!-- Command definitions -->
   <bean name="gadgetGroupCommand" scope="prototype"
     class="com.globant.katari.gadgetcontainer.application.GadgetGroupCommand">
     <constructor-arg index="0" ref="gadgetGroupRepository" />
@@ -50,14 +55,14 @@
     <constructor-arg index="1" ref="userService" />
   </bean>
 
+  <bean name="listApplicationsCommand" scope="prototype"
+    class="com.globant.katari.gadgetcontainer.application.ListApplicationsCommand">
+    <constructor-arg index="0" ref="applicationRepository" />
+  </bean>
+
   <bean
-    class="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator">
-    <property name="proxyTargetClass" value="true" />
-    <property name="beanNames">
-      <list>
-        <value>gadgetGroupCommand</value>
-      </list>
-    </property>
+    class="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator"
+    p:proxyTargetClass="true" p:beanNames="*Command">
     <property name="interceptorNames">
       <list>
         <value>transactionInterceptor</value>
@@ -77,6 +82,13 @@
 
   <bean id='gadgetGroupRepository'
     class='com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository'>
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
+  </bean>
+
+  <bean id='applicationRepository'
+    class='com.globant.katari.gadgetcontainer.domain.ApplicationRepository'>
     <property name='sessionFactory'>
       <ref bean='katari.sessionFactory' />
     </property>

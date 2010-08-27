@@ -9,12 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.json.JSONObject;
-import org.json.JSONException;
 
 import com.globant.katari.core.application.Command;
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
-import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
 /** Moves a gadget to a new column and/or position in the column, for a gadget
@@ -23,9 +21,9 @@ import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
  * This command expects a gadget group name, the gadget instance id, and the
  * new column and position of the gadget instance.
  *
- * It returns an empty JSONObject ({}).
+ * It returns an empty JsonRepresentation ({}).
  */
-public class MoveGadgetCommand implements Command<JSONObject> {
+public class MoveGadgetCommand implements Command<JsonRepresentation> {
 
   /** The class logger.
    */
@@ -151,7 +149,7 @@ public class MoveGadgetCommand implements Command<JSONObject> {
    *
    * @return a json object, never returns null.
    */
-  public JSONObject execute() {
+  public JsonRepresentation execute() {
 
     log.trace("Entering execute");
 
@@ -170,10 +168,11 @@ public class MoveGadgetCommand implements Command<JSONObject> {
       throw new RuntimeException(
           "Trying to move the gadget to a non existing column.");
     } else {
+      log.debug("moving to {}, {}", column, order);
       group.move(gadgetInstanceId, column, order);
       gadgetGroupRepository.save(group);
       log.trace("Leaving execute");
-      return new JSONObject();
+      return new JsonRepresentation(new JSONObject());
     }
   }
 }

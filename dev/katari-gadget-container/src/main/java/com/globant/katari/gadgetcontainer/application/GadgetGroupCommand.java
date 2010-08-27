@@ -21,7 +21,7 @@ import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
  *
  * It generates the json representation for the gadget group.
  */
-public class GadgetGroupCommand implements Command<JSONObject> {
+public class GadgetGroupCommand implements Command<JsonRepresentation> {
 
   /** The class logger.
    */
@@ -120,7 +120,7 @@ public class GadgetGroupCommand implements Command<JSONObject> {
    *
    * @return a json object, never returns null.
    */
-  public JSONObject execute() {
+  public JsonRepresentation execute() {
 
     if(isBlank(groupName)) {
       throw new IllegalArgumentException("groupName can not be blank");
@@ -130,9 +130,9 @@ public class GadgetGroupCommand implements Command<JSONObject> {
     GadgetGroup group = gadgetGroupRepository.findGadgetGroup(uid, groupName);
     try {
       if (group != null) {
-        return toJson(uid, group);
+        return new JsonRepresentation(toJson(uid, group));
       } else {
-        return new JSONObject();
+        return new JsonRepresentation(new JSONObject());
       }
     } catch (JSONException e) {
       throw new RuntimeException("Error serializing to json", e);

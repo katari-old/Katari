@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.StringWriter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,7 +78,8 @@ public class GadgetGroupCommandTest {
     command = new GadgetGroupCommand(repository, userService, tokenService);
     command.setGroupName(groupName);
 
-    assertThat(command.execute().toString(), is(baselineJson(true)));
+    assertThat(command.execute().write(new StringWriter()).toString(),
+        is(baselineJson(true)));
 
     verify(userService);
     verify(repository);
@@ -106,7 +108,8 @@ public class GadgetGroupCommandTest {
     command = new GadgetGroupCommand(repository, userService, tokenService);
     command.setGroupName(groupName);
 
-    assertThat(command.execute().toString(), is(baselineJson(false)));
+    assertThat(command.execute().write(new StringWriter()).toString(),
+        is(baselineJson(false)));
 
     verify(userService);
     verify(repository);

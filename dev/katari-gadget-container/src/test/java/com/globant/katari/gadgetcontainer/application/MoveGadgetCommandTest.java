@@ -14,6 +14,7 @@ import org.junit.After;
 import com.globant.katari.tools.ReflectionUtils;
 
 import java.io.File;
+import java.io.StringWriter;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -26,6 +27,12 @@ import com.globant.katari.gadgetcontainer.application.TokenService;
 
 import com.globant.katari.gadgetcontainer.SpringTestUtils;
 import org.springframework.context.ApplicationContext;
+
+import com.globant.katari.hibernate.coreuser.domain.CoreUserDetails;
+
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 
 import com.globant.katari.shindig.domain.Application;
 
@@ -166,7 +173,7 @@ public class MoveGadgetCommandTest {
 
   // An end-to-end test (bah, from the command) to move a gadget instance.
   @Test
-  public void testExecute_endToEnd() {
+  public void testExecute_endToEnd() throws Exception {
 
     GadgetGroupRepository repository = (GadgetGroupRepository)
       appContext.getBean("gadgetcontainer.gadgetGroupRepository");
@@ -190,15 +197,18 @@ public class MoveGadgetCommandTest {
       }
     }
 
+    // Sets the currently logged on user
+    SpringTestUtils.setLoggedInUser(user);
+
     MoveGadgetCommand command;
     command = (MoveGadgetCommand) appContext.getBean("moveGadgetCommand");
-    ReflectionUtils.setAttribute(command, "userService", userService);
 
     command.setGroupName("sample");
     command.setGadgetInstanceId(gadgetToMove.getId());
     command.setColumn(0);
     command.setOrder(0);
-    command.execute();
+    assertThat(command.execute().write(new StringWriter()).toString(),
+        is("{}"));
 
     // Now we verify. There should be two gadgets per column.
     group = repository.findGadgetGroup(user.getId(), "sample");
