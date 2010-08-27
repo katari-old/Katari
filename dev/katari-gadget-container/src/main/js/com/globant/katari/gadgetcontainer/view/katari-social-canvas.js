@@ -180,18 +180,22 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sSecurityToken,
   this.render = function(gadgetGroup, containerElement) {
     var gadgetDiv = jQuery("<div class='gadgetPortlet'></div>");
     var iframe = jQuery("<iframe>");
+    var iframeContainer = jQuery("<div></div>");
+    iframeContainer.attr("class", "iframeContainer");
 
     iframe.attr("src", getGadgetUrl());
     iframe.attr("id", this.getApplicationId());
     iframe.attr("name", this.getApplicationId());
     iframe.attr("frameborder", 0);
 
+    iframeContainer.append(iframe);
+
     gadgetDiv.data('gadgetInstance', this);
     gadgetDiv.data('gadgetGroup', gadgetGroup);
 
     gadgetDiv.attr("id", "gadget_" + this.getApplicationId());
     gadgetDiv.append(this.createTitleBar(gadgetDiv, iframe));
-    gadgetDiv.append(iframe);
+    gadgetDiv.append(iframeContainer);
 
     containerElement.append(gadgetDiv);
   }
@@ -314,9 +318,17 @@ katari.social.GadgetGroup = function(sContainer) {
     var that = this;
     var i;
     var column;
+    var widthOfColmuns = (96 - groupSpec.numberOfColumns) /
+      groupSpec.numberOfColumns;
     // Create the empty columns.
     for (i = 0; i < groupSpec.numberOfColumns; i++) {
-      column = jQuery('<div class="canvasColumn">');
+      column = jQuery('<div></div>');
+      column.css("width", widthOfColmuns + "%");
+      if (i < groupSpec.numberOfColumns - 1) {
+        column.attr("class", "canvasColumn columnSpacer");
+      } else {
+        column.attr("class", "canvasColumn");
+      }
       column.data('columnNumber', i);
       this.columns[i] = column;
     }

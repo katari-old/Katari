@@ -19,53 +19,6 @@
       src='${baseweb}/module/gadgetcontainer/katariSocialCanvas.js'>
     </script>
 
-     <style type="text/css">
-
-      .canvasContainer {
-        display: inline;
-      }
-      
-      .gadgetContainer iframe {
-        border: 0px;
-      }
-
-      .canvasColumn {
-        float: left;
-        width: 45%;
-        margin: 10px;
-        padding-top: 10px;
-      }
-
-      #canvasDiv {
-        width: 100%;
-        height: 400px;
-        border: 1px solid #000;
-        text-align: center;
-      }
-
-      .ui-sortable-placeholder {
-        border: 1px dotted black;
-        visibility: visible !important;
-        height: 50px !important;
-      }
-
-      .ui-sortable-placeholder * {
-        visibility: hidden;
-      }
-
-      .titleBar div {
-        float: left;
-      }
-
-      .titleBar a.minimizeButton {
-        border: 0px solid;
-      }
-
-      .titleBar a.restoreButton {
-        border: 1px solid;
-      }
-
-    </style>
   </head>
 
   <body>

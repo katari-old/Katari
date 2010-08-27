@@ -37,14 +37,14 @@ insert into applications (id, title, url) values (4, 'Flood It',
 insert into gadget_groups (name, type, number_of_columns)
  values ('top', 0, 2);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
- group_order) values (1, 1, 0, 0);
+ group_order) values (2, 1, 0, 0);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
- group_order) values (2, 1, 1, 0);
+ group_order) values (4, 1, 1, 0);
 
 insert into gadget_groups (name, type, number_of_columns)
- values ('main', 2, 2);
+ values ('main', 2, 3);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
- group_order) values (3, 2, 0, 1);
+ group_order) values (1, 2, 0, 1);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
- group_order) values (4, 2, 1, 1);
+ group_order) values (3, 2, 1, 1);
 
