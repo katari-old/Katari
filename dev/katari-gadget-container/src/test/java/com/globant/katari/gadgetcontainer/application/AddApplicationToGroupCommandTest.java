@@ -55,8 +55,6 @@ public class AddApplicationToGroupCommandTest {
 
   private CoreUser user;
 
-  private ContextUserService userService;
-
   private GadgetGroup gadgetGroup;
 
   private GadgetGroupRepository repository;
@@ -67,8 +65,6 @@ public class AddApplicationToGroupCommandTest {
 
   @Before
   public void setUp() throws Exception {
-
-    gadgetGroup = createMock(GadgetGroup.class);
 
     appContext = SpringTestUtils.getContext();
 
@@ -83,95 +79,6 @@ public class AddApplicationToGroupCommandTest {
     user = new SampleUser("me");
     session.saveOrUpdate(user);
     user = (CoreUser) session.createQuery("from CoreUser").uniqueResult();
-
-    userService = createMock(ContextUserService.class);
-    expect(userService.getCurrentUserId()).andReturn(user.getId());
-    replay(userService);
-
-    repository = createMock(GadgetGroupRepository.class);
-    expect(repository.findGadgetGroup(user.getId(), groupName))
-      .andReturn(gadgetGroup);
-    repository.save(gadgetGroup);
-    replay(repository);
-  }
-
-  @Test
-  public void testExecute_nullGroup() {
-    MoveGadgetCommand command = new MoveGadgetCommand(
-        createMock(GadgetGroupRepository.class),
-        createMock(ContextUserService.class));
-    try {
-      command.execute();
-      fail("should fail because we never set the groupName command property");
-    } catch (Exception e) {
-    }
-  }
-
-  @Test
-  public void testExecute_notCustomizable() {
-
-    expect(gadgetGroup.isCustomizable()).andReturn(false);
-    replay(gadgetGroup);
-
-    MoveGadgetCommand command;
-    command = new MoveGadgetCommand(repository, userService);
-    command.setGroupName(groupName);
-    command.setGadgetInstanceId(0);
-    command.setColumn(3);
-    command.setOrder(4);
-
-    try {
-      command.execute();
-      fail("should fail because the group is not customizable.");
-    } catch (Exception e) {
-    }
-
-    verify(gadgetGroup);
-    verify(userService);
-  }
-
-  @Test
-  public void testExecute_customizable() {
-
-    expect(gadgetGroup.isCustomizable()).andReturn(true);
-    expect(gadgetGroup.getNumberOfColumns()).andReturn(4);
-    gadgetGroup.move(0, 3, 4);
-    replay(gadgetGroup);
-
-    MoveGadgetCommand command;
-    command = new MoveGadgetCommand(repository, userService);
-    command.setGroupName(groupName);
-    command.setGadgetInstanceId(0);
-    command.setColumn(3);
-    command.setOrder(4);
-
-    command.execute();
-
-    verify(gadgetGroup);
-    verify(userService);
-    verify(repository);
-  }
-
-  @Test
-  public void testExecute_customizableCol0() {
-
-    expect(gadgetGroup.isCustomizable()).andReturn(true);
-    expect(gadgetGroup.getNumberOfColumns()).andReturn(4);
-    gadgetGroup.move(0, 0, 4);
-    replay(gadgetGroup);
-
-    MoveGadgetCommand command;
-    command = new MoveGadgetCommand(repository, userService);
-    command.setGroupName(groupName);
-    command.setGadgetInstanceId(0);
-    command.setColumn(0);
-    command.setOrder(4);
-
-    command.execute();
-
-    verify(gadgetGroup);
-    verify(userService);
-    verify(repository);
   }
 
   // An end-to-end test (bah, from the command) to move a gadget instance.
