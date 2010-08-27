@@ -42,6 +42,13 @@
     <lookup-method name="createCommandBean" bean="addApplicationToGroupCommand" />
   </bean>
 
+  <!-- Endpoint to remove an application from a group. -->
+  <bean name='/removeApplicationFromGroup.do'
+    class='com.globant.katari.gadgetcontainer.view.JsonCommandController'>
+    <lookup-method name="createCommandBean"
+      bean="removeApplicationFromGroupCommand" />
+  </bean>
+
   <!-- Endpoint to show the application directory. The application directory
        allows users to add a gadget to a gadget group. -->
   <bean name='/directory.do'
@@ -82,6 +89,12 @@
     <constructor-arg index="0" ref="applicationRepository" />
     <constructor-arg index="1" ref="gadgetGroupRepository" />
     <constructor-arg index="2" ref="userService" />
+  </bean>
+
+  <bean name="removeApplicationFromGroupCommand" scope="prototype"
+    class="com.globant.katari.gadgetcontainer.application.RemoveApplicationFromGroupCommand">
+    <constructor-arg index="0" ref="gadgetGroupRepository" />
+    <constructor-arg index="1" ref="userService" />
   </bean>
 
   <bean

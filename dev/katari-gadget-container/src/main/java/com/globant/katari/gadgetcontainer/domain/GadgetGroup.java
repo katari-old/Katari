@@ -206,6 +206,22 @@ public class GadgetGroup {
     gadgets.add(instance);
   }
 
+  /** Removes the gadget instance with the provided id from the group.
+   *
+   * @param instanceId the id of the gadget instance to remove.
+   *
+   * @return true if the gadget was removed, false if it was not in the group.
+   */
+  public boolean remove(final long instanceId) {
+    for (GadgetInstance gadget: gadgets) {
+      if (gadget.getId() == instanceId) {
+        gadgets.remove(gadget);
+        return true;
+      }
+    }
+    return false;
+  }
+
   /** Returns the number of columns.
    *
    * @return the number of columns, 1 or greater.

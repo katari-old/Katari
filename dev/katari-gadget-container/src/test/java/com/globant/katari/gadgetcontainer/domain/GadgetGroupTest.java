@@ -250,5 +250,15 @@ public class GadgetGroupTest {
     group.add(new GadgetInstance(application, 0, 0));
     assertThat(group.contains(application), is(true));
   }
+
+  @Test
+  public void testRemove() {
+    // Create a group with one gadget instance.
+    GadgetGroup group = new GadgetGroup("main group", 3);
+    group.add(new GadgetInstance(application, 0, 0));
+    assertThat(group.getGadgets().size(), is(1));
+    group.remove(0);
+    assertThat(group.getGadgets().size(), is(0));
+  }
 }
 
