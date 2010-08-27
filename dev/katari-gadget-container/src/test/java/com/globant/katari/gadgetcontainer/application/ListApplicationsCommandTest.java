@@ -20,7 +20,14 @@ import org.json.JSONException;
 
 import com.globant.katari.shindig.domain.Application;
 
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
+import com.globant.katari.gadgetcontainer.domain.SampleUser;
+
 import com.globant.katari.gadgetcontainer.domain.ApplicationRepository;
+import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
+import com.globant.katari.gadgetcontainer.domain.ContextUserService;
+import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 
 import com.globant.katari.gadgetcontainer.application.ListApplicationsCommand;
 
@@ -36,19 +43,40 @@ public class ListApplicationsCommandTest {
   public void testExecute() throws Exception {
 
     List<Application> applications = new LinkedList<Application>();
-    applications.add(new Application(gadgetXmlUrl1));
-    applications.add(new Application(gadgetXmlUrl2));
+    Application application1 = new Application(gadgetXmlUrl1);
+    Application application2 = new Application(gadgetXmlUrl2);
+    applications.add(application1);
+    applications.add(application2);
 
-    ApplicationRepository repository = createMock(ApplicationRepository.class);
-    expect(repository.findAll()).andReturn(applications);
-    replay(repository);
+    CoreUser user = new SampleUser("me");
+    GadgetGroup group = new GadgetGroup(user, "gadget group", 2);
+    group.add(new GadgetInstance(application1, 0, 0));
+
+    ApplicationRepository applicationRepository;
+    applicationRepository = createMock(ApplicationRepository.class);
+    expect(applicationRepository.findAll()).andReturn(applications);
+    replay(applicationRepository);
+
+    GadgetGroupRepository groupRepository;
+    groupRepository = createMock(GadgetGroupRepository.class);
+    expect(groupRepository.findGadgetGroup(1, "gadget group")).andReturn(group);
+    replay(groupRepository);
+
+    ContextUserService userService = createMock(ContextUserService.class);
+    expect(userService.getCurrentUserId()).andReturn(1L);
+    replay(userService);
 
     ListApplicationsCommand command;
-    command = new ListApplicationsCommand(repository);
+    command = new ListApplicationsCommand(applicationRepository,
+        groupRepository, userService);
+    command.setGadgetGroupName("gadget group");
 
-    assertThat(command.execute(), is(applications));
+    List<Application> result = command.execute();
+    assertThat(result.size(), is(1));
+    assertThat(result.get(0).getTitle(), is("Test title 2"));
 
-    verify(repository);
+    verify(applicationRepository);
+    verify(groupRepository);
   }
 }
 

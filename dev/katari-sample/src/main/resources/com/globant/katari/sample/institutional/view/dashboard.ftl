@@ -75,7 +75,7 @@
     </div>
 
     <div id='custom-gadgets'>
-      <a href='${baseweb}/module/gadgetcontainer/directory.do?returnUrl=/module/institutional/dashboard.do&amp;gadgetGroupName=custom-gadgets'>Add ...</a>
+      <a href='${baseweb}/module/gadgetcontainer/directory.do?returnUrl=/module/institutional/dashboard.do&amp;gadgetGroupName=main'>Add ...</a>
       <!-- will hold open social gadgets. -->
     </div>
 

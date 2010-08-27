@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 
-import java.util.List;
 import java.io.File;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
@@ -36,12 +35,13 @@ import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
 import com.globant.katari.gadgetcontainer.domain.SampleUser;
 
-import com.globant.katari.gadgetcontainer.application.ListApplicationsCommand;
+public class AddApplicationToGroupDoTest {
 
-public class DirectoryDoTest {
-
-  private String gadgetXmlUrl = "file:///" + new File(
+  private String gadgetXmlUrl1 = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
+
+  private String gadgetXmlUrl2 = "file:///" + new File(
+      "target/test-classes/SampleGadget2.xml").getAbsolutePath();
 
   private ApplicationContext appContext;
 
@@ -68,25 +68,31 @@ public class DirectoryDoTest {
     session.saveOrUpdate(user);
     user = (CoreUser) session.createQuery("from CoreUser").uniqueResult();
 
-    GadgetGroup group = new GadgetGroup(user, "gadget group", 2);
-    session.saveOrUpdate(group);
+    GadgetGroupRepository repository = (GadgetGroupRepository)
+      appContext.getBean("gadgetcontainer.gadgetGroupRepository");
 
-    Application app = new Application(gadgetXmlUrl);
-    session.saveOrUpdate(app);
+    Application app1 = new Application(gadgetXmlUrl1);
+    session.saveOrUpdate(app1);
+    Application app2 = new Application(gadgetXmlUrl2);
+    session.saveOrUpdate(app2);
+
+    GadgetGroup group = new GadgetGroup(user, "sample", 2);
+    group.add(new GadgetInstance(app1, 0, 0));
+    repository.save(group);
 
     // Sets the currently logged on user
     SpringTestUtils.setLoggedInUser(user);
 
-    ViewCommandController controller;
-    controller = (ViewCommandController) appContext.getBean(
-        "/directory.do");
+    JsonCommandController controller = (JsonCommandController)
+      appContext.getBean("/addApplicationToGroup.do");
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     PrintWriter writer = new PrintWriter(os);
 
     MockHttpServletRequest request;
-    request = new MockHttpServletRequest("GET", "directory.do");
-    request.setParameter("gadgetGroupName", "gadget group");
+    request = new MockHttpServletRequest("GET", "addApplicationToGroup.do");
+    request.setParameter("groupName", "sample");
+    request.setParameter("applicationId", Long.toString(app2.getId()));
 
     HttpServletResponse response = createMock(HttpServletResponse.class);
     response.addHeader("Content-type", "application/json");
@@ -96,12 +102,24 @@ public class DirectoryDoTest {
     ModelAndView mv;
     mv = controller.handleRequest(request, response);
 
-    assertThat(mv.getViewName(), is("directory.ftl"));
-    assertThat(mv.getModel().get("command"), is(ListApplicationsCommand.class));
-    assertThat(mv.getModel().get("result"), is(List.class));
-    List<Application> applications;
-    applications = (List<Application>) mv.getModel().get("result");
-    assertThat(applications.get(0).getTitle(), is("Test title"));
+    assertThat(mv, nullValue());
+
+    writer.flush();
+    assertThat(os.toString(), is("{}"));
+
+    // Now we verify. There should be two gadgets in the first column.
+    group = repository.findGadgetGroup(user.getId(), "sample");
+    int col0 = 0;
+    int col1 = 0;
+    for (GadgetInstance gadget: group.getGadgets()) {
+      if (gadget.getColumn() == 0) {
+        ++ col0;
+      } else if (gadget.getColumn() == 1) {
+        ++ col1;
+      }
+    }
+    assertThat(col0, is(2));
+    assertThat(col1, is(0));
   }
 
   @After

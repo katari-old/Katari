@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.LinkedList;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -16,10 +17,17 @@ import org.json.JSONException;
 
 import com.globant.katari.core.application.Command;
 
-import com.globant.katari.shindig.domain.Application;
 import com.globant.katari.gadgetcontainer.domain.ApplicationRepository;
+import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
+import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 
-/** Lists all the registered applications.
+import com.globant.katari.shindig.domain.Application;
+import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+
+/** Lists all the registered applications that are not already included in the
+ * gadget group.
+ *
+ * This command only lists applications for a customizable group.
  */
 public class ListApplicationsCommand implements Command<List<Application>> {
 
@@ -32,6 +40,18 @@ public class ListApplicationsCommand implements Command<List<Application>> {
    */
   private final ApplicationRepository applicationRepository;
 
+  /** The repository for gadget groups.
+   *
+   * This is never null.
+   */
+  private final GadgetGroupRepository gadgetGroupRepository;
+
+  /** Service used to obtain the currently logged on user.
+   *
+   * This is never null.
+   */
+  private final ContextUserService userService;
+
   /** The gadget group where to add the application to.
    */
   private String gadgetGroupName;
@@ -43,23 +63,56 @@ public class ListApplicationsCommand implements Command<List<Application>> {
   /** Constructor.
    *
    * @param theApplicationRepository Cannot be null.
+   *
+   * @param theGroupRepository Cannot be null.
+   *
+   * @param theUserService Cannot be null.
    */
   public ListApplicationsCommand(
-      final ApplicationRepository theApplicationRepository) {
+      final ApplicationRepository theApplicationRepository,
+      final GadgetGroupRepository theGroupRepository,
+      final ContextUserService theUserService) {
+
     Validate.notNull(theApplicationRepository,
-        "gadget repository can not be null");
+        "application repository can not be null");
+    Validate.notNull(theGroupRepository, "gadget repository can not be null");
+    Validate.notNull(theUserService, "user service can not be null");
+
     applicationRepository = theApplicationRepository;
+    gadgetGroupRepository = theGroupRepository;
+    userService = theUserService;
   }
 
-  /** Obtains all the applications.
+  /** Obtains all the applications that are not already included in the gadget
+   * group.
+   *
+   * You must call setGadgetGroupName before this operation. The gadget group
+   * must be customizable.
    *
    * @return a list of applications, never returns null.
    */
   public List<Application> execute() {
     log.trace("Entering execute");
+    Validate.notNull(gadgetGroupName, "Set the gadget group name.");
     List<Application> applications = applicationRepository.findAll();
+    List<Application> result = new LinkedList<Application>();
+    long uid = userService.getCurrentUserId();
+    GadgetGroup group;
+    group = gadgetGroupRepository.findGadgetGroup(uid, gadgetGroupName);
+    if (group == null) {
+      throw new RuntimeException("Group " + group + " not found.");
+    }
+    if (!group.isCustomizable()) {
+      throw new RuntimeException("Group " + group + " is not customizable.");
+    }
+
+    for (Application application: applications) {
+      if (!group.contains(application)) {
+        result.add(application);
+      }
+    }
     log.trace("Entering execute");
-    return applications;
+    return result;
   }
 
   /** Obtains the name of the group to add the application to.

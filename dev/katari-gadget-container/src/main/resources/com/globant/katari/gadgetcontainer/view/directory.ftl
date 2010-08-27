@@ -8,9 +8,22 @@
       src='${baseweb}/module/gadgetcontainer/assets/js/jquery-1.4.2.js'>
     </script>
 
-    <script type='text/javascript'
-      src='${baseweb}/module/gadgetcontainer/katariSocialCanvas.js'>
+    <script type='text/javascript'>
+      var addApplicationToGroup = function(groupName, applicationId) {
+        var that = this;
+        
+        var parameters = 'groupName=' + groupName + '&applicationId=' +
+          applicationId;
+
+        jQuery.getJSON(
+          '${baseweb}/module/gadgetcontainer/addApplicationToGroup.do?' +
+          parameters,
+          function(data) {
+            jQuery("li.item_" + applicationId).hide();
+          });
+      };
     </script>
+
   </head>
 
   <body>
@@ -31,12 +44,12 @@
             <#assign class = ''>
           </#if>
 
-          <li class='directory_entry ${class}'>
+          <li class='directory_entry ${class} item_${application.id}'>
             <div class='gadget'>
               <img src='${application.thumbnail!}' alt='${application.title}'>
               <div>
                 <input type="button" value="Add it now"
-                  onclick='alert("Coming soon: add id ${application.id} to ${command.gadgetGroupName}")'>
+                  onclick='addApplicationToGroup("${command.gadgetGroupName}", ${application.id})'>
               </div>
             </div>
             <div class='author'>
