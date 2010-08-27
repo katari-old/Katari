@@ -970,3 +970,30 @@ form span.buttons, form ul.glasslist .buttonBarClass {
   border:1px solid #C7C7C7;
   color:#838383;
 }
+
+/** Gadget Directory */
+li.directory_entry {
+  margin-bottom: 12px;
+  border-bottom: 1px solid #D9E2F4;
+  list-style-image: none;
+  list-style-type: none;
+}
+li.directory_entry.last {
+  border-bottom: none;
+}
+li.directory_entry div.gadget {
+  float: left;
+  text-align: center;
+  width: 140px;
+}
+li.directory_entry div.info {
+  margin-left: 150px;
+  margin-right: 110px;
+}
+li.directory_entry div.author {
+  float: right;
+  overflow: hidden;
+  width: 100px;
+}
+
+

@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 
+import java.util.List;
 import java.io.File;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
@@ -35,7 +36,9 @@ import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
 import com.globant.katari.gadgetcontainer.domain.SampleUser;
 
-public class ListApplicationsDoTest {
+import com.globant.katari.gadgetcontainer.application.ListApplicationsCommand;
+
+public class DirectoryDoTest {
 
   private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
@@ -72,33 +75,18 @@ public class ListApplicationsDoTest {
     // Test friendly hack: never use the repository like this.
     repository.getHibernateTemplate().saveOrUpdate(app);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", 2);
-    group.add(new GadgetInstance(app, 0, 0));
-    group.add(new GadgetInstance(app, 1, 0));
-    group.add(new GadgetInstance(app, 1, 1));
-    group.add(new GadgetInstance(app, 1, 3));
-    repository.save(group);
-
-    // Find the gadget in 1,3
-    GadgetInstance gadgetToMove = null;
-    for (GadgetInstance gadget: group.getGadgets()) {
-      if (gadget.getColumn() == 1 && gadget.getOrder() == 3) {
-        gadgetToMove = gadget;
-      }
-    }
-
     // Sets the currently logged on user
     SpringTestUtils.setLoggedInUser(user);
 
-    JsonCommandController controller;
-    controller = (JsonCommandController) appContext.getBean(
-        "/listApplications.do");
+    ViewCommandController controller;
+    controller = (ViewCommandController) appContext.getBean(
+        "/directory.do");
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     PrintWriter writer = new PrintWriter(os);
 
     MockHttpServletRequest request;
-    request = new MockHttpServletRequest("GET", "listApplications.do");
+    request = new MockHttpServletRequest("GET", "directory.do");
 
     HttpServletResponse response = createMock(HttpServletResponse.class);
     response.addHeader("Content-type", "application/json");
@@ -108,10 +96,12 @@ public class ListApplicationsDoTest {
     ModelAndView mv;
     mv = controller.handleRequest(request, response);
 
-    assertThat(mv, nullValue());
-
-    writer.flush();
-    assertThat(os.toString().charAt(0), is('['));
+    assertThat(mv.getViewName(), is("directory.ftl"));
+    assertThat(mv.getModel().get("command"), is(ListApplicationsCommand.class));
+    assertThat(mv.getModel().get("result"), is(List.class));
+    List<Application> applications;
+    applications = (List<Application>) mv.getModel().get("result");
+    assertThat(applications.get(0).getTitle(), is("Test title"));
   }
 
   @After

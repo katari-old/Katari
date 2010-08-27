@@ -20,11 +20,8 @@ import com.globant.katari.shindig.domain.Application;
 import com.globant.katari.gadgetcontainer.domain.ApplicationRepository;
 
 /** Lists all the registered applications.
- * 
- * The execute operation returns a json representation of the list of all
- * available applications.
  */
-public class ListApplicationsCommand implements Command<JsonRepresentation> {
+public class ListApplicationsCommand implements Command<List<Application>> {
 
   /** The class logger.
    */
@@ -34,6 +31,14 @@ public class ListApplicationsCommand implements Command<JsonRepresentation> {
   /** The repository for applications, never null.
    */
   private final ApplicationRepository applicationRepository;
+
+  /** The gadget group where to add the application to.
+   */
+  private String gadgetGroupName;
+
+  /** The url to go back when the user 'closes' the application list.
+   */
+  private String returnUrl;
 
   /** Constructor.
    *
@@ -46,54 +51,47 @@ public class ListApplicationsCommand implements Command<JsonRepresentation> {
     applicationRepository = theApplicationRepository;
   }
 
-  /** Obtains all the applications and returns a json representation of them.
+  /** Obtains all the applications.
    *
-   * The json structure is:
-   *
-   * <pre>
-   * [
-   *   {
-   *     "id":&lt;long&gt;,
-   *     "title":&lt;string&gt;,
-   *     "url":&lt;string&gt;
-   *   }
-   * ]
-   * </pre>
-   *
-   * @return a json object, never returns null.
+   * @return a list of applications, never returns null.
    */
-  public JsonRepresentation execute() {
+  public List<Application> execute() {
     log.trace("Entering execute");
     List<Application> applications = applicationRepository.findAll();
-    JsonRepresentation result;
-    try {
-      result = toJson(applications);
-    } catch (JSONException e) {
-      throw new RuntimeException("Error serializing to json", e);
-    }
     log.trace("Entering execute");
-    return result;
+    return applications;
   }
 
-  /** Generates the json representation of the provided application.
+  /** Obtains the name of the group to add the application to.
    *
-   * @param applications The list of applications to convert to json. It cannot
-   * be null.
+   * @return the name of the group.
    */
-  private JsonRepresentation toJson(final List<Application> applications)
-    throws JSONException {
-    Validate.notNull(applications, "applications cannot be null.");
+  public String getGadgetGroupName() {
+    return gadgetGroupName;
+  }
 
-    JSONArray applicationsJson = new JSONArray();
-    for (Application application : applications) {
-      JSONObject applicationJson = new JSONObject();
-      applicationJson = new JSONObject();
-      applicationJson.put("id", application.getId());
-      applicationJson.put("title", application.getTitle());
-      applicationJson.put("url", application.getUrl());
-      applicationsJson.put(applicationJson);
-    }
-    return new JsonRepresentation(applicationsJson);
+  /** Sets the name of the group to add the application to.
+   *
+   * @param name the name of the group.
+   */
+  public void setGadgetGroupName(final String name) {
+    gadgetGroupName = name;
+  }
+
+  /** Obtains the url to return to when the user closes the application list.
+   *
+   * @return the url to return to.
+   */
+  public String getReturnUrl() {
+    return returnUrl;
+  }
+
+  /** Sets the url to return to when the user closes the application list.
+   *
+   * @param url the url to return to.
+   */
+  public void setReturnUrl(final String url) {
+    returnUrl = url;
   }
 }
 

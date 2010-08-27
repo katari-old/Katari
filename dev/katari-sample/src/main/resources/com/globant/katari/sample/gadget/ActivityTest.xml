@@ -4,8 +4,12 @@
 
   <ModulePrefs
     title="Activities Example"
-    icon="http://localhost:8098/katari-sample/module/gadgets/activities.png">
-
+    icon="http://localhost:8098/katari-sample/module/sample/activities-icon.png"
+    description="This is an example gadget that shows activities and lets you
+    create new activities. This is just a sample open social gadget"
+    author="anonymous"
+    thumbnail="http://localhost:8098/katari-sample/module/sample/activities-screenshot.png"
+    >
    
    <!-- TODO: Migrate to latest version supported by shindig -->
    <Require feature="opensocial-0.7"></Require>

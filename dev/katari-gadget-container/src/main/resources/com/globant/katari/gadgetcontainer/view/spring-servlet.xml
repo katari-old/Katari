@@ -12,12 +12,18 @@
   <bean id="freemarkerConfig"
     class="com.globant.katari.core.web.FreeMarkerConfigurer"
     p:templateLoaderPath="classpath:/com/globant/katari/gadgetcontainer/view"
-    p:debugPrefix='../katari-gadget-container/src/main/js'
-    p:debug-ref='debugMode' />
+    p:debug-ref='debugMode'>
+    <property name='debugPrefixes'>
+      <list>
+        <value>../katari-gadget-container/src/main/js</value>
+        <value>../katari-gadget-container/src/main/resources</value>
+      </list>
+    </property>
+  </bean>
 
   <bean id="freemarkerViewResolver"
     class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
-    p:prefix="/" p:suffix=".js" p:exposeSpringMacroHelpers='true'
+    p:prefix="/" p:suffix="" p:exposeSpringMacroHelpers='true'
     p:exposeRequestAttributes='true'/>
 
   <bean name='/socialPage.do'
@@ -30,14 +36,17 @@
     <lookup-method name="createCommandBean" bean="moveGadgetCommand" />
   </bean>
 
-  <bean name='/listApplications.do'
-    class='com.globant.katari.gadgetcontainer.view.JsonCommandController'>
+  <!-- Controller to show the application directory. The application directory
+       allows users to add a gadget to a gadget group. -->
+  <bean name='/directory.do'
+    class='com.globant.katari.gadgetcontainer.view.ViewCommandController'
+    p:viewName='directory.ftl'>
     <lookup-method name="createCommandBean" bean="listApplicationsCommand" />
   </bean>
 
   <bean name='/katariSocialCanvas.js'
     class='com.globant.katari.gadgetcontainer.view.CanvasModelController'
-    p:viewName="katari-social-canvas">
+    p:viewName="katari-social-canvas.js">
     <constructor-arg ref='debugMode'/>
   </bean>
 

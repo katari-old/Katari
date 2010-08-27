@@ -46,34 +46,9 @@ public class ListApplicationsCommandTest {
     ListApplicationsCommand command;
     command = new ListApplicationsCommand(repository);
 
-    assertThat(command.execute().write(new StringWriter()).toString(),
-        is(baselineJson()));
+    assertThat(command.execute(), is(applications));
 
     verify(repository);
-  }
-
-  /** Creates the baseline json string, a string with a sample json object.
-   *
-   * @return the json string.
-   *
-   * @throws JSONException
-   */
-  private String baselineJson() throws JSONException {
-    JSONArray applications = new JSONArray();
-
-    JSONObject application = new JSONObject();
-    application.put("id", 0);
-    application.put("title", "Test title");
-    application.put("url", gadgetXmlUrl1);
-    applications.put(application);
-
-    application = new JSONObject();
-    application.put("id", 0);
-    application.put("title", "Test title 2");
-    application.put("url", gadgetXmlUrl2);
-    applications.put(application);
-
-    return applications.toString();
   }
 }
 

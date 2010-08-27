@@ -18,6 +18,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.Validate;
 import org.w3c.dom.Document;
@@ -38,13 +39,50 @@ public class Application {
 
   /** The application (gadget) title.
    *
-   * This should be obtained from the gadget xml specification. It is not a
-   * responsibility of this class, though. It is null if not known.
+   * This is obtained from the gadget xml.
+   * 
+   * It is null if not known.
    */
   @Column(nullable = true)
   private String title;
 
-  /** {@link String} that identifies the url of the gadget xml spec.
+  /** The optional gadget icon.
+   *
+   * This is obtained from the gadget xml.
+   * 
+   * It is null if not known.
+   */
+  @Column(nullable = true)
+  private String icon;
+
+  /** The optional gadget description.
+   *
+   * This is obtained from the gadget xml.
+   * 
+   * It is null if not known.
+   */
+  @Column(length = 4096, nullable = true)
+  private String description;
+
+  /** The optional gadget author.
+   *
+   * This is obtained from the gadget xml.
+   * 
+   * It is null if not known.
+   */
+  @Column(nullable = true)
+  private String author;
+
+  /** The optional gadget thumbnail.
+   *
+   * This is obtained from the gadget xml.
+   * 
+   * It is null if not known.
+   */
+  @Column(nullable = true)
+  private String thumbnail;
+
+  /** The url of the gadget xml spec.
    *
    * It is never null.
    */
@@ -61,7 +99,7 @@ public class Application {
    * @param gadgetUrl with the url of the gadget xml. It cannot be empty.
    */
   public Application(final String gadgetUrl) {
-    Validate.notEmpty(gadgetUrl, "gadget url can not be empty");
+    Validate.notEmpty(gadgetUrl, "gadget url cannot be empty");
     url = gadgetUrl;
 
     InputStream gadgetSpecStream = null;
@@ -72,16 +110,15 @@ public class Application {
       DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
       domFactory.setNamespaceAware(true);
       DocumentBuilder builder = domFactory.newDocumentBuilder();
-      Document doc = builder.parse(gadgetSpecStream);
+      Document document = builder.parse(gadgetSpecStream);
 
-      XPathFactory factory = XPathFactory.newInstance();
-      XPath xpath = factory.newXPath();
-      XPathExpression expr = xpath.compile("/Module/ModulePrefs/@title");
+      title = getXpathValue(document, "/Module/ModulePrefs/@title");
+      icon = getXpathValue(document, "/Module/ModulePrefs/icon/text()");
+      description = getXpathValue(document,
+          "/Module/ModulePrefs/@description");
+      author = getXpathValue(document, "/Module/ModulePrefs/@author");
+      thumbnail = getXpathValue(document, "/Module/ModulePrefs/@thumbnail");
 
-      Object result = expr.evaluate(doc, XPathConstants.STRING);
-      if (result != null) {
-        title = result.toString();
-      }
     } catch (Exception e) {
       throw new RuntimeException("Error obtaining gadget title", e);
     } finally {
@@ -95,6 +132,23 @@ public class Application {
     }
   }
 
+  /** Retuns the result of evaluating an xpath expression
+   */
+  private String getXpathValue(final Document document,
+      final String expression) throws XPathExpressionException {
+
+    XPathFactory factory = XPathFactory.newInstance();
+    XPath xpath = factory.newXPath();
+    XPathExpression expr = xpath.compile(expression);
+
+    Object result = expr.evaluate(document, XPathConstants.STRING);
+    if (result != null) {
+      return result.toString();
+    } else {
+      return null;
+    }
+  }
+
   /** @return long the id of the gadget instance.
    */
   public long getId() {
@@ -104,10 +158,47 @@ public class Application {
   /** The title of the gadget.
    *
    * @return The title of gadget, usually obtained from the gadget xml
-   * specification. It returns null if the title can not be determined.
+   * specification. It returns null if the title cannot be determined.
    */
   public String getTitle() {
     return title;
+  }
+
+  /** The url of the icon of the gadget.
+   *
+   * @return The icon of the gadget, usually obtained from the gadget xml
+   * specification. It returns null if the icon cannot be determined.
+   */
+  public String getIcon() {
+    return icon;
+  }
+
+  /** The description of the gadget.
+   *
+   * @return The description of the gadget, usually obtained from the gadget
+   * xml specification. It returns null if the description cannot be
+   * determined.
+   */
+  public String getDescription() {
+    return description;
+  }
+
+  /** The author of the gadget.
+   *
+   * @return The author of the gadget, usually obtained from the gadget xml
+   * specification. It returns null if the author cannot be determined.
+   */
+  public String getAuthor() {
+    return author;
+  }
+
+  /** The url of the thumbnail of the gadget.
+   *
+   * @return The thumbnail of the gadget, usually obtained from the gadget xml
+   * specification. It returns null if the thumbnail cannot be determined.
+   */
+  public String getThumbnail() {
+    return thumbnail;
   }
 
   /** @return {@link String} location of the gadget xml spec.
