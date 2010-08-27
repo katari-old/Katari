@@ -38,7 +38,7 @@ import com.globant.katari.gadgetcontainer.domain.SampleUser;
 
 public class MoveGadgetCommandTest {
 
-  private String gadgetXmlUrl = "file://" + new File(
+  private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   private String groupName = "theGroup";

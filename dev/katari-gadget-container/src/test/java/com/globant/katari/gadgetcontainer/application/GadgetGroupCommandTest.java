@@ -29,7 +29,7 @@ public class GadgetGroupCommandTest {
 
   private TokenService tokenService;
 
-  private String gadgetXmlUrl = "file://" + new File(
+  private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   @Before

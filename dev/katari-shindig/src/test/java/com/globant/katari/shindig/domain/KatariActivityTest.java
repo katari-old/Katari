@@ -14,7 +14,7 @@ import org.apache.shindig.social.opensocial.model.Activity;
 
 public class KatariActivityTest {
 
-  private String gadgetXmlUrl = "file://" + new File(
+  private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   @Test

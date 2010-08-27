@@ -25,7 +25,7 @@ import com.globant.katari.shindig.domain.Application;
  */
 public class GadgetGroupTest {
 
-  private String gadgetXmlUrl = "file://" + new File(
+  private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   private CoreUser user;

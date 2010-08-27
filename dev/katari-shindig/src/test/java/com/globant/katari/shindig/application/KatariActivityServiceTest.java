@@ -35,7 +35,7 @@ public class KatariActivityServiceTest {
 
   private KatariActivityService service;
 
-  private String gadgetXmlUrl = "file://" + new File(
+  private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   // This is the same applicationId but in string format.

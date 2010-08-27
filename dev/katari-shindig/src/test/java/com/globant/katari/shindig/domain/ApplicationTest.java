@@ -9,7 +9,7 @@ import java.io.File;
 
 public class ApplicationTest {
 
-  private String gadgetXmlUrl = "file://" + new File(
+  private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   @Test

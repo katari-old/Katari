@@ -35,7 +35,7 @@ public class GadgetGroupRepositoryTest {
 
   private CoreUser user;
 
-  private String url = "file://" + new File(
+  private String url = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
   @Before
