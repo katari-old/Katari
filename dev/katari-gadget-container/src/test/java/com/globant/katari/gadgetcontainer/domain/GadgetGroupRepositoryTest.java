@@ -2,11 +2,7 @@
 
 package com.globant.katari.gadgetcontainer.domain;
 
-import static java.util.UUID.randomUUID;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 

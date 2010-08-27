@@ -89,8 +89,6 @@ public class GadgetGroupCommandTest {
   public void testExecute_staticGroup() throws Exception {
     String groupName = "theGroup";
 
-    CoreUser userId = createMock(CoreUser.class);
-
     GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, 3);
     Application application = new Application(gadgetXmlUrl);
     GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
