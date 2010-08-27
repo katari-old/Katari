@@ -41,8 +41,8 @@ insert into gadget_instances (application_id, gadget_group_id, group_column,
 insert into gadget_instances (application_id, gadget_group_id, group_column,
  group_order) values (2, 1, 1, 0);
 
-insert into gadget_groups (owner_id, name, type, number_of_columns)
- values (1, 'main', 1, 2);
+insert into gadget_groups (name, type, number_of_columns)
+ values ('main', 2, 2);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
  group_order) values (3, 2, 0, 1);
 insert into gadget_instances (application_id, gadget_group_id, group_column,

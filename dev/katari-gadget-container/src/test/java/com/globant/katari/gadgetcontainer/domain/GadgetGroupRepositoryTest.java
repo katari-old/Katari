@@ -2,10 +2,12 @@
 
 package com.globant.katari.gadgetcontainer.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.io.File;
 
+import org.hamcrest.CoreMatchers;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -57,12 +59,12 @@ public class GadgetGroupRepositoryTest {
   public void testFindGadgetGroup() {
     createGadgetGroups(url);
 
-    GadgetGroup group = repository.findGadgetGroup(user.getId(), "for user");
+    GadgetGroup group = repository.findGadgetGroup(user.getId(), "for me");
 
-    assertNotNull(group);
-    assertFalse(group.getGadgets().isEmpty());
-    assertTrue("for user".equals(group.getName()));
-    assertTrue(group.getGadgets().iterator().next().getUrl().equals(url));
+    assertThat(group, notNullValue());
+    assertThat(group.getName(), is("for me"));
+    assertThat(group.getGadgets().isEmpty(), is(false));
+    assertThat(group.getGadgets().iterator().next().getUrl(), is(url));
   }
 
   @Test
@@ -72,23 +74,35 @@ public class GadgetGroupRepositoryTest {
     GadgetGroup group;
     group = repository.findGadgetGroup(Long.MAX_VALUE, "for everybody");
 
-    assertNotNull(group);
-    assertFalse(group.getGadgets().isEmpty());
-    assertTrue("for everybody".equals(group.getName()));
-    assertTrue(group.getGadgets().iterator().next().getUrl().equals(url));
+    assertThat(group, notNullValue());
+    assertThat(group.getName(), is("for everybody"));
+    assertThat(group.getGadgets().isEmpty(), is(false));
+    assertThat(group.getGadgets().iterator().next().getUrl(), is(url));
   }
 
   @Test
   public void testFindGadgetGroup_nonExisting() {
     GadgetGroup group = repository.findGadgetGroup(user.getId(), "nonExist");
-    assertNull(group);
+    assertThat(group, nullValue());
+  }
+
+  @Test
+  public void testFindGadgetGroupTemplate() {
+    createGadgetGroups(url);
+
+    GadgetGroup group = repository.findGadgetGroupTemplate("for user");
+
+    assertThat(group, notNullValue());
+    assertThat(group.getGadgets().isEmpty(), is(false));
+    assertThat(group.getName(), is("for user"));
+    assertThat(group.getGadgets().iterator().next().getUrl(), is(url));
   }
 
   /** Creates one gadget group for the user (named 'for user'), and another for
    * everybody (named 'for everybody').
    */
   private void createGadgetGroups(final String gadgetUrl) {
-    GadgetGroup group = new GadgetGroup(user, "for user", 2);
+    GadgetGroup group = new GadgetGroup(user, "for me", 2);
     Application app = new Application(gadgetUrl);
     // Test friendly hack: never use the repository like this.
     repository.getHibernateTemplate().saveOrUpdate(app);
@@ -96,6 +110,10 @@ public class GadgetGroupRepositoryTest {
     repository.save(group);
 
     group = new GadgetGroup(null, "for everybody", 2);
+    group.add(new GadgetInstance(app, 1, 2));
+    repository.save(group);
+
+    group = new GadgetGroup("for user", 2);
     group.add(new GadgetInstance(app, 1, 2));
     repository.save(group);
   }

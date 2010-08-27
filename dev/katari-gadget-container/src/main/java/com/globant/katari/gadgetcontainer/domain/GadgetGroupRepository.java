@@ -5,6 +5,10 @@ package com.globant.katari.gadgetcontainer.domain;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -39,8 +43,10 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
     log.trace("Entering findGadgetGroup('{}', '{}')", userId, name);
 
     List<GadgetGroup> groups = getHibernateTemplate().find("from"
-        + " GadgetGroup where name = ? and (owner.id is null or owner.id = ?)",
-        new Object[]{name, userId});
+        + " GadgetGroup where name = ?"
+        + " and (type = ? or (type = ? and owner.id = ?))",
+        new Object[]{name, GadgetGroup.Type.SHARED,
+            GadgetGroup.Type.CUSTOMIZABLE, userId});
 
     if(groups.isEmpty()) {
       log.trace("Leaving findGadgetGroup, no group found");
@@ -50,6 +56,33 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
     GadgetGroup group = groups.get(0);
 
     log.trace("Leaving findGadgetGroup with a group");
+    return group;
+  }
+
+  /** Find the requested gadget group template by name.
+   *
+   * @param name the gadget group name. It can not be empty.
+   *
+   * @return the gadget group template or null if not found.
+   */
+  @SuppressWarnings("unchecked")
+  public GadgetGroup findGadgetGroupTemplate(final String name) {
+    Validate.notEmpty(name, "the gadget group cannot be empty");
+
+    log.trace("Entering findGadgetGroupTemplate('{}')", name);
+
+    List<GadgetGroup> groups = getHibernateTemplate().find("from"
+        + " GadgetGroup where name = ? and type = ?",
+        new Object[]{name, GadgetGroup.Type.TEMPLATE});
+
+    if(groups.isEmpty()) {
+      log.trace("Leaving findGadgetGroupTemplate, no group found");
+      return null;
+    }
+
+    GadgetGroup group = groups.get(0);
+
+    log.trace("Leaving findGadgetGroupTemplate with a group");
     return group;
   }
 

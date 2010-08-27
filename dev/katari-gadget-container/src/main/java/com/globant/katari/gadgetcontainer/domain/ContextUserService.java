@@ -22,6 +22,32 @@ public class ContextUserService {
   /** The class logger.
    */
   private static Logger log = LoggerFactory.getLogger(ContextUserService.class);
+  
+  /** Returns the currently logged in user.
+   * 
+   * @return The currently logged in user, null if the user is anonymous.
+   */
+  public CoreUser getCurrentUser() {
+    log.trace("Entering getCurrentUser");
+
+    UsernamePasswordAuthenticationToken authentication;
+    authentication = (UsernamePasswordAuthenticationToken)
+      SecurityContextHolder.getContext().getAuthentication();
+
+    if (authentication == null) {
+      log.trace("Leaving getCurrentUser with null");
+      return null;
+    }
+    CoreUserDetails details = (CoreUserDetails) authentication.getPrincipal();
+    if (details == null) {
+      log.trace("Leaving getCurrentUser with null");
+      return null;
+    }
+    CoreUser user = details.getCoreUser();
+    log.trace("Leaving getCurrentUser");
+    
+    return user;
+  }
 
   /** Retrieves from the context the user.
    *
@@ -31,20 +57,7 @@ public class ContextUserService {
   public long getCurrentUserId() {
     log.trace("Entering getCurrentUserId");
 
-    UsernamePasswordAuthenticationToken authentication;
-    authentication = (UsernamePasswordAuthenticationToken)
-      SecurityContextHolder.getContext().getAuthentication();
-
-    if (authentication == null) {
-      log.trace("Leaving getCurrentUserId with 0");
-      return 0;
-    }
-    CoreUserDetails details = (CoreUserDetails) authentication.getPrincipal();
-    if (details == null) {
-      log.trace("Leaving getCurrentUserId with 0");
-      return 0;
-    }
-    CoreUser user = details.getCoreUser();
+    CoreUser user = getCurrentUser();
     if (user == null) {
       log.trace("Leaving getCurrentUserId with 0");
       return 0;

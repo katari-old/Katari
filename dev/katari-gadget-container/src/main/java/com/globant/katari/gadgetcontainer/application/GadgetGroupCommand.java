@@ -16,6 +16,7 @@ import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 /** Looks for a gadget group by name, for the currently logged on user.
  *
@@ -121,22 +122,40 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
    * @return a json object, never returns null.
    */
   public JsonRepresentation execute() {
+    log.trace("Entering execute");
 
     if(isBlank(groupName)) {
       throw new IllegalArgumentException("groupName can not be blank");
     }
-    long uid = userService.getCurrentUserId();
-    log.debug("searching group name = " + groupName + " for the user:" + uid);
-    GadgetGroup group = gadgetGroupRepository.findGadgetGroup(uid, groupName);
-    try {
-      if (group != null) {
-        return new JsonRepresentation(toJson(uid, group));
-      } else {
-        return new JsonRepresentation(new JSONObject());
-      }
-    } catch (JSONException e) {
-      throw new RuntimeException("Error serializing to json", e);
+    CoreUser user = userService.getCurrentUser();
+    long uid = 0;
+    if (user != null) {
+      uid = user.getId();
     }
+    log.debug("Searching group name = " + groupName + " for the user:" + uid);
+    GadgetGroup group = gadgetGroupRepository.findGadgetGroup(uid, groupName);
+    if (group == null) {
+      // Group not found, search for the template.
+      GadgetGroup templ;
+      templ = gadgetGroupRepository.findGadgetGroupTemplate(groupName);
+      if (templ == null) {
+        throw new RuntimeException("Group not found " + groupName);
+      }
+      group = templ.createFromTemplate(user);
+      gadgetGroupRepository.save(group);
+    }
+    JsonRepresentation result = null;
+    if (group != null) {
+      try {
+        result = new JsonRepresentation(toJson(uid, group));
+      } catch (JSONException e) {
+        throw new RuntimeException("Error serializing to json", e);
+      }
+    } else {
+      result = new JsonRepresentation(new JSONObject());
+    }
+    log.trace("Leaving execute");
+    return result;
   }
 
   /** Generates the json representation of the provided gadget group.

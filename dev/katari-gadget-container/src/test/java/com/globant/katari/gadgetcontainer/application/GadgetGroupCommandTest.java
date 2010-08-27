@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 import static org.easymock.classextension.EasyMock.*;
 
+import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +21,7 @@ import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 import com.globant.katari.gadgetcontainer.application.TokenService;
 
 import com.globant.katari.shindig.domain.Application;
+import com.globant.katari.gadgetcontainer.domain.SampleUser;
 
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
@@ -32,6 +34,8 @@ public class GadgetGroupCommandTest {
 
   private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
+
+  private CoreUser user = new SampleUser("me");
 
   @Before
   public void setUp() throws Exception {
@@ -59,9 +63,7 @@ public class GadgetGroupCommandTest {
 
     String groupName = "theGroup";
 
-    CoreUser userId = createMock(CoreUser.class);
-
-    GadgetGroup gadgetGroup = new GadgetGroup(userId, groupName, 3);
+    GadgetGroup gadgetGroup = new GadgetGroup(user, groupName, 3);
     Application application = new Application(gadgetXmlUrl);
     GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
     gadgetGroup.add(gadgetInstance);
@@ -71,7 +73,7 @@ public class GadgetGroupCommandTest {
     replay(repository);
 
     ContextUserService userService = createMock(ContextUserService.class);
-    expect(userService.getCurrentUserId()).andReturn(0L);
+    expect(userService.getCurrentUser()).andReturn(user);
     replay(userService);
 
     GadgetGroupCommand command;
@@ -99,7 +101,7 @@ public class GadgetGroupCommandTest {
     replay(repository);
 
     ContextUserService userService = createMock(ContextUserService.class);
-    expect(userService.getCurrentUserId()).andReturn(0L);
+    expect(userService.getCurrentUser()).andReturn(user);
     replay(userService);
 
     GadgetGroupCommand command;
@@ -108,6 +110,38 @@ public class GadgetGroupCommandTest {
 
     assertThat(command.execute().write(new StringWriter()).toString(),
         is(baselineJson(false)));
+
+    verify(userService);
+    verify(repository);
+  }
+
+  @Test
+  public void testExecute_createFromTemplate() throws Exception {
+    String groupName = "theGroup";
+
+    // A group template
+    GadgetGroup gadgetGroup = new GadgetGroup(groupName, 3);
+    Application application = new Application(gadgetXmlUrl);
+    GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
+    gadgetGroup.add(gadgetInstance);
+
+    GadgetGroupRepository repository = createMock(GadgetGroupRepository.class);
+    expect(repository.findGadgetGroup(0, groupName)).andReturn(null);
+    expect(repository.findGadgetGroupTemplate(groupName))
+      .andReturn(gadgetGroup);
+    repository.save(isA(GadgetGroup.class));
+    replay(repository);
+
+    ContextUserService userService = createMock(ContextUserService.class);
+    expect(userService.getCurrentUser()).andReturn(user);
+    replay(userService);
+
+    GadgetGroupCommand command;
+    command = new GadgetGroupCommand(repository, userService, tokenService);
+    command.setGroupName(groupName);
+
+    assertThat(command.execute().write(new StringWriter()).toString(),
+        is(baselineJson(true)));
 
     verify(userService);
     verify(repository);
