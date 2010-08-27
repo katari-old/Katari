@@ -20,6 +20,16 @@ public class ApplicationRepository extends HibernateDaoSupport {
   private static Logger log = LoggerFactory.getLogger(
       ApplicationRepository.class);
 
+  /** Returns the application for the provided id.
+   *
+   * @param id the application id.
+   *
+   * @return The application with the provided id, null if not found.
+   */
+  public Application find(final long id) {
+    return (Application) getHibernateTemplate().get(Application.class, id);
+  }
+
   /** Returns all registered applications, ordered by title.
    *
    * This operation will eventually disappear when we provide pagination and

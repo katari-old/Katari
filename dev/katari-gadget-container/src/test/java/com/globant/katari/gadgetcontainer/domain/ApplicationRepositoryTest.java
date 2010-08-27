@@ -36,6 +36,8 @@ public class ApplicationRepositoryTest {
   private String gadgetUrl2 = "file:///" + new File(
       "target/test-classes/SampleGadget2.xml").getAbsolutePath();
 
+  private long applicationId;
+
   @Before
   public void setUp() throws Exception {
     appContext = SpringTestUtils.getContext();
@@ -52,6 +54,8 @@ public class ApplicationRepositoryTest {
 
     session.saveOrUpdate(app1);
     session.saveOrUpdate(app2);
+
+    applicationId = app1.getId();
   }
 
   @After
@@ -68,6 +72,15 @@ public class ApplicationRepositoryTest {
     assertThat(applications.size(), is(2));
     assertThat(applications.get(0).getTitle(), is("Test title"));
     assertThat(applications.get(1).getTitle(), is("Test title 2"));
+  }
+
+  @Test
+  public void testFind() {
+
+    Application application = repository.find(applicationId);
+
+    assertThat(application, notNullValue());
+    assertThat(application.getTitle(), is("Test title"));
   }
 }
 
