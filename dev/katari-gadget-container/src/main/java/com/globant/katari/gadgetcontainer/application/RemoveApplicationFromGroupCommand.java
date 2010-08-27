@@ -13,11 +13,7 @@ import org.json.JSONObject;
 import com.globant.katari.core.application.Command;
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
-import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
-
-import com.globant.katari.shindig.domain.Application;
-import com.globant.katari.gadgetcontainer.domain.ApplicationRepository;
 
 /** Removes a gadget instance from a gadget group.
  * 

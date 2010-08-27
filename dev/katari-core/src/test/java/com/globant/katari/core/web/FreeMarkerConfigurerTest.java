@@ -41,6 +41,7 @@ public class FreeMarkerConfigurerTest {
         configurer.getTemplateLoaderForPath(".").getClass());
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testSetDebugPrefix_removeTrailingSlash() throws Exception {
 

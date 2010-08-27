@@ -65,7 +65,7 @@ public abstract class ViewCommandController extends AbstractCommandController {
    *
    * @return a new instance of a Command object, never null.
    */
-  protected abstract Command createCommandBean();
+  protected abstract Command<?> createCommandBean();
 
   /** {@inheritDoc}
    */

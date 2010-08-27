@@ -428,14 +428,14 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
   private Object evaluateAll(final Object value) {
     if (value instanceof CharSequence) {
       return value.toString();
-    } else if (value instanceof Map) {
+    } else if (value instanceof Map<?, ?>) {
       ImmutableMap.Builder<Object, Object> newMap = ImmutableMap.builder();
       for (Map.Entry<?, ?> entry : ((Map<?, ?>) value).entrySet()) {
         newMap.put(entry.getKey(), evaluateAll(entry.getValue()));
       }
 
       return newMap.build();
-    } else if (value instanceof List) {
+    } else if (value instanceof List<?>) {
       ImmutableList.Builder<Object> newList = ImmutableList.builder();
       for (Object entry : (List<?>) value) {
         newList.add(evaluateAll(entry));

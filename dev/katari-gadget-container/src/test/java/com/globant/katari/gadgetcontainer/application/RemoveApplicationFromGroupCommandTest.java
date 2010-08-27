@@ -5,39 +5,23 @@ package com.globant.katari.gadgetcontainer.application;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import static org.easymock.classextension.EasyMock.*;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 
-import com.globant.katari.tools.ReflectionUtils;
-
 import java.io.File;
-import java.io.StringWriter;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
-import com.globant.katari.gadgetcontainer.application.TokenService;
 
 import com.globant.katari.gadgetcontainer.SpringTestUtils;
 import org.springframework.context.ApplicationContext;
 
-import com.globant.katari.hibernate.coreuser.domain.CoreUserDetails;
-
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-
 import com.globant.katari.shindig.domain.Application;
 
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
-import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
@@ -51,15 +35,7 @@ public class RemoveApplicationFromGroupCommandTest {
   private String gadgetXmlUrl2 = "file:///" + new File(
       "target/test-classes/SampleGadget2.xml").getAbsolutePath();
 
-  private String groupName = "theGroup";
-
   private CoreUser user;
-
-  private ContextUserService userService;
-
-  private GadgetGroup gadgetGroup;
-
-  private GadgetGroupRepository repository;
 
   private ApplicationContext appContext;
 
@@ -67,8 +43,6 @@ public class RemoveApplicationFromGroupCommandTest {
 
   @Before
   public void setUp() throws Exception {
-
-    gadgetGroup = createMock(GadgetGroup.class);
 
     appContext = SpringTestUtils.getContext();
 

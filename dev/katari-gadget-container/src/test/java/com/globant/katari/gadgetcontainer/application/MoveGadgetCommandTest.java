@@ -11,28 +11,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 
-import com.globant.katari.tools.ReflectionUtils;
-
 import java.io.File;
 import java.io.StringWriter;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
-import com.globant.katari.gadgetcontainer.application.TokenService;
 
 import com.globant.katari.gadgetcontainer.SpringTestUtils;
 import org.springframework.context.ApplicationContext;
-
-import com.globant.katari.hibernate.coreuser.domain.CoreUserDetails;
-
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 
 import com.globant.katari.shindig.domain.Application;
 

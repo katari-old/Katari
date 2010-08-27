@@ -79,14 +79,6 @@ public class SocialPageDoTest {
     group.add(new GadgetInstance(app, 1, 3));
     repository.save(group);
 
-    // Find the gadget in 1,3
-    GadgetInstance gadgetToMove = null;
-    for (GadgetInstance gadget: group.getGadgets()) {
-      if (gadget.getColumn() == 1 && gadget.getOrder() == 3) {
-        gadgetToMove = gadget;
-      }
-    }
-
     // Sets the currently logged on user
     SpringTestUtils.setLoggedInUser(user);
 

@@ -2,18 +2,12 @@
 
 package com.globant.katari.gadgetcontainer.application;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.LinkedList;
-
-import org.json.JSONObject;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import com.globant.katari.core.application.Command;
 

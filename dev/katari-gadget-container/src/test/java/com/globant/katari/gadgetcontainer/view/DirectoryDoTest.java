@@ -31,9 +31,6 @@ import org.springframework.context.ApplicationContext;
 import com.globant.katari.shindig.domain.Application;
 
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
-import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
-import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
-
 import com.globant.katari.gadgetcontainer.domain.SampleUser;
 
 import com.globant.katari.gadgetcontainer.application.ListApplicationsCommand;
@@ -61,6 +58,7 @@ public class DirectoryDoTest {
     session.createQuery("delete from Application").executeUpdate();
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void test() throws Exception {
 

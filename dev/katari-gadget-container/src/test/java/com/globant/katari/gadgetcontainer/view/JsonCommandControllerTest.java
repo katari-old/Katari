@@ -29,7 +29,6 @@ import com.globant.katari.gadgetcontainer.application.JsonRepresentation;
 public class JsonCommandControllerTest {
 
   private MockHttpServletRequest request;
-  private JsonCommandController controller;
 
   @Before
   public void setUp() throws Exception {

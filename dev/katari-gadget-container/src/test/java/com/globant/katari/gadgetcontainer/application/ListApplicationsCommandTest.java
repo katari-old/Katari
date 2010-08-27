@@ -12,11 +12,6 @@ import org.junit.Test;
 import java.util.List;
 import java.util.LinkedList;
 import java.io.File;
-import java.io.StringWriter;
-
-import org.json.JSONObject;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import com.globant.katari.shindig.domain.Application;
 
