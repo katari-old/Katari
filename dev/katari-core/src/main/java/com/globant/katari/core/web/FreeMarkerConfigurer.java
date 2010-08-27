@@ -3,6 +3,7 @@
 package com.globant.katari.core.web;
 
 import java.util.List;
+import java.util.LinkedList;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +48,13 @@ public class FreeMarkerConfigurer extends
    *
    * Only used in debug mode.
    */
-  private String debugPrefix = ".";
+  // private String debugPrefix = ".";
+
+  /** A list of prefixes to use to find the resources in the disk as a file.
+   *
+   * Only used in debug mode.
+   */
+  private List<String> debugPrefixes = new LinkedList<String>();
 
   /** Constructor, builds a FreeMarkerConfigurer.
    *
@@ -94,21 +101,36 @@ public class FreeMarkerConfigurer extends
         path = "/" + path;
       }
 
-      String fileTemplatePath = debugPrefix + path;
-      log.debug("Debug mode enabled, attempt to load templates from {}",
-          fileTemplatePath);
+      List<TemplateLoader> loaders = new LinkedList<TemplateLoader>();
 
-      try {
-        TemplateLoader[] loaders = new TemplateLoader[2];
-        loaders[0] = new FileTemplateLoader(new File(fileTemplatePath));
-        loaders[1] = classpathLoader;
-        loader = new MultiTemplateLoader(loaders);
-      } catch (IOException e) {
-        // We fall back to the standard loader.
-        log.debug("Could not find {}. Using normal classpath loader.",
+      for (String debugPrefix: debugPrefixes) {
+        String fileTemplatePath = debugPrefix + path;
+        log.debug("Debug mode enabled, attempt to load templates from {}",
             fileTemplatePath);
-        loader = classpathLoader;
+        try {
+          loaders.add(new FileTemplateLoader(new File(fileTemplatePath)));
+        } catch (IOException e) {
+          // We fall back to the standard loader.
+          log.debug("Could not find {}, skipping ...", fileTemplatePath);
+        }
       }
+      // Adds the default classpathLoader
+      loaders.add(classpathLoader);
+      loader = new MultiTemplateLoader(loaders.toArray(new TemplateLoader[0]));
+
+      /*
+        try {
+          loaders[0] = new FileTemplateLoader(new File(fileTemplatePath));
+          loaders[1] = classpathLoader;
+          loader = new MultiTemplateLoader(loaders);
+        } catch (IOException e) {
+          // We fall back to the standard loader.
+          log.debug("Could not find {}. Using normal classpath loader.",
+              fileTemplatePath);
+          loader = classpathLoader;
+        }
+      }
+      */
 
     } else {
       log.debug("Debug mode not enabled, using SpringTemplateLoader");
@@ -144,6 +166,8 @@ public class FreeMarkerConfigurer extends
 
   /** Sets the debug prefix.
    *
+   * This takes precedence over the prefixes set with debugPrefixes.
+   *
    * @param prefix a prefix to add to the template path to look for it in the
    * file system. It is a dot by default. A trailing / is removed if present.
    * It cannot be null.
@@ -151,9 +175,31 @@ public class FreeMarkerConfigurer extends
   public void setDebugPrefix(final String prefix) {
     Validate.notNull(prefix, "The prefix cannot be null.");
     if (prefix.endsWith("/")) {
-      debugPrefix = prefix.substring(0, prefix.length() - 1);
+      debugPrefixes.add(0, prefix.substring(0, prefix.length() - 1));
     } else {
-      debugPrefix = prefix;
+      debugPrefixes.add(0, prefix);
+    }
+  }
+
+  /** Sets the debug prefixes.
+   *
+   * If both debugPrefix and debugPrefixes is specified, then the template is
+   * first search for in debugPrefix.
+   *
+   * The directories are scanned in order.
+   *
+   * @param prefixes a list of prefixes to add to the template path to look for
+   * templates in the file system. A trailing / is removed if present in any of
+   * the elements. It cannot be null.
+   */
+  public void setDebugPrefixes(final List<String> prefixes) {
+    Validate.notNull(prefixes, "The list of debug prefixes cannot be null.");
+    for (String prefix: prefixes) {
+      if (prefix.endsWith("/")) {
+        debugPrefixes.add(prefix.substring(0, prefix.length() - 1));
+      } else {
+        debugPrefixes.add(prefix);
+      }
     }
   }
 }

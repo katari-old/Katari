@@ -7,6 +7,8 @@ import java.lang.reflect.Field;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import freemarker.cache.MultiTemplateLoader;
 
 import org.springframework.ui.freemarker.SpringTemplateLoader;
@@ -44,9 +46,9 @@ public class FreeMarkerConfigurerTest {
 
     FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
     configurer.setDebugPrefix("something/");
-    Field prefix = FreeMarkerConfigurer.class. getDeclaredField("debugPrefix");
+    Field prefix = FreeMarkerConfigurer.class. getDeclaredField("debugPrefixes");
     prefix.setAccessible(true);
-    assertEquals("something", prefix.get(configurer));
+    assertEquals("something", ((List) prefix.get(configurer)).get(0));
   }
 }
 
