@@ -70,6 +70,10 @@ public class GadgetGroup {
    * user.
    *
    * This is never null.
+   *
+   * TODO This should probably be mapped with a hibernate user type. Or to a
+   * string. This is now mapped as an int, the position of the enum in the list
+   * which is very error prone.
    */
   @Column(nullable = false)
   private Type type;
@@ -283,7 +287,8 @@ public class GadgetGroup {
    *
    * This operation can only be called on gadget group templates.
    *
-   * @param user the user that owns the gadget group. It cannot be null.
+   * @param user the user that will own the new gadget group. It cannot be
+   * null.
    */
   public GadgetGroup createFromTemplate(final CoreUser user) {
     Validate.notNull(user, "The user cannot be null.");

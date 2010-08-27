@@ -52,25 +52,6 @@ public class GadgetInstance {
   @Column(name = "group_order", nullable = false)
   private int order;
 
-  /** {@link String} that identifies the user and the application when the
-   * gadget accesses the open social container.
-   *
-   * This token is passed to the GadgetInstance whenever the user requests a
-   * new page generation. It is never null.
-   *
-   * Note: This is an implementation artifact to ease the generation of the
-   * json/xml/whatever output.
-   */
-  @Transient
-  private String securityToken;
-
-  /** The user who is accessing to the application.
-   *
-   * See the note on securityToken.
-   */
-  @Transient
-  private long viewer;
-
   /** Hibernate constructor.
    */
   GadgetInstance() {
@@ -137,18 +118,6 @@ public class GadgetInstance {
    */
   public String getUrl() {
     return application.getUrl();
-  }
-
-  /** @return @link{String} the securityToken
-   */
-  public String getSecurityToken() {
-    return securityToken;
-  }
-
-  /** @return @link{String} the current gadget viewer.
-   */
-  public long getViewer() {
-    return viewer;
   }
 
   /** The column where the gadget is to be positioned in the group.
