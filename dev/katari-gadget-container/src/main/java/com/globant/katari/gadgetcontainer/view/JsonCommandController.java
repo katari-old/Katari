@@ -5,19 +5,13 @@ package com.globant.katari.gadgetcontainer.view;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.Validate;
-
 import org.json.JSONObject;
+
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 
 import com.globant.katari.core.application.Command;
-import com.globant.katari.gadgetcontainer.application.GadgetGroupCommand;
-import com.globant.katari.gadgetcontainer.domain.ContextUserService;
-import com.globant.katari.gadgetcontainer.application.TokenService;
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
-import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 
 /** Executes a Command&lt;JSONObject&gt; and writes the resulting json to the
  * client.
@@ -35,11 +29,13 @@ public abstract class JsonCommandController extends AbstractCommandController {
    * response.
    */
   @Override
+  @SuppressWarnings("unchecked")
   protected ModelAndView handle(final HttpServletRequest request,
       final HttpServletResponse response, final Object command,
       final BindException errors) throws Exception {
 
-    Command<JSONObject> jsonCommand = (Command<JSONObject>) command;
+    Command<JSONObject> jsonCommand;
+    jsonCommand = (Command<JSONObject>) command;
     response.addHeader("Content-type", "application/json");
     jsonCommand.execute().write(response.getWriter());
 
@@ -48,7 +44,7 @@ public abstract class JsonCommandController extends AbstractCommandController {
 
   /** {@inheritDoc}
    *
-   * @return {@link Command&lt;GadgetGroup&gt;}
+   * @return {@link Command&lt;JSONObject&gt;}
    */
   protected abstract Command<JSONObject> createCommandBean();
 

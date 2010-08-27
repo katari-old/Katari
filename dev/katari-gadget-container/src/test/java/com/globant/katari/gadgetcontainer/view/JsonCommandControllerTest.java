@@ -9,26 +9,18 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
-import com.globant.katari.tools.ReflectionUtils;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.globant.katari.gadgetcontainer.SpringTestUtils;
 import com.globant.katari.core.application.Command;
 
-import com.globant.katari.shindig.domain.Application;
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
-import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
-
-import com.globant.katari.hibernate.coreuser.domain.CoreUser;
-import com.globant.katari.gadgetcontainer.application.TokenService;
+import org.json.JSONObject;
 
 /** Test for the controller {@link JsonCommandController}
  *
