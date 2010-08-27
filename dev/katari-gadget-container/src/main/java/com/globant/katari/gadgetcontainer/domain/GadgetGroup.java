@@ -31,16 +31,27 @@ import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 /** Represents a group of gadgets that can be displayed on a web page.
  *
  * Gadgets are intended to be shown in a page in a column layout. Each gadget
- * defines the column and the position in that column.
+ * defines the column and the position (order) in that column.
  *
- * Gadgets can be static or customizable. Static gadget groups do not have an
- * owner. If it is customizable, it always has an owner.
+ * Groups can be static (shared) or customizable. Static gadget groups do not
+ * have an owner, and are accesible to everybody. Customizable gadget groups
+ * always have an owner and can be moved by him.
+ *
+ * Groups can be created on demand, from scratch, or copied from a template
+ * gadget group. Template gadget groups are not intended to be shown to the
+ * user, they serve as the basis to create new gadget groups for users.
  *
  * @author waabox(emiliano[dot]arango[at]globant[dot]com)
  */
 @Entity
 @Table(name = "gadget_groups")
 public class GadgetGroup {
+
+  /** The enumeration for the type of gadget group.
+   */
+  public static enum Type {
+    SHARED, CUSTOMIZABLE, TEMPLATE
+  };
 
   /** The class logger.
    */
@@ -52,7 +63,18 @@ public class GadgetGroup {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
 
-  /** {@link String} name of the group.
+  /** The type of group.
+   *
+   * A customizable group must have an owner. A shared group never has an
+   * owner. A template never has an owner, and cannot be shown to the final
+   * user.
+   *
+   * This is never null.
+   */
+  @Column(nullable = false)
+  private Type type;
+
+  /** The name of the group.
    *
    * This is never null.
    */
@@ -98,9 +120,32 @@ public class GadgetGroup {
       final int columns) {
     Validate.notEmpty(groupName, "group name can not be null nor empty");
     Validate.isTrue(columns >= 1, "Number of columns must be 1 or greater.");
+
+    if (user != null) {
+      type = Type.CUSTOMIZABLE;
+    } else {
+      type = Type.SHARED;
+    }
+
     name = groupName;
     owner = user;
     numberOfColumns = columns;
+  }
+
+  /** Builds a gadget group template.
+   *
+   * @param groupName name of the group. It cannot be null
+   *
+   * @param columns the number of columns in the group. It must be 1 or
+   * greater.
+   */
+  public GadgetGroup(final String groupName, final int columns) {
+    Validate.notEmpty(groupName, "group name can not be null nor empty");
+    Validate.isTrue(columns >= 1, "Number of columns must be 1 or greater.");
+    name = groupName;
+    numberOfColumns = columns;
+
+    type = Type.TEMPLATE;
   }
 
   /** @return the id, 0 for a newly created object.
@@ -141,7 +186,7 @@ public class GadgetGroup {
    *
    * @param instance the gadget to add to this group. It cannot be null.
    */
-  public void addGadget(final GadgetInstance instance) {
+  public void add(final GadgetInstance instance) {
     Validate.notNull(instance, "The gadget instance cannot be null.");
     Validate.isTrue(instance.getColumn() < numberOfColumns,
         "You cannot add a gadget for column greater than the gadget group's.");
@@ -232,6 +277,25 @@ public class GadgetGroup {
       ++ newOrder;
     }
     log.trace("Leaving move");
+  }
+
+  /** Creates a new gadget group from this template for the provided owner.
+   *
+   * This operation can only be called on gadget group templates.
+   *
+   * @param user the user that owns the gadget group. It cannot be null.
+   */
+  public GadgetGroup createFromTemplate(final CoreUser user) {
+    Validate.notNull(user, "The user cannot be null.");
+    Validate.isTrue(type == Type.TEMPLATE, "The group is not a template");
+    GadgetGroup group = new GadgetGroup(user, name, numberOfColumns);
+
+    // Adds all the gadgetInstances.
+    for (GadgetInstance gadget: gadgets) {
+      group.add(new GadgetInstance(gadget));
+    }
+
+    return group;
   }
 }
 

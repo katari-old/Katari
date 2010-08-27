@@ -176,10 +176,10 @@ public class MoveGadgetCommandTest {
     repository.getHibernateTemplate().saveOrUpdate(app);
 
     GadgetGroup group = new GadgetGroup(user, "sample", 2);
-    group.addGadget(new GadgetInstance(app, 0, 0));
-    group.addGadget(new GadgetInstance(app, 1, 0));
-    group.addGadget(new GadgetInstance(app, 1, 1));
-    group.addGadget(new GadgetInstance(app, 1, 3));
+    group.add(new GadgetInstance(app, 0, 0));
+    group.add(new GadgetInstance(app, 1, 0));
+    group.add(new GadgetInstance(app, 1, 1));
+    group.add(new GadgetInstance(app, 1, 3));
     repository.save(group);
 
     // Find the gadget in 1,3

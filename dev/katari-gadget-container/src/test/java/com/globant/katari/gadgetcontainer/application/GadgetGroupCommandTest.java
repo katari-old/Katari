@@ -63,7 +63,7 @@ public class GadgetGroupCommandTest {
     GadgetGroup gadgetGroup = new GadgetGroup(userId, groupName, 3);
     Application application = new Application(gadgetXmlUrl);
     GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
-    gadgetGroup.addGadget(gadgetInstance);
+    gadgetGroup.add(gadgetInstance);
 
     GadgetGroupRepository repository = createMock(GadgetGroupRepository.class);
     expect(repository.findGadgetGroup(0, groupName)).andReturn(gadgetGroup);
@@ -92,7 +92,7 @@ public class GadgetGroupCommandTest {
     GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, 3);
     Application application = new Application(gadgetXmlUrl);
     GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
-    gadgetGroup.addGadget(gadgetInstance);
+    gadgetGroup.add(gadgetInstance);
 
     GadgetGroupRepository repository = createMock(GadgetGroupRepository.class);
     expect(repository.findGadgetGroup(0, groupName)).andReturn(gadgetGroup);

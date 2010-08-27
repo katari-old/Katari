@@ -9,6 +9,8 @@ import static org.easymock.classextension.EasyMock.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Set;
+
 import java.io.File;
 
 import com.globant.katari.tools.ReflectionUtils;
@@ -28,7 +30,7 @@ public class GadgetGroupTest {
 
   private CoreUser user;
 
-  Application application;
+  private Application application;
 
   @Before
   public void setUp() {
@@ -69,7 +71,7 @@ public class GadgetGroupTest {
   public void testAddGadget() {
     GadgetGroup group = new GadgetGroup(user, "1", 1);
     GadgetInstance instance = new GadgetInstance(application, 0, 0);
-    group.addGadget(instance);
+    group.add(instance);
     assertTrue(group.getGadgets().contains(instance));
   }
 
@@ -77,7 +79,7 @@ public class GadgetGroupTest {
   public void testAddGadget_columnTooLarge() {
     GadgetGroup group = new GadgetGroup(user, "1", 1);
     GadgetInstance instance = new GadgetInstance(application, 1, 0);
-    group.addGadget(instance);
+    group.add(instance);
   }
 
   @Test
@@ -87,11 +89,11 @@ public class GadgetGroupTest {
      
     instance = new GadgetInstance(application, 0, 0);
     ReflectionUtils.setAttribute(instance, "id", 1);
-    group.addGadget(instance);
+    group.add(instance);
 
     instance = new GadgetInstance(application, 0, 1);
     ReflectionUtils.setAttribute(instance, "id", 2);
-    group.addGadget(instance);
+    group.add(instance);
 
     // Should fail because there is only 1 column in the group.
     try {
@@ -108,11 +110,11 @@ public class GadgetGroupTest {
      
     instance = new GadgetInstance(application, 0, 0);
     ReflectionUtils.setAttribute(instance, "id", 1);
-    group.addGadget(instance);
+    group.add(instance);
 
     instance = new GadgetInstance(application, 0, 1);
     ReflectionUtils.setAttribute(instance, "id", 2);
-    group.addGadget(instance);
+    group.add(instance);
 
     // Should fail because gadget 100 is not in the group.
     try {
@@ -128,11 +130,11 @@ public class GadgetGroupTest {
      
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
     ReflectionUtils.setAttribute(col0Order0, "id", 1);
-    group.addGadget(col0Order0);
+    group.add(col0Order0);
 
     GadgetInstance col0Order1 = new GadgetInstance(application, 0, 1);
     ReflectionUtils.setAttribute(col0Order1, "id", 2);
-    group.addGadget(col0Order1);
+    group.add(col0Order1);
 
     // Move the second gadget to the begining of the column.
     group.move(2, 0, 0);
@@ -148,11 +150,11 @@ public class GadgetGroupTest {
      
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
     ReflectionUtils.setAttribute(col0Order0, "id", 1);
-    group.addGadget(col0Order0);
+    group.add(col0Order0);
 
     GadgetInstance col0Order1 = new GadgetInstance(application, 0, 1);
     ReflectionUtils.setAttribute(col0Order1, "id", 2);
-    group.addGadget(col0Order1);
+    group.add(col0Order1);
 
     // Move the second gadget to the begining of the column.
     group.move(2, 1, 0);
@@ -168,23 +170,23 @@ public class GadgetGroupTest {
      
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
     ReflectionUtils.setAttribute(col0Order0, "id", 1);
-    group.addGadget(col0Order0);
+    group.add(col0Order0);
 
     GadgetInstance col0Order1 = new GadgetInstance(application, 0, 1);
     ReflectionUtils.setAttribute(col0Order1, "id", 2);
-    group.addGadget(col0Order1);
+    group.add(col0Order1);
 
     GadgetInstance col1Order0 = new GadgetInstance(application, 1, 1);
     ReflectionUtils.setAttribute(col1Order0, "id", 3);
-    group.addGadget(col1Order0);
+    group.add(col1Order0);
 
     GadgetInstance col1Order1 = new GadgetInstance(application, 1, 2);
     ReflectionUtils.setAttribute(col1Order1, "id", 4);
-    group.addGadget(col1Order1);
+    group.add(col1Order1);
 
     GadgetInstance col1Order2 = new GadgetInstance(application, 1, 3);
     ReflectionUtils.setAttribute(col1Order2, "id", 5);
-    group.addGadget(col1Order2);
+    group.add(col1Order2);
 
     // Move the second gadget to the begining of the column.
     group.move(2, 1, 1);
@@ -198,6 +200,40 @@ public class GadgetGroupTest {
     assertThat(col1Order1.getOrder(), is(2));
     assertThat(col1Order2.getColumn(), is(1));
     assertThat(col1Order2.getOrder(), is(3));
+  }
+
+  @Test
+  public void testCreateFromTemplate_nonTemplateGroup() {
+    GadgetGroup group = new GadgetGroup(null, "shared group", 3);
+    try {
+      group.createFromTemplate(user);
+      fail("Trying to create a group from a non template.");
+    } catch (IllegalArgumentException e) {
+    }
+  }
+
+  @Test
+  public void testCreateFromTemplate() {
+    // Create a group with tree gadget instances.
+    GadgetGroup group = new GadgetGroup("main group", 3);
+    // The template group must not have an owner.
+    assertThat(group.getOwner(), nullValue());
+    group.add(new GadgetInstance(application, 0, 0));
+    group.add(new GadgetInstance(application, 0, 1));
+    group.add(new GadgetInstance(application, 0, 3));
+
+    GadgetGroup newGroup = group.createFromTemplate(user);
+
+    assertThat(newGroup.getOwner(), is(user));
+    assertThat(newGroup.getName(), is("main group"));
+    assertThat(newGroup.getNumberOfColumns(), is(3));
+
+    Set<GadgetInstance> instances = newGroup.getGadgets();
+
+    assertThat(instances, notNullValue());
+    assertThat(instances.size(), is(3));
+    // We just check one gadget ...
+    assertThat(instances.iterator().next().getTitle(), is("Test title"));
   }
 }
 

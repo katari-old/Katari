@@ -96,11 +96,11 @@ public class GadgetGroupRepositoryTest {
     Application app = new Application(gadgetUrl);
     // Test friendly hack: never use the repository like this.
     repository.getHibernateTemplate().saveOrUpdate(app);
-    group.addGadget(new GadgetInstance(app, 1, 2));
+    group.add(new GadgetInstance(app, 1, 2));
     repository.save(group);
 
     group = new GadgetGroup(null, "for everybody", 2);
-    group.addGadget(new GadgetInstance(app, 1, 2));
+    group.add(new GadgetInstance(app, 1, 2));
     repository.save(group);
   }
 }

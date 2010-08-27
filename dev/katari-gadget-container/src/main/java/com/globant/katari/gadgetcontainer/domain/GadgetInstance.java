@@ -71,8 +71,7 @@ public class GadgetInstance {
   @Transient
   private long viewer;
 
-  /**
-   * Hibernate constructor.
+  /** Hibernate constructor.
    */
   GadgetInstance() {
   }
@@ -95,6 +94,20 @@ public class GadgetInstance {
     application = theApplication;
     column = theColumn;
     order = theOrder;
+  }
+
+  /** Creates a new Gadget instance as a copy of another.
+   *
+   * This is intended to be used from GadgetGroup only. It does not copy the id
+   * of the source gadget.
+   *
+   * @param source the source gadget instance. It cannot be null.
+   */
+  GadgetInstance(final GadgetInstance source) {
+    Validate.notNull(source, "the source gadget can not be null");
+    application = source.application;
+    column = source.column;
+    order = source.order;
   }
 
   /** @return long the id of the gadget instance.
