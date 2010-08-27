@@ -97,6 +97,13 @@
     </property>
   </bean>
 
+  <bean id='gadgetcontainer.applicationRepository'
+    class='com.globant.katari.gadgetcontainer.domain.ApplicationRepository'>
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
+  </bean>
+
   <bean id='gadgetcontainer.userService'
     class='com.globant.katari.gadgetcontainer.domain.ContextUserService' />
 
