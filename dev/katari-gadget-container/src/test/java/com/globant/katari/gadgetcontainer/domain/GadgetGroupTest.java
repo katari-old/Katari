@@ -235,5 +235,20 @@ public class GadgetGroupTest {
     // We just check one gadget ...
     assertThat(instances.iterator().next().getTitle(), is("Test title"));
   }
+
+  @Test
+  public void testContains_false() {
+    // Create a group with one gadget instance.
+    GadgetGroup group = new GadgetGroup("main group", 3);
+    assertThat(group.contains(application), is(false));
+  }
+
+  @Test
+  public void testContains_true() {
+    // Create a group with one gadget instance.
+    GadgetGroup group = new GadgetGroup("main group", 3);
+    group.add(new GadgetInstance(application, 0, 0));
+    assertThat(group.contains(application), is(true));
+  }
 }
 

@@ -27,6 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
+import com.globant.katari.shindig.domain.Application;
 
 /** Represents a group of gadgets that can be displayed on a web page.
  *
@@ -40,6 +41,8 @@ import com.globant.katari.hibernate.coreuser.domain.CoreUser;
  * Groups can be created on demand, from scratch, or copied from a template
  * gadget group. Template gadget groups are not intended to be shown to the
  * user, they serve as the basis to create new gadget groups for users.
+ *
+ * TODO: decide if a group can contain more than one Application.
  *
  * @author waabox(emiliano[dot]arango[at]globant[dot]com)
  */
@@ -183,7 +186,7 @@ public class GadgetGroup {
     return Collections.unmodifiableSet(gadgets);
   }
 
-  /**  Adds a gadget to the group.
+  /** Adds a gadget to the group.
    *
    * The gadget's column must be between 0 and the number of columns in this
    * group.
@@ -194,6 +197,12 @@ public class GadgetGroup {
     Validate.notNull(instance, "The gadget instance cannot be null.");
     Validate.isTrue(instance.getColumn() < numberOfColumns,
         "You cannot add a gadget for column greater than the gadget group's.");
+    for (GadgetInstance gadget: gadgets) {
+      if (gadget.getColumn() == instance.getColumn()
+          && gadget.getOrder() >= instance.getOrder()) {
+        gadget.move(gadget.getColumn(), gadget.getOrder() + 1);
+      }
+    }
     gadgets.add(instance);
   }
 
@@ -301,6 +310,24 @@ public class GadgetGroup {
     }
 
     return group;
+  }
+
+  /** Finds if there is a gadget in the group for the application.
+   *
+   * @param application The application to look for in the gadget group. It
+   * cannot be null.
+   *
+   * @return true if the application was found in the group, false otherwise.
+   */
+  public boolean contains(final Application application) {
+    Validate.notNull(application, "The application cannot be null.");
+    for (GadgetInstance instance: gadgets) {
+      if (application.getUrl().equals(instance.getApplication().getUrl())) {
+        // The application is already in the group.
+        return true;
+      }
+    }
+    return false;
   }
 }
 
