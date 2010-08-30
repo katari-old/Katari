@@ -5,7 +5,7 @@ insert into projects values ('2', 'Google CRM', '1');
 insert into activities values ('1', 'Coding', '1');
 insert into activities values ('2', 'Testing', '1');
 
--- Creates 4 applications.
+-- Creates 5 applications.
 insert into applications (id, title, description, author, icon, thumbnail, url)
 values (1, 'Minesweeper',
   'Minesweeper, the classic game that will sweep you
@@ -32,6 +32,9 @@ insert into applications (id, title, url) values (3, 'ToDo',
  'http://www.labpixies.com/campaigns/todo/todo.xml');
 insert into applications (id, title, url) values (4, 'Flood It',
  'http://www.labpixies.com/campaigns/flood/flood.xml');
+insert into applications (id, title, icon, url) values (5, 'Chess',
+ 'http://ning.j2play.net/j2play-images/ImageServlet?id=7231',
+ 'http://ning.j2play.net/ning/web/game-200/app.xml');
 
 -- Creates two gadget groups.
 insert into gadget_groups (name, type, number_of_columns)

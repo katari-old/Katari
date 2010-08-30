@@ -189,6 +189,7 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
         gadgetJson.put("appId", gadget.getApplication().getId());
         gadgetJson.put("column", gadget.getColumn());
         gadgetJson.put("order", gadget.getOrder());
+        gadgetJson.put("icon", gadget.getApplication().getIcon());
         gadgetJson.put("url", gadget.getApplication().getUrl());
         String token = tokenService.createSecurityToken(uid, owner, gadget);
         gadgetJson.put("securityToken", token);

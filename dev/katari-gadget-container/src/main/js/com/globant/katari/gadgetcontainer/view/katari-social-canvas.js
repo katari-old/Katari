@@ -68,7 +68,8 @@ katari.console = {
       relayFile: host + "${baseweb}/module/gadgetcontainer/assets/rpc_relay.html",
 
       socialContainer: "default",
-      defaultView: "home",
+      defaultView: "default",
+      // defaultView: "profile",
       synId: "0"
     }
   };
@@ -87,6 +88,10 @@ katari.console = {
  *
  * @param sUrl The url of the gadget specification xml.
  *
+ * @param sTitle The title of the gadget.
+ *
+ * @param sIcon The icon url for the gadget.
+ *
  * @param sSecurityToken A token that identifies the user and the gadget to the
  * rpc/rest services.
  *
@@ -98,8 +103,8 @@ katari.console = {
  *
  * @param sOrder The position of the gadget in the column.
  */
-katari.social.GadgetInstance = function(sId, sUrl, sTitle, sSecurityToken,
-    sViewer, sOwner, sColumn, sOrder) {
+katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
+    sSecurityToken, sViewer, sOwner, sColumn, sOrder) {
 
   /** The id of the gadget instance, usually as retrieved from the backend.
    */
@@ -125,7 +130,8 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sSecurityToken,
     } else {
       url.push("?");
     }
-    url.push("url=", sUrl);
+    url.push("view=", katari.social.canvasConfig.defaultView);
+    url.push("&url=", sUrl);
     url.push("#rpctoken=", applicationId);
     url.push("&st=", sSecurityToken);
     url.push("&mid=", id);
@@ -135,7 +141,6 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sSecurityToken,
     url.push("&owner=", sOwner);
     url.push("&aid=", id);
     url.push("&parent=", katari.social.canvasConfig.host);
-    url.push("&view=", katari.social.canvasConfig.defaultView);
     return url.join('');
   };
 
@@ -224,6 +229,9 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sSecurityToken,
     var gadgetGroup = contentToClose.data().gadgetGroup;
     var that = this;
 
+    var icon;
+    var iconDiv;
+
     titleBar = jQuery("<div class='titleBar'></div>");
 
     if (gadgetGroup.isCustomizable) {
@@ -258,9 +266,16 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sSecurityToken,
       titleBar.append(buttons);
     }
 
+    if (sIcon !== undefined) {
+      icon = jQuery("<img width='16' height='16'></img>");
+      icon.attr("src", sIcon);
+      iconDiv = jQuery("<div class='icon'></div>");
+      iconDiv.append(icon);
+      titleBar.append(iconDiv);
+    }
+
     titleDiv = jQuery("<h2>" + sTitle + "</h2>");
     titleDiv.attr("id", "header_" + this.getApplicationId());
-
     titleBar.append(titleDiv);
 
     return titleBar;
@@ -337,9 +352,9 @@ katari.social.GadgetGroup = function(sContainer) {
     // And create all the gadgets.
     jQuery.each(groupSpec.gadgets, function(i, gadgetSpec) {
       that.addGadget(new katari.social.GadgetInstance(gadgetSpec.id,
-          gadgetSpec.url, gadgetSpec.title, gadgetSpec.securityToken,
-          groupSpec.viewerId, groupSpec.ownerId, gadgetSpec.column,
-          gadgetSpec.order));
+          gadgetSpec.url, gadgetSpec.title, gadgetSpec.icon,
+          gadgetSpec.securityToken, groupSpec.viewerId, groupSpec.ownerId,
+          gadgetSpec.column, gadgetSpec.order));
     });
     return this;
   };
@@ -552,6 +567,9 @@ katari.social.Container.prototype._getUrlForView = function(view, person, app, m
 };
 
 katari.social.Container.prototype.requestNavigateTo = function(view, opt_params) {
+  katari.console.log("requestNavigateTo");
+  katari.console.log(view);
+  katari.console.log(opt_params);
   if (jQuery('#' + this.f) !== undefined) {
     var params = gadgets.container._parseIframeUrl(jQuery('#' + this.f).src);
     var url = gadgets.container._getUrlForView(view, params.owner, params.aid,

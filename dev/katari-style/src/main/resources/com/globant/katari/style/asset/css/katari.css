@@ -1015,7 +1015,7 @@ form span.buttons, form ul.glasslist .buttonBarClass {
   visibility: hidden;
 }
 /* End For Drag & Drop */
-.titleBar{
+.titleBar {
   background:url(../image/bg_titleBar.png) 0 0 repeat-x;
   border-bottom:1px solid #c9dda5;
   height:28px;
@@ -1038,6 +1038,10 @@ form span.buttons, form ul.glasslist .buttonBarClass {
   height:16px;
   text-indent:-99999px;
   width:16px;
+}
+.titleBar .icon {
+  margin:6px;
+  float:left;
 }
 .titleBar a.minimizeButton {
   background:url(../image/icon_minimize.png) 0 0 repeat-x;

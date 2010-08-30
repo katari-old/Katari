@@ -39,11 +39,9 @@ public class Application {
 
   /** The application (gadget) title.
    *
-   * This is obtained from the gadget xml.
-   * 
-   * It is null if not known.
+   * This is obtained from the gadget xml. Never null.
    */
-  @Column(nullable = true)
+  @Column(nullable = false)
   private String title;
 
   /** The optional gadget icon.
@@ -96,6 +94,13 @@ public class Application {
 
   /** Creates a new application.
    *
+   * This constructor obtains all the gadget information from the xml obtained
+   * from gadgetUrl. This constructor can throw an exception if the url is not
+   * accessible.
+   *
+   * If the title is not found in the gadget xml spec, it sets it to the gadget
+   * xml url.
+   *
    * @param gadgetUrl with the url of the gadget xml. It cannot be empty.
    */
   public Application(final String gadgetUrl) {
@@ -113,6 +118,9 @@ public class Application {
       Document document = builder.parse(gadgetSpecStream);
 
       title = getXpathValue(document, "/Module/ModulePrefs/@title");
+      if (title == null) {
+        title = gadgetUrl;
+      }
       icon = getXpathValue(document, "/Module/ModulePrefs/icon/text()");
       description = getXpathValue(document,
           "/Module/ModulePrefs/@description");
@@ -158,7 +166,7 @@ public class Application {
   /** The title of the gadget.
    *
    * @return The title of gadget, usually obtained from the gadget xml
-   * specification. It returns null if the title cannot be determined.
+   * specification. It never returns null.
    */
   public String getTitle() {
     return title;
