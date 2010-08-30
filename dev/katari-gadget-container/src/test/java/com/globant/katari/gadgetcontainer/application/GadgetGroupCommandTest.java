@@ -172,6 +172,7 @@ public class GadgetGroupCommandTest {
       gadgetJson.put("column", 1);
       gadgetJson.put("order", 2);
       gadgetJson.put("url", gadgetXmlUrl);
+      gadgetJson.put("icon", "");
       gadgetJson.put("securityToken", "mockToken");
       groupJson.append("gadgets", gadgetJson);
       return groupJson.toString();
