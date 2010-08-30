@@ -44,31 +44,33 @@
             <#assign class = ''>
           </#if>
 
-          <li class='directory_entry ${class} item_${application.id}'>
-            <div class='gadget'>
-              <img src='${application.thumbnail!}' alt='${application.title}'>
-              <div>
-                <input type="button" value="Add it now"
-                  onclick='addApplicationToGroup("${command.gadgetGroupName}", ${application.id})'>
+          <#escape x as x?html>
+            <li class='directory_entry ${class} item_${application.id}'>
+              <div class='gadget'>
+                <img src='${application.thumbnail!}' alt='${application.title}'>
+                <div>
+                  <input type="button" value="Add it now"
+                    onclick='addApplicationToGroup("${command.gadgetGroupName}", ${application.id})'>
+                </div>
               </div>
-            </div>
-            <div class='author'>
-              <span>
-                <#if application.author??>
-                  By ${application.author}
-                <#else>
-                  <!-- empty span. -->
+              <div class='author'>
+                <span>
+                  <#if application.author??>
+                    By ${application.author}
+                  <#else>
+                    <!-- empty span. -->
+                  </#if>
+                </span>
+              </div>
+              <div class='info'>
+                <h4>${application.title}</h4>
+                <#if application.description??>
+                  <p>${application.description}</p>
                 </#if>
-              </span>
-            </div>
-            <div class='info'>
-              <h4>${application.title}</h4>
-              <#if application.description??>
-                <p>${application.description}</p>
-              </#if>
-            </div>
-            <div class='clear'><!-- Empty div --></div>
-          </li>
+              </div>
+              <div class='clear'><!-- Empty div --></div>
+            </li>
+          </#escape>
         </#list>
       </ul>
     </#if>
