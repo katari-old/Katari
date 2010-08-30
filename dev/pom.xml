@@ -586,6 +586,9 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <version>2.1</version>
+          <configuration>
+            <siteDirectory>target/site-src</siteDirectory>
+          </configuration>
           <dependencies>
             <dependency>
               <groupId>com.globant.katari</groupId>
@@ -693,8 +696,23 @@
             <configuration>
               <tasks>
 
-                <!-- Copy and filter the apt files -->
-                <copy todir="target/site-src/apt" preservelastmodified="true" filtering="true">
+                <!-- Copy and filter the apt files for the site-->
+                <!-- First, copy everything but apts. -->
+                <copy todir="target/site-src/" preservelastmodified="true">
+                  <fileset dir="src/site/" excludes="**/*.apt"/>
+                </copy>
+                <!-- Now, copy only apts, but filtered. -->
+                <copy todir="target/site-src/" preservelastmodified="true"
+                  filtering="true">
+                  <filterset>
+                    <filter token="version" value="${version}"/>
+                  </filterset>
+                  <fileset dir="src/site/" includes="**/*.apt"/>
+                </copy>
+
+                <!-- Copy and filter the apt files for the user manual book -->
+                <copy todir="target/book-src/apt" preservelastmodified="true"
+                  filtering="true">
                   <filterset>
                     <filter token="version" value="${version}"/>
                   </filterset>
@@ -702,9 +720,15 @@
                 </copy>
 
                 <!-- Copy the module indexes -->
-                <copy file="katari-editablepages/src/site/apt/index.apt" tofile="target/site-src/apt/katari-editablepages.apt" preservelastmodified="true"/>
-                <copy file="katari-report/src/site/apt/index.apt" tofile="target/site-src/apt/katari-reports.apt" preservelastmodified="true"/>
-                <copy file="katari-search/src/site/apt/index.apt" tofile="target/site-src/apt/katari-search.apt" preservelastmodified="true"/>
+                <copy file="katari-editablepages/src/site/apt/index.apt"
+                  tofile="target/book-src/apt/katari-editablepages.apt"
+                  preservelastmodified="true"/>
+                <copy file="katari-report/src/site/apt/index.apt"
+                  tofile="target/book-src/apt/katari-reports.apt"
+                  preservelastmodified="true"/>
+                <copy file="katari-search/src/site/apt/index.apt"
+                  tofile="target/book-src/apt/katari-search.apt"
+                  preservelastmodified="true"/>
 
                 <!-- Copy the images for the pdf -->
                 <copy todir="target/generated-site/pdf/user-manual/images">
@@ -764,7 +788,7 @@
           <imageDirs>target/site</imageDirs>
           <books>
             <book>
-              <directory>target/site-src/apt</directory>
+              <directory>target/book-src/apt</directory>
               <descriptor>src/site/book/user-manual.xml</descriptor>
               <formats>
                 <format>
