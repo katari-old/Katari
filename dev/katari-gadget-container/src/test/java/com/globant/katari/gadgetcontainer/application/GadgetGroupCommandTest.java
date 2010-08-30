@@ -166,7 +166,6 @@ public class GadgetGroupCommandTest {
 
       JSONObject gadgetJson = new JSONObject();
       gadgetJson.put("id", 0);
-      gadgetJson.put("icon", "");
       gadgetJson.put("title", "Test title");
       gadgetJson.put("appId", 0);
       gadgetJson.put("column", 1);
