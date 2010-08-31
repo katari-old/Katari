@@ -199,7 +199,7 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
     gadgetDiv.data('gadgetGroup', gadgetGroup);
 
     gadgetDiv.attr("id", "gadget_" + this.getApplicationId());
-    gadgetDiv.append(this.createTitleBar(gadgetDiv, iframe));
+    gadgetDiv.append(this.createTitleBar(gadgetDiv, iframeContainer));
     gadgetDiv.append(iframeContainer);
 
     containerElement.append(gadgetDiv);
