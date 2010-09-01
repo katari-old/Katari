@@ -253,24 +253,5 @@ resources, then define MAVEN_OPTS as:
 
 MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128"
 
-Testing with selenium
----------------------
-
-The sample katari application includes some tests written with the help of
-selenium. For these tests to work you need to set up some things first.
-
-Under linux, make sure firefox is install, then export the following environment
-variables:
-
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/firefox/
-  export PATH=$PATH:/usr/lib/firefox
-
-This works assuming firefox is installed in /usr/lib/firefox.
-
-To run the selenium tests, you must activate the profile named "selenium-test',
-for example:
-
-  mvn integration-test -P selenium-test
-
 -- vim: set ts=2 et sw=2 tw=80:
 

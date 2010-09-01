@@ -39,8 +39,8 @@ Then in dev/${clientName}-${projectName}-web/ run:
 
   mvn jetty:run
 
-This will start a jetty embedded container listening on port 8076. Point your
-browser to http://localhost:8076/${clientName}-${projectName}-web to access the
+This will start a jetty embedded container listening on port 8088. Point your
+browser to http://localhost:8088/${clientName}-${projectName}-web to access the
 application. You should now be able to login with username admin and password
 admin.
 
@@ -237,25 +237,6 @@ Then, launch jetty:
 mvn jetty:run
 
 Connect to the remote debuging port, 8000 in this case.
-
-Testing with selenium
----------------------
-
-The ${projectName} web application includes some tests written with the help of
-selenium. For these tests to work you need to set up some things first.
-
-Under linux, make sure firefox is install, then export the following environment
-variables:
-
-  export LD_LIBRARY_PATH=${symbol_dollar}LD_LIBRARY_PATH:/usr/lib/firefox/
-  export PATH=${symbol_dollar}PATH:/usr/lib/firefox
-
-This works assuming firefox is installed in /usr/lib/firefox.
-
-To run the selenium tests, you must activate the profile named "selenium-test',
-for example:
-
-  mvn integration-test -P selenium-test
 
 -- vim: set ts=2 et sw=2 tw=80:
 

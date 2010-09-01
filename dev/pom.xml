@@ -218,6 +218,12 @@
         <version>${dependency.hibernate-jpa-2.0.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>1.0.0.GA</version>
+      </dependency>
+
       <!-- Be careful. This version of the mysql jdbc driver is GPL. -->
       <dependency>
         <groupId>mysql</groupId>
@@ -451,13 +457,6 @@
         <artifactId>servlet-api</artifactId>
         <version>2.4</version>
         <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-        <artifactId>selenium-java-client-driver</artifactId>
-        <version>${dependency.selenium-java-client-driver.version}</version>
-        <scope>test</scope>
       </dependency>
 
       <dependency>
@@ -947,7 +946,7 @@ try {
       3.5.3-Final
     </dependency.hibernate-annotations.version>
     <dependency.hibernate-validator.version>
-      4.0.2.GA
+      4.1.0.Final
     </dependency.hibernate-validator.version>
     <dependency.hibernate-jpa-2.0.version>
       1.0.0.Final
@@ -955,9 +954,6 @@ try {
     <dependency.javassist.version>
       3.8.0.GA
     </dependency.javassist.version>
-    <dependency.selenium-java-client-driver.version>
-      1.0
-    </dependency.selenium-java-client-driver.version>
     <!-- Versions 6.1.2 - 6.1.10 makes groovy fail. -->
     <dependency.jetty-plugin.version>
       6.1.21

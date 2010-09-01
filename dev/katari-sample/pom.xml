@@ -51,17 +51,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-      <artifactId>selenium-java-client-driver</artifactId>
-    </dependency>
-
-    <!-- Nedded by htmlunit class -->
-    <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
     </dependency>
@@ -100,13 +89,20 @@
     </dependency>
 
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-validator</artifactId>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+    </dependency>
+
+    <!-- Not used directly. This is the implementation for javax.validation.
+         -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
     </dependency>
 
     <!-- Needed by hibernate. We could also use cglib, that is reported to be
@@ -115,11 +111,6 @@
       <groupId>javassist</groupId>
       <artifactId>javassist</artifactId>
     </dependency>
-
-    <!-- dependency>
-      <groupId>javax.persistence</groupId>
-      <artifactId>persistence-api</artifactId>
-    </dependency -->
 
     <!-- Be careful. This version of the mysql jdbc driver is GPL. -->
     <dependency>
@@ -192,12 +183,6 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
     </dependency>
-
-    <!-- Provided by the container -->
-    <!-- dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jsp-api</artifactId>
-    </dependency -->
 
     <!-- We use ${groupId} because we will depend on the style package from the
     current groupId. -->
@@ -438,9 +423,6 @@
             <id>Functional tests</id>
             <phase>integration-test</phase>
             <configuration>
-              <excludes>
-                <exclude>${selenium-test-exclusion-list}</exclude>
-              </excludes>
               <includes>
                 <include>**/functionaltest/**/*Test.java </include>
               </includes>
@@ -559,7 +541,6 @@
     mvn war:inplace. -->
     <profile>
       <id>cargo-inplace</id>
-
       <build>
         <plugins>
           <plugin>
@@ -599,48 +580,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <!-- A test configuration with selenium. Activate with -P selenium-test -->
-    <profile>
-      <id>selenium-test</id>
-      <properties>
-        <selenium-test-exclusion-list />
-      </properties>
-
-      <build>
-        <plugins>
-          <!-- Selenium Maven plugin. -->
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>selenium-maven-plugin</artifactId>
-            <version>1.0</version>
-            <executions>
-              <execution>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>start-server</goal>
-                </goals>
-                <configuration>
-                  <background>true</background>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>selenium-exclude-test</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <properties>
-        <selenium-test-exclusion-list>
-          **/functionaltest/selenium/*.java
-        </selenium-test-exclusion-list>
-      </properties>
     </profile>
   </profiles>
 

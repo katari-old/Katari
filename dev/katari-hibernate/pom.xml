@@ -36,6 +36,7 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Brings the log4j bindings to the test scope. Needed by slf4j. -->
     <dependency>
       <groupId>com.globant.katari</groupId>
       <artifactId>katari-tools</artifactId>

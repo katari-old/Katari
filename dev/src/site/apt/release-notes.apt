@@ -1,5 +1,23 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.22
+
+* What's new since version 0.21
+
+ * Modules can be disabled by a configuration option.
+
+ * Two new modules to support social applications.
+
+ * Now the user is a core katari entity. This makes it possible for modules to
+ have direct references to user objects.
+
+ * Removed the trails module from katari.
+
+* Upgrading from version 0.20
+
+ * If you implement a user object, you now need to extend from Katari's
+ CoreUser.
+
 Release notes for version 0.21
 
 * What's new since version 0.20

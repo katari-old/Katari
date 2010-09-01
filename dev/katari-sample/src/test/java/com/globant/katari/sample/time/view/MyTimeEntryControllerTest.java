@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.collections.MapUtils;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -70,8 +69,7 @@ public class MyTimeEntryControllerTest extends TestCase {
     expect(request.getParameterNames()).andReturn(null).anyTimes();
     replay(request);
 
-    Map map = MapUtils.EMPTY_MAP;
-    map = myTimeController.referenceData(request);
+    Map map = myTimeController.referenceData(request);
 
     List<TimeEntry> list = (List<TimeEntry>) map.get("timeEntryList");
     assertNotNull(list);

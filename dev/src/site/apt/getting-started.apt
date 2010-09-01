@@ -72,6 +72,11 @@ mvn archetype:generate -DarchetypeArtifactId=katari-archetype \
 
  []
 
+ (Note: if you are behind a proxy, you may be hit by bug
+ http://jira.codehaus.org/browse/ARCHETYPE-202: maven will freeze for a minute
+ or two trying to download archetype-catalog.xml. Add -DarchetypeCatalog=local
+ to speed things up.)
+
  Once the archetype finishes, you will find a directory called acme-coyote.
  There you will find:
 
