@@ -46,6 +46,7 @@
         <filtering>true</filtering>
         <includes>
           <include>**/pom.xml</include>
+          <include>**/site.xml</include>
         </includes>
       </resource>
       <resource>
@@ -53,6 +54,7 @@
         <filtering>false</filtering>
         <excludes>
           <exclude>**/pom.xml</exclude>
+          <exclude>**/site.xml</exclude>
         </excludes>
       </resource>
     </resources>

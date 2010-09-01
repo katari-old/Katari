@@ -22,7 +22,7 @@
       <item name="Nexus" href="https://projects.globant.com/nexus/" />
     </links>
 
-    <menu name="${friendlyName}">
+    <menu name="\${friendlyName}">
       <item name="Introduction" href="index.html" />
       <item name="Release Notes" href="release-notes.html"/>
     </menu>
@@ -37,8 +37,8 @@
     </menu>
 
     <menu name="Modules">
-      <item name="Archetype project Web" href="/${clientName}-${projectName}-web/index.html"/>
-      <item name="Archetype project Style" href="/${clientName}-${projectName}-style/index.html"/>
+      <item name="Archetype project Web" href="/\${clientName}-\${projectName}-web/index.html"/>
+      <item name="Archetype project Style" href="/\${clientName}-\${projectName}-style/index.html"/>
     </menu>
 
     ${symbol_dollar}{reports}

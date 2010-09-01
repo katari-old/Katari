@@ -17,7 +17,7 @@
 
   <body>
 
-    <menu name="${friendlyName} - web">
+    <menu name="\${friendlyName} - web">
       <item name="Parent" href="../index.html" />
       <item name="Introduction" href="index.html" />
     </menu>
