@@ -15,7 +15,7 @@ var katari = katari || {};
 
 /** Set by the java counterpart.
  */
-katari.debugMode = ${debug?string("true", "false")};
+katari.debugMode = "${debug?string('true', 'false')}";
 
 /** All social related js stuff will go in the social 'namespace' under katari.
  */
@@ -149,13 +149,13 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
    */
   this.getId = function() {
     return id;
-  }
+  };
 
   /** Returns the id of the html iframe that contains this gadget.
    */
   this.getApplicationId = function() {
     return applicationId;
-  }
+  };
 
   /** Renders the gadget in a container.
    *
@@ -203,7 +203,7 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
     gadgetDiv.append(iframeContainer);
 
     containerElement.append(gadgetDiv);
-  }
+  };
 
   /** Creates a title bar for this gadget instance.
    *
@@ -223,7 +223,6 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
     var titleDiv;
 
     var close;
-    var minimize;
 
     var isMinimized = false;
     var gadgetGroup = contentToClose.data().gadgetGroup;
@@ -279,7 +278,7 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
     titleBar.append(titleDiv);
 
     return titleBar;
-  }
+  };
 
   /** The column where this gadget will be displayed.
    */
@@ -371,7 +370,7 @@ katari.social.GadgetGroup = function(sContainer) {
       '${baseweb}/module/gadgetcontainer/removeApplicationFromGroup.do?' +
         parameters,
       callback);
-  }
+  };
 
   /** Renders the group in the container, the html element with the id provided
    * to the gadget group.
@@ -464,7 +463,7 @@ katari.social.GadgetGroup = function(sContainer) {
         function(data) {
           katari.console.log(data);
         });
-  }
+  };
 };
 
 /** OpenSocial container implementation.
