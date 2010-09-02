@@ -321,6 +321,13 @@
             <zipUrlInstaller>
               <url>${cargo.tomcatLocation}</url>
             </zipUrlInstaller>
+            <systemProperties>
+              <!-- Hopefully avoids a java.util.ConcurrentModificationException
+                   when tomcat shuts down. -->
+              <org.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES>
+                false
+              </org.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES>
+            </systemProperties>
             <dependencies>
               <dependency>
                 <location>${symbol_dollar}{basedir}/target/test-classes</location>
@@ -346,6 +353,14 @@
           <!-- Excludes all the tests from the default surefire execution
           phase. -->
           <includes><include /></includes>
+          <!-- Workaround for unable to get lock on ... See
+               http://jira.codehaus.org/browse/SONAR-172 -->
+          <systemProperties>
+            <property>
+              <name>cobertura.use.java.nio</name>
+              <value>false</value>
+            </property>
+          </systemProperties>
         </configuration>
         <executions>
           <!-- We use the surefire plugin to set up the database. This is bound
@@ -358,6 +373,14 @@
               <includes>
                 <include>com/globant/\${clientName}/\${projectName}/web/testsupport/database/TestDbSupport.java</include>
               </includes>
+              <!-- Workaround for unable to get lock on ... See
+                   http://jira.codehaus.org/browse/SONAR-172 -->
+              <systemProperties>
+                <property>
+                  <name>cobertura.use.java.nio</name>
+                  <value>false</value>
+                </property>
+              </systemProperties>
             </configuration>
             <goals>
               <goal>test</goal>
@@ -375,6 +398,14 @@
               <includes>
                 <include>**/*Test.java</include>
               </includes>
+              <!-- Workaround for unable to get lock on ... See
+                   http://jira.codehaus.org/browse/SONAR-172 -->
+              <systemProperties>
+                <property>
+                  <name>cobertura.use.java.nio</name>
+                  <value>false</value>
+                </property>
+              </systemProperties>
             </configuration>
             <goals>
               <goal>test</goal>
@@ -389,6 +420,14 @@
               <includes>
                 <include>**/functionaltest/**/*Test.java</include>
               </includes>
+              <!-- Workaround for unable to get lock on ... See
+                   http://jira.codehaus.org/browse/SONAR-172 -->
+              <systemProperties>
+                <property>
+                  <name>cobertura.use.java.nio</name>
+                  <value>false</value>
+                </property>
+              </systemProperties>
             </configuration>
             <goals>
               <goal>test</goal>
@@ -481,6 +520,14 @@
                 <zipUrlInstaller>
                   <url>${cargo.tomcatLocation}</url>
                 </zipUrlInstaller>
+                <systemProperties>
+                  <!-- Hopefully avoids a
+                       java.util.ConcurrentModificationException when tomcat
+                       shuts down. -->
+                  <org.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES>
+                    false
+                  </org.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES>
+                </systemProperties>
                 <dependencies>
                   <dependency>
                     <location>${symbol_dollar}{basedir}/target/test-classes</location>

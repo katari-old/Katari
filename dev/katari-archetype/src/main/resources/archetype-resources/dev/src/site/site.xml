@@ -37,8 +37,10 @@
     </menu>
 
     <menu name="Modules">
-      <item name="Archetype project Web" href="/\${clientName}-\${projectName}-web/index.html"/>
-      <item name="Archetype project Style" href="/\${clientName}-\${projectName}-style/index.html"/>
+      <item name="\${friendlyName} Web"
+        href="/\${clientName}-\${projectName}-web/index.html"/>
+      <item name="\${friendlyName} Style"
+        href="/\${clientName}-\${projectName}-style/index.html"/>
     </menu>
 
     ${symbol_dollar}{reports}

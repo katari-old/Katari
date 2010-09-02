@@ -565,10 +565,16 @@
   <build>
 
     <pluginManagement>
-      <!-- Added due to a bug: build fails from dev but passes from report. See
-         http://jira.codehaus.org/browse/MNG-4178. -->
       <plugins>
 
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>cobertura-site-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+
+        <!-- Added due to a bug: build fails from dev but passes from report.
+             See http://jira.codehaus.org/browse/MNG-4178. -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
@@ -876,7 +882,11 @@ try {
 
   <reporting>
     <plugins>
-      <!-- Generates the change log from trac -->
+      <!-- Generates the change log from trac.
+           NOTE: in a snapshot release, project.version is, eg, 0.22-SNAPSHOT.
+           This version never matches a ticket, so the trac report shows an
+           error.
+      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>

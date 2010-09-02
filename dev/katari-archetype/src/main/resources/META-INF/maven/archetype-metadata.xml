@@ -27,8 +27,8 @@
         <fileSet filtered="true" encoding="UTF-8">
           <directory>src/site</directory>
           <includes>
-            <include>**/*.txt</include>
             <include>**/*.xml</include>
+            <include>**/*.apt</include>
           </includes>
         </fileSet>
         <fileSet encoding="UTF-8">
@@ -36,8 +36,6 @@
           <includes>
             <include>**/*.dia</include>
             <include>**/*.fml</include>
-            <include>**/*.apt</include>
-            <include>**/*.</include>
           </includes>
         </fileSet>
         <fileSet filtered='true' encoding="UTF-8">
@@ -108,11 +106,6 @@
               <directory>src/site</directory>
               <includes>
                 <include>**/*.xml</include>
-              </includes>
-            </fileSet>
-            <fileSet encoding="UTF-8">
-              <directory>src/site</directory>
-              <includes>
                 <include>**/*.apt</include>
               </includes>
             </fileSet>
@@ -157,11 +150,6 @@
               <directory>src/site</directory>
               <includes>
                 <include>**/*.xml</include>
-              </includes>
-            </fileSet>
-            <fileSet encoding="UTF-8">
-              <directory>src/site</directory>
-              <includes>
                 <include>**/*.apt</include>
               </includes>
             </fileSet>
