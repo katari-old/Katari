@@ -142,12 +142,6 @@
         </exclusions>
       </dependency>
 
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>${dependency.hibernate-validator.version}</version>
-      </dependency>
-
       <!-- This comment was related to jpa 1, looks like it still applies for 2:
            According to hibernate (see this bug
            http://opensource.atlassian.com/projects/hibernate/browse/ANN-712),

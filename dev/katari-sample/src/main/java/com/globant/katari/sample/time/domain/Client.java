@@ -13,10 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import javax.validation.constraints.NotNull;
-
-/**
- * Defines the Client entity.
+/** Defines the Client entity.
  */
 @Entity
 @Table(name = "clients")
@@ -78,7 +75,6 @@ public class Client {
   @SuppressWarnings("unused")
   @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false)
-  @NotNull
   private Status status = Status.ACTIVE;
 
   /** The default constructor.

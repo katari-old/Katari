@@ -201,12 +201,6 @@
         <version>${dependency.hibernate-annotations.version}</version>
       </dependency>
 
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>${dependency.hibernate-validator.version}</version>
-      </dependency>
-
       <!-- This comment was related to jpa 1, looks like it still applies for 2:
            According to hibernate (see this bug
            http://opensource.atlassian.com/projects/hibernate/browse/ANN-712),
@@ -216,12 +210,6 @@
         <groupId>org.hibernate.javax.persistence</groupId>
         <artifactId>hibernate-jpa-2.0-api</artifactId>
         <version>${dependency.hibernate-jpa-2.0.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>javax.validation</groupId>
-        <artifactId>validation-api</artifactId>
-        <version>1.0.0.GA</version>
       </dependency>
 
       <!-- Be careful. This version of the mysql jdbc driver is GPL. -->
@@ -945,9 +933,6 @@ try {
     <dependency.hibernate-annotations.version>
       3.5.3-Final
     </dependency.hibernate-annotations.version>
-    <dependency.hibernate-validator.version>
-      4.1.0.Final
-    </dependency.hibernate-validator.version>
     <dependency.hibernate-jpa-2.0.version>
       1.0.0.Final
     </dependency.hibernate-jpa-2.0.version>

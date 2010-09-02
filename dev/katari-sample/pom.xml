@@ -93,18 +93,6 @@
       <artifactId>hibernate-jpa-2.0-api</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-    </dependency>
-
-    <!-- Not used directly. This is the implementation for javax.validation.
-         -->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-validator</artifactId>
-    </dependency>
-
     <!-- Needed by hibernate. We could also use cglib, that is reported to be
          faster. But javassist is the default. -->
     <dependency>
