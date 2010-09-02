@@ -6,6 +6,8 @@ import java.util.Hashtable;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -173,12 +175,16 @@ public class StaticContentServletTest {
     response.setDateHeader(same("Last-Modified"), anyLong());
     expectLastCall().anyTimes();
     response.sendError(404);
+    StringWriter writer = new StringWriter();
+    expect(response.getWriter()).andReturn(new PrintWriter(writer));
+    response.flushBuffer();
 
     replay(response);
 
     StaticContentServlet staticContentServlet = new StaticContentServlet();
     staticContentServlet.init(config);
     staticContentServlet.doPost(request, response);
+    assertTrue(writer.toString().matches(".*404.*"));
   }
 
   /* Tests that the servlet throws an exception if the staticContentPath is not
