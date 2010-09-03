@@ -13,10 +13,17 @@ Release notes for version 0.22
 
  * Removed the trails module from katari.
 
-* Upgrading from version 0.20
+* Upgrading from version 0.21
 
- * If you implement a user object, you now need to extend from Katari's
- CoreUser.
+ * Your user implementation now needs to extend from Katari's CoreUser.
+
+ * Your DomainUserDetails implementation now needs to extend from Katari's
+ CoreUserDetails.
+
+ * If you want to use the social modules, make sure to use an updated version of
+ commons-lang. Previous version of katari used version 2.1. Upgrade to version
+ 2.5. Otherwise, you will get java.lang.NoSuchMethodError:
+ org.apache.commons.lang.StringUtils.join( ...
 
 Release notes for version 0.21
 
