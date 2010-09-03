@@ -78,7 +78,7 @@
       <dependency>
         <groupId>commons-lang</groupId>
         <artifactId>commons-lang</artifactId>
-        <version>2.1</version>
+        <version>2.5</version>
       </dependency>
 
       <dependency>
@@ -438,6 +438,18 @@
         <version>${version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-shindig</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-gadget-container</artifactId>
+        <version>${version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -446,7 +458,7 @@
       <plugins>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
-          <artifactId>cobertura-site-plugin</artifactId>
+          <artifactId>cobertura-maven-plugin</artifactId>
           <version>2.4</version>
         </plugin>
       </plugins>

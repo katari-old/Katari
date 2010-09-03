@@ -53,8 +53,16 @@
   <katari:import module="com.globant.katari.console" />
 
   <!-- The client libs module. It provides unified access to common javascript
-  apis. -->
+       apis. -->
   <katari:import module="com.globant.katari.ajax"/>
+
+  <!-- The shindig module. It integrates shindig open social implementation.
+       -->
+  <katari:import module="com.globant.katari.shindig"/>
+
+  <!-- The gadget container module.
+       -->
+  <katari:import module="com.globant.katari.gadgetcontainer"/>
 
   <!-- The style module. It provides a sample style and serves the static
   content used in the application. -->
@@ -63,7 +71,8 @@
   <!-- The Institutional module. It has some static pages. -->
   <katari:import module="${package}.web.institutional"/>
 
-  <!-- The hibernate properties, They are referenced from the hibernate bean. -->
+  <!-- The hibernate properties, They are referenced from the hibernate bean.
+       -->
   <bean id="katari.hibernateProperties"
     class="org.springframework.beans.factory.config.PropertiesFactoryBean">
     <property name="properties">

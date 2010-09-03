@@ -30,7 +30,7 @@ public class LoginFailTest {
   public final void testLoginFail() throws Exception {
     URL fullUrl = new URL("http://localhost:8089/"
         + "${artifactId}/"
-        + "module/institutional/confidential.do");
+        + "module/institutional/dashboard.do");
     WebClient webClient = new WebClient();
     HtmlPage loginPage = (HtmlPage) webClient.getPage(fullUrl);
 

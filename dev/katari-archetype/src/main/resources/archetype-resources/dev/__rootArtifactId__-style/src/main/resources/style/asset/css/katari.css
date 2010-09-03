@@ -1,49 +1,51 @@
- /* CSS Document */
+/* vim: set ts=2 et sw=2 cindent : */
+
+/* CSS Document */
 
 /* General */
 
 body, td, th, div, table, p, span, li, textarea, pre, input {
-	font-family:arial, verdana, helvetica, lucida, sans-serif;
-	font-size:1em;
+  font-family:arial, verdana, helvetica, lucida, sans-serif;
+  font-size:1em;
 }
 
 html, body {
-	color:black;
-	height:100%; /* needed to stick footer to bottom of page. */
-	background-color:#ffffff;
-	margin:0;
-	padding:0;
-	position:relative;
+  color:black;
+  height:100%; /* needed to stick footer to bottom of page. */
+  background-color:#ffffff;
+  margin:0;
+  padding:0;
+  position:relative;
 }
 
 body {
-	font-size:.8em;
+  font-size:.8em;
 }
 
 div#container {
-	position:relative; /* needed for footer positioning */
-	margin:0 auto; /* center, not in IE5 */
-	width:100%;
-	background:#ffffff;
-	
-	height:auto !important; /* real browsers */
-	height:100%; /* IE6: treated as min-height*/
+  position:relative; /* needed for footer positioning */
+  margin:0 auto; /* center, not in IE5 */
+  width:100%;
+  background:#ffffff;
+  
+  height:auto !important; /* real browsers */
+  height:100%; /* IE6: treated as min-height*/
 
-	min-height:100%; /* real browsers */
+  min-height:100%; /* real browsers */
 }
 
 /* Padding so that the content is not obscured by the footer. */
 div#footerPadding {
-	height:40px; /* IE6: treated as min-height*/
-	min-height:40px; /* real browsers */
+  height:40px; /* IE6: treated as min-height*/
+  min-height:40px; /* real browsers */
 }
 
 div#footer {
-	position:absolute;
-	width:100%;
-	bottom:0; /* stick to bottom */
-	background:#ddd;
-	border-top:4px double gray;
+  position:absolute;
+  width:100%;
+  bottom:0; /* stick to bottom */
+  background:#ddd;
+  border-top:4px double gray;
 }
 
 a { color:#0000cc; }
@@ -51,21 +53,21 @@ a { color:#0000cc; }
 a.noUnderline { text-decoration:none; background-position:bottom }
 
 table {
-	display:table;
+  display:table;
 }
 
 tr { display:table-row;  }
 
 th, td {
-	display: table-cell;
-	padding:0;
+  display: table-cell;
+  padding:0;
 }
 
 img { border:0px; }
 
 .text {
-	border:1px solid #666666;
-	background-color: #FCFCFC;
+  border:1px solid #666666;
+  background-color: #FCFCFC;
 }
 
 input.text { width:15em; }
@@ -79,18 +81,18 @@ pre { margin:0; }
 .clear { clear:both; }
 
 .button, .buttonBarClass input {
-	color:#000000;
-	border:1px solid #dddddd;
+  color:#000000;
+  border:1px solid #dddddd;
 }
 
 .button:active, .buttonBarClass input:active { background-image:none; }
 
 .clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
 
 .clearfix {display: inline-block;}
@@ -105,26 +107,26 @@ pre { margin:0; }
 /* Main styles */
 
 #header #logo {
-	width:200px;
-	height:80px;
-	background:#000000 no-repeat top left;
+  width:200px;
+  height:80px;
+  background:#000000 no-repeat top left;
 }
 
 #header #weblets {
-	position:absolute;
-	top:35px;
-	right:6em;
+  position:absolute;
+  top:35px;
+  right:6em;
 }
 
 #header #weblets form {
-	padding:0px;
-	width:100%;
+  padding:0px;
+  width:100%;
 }
 
 #header #data {
-	position:absolute;
-	top:5px;
-	right:12px;
+  position:absolute;
+  top:5px;
+  right:12px;
 }
 
 /* KLUDGE: This rule matches for ie6. The div is positioned absolute due to an
@@ -132,196 +134,196 @@ pre { margin:0; }
  * With the relative positioning, the div#section is rendered correctly. Also,
  * ie6 ignores min-height. */
 * html div#section {
-	margin-bottom:10px;
-	background-color:#FFFFFF;
-	height:100px;
-	position:relative;
+  margin-bottom:10px;
+  background-color:#FFFFFF;
+  height:100px;
+  position:relative;
 }
 
 div#section {
-	margin-bottom:10px;
-	background-color:#FFFFFF;
-	min-height:100px;
+  margin-bottom:10px;
+  background-color:#FFFFFF;
+  min-height:100px;
 }
 
 div#section ul#menu_level_2 {
-	margin:0;
-	padding:3px 0 3px 2em;
-	background:#e6e6e6;
+  margin:0;
+  padding:3px 0 3px 2em;
+  background:#e6e6e6;
 }
 
 div#section ul#menu_level_2 li {
-	display:inline;
-	margin-right:1em;
+  display:inline;
+  margin-right:1em;
 }
 
 div#section ul#menu_level_2 li a {
-	color:#333333;
-	text-decoration:none;
+  color:#333333;
+  text-decoration:none;
 }
 
 div#section ul#menu_level_2 li.selected a {
-	background:#e6e6e6;
-	font-weight:bold;
+  background:#e6e6e6;
+  font-weight:bold;
 }
 
 div#section ul#menu_level_3 {
-	margin:0;
-	padding:3px 0 3px 2em;
-	background:#ffffff;
+  margin:0;
+  padding:3px 0 3px 2em;
+  background:#ffffff;
 }
 
 div#section ul#menu_level_3 li {
-	display:inline;
-	margin-right:1em;
+  display:inline;
+  margin-right:1em;
 }
 
 div#section ul#menu_level_3 li a {
-	color:#333333;
-	text-decoration:none;
+  color:#333333;
+  text-decoration:none;
 }
 
 div#section ul#menu_level_3 li.selected a {
-	background:#ffffff;
-	text-decoration:none;
+  background:#ffffff;
+  text-decoration:none;
 }
 
 div#section ul#menuHome {
-	margin:0;
-	padding:3px 0 3px 2em;
-	background:#e6e6e6;
+  margin:0;
+  padding:3px 0 3px 2em;
+  background:#e6e6e6;
 }
 
 div#section ul#menuHome li {
-	display:list-item;
-	margin-right:1em;
+  display:list-item;
+  margin-right:1em;
 }
 
 div#section ul#menuHome li a {
-	color:#333333;
-	text-decoration:none;
+  color:#333333;
+  text-decoration:none;
 }
 
 div#section ul#menuHome li.selected a {
-	background:#e6e6e6;
-	font-weight:bold;
+  background:#e6e6e6;
+  font-weight:bold;
 }
 
 /* Adds nice icons to the preview button for the editable pages.
  */
 div.preview-button a span {
-	display:none;
+  display:none;
 }
 
 #header .weblet {
-	float:right;
+  float:right;
 }
 
 div.weblet_editable-pages_previewButton {
-	float:right;
-	margin-left:8px; 
-	width:16px;
+  float:right;
+  margin-left:8px;
+  width:16px;
 }
 
 div.preview-button a.published {
-	background-image:url(../image/show_preview_all.png);
-	background-repeat:no-repeat;
-	background-position: center;
-	height:16px;
-	display:block;
-	width:16px;
-	/*float:right;*/
-	cursor:pointer;
-	padding:0;
-	border:0px solid #CCCCCC;
-	margin:0;
-	background-color:#FFFFFF;
-	text-align:left;
+  background-image:url(../image/show_preview_all.png);
+  background-repeat:no-repeat;
+  background-position: center;
+  height:16px;
+  display:block;
+  width:16px;
+  /*float:right;*/
+  cursor:pointer;
+  padding:0;
+  border:0px solid #CCCCCC;
+  margin:0;
+  background-color:#FFFFFF;
+  text-align:left;
 }
 
 div.preview-button a.pending-publication {
-	background-image:url(../image/show_original_all.png);
-	background-repeat:no-repeat;
-	background-position: center;
-	height:16px;
-	display:block;
-	width:16px;
-	/*float:right;*/
-	cursor:pointer;
-	padding:0;
-	border:0px solid #CCCCCC;
-	margin:0;
-	background-color:#FFFFFF;
-	text-align:left;
-	display: none;
+  background-image:url(../image/show_original_all.png);
+  background-repeat:no-repeat;
+  background-position: center;
+  height:16px;
+  display:block;
+  width:16px;
+  /*float:right;*/
+  cursor:pointer;
+  padding:0;
+  border:0px solid #CCCCCC;
+  margin:0;
+  background-color:#FFFFFF;
+  text-align:left;
+  display: none;
 }
 
 /* Adds nice icons to the menu entries for the editable pages.
  */
 div.editable-pages-pencil span {
-	display:none;
+  display:none;
 }
 div.preview div.editable-pages-pencil {
-	background-image:url(../image/editable_pages_pencil_preview.png);
-	background-repeat:no-repeat;
-	background-position: center;
-	height:24px;
-	display:block;
-	width:24px;
-	/*float:right;*/
-	cursor:pointer;
-	padding:0;
-	border:0px solid #CCCCCC;
-	margin:0;
-	background-color:#FFFFFF;
-	text-align:left;
+  background-image:url(../image/editable_pages_pencil_preview.png);
+  background-repeat:no-repeat;
+  background-position: center;
+  height:24px;
+  display:block;
+  width:24px;
+  /*float:right;*/
+  cursor:pointer;
+  padding:0;
+  border:0px solid #CCCCCC;
+  margin:0;
+  background-color:#FFFFFF;
+  text-align:left;
 }
 div.editable-pages-pencil {
-	background-image:url(../image/editable_pages_pencil.png);
-	background-repeat:no-repeat;
-	background-position: center;
-	height:24px;
-	display:block;
-	width:24px;
-	/*float:right;*/
-	cursor:pointer;
-	padding:0;
-	border:0px solid #CCCCCC;
-	margin:0;
-	background-color:#FFFFFF;
-	text-align:left;
+  background-image:url(../image/editable_pages_pencil.png);
+  background-repeat:no-repeat;
+  background-position: center;
+  height:24px;
+  display:block;
+  width:24px;
+  /*float:right;*/
+  cursor:pointer;
+  padding:0;
+  border:0px solid #CCCCCC;
+  margin:0;
+  background-color:#FFFFFF;
+  text-align:left;
 }
 .yui-module .bd li a {
-	background-repeat:no-repeat;
-	background-position:left;
-	text-align:left;
-	font-size:11px!important;
-	padding:0 28px!important;
-	line-height:22px;
+  background-repeat:no-repeat;
+  background-position:left;
+  text-align:left;
+  font-size:11px!important;
+  padding:0 28px!important;
+  line-height:22px;
 }
 .yui-module .bd li.editPage a {
-	background-image:url(../image/edit_menu_icon.png);
+  background-image:url(../image/edit_menu_icon.png);
 }
 .yui-module .bd li.publishPage a {
-	background-image:url(../image/publish_menu_icon.png);
+  background-image:url(../image/publish_menu_icon.png);
 }
 .yui-module .bd li.revertPage a {
-	background-image:url(../image/revert_menu_icon.png);
+  background-image:url(../image/revert_menu_icon.png);
 }
 
 /* ------------------------------ */
 
 div#section h3 {
-	margin:0;
-	padding:10px 2em 5px 2em;
-	font-size:1em;
+  margin:0;
+  padding:10px 2em 5px 2em;
+  font-size:1em;
 }
 
 div#section h4 {
-	margin:0;
-	padding:0px 2em 5px 2em;
-	font-size:1em;
-	font-weight:normal;
+  margin:0;
+  padding:0px 2em 5px 2em;
+  font-size:1em;
+  font-weight:normal;
 }
 
 
@@ -331,66 +333,66 @@ div#section div#content { padding:0 10px; }
  * the div#frame takes over the whole content area.  With the relative
  * positioning, the div#section is rendered correctly. */
 #version {
-	margin-bottom:5px;
-	padding:2px 0;
-	background:#000000 repeat-x top;
-	text-align:center;
-	font-size:.8em;
-	position:relative;
+  margin-bottom:5px;
+  padding:2px 0;
+  background:#000000 repeat-x top;
+  text-align:center;
+  font-size:.8em;
+  position:relative;
 }
 
 /* KLUDGE: The div is positioned absolute due to an ie6 problem: the color of
  * the div#frame takes over the whole content area.  With the relative
  * positioning, the div#section is rendered correctly. */
 #pageclose {
-	height:20px;
-	background:url(../image/globant.png) no-repeat top right;
-	background-color:#ffffff;
-	position:relative;
+  height:20px;
+  background:url(../image/globant.png) no-repeat top right;
+  background-color:#ffffff;
+  position:relative;
 }
 #pageclose a {
-	color:black;
-	text-decoration:none;
+  color:black;
+  text-decoration:none;
 }
 /* /Main styles */
 
 form {
-	padding:10px;
-	width:30em;
+  padding:10px;
+  width:30em;
 }
 
 form.innerform {
-	padding:0px;
-	width:100%;
+  padding:0px;
+  width:100%;
 }
 
 ul.glasslist {
-	padding:0;
-	margin:0;
+  padding:0;
+  margin:0;
 }
 
 form#login {
-	width:25em;
+  width:25em;
 }
 
 form span.formfield, form ul.glasslist li {
-	clear:both;
-	display:block;
-	margin-bottom:5px;
+  clear:both;
+  display:block;
+  margin-bottom:5px;
 }
 
 #message {
-	display:block;
-	margin-bottom:5px;
+  display:block;
+  margin-bottom:5px;
 }
 
 #message.error {
-	font-weight:bold;
-	color:#990000;
+  font-weight:bold;
+  color:#990000;
 }
 
 table.results {
-	border:1px solid;
+  border:1px solid;
 }
 
 /* Main styles */
@@ -553,7 +555,7 @@ form input, form select, form textarea, .loginContainer input {
 
 #header #data span { float:right; }
 
-#version {	
+#version {  
   background-image: url(../image/footer-bg.png);
   color:#838383;
   height:20px;
@@ -667,7 +669,7 @@ div#editable-pages-pencil1, div#editable-pages-pencil2 {
 
 ul#menu_level_2 {
   background:transparent url(../image/bg_submenu2.png) repeat-x scroll left
-    bottom !important;
+  bottom !important;
   font-size:0.85em;
   height:30px;
   line-height:30px;
@@ -676,7 +678,7 @@ ul#menu_level_2 {
 
 ul#menu_level_3 {
   background:transparent url(../image/bg_submenu3.png) repeat-x scroll left
-    bottom !important;
+  bottom !important;
   font-size:0.85em;
   height:30px;
   line-height:30px;
@@ -855,9 +857,9 @@ form label span {
 }
 
 .formfield div {
-	height:18px;
-	height:19px\9;
-	line-height:18px;
+  height:18px;
+  height:19px\9;
+  line-height:18px;
 }
 
 /* Login */
@@ -945,19 +947,19 @@ form span.formfield, form ul.glasslist li {
 }
 
 #tableView table.results tbody td a {
-	text-decoration:none;
+  text-decoration:none;
 }
 
 #tableView .nameColumnHeader, #tableView .descriptionColumnHeader, #tableView .statusColumnHeader, #tableView .viewAndEditColumnHeader {
-	padding:0 !important;
+  padding:0 !important;
 }
 
 #tableView table.results tbody td a {
-	text-decoration:underline;
+  text-decoration:underline;
 }
 
 table.results tr.even td {
-    background:#FFFFFF;
+  background:#FFFFFF;
 }
 
 form span.buttons, form ul.glasslist .buttonBarClass {
@@ -970,3 +972,124 @@ form span.buttons, form ul.glasslist .buttonBarClass {
   border:1px solid #C7C7C7;
   color:#838383;
 }
+
+/* Social Dashboard */
+.canvasContainer {
+  display: inline;
+}
+
+.gadgetContainer iframe {
+  border: 0px;
+}
+
+.canvasColumn {
+  float: left;
+  margin: 0;
+  padding-top:0;
+  min-height: 52px;
+}
+
+.columnSpacer{
+  margin-right:20px;
+}
+
+.gadgetPortlet{
+  border:1px solid #c9dda5;
+  margin-bottom:52px;
+}
+#canvasDiv {
+  width: 100%;
+  height: 400px;
+  border: 1px solid #000;
+  text-align: center;
+}
+
+/* For Drag & Drop */
+.ui-sortable-placeholder {
+  border: 1px dotted black;
+  visibility: visible !important;
+  height: 50px !important;
+}
+
+.ui-sortable-placeholder * {
+  visibility: hidden;
+}
+/* End For Drag & Drop */
+.titleBar {
+  background:url(../image/bg_titleBar.png) 0 0 repeat-x;
+  border-bottom:1px solid #c9dda5;
+  height:28px;
+  line-height:28px;
+  padding:0 7px;
+}
+.titleBar div {
+  float:right;
+  margin:6px 0 6px 6px;
+}
+.titleBar h2 {
+  color:#94a717;
+  font-size:14px;
+  margin:0;
+}
+
+.titleBar a {
+  cursor:pointer;
+  display:block;
+  height:16px;
+  text-indent:-99999px;
+  width:16px;
+}
+.titleBar .icon {
+  margin:6px;
+  float:left;
+}
+.titleBar a.minimizeButton {
+  background:url(../image/icon_minimize.png) 0 0 repeat-x;
+  float:left;
+}
+.titleBar a.restoreButton {
+  background:url(../image/icon_maximize.png) 0 0 repeat-x;
+  float:left;
+}
+.titleBar a.closeButton {
+  background:url(../image/icon_close.png) 0 0 repeat-x;
+  float:left;
+}
+.iframeContainer{
+  border-top:1px solid #f0f0f0;
+  padding:10px;
+  text-align:center;;
+}
+
+/* A 1px float element to force a min height in the parent object. */
+.min_height {
+  height:50px;
+  float:right;
+  width:1px;
+}
+
+/** Gadget Directory */
+li.directory_entry {
+  margin-bottom: 12px;
+  border-bottom: 1px solid #D9E2F4;
+  list-style-image: none;
+  list-style-type: none;
+}
+li.directory_entry.last {
+  border-bottom: none;
+}
+li.directory_entry div.gadget {
+  float: left;
+  text-align: center;
+  width: 140px;
+}
+li.directory_entry div.info {
+  margin-left: 150px;
+  margin-right: 110px;
+}
+li.directory_entry div.author {
+  float: right;
+  overflow: hidden;
+  width: 100px;
+}
+

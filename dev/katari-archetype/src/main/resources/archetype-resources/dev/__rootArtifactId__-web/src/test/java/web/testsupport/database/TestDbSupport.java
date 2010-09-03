@@ -48,8 +48,7 @@ public class TestDbSupport extends TestCase {
 
     databaseTestSupport.runSqlSentences("target/${rootArtifactId}.ddl");
     databaseTestSupport.runSqlSentences("src/main/sql/db-setup.sql");
-    // If you have additional test data, add it here:
-    // databaseTestSupport.runSqlSentences("src/test/sql/db-setup.sql");
+    databaseTestSupport.runSqlSentences("src/test/sql/db-setup.sql");
 
     log.trace("Leaving testDoSetup");
   }

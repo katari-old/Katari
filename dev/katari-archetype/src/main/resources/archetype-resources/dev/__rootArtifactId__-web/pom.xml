@@ -228,6 +228,16 @@
     </dependency>
 
     <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-gadget-container</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-shindig</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.compass-project</groupId>
       <artifactId>compass</artifactId>
     </dependency>

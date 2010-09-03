@@ -25,7 +25,7 @@ public class LoginFailTest {
   @Test
   public final void testLoginFail() throws Exception {
     URL fullUrl = new URL("http://localhost:8099/katari-sample/"
-        + "module/institutional/confidential.do");
+        + "module/institutional/dashboard.do");
     WebClient webClient = new WebClient();
     HtmlPage loginPage = (HtmlPage) webClient.getPage(fullUrl);
 
