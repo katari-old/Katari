@@ -3,8 +3,6 @@
   <!-- vim: set ts=2 et sw=2 ai: -->
 
   <requiredProperties>
-    <requiredProperty key="clientName"/>
-    <requiredProperty key="projectName"/>
     <requiredProperty key="friendlyName"/>
   </requiredProperties>
 
@@ -49,11 +47,24 @@
         <module id="${rootArtifactId}-web" dir="__rootArtifactId__-web"
           name="${rootArtifactId}-web">
           <fileSets>
-            <fileSet filtered="true" encoding="UTF-8">
+            <fileSet filtered="true" packaged='true' encoding="UTF-8">
               <directory>src/main/java</directory>
               <includes>
                 <include>**/*.java</include>
                 <include>**/*.html</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered='true' packaged='true' encoding="UTF-8">
+              <directory>src/main/resources</directory>
+              <includes>
+                <include>**/*.xml</include>
+              </includes>
+            </fileSet>
+            <fileSet packaged='true' encoding="UTF-8">
+              <directory>src/main/resources</directory>
+              <includes>
+                <include>**/*.jrxml</include>
+                <include>**/*.ftl</include>
               </includes>
             </fileSet>
             <fileSet filtered="true" encoding="UTF-8">
@@ -64,36 +75,27 @@
               </includes>
             </fileSet>
             <fileSet filtered="true" encoding="UTF-8">
-              <directory>src/main/resources</directory>
-              <includes>
-                <include>**/*.xml</include>
-                <include>**/*.properties</include>
-              </includes>
-            </fileSet>
-            <fileSet filtered="true" encoding="UTF-8">
               <directory>src/main/sql</directory>
               <includes>
                 <include>**/*.sql</include>
               </includes>
             </fileSet>
-            <fileSet encoding="UTF-8">
-              <directory>src/main/resources</directory>
-              <includes>
-                <include>**/*.jrxml</include>
-                <include>**/*.ftl</include>
-              </includes>
-            </fileSet>
-            <fileSet filtered="true" encoding="UTF-8">
+            <fileSet filtered="true" packaged='true' encoding="UTF-8">
               <directory>src/test/java</directory>
               <includes>
                 <include>**/*.java</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" packaged='true' encoding="UTF-8">
+              <directory>src/test/resources</directory>
+              <includes>
+                <include>**/*.xml</include>
               </includes>
             </fileSet>
             <fileSet filtered="true" encoding="UTF-8">
               <directory>src/test/resources</directory>
               <includes>
                 <include>**/*.properties</include>
-                <include>**/*.xml</include>
               </includes>
             </fileSet>
             <fileSet encoding="UTF-8">
@@ -121,19 +123,19 @@
           dir="__rootArtifactId__-style"
           name="${rootArtifactId}-style">
           <fileSets>
-            <fileSet filtered="true" encoding="UTF-8">
+            <fileSet filtered="true" packaged='true' encoding="UTF-8">
               <directory>src/main/resources</directory>
               <includes>
                 <include>**/*.xml</include>
               </includes>
             </fileSet>
-            <fileSet filtered='true' encoding="UTF-8">
+            <fileSet filtered='true' packaged='true' encoding="UTF-8">
               <directory>src/main/resources</directory>
               <includes>
                 <include>**/footer.dec</include>
               </includes>
             </fileSet>
-            <fileSet encoding="UTF-8">
+            <fileSet encoding="UTF-8" packaged='true'>
               <directory>src/main/resources</directory>
               <excludes>
                 <exclude>**/footer.dec</exclude>

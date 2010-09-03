@@ -12,12 +12,12 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>\${groupId}</groupId>
-  <artifactId>\${clientName}-\${projectName}</artifactId>
+  <artifactId>\${artifactId}</artifactId>
   <version>\${version}</version>
   <packaging>pom</packaging>
   <name>\${friendlyName}</name>
   <url>
-    ${repositoryRoot}/site/\${groupId}/\${clientName}-\${projectName}/\${version}
+    ${repositoryRoot}/site/\${groupId}/\${artifactId}/\${version}
   </url>
 
   <prerequisites>
@@ -36,7 +36,7 @@
         <version>${dependency.release-plugin.version}</version>
         <configuration>
           <!-- Where to tag -->
-          <tagBase>http://svn.globant.com/svn/\${clientName}-\${projectName}/release</tagBase>
+          <tagBase>http://svn.globant.com/svn/\${artifactId}/release</tagBase>
           <goals>install site-deploy assembly:attached deploy</goals>
           <autoVersionSubmodules>true</autoVersionSubmodules>
         </configuration>
@@ -60,9 +60,9 @@
 
   <!-- The scm information used by continuous integration and documentation. -->
   <scm>
-    <connection>scm:svn:http://svn.globant.com/svn/\${clientName}-\${projectName}/main</connection>
-    <developerConnection>scm:svn:http://svn.globant.com/svn/\${clientName}-\${projectName}/main</developerConnection>
-    <url>http://svn.globant.com/svn/\${clientName}-\${projectName}/main</url>
+    <connection>scm:svn:http://svn.globant.com/svn/\${artifactId}/main</connection>
+    <developerConnection>scm:svn:http://svn.globant.com/svn/\${artifactId}/main</developerConnection>
+    <url>http://svn.globant.com/svn/\${artifactId}/main</url>
   </scm>
 
   <repositories>
@@ -85,12 +85,12 @@
   <!-- The location where deploy and site-deploy leaves the artifacts -->
   <distributionManagement>
     <repository>
-      <id>\${clientName}-\${projectName}-artifacts-repository</id>
+      <id>\${artifactId}-artifacts-repository</id>
       <url>dav:${repositoryRoot}/globant</url>
     </repository>
     <site>
-      <id>\${clientName}-\${projectName}-artifacts-repository</id>
-      <url>dav:${repositoryRoot}/site\${groupId}/\${clientName}-\${projectName}/\${version}</url>
+      <id>\${artifactId}-artifacts-repository</id>
+      <url>dav:${repositoryRoot}/site\${groupId}/\${artifactId}/\${version}</url>
     </site>
   </distributionManagement>
 
@@ -102,11 +102,11 @@
 
   <mailingLists>
     <mailingList>
-      <name>\${clientName}_\${projectName}@globant.com</name>
-      <subscribe>http://mailman.corp.globant.com/mailman/listinfo/\${clientName}_\${projectName}</subscribe>
-      <unsubscribe>http://mailman.corp.globant.com/mailman/listinfo/\${clientName}_\${projectName}</unsubscribe>
-      <post>\${clientName}_\${projectName}@globant.com</post>
-      <archive>http://mailman.corp.globant.com/mailman/private/\${clientName}_\${projectName}</archive>
+      <name>\${artifactId.replace('-', '_')}@globant.com</name>
+      <subscribe>http://mailman.corp.globant.com/mailman/listinfo/\${artifactId.replace('-', '_')}</subscribe>
+      <unsubscribe>http://mailman.corp.globant.com/mailman/listinfo/\${artifactId.replace('-', '_')}</unsubscribe>
+      <post>\${artifactId.replace('-', '_')}@globant.com</post>
+      <archive>http://mailman.corp.globant.com/mailman/private/\${artifactId.replace('-', '_')}</archive>
     </mailingList>
   </mailingLists>
 

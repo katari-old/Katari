@@ -2,7 +2,7 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Katari">
+<project name="\${friendlyName}">
 
   <skin>
     <groupId>com.globant.katari</groupId>
@@ -18,7 +18,6 @@
   <body>
 
     <links>
-      <item name="Trac" href="https://projects.globant.com/trac/katari/" />
       <item name="Nexus" href="https://projects.globant.com/nexus/" />
     </links>
 
@@ -37,10 +36,10 @@
     </menu>
 
     <menu name="Modules">
-      <item name="\${friendlyName} Web"
-        href="/\${clientName}-\${projectName}-web/index.html"/>
-      <item name="\${friendlyName} Style"
-        href="/\${clientName}-\${projectName}-style/index.html"/>
+      <item name="\${friendlyName} - web"
+        href="/\${rootArtifactId}-web/index.html"/>
+      <item name="\${friendlyName} - style"
+        href="/\${rootArtifactId}-style/index.html"/>
     </menu>
 
     ${symbol_dollar}{reports}

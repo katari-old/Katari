@@ -40,6 +40,25 @@
       </plugin>
     </plugins>
 
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/pom.xml</include>
+          <include>**/site.xml</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>**/pom.xml</exclude>
+          <exclude>**/site.xml</exclude>
+        </excludes>
+      </resource>
+    </resources>
+
   </build>
 
 </project>

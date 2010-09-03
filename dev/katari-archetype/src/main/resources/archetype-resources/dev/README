@@ -23,24 +23,24 @@ settings.xml in the src/main/config directory.
 
 These are the commands to run from the mysql console:
 
-  create database ${clientName}_${projectName};
-  grant all privileges on ${clientName}_${projectName}.* to ${clientName}_${projectName}@localhost identified by '${clientName}_${projectName}';
-  use ${clientName}_${projectName};
+  create database ${rootArtifactId.replace('-', '_')};
+  grant all privileges on ${rootArtifactId.replace('-', '_')}.* to ${rootArtifactId.replace('-', '_')}@localhost identified by '${rootArtifactId.replace('-', '_')}';
+  use ${rootArtifactId.replace('-', '_')};
 
-  create table ${clientName}_${projectName}_marker_666(drop_database varchar (50));
-  insert into ${clientName}_${projectName}_marker_666 values ('YES, DROP ME');
+  create table ${rootArtifactId.replace('-', '_')}_marker_666(drop_database varchar (50));
+  insert into ${rootArtifactId.replace('-', '_')}_marker_666 values ('YES, DROP ME');
 
 At the top level project (the parent of the directory that contains this README
 file), run:
 
   mvn install
 
-Then in dev/${clientName}-${projectName}-web/ run:
+Then in dev/${rootArtifactId}-web/ run:
 
   mvn jetty:run
 
 This will start a jetty embedded container listening on port 8088. Point your
-browser to http://localhost:8088/${clientName}-${projectName}-web to access the
+browser to http://localhost:8088/${rootArtifactId}-web to access the
 application. You should now be able to login with username admin and password
 admin.
 
@@ -56,16 +56,16 @@ Quick start guide for postgres
 
 Create a postgres database using psql.
 
-  create database ${clientName}_${projectName};
-  create user ${clientName}_${projectName}_user with password 'password';
-  grant all privileges on ${clientName}_${projectName}.* to ${clientName}_${projectName}@localhost identified by '${clientName}_${projectName}';
-  \c ${clientName}_${projectName} ${clientName}_${projectName}_user localhost
+  create database ${rootArtifactId.replace('-', '_')};
+  create user ${rootArtifactId.replace('-', '_')}_user with password 'password';
+  grant all privileges on ${rootArtifactId.replace('-', '_')}.* to ${rootArtifactId.replace('-', '_')}@localhost identified by '${rootArtifactId.replace('-', '_')}';
+  \c ${rootArtifactId.replace('-', '_')} ${rootArtifactId.replace('-', '_')}_user localhost
   (at prompt, enter 'password' as the requested password).
 
 Then run the following sql statements:
 
-  create table ${clientName}_${projectName}_marker_666(drop_database varchar (50));
-  insert into ${clientName}_${projectName}_marker_666 values ('YES, DROP ME');
+  create table ${rootArtifactId.replace('-', '_')}_marker_666(drop_database varchar (50));
+  insert into ${rootArtifactId.replace('-', '_')}_marker_666 values ('YES, DROP ME');
 
 The rest is the same as with mysql.
 
@@ -113,8 +113,8 @@ has control over the database. All the other tables in the database
 
 Execute the following:
 
-  create table ${clientName}_${projectName}_marker_666(drop_database varchar (50));
-  insert into ${clientName}_${projectName}_marker_666 values ('YES, DROP ME');
+  create table ${rootArtifactId.replace('-', '_')}_marker_666(drop_database varchar (50));
+  insert into ${rootArtifactId.replace('-', '_')}_marker_666 values ('YES, DROP ME');
 
 Then you have to modify (or create) ~/.m2/settings.xml to register the
 following:
@@ -132,26 +132,26 @@ Deploying in tomcat
 To deploy this application under tomcat, you must:
 
 1- Build the war file: mvn package.
-  (This will be created inside /${clientName}-${projectName}-web/target)
+  (This will be created inside /${rootArtifactId}-web/target)
 
 2- Copy the war to <TOMCAT_HOME>/webapps
 
 3- Create a file in <TOMCAT_HOME>/common/classes named
-${clientName}-${projectName}.properties. This
+${rootArtifactId}.properties. This
 file contains the database credentials. You can use
-${clientName}-${projectName}-web/src/test/resources/${clientName}-${projectName}.properties as a sample.
+${rootArtifactId}-web/src/test/resources/${rootArtifactId}.properties as a sample.
 
 4- Create a file in <TOMCAT_HOME>/common/classes named logging.properties to
-configure the log. You can use ${clientName}-${projectName}-web/src/test/resources/log4j.properties
+configure the log. You can use ${rootArtifactId}-web/src/test/resources/log4j.properties
 as a sample.
 
 The URL of the application will depend on how tomcat is configured, by default:
-http://localhost:8080/${clientName}-${projectName}-web/
+http://localhost:8080/${rootArtifactId}-web/
 
 If you want to deploy the application in place in tomcat, instead of copying the
-war to webapps (step number 2), create a file named ${clientName}-${projectName}-i.xml in
+war to webapps (step number 2), create a file named ${rootArtifactId}-i.xml in
 conf/Catalina/localhost. You can use
-${clientName}-${projectName}-web/src/config/${clientName}-${projectName}-i.xml as a
+${rootArtifactId}-web/src/config/${rootArtifactId}-i.xml as a
 sample.
 
 Running in tomcat
@@ -162,7 +162,7 @@ through maven:
 
   mvn -P cargo-inplace war:inplace cargo:start
 
-This must be run in ${clientName}-${projectName}-web directory.
+This must be run in ${rootArtifactId}-web directory.
 
 Note: you have to activate the cargo-inplace profile to start tomcat with cargo.
 
@@ -175,8 +175,8 @@ Eclipse instructions
 To use Eclipse to develop the application, first you must generate the eclipse
 project files from your maven POM (Project Object Model). You will have an
 eclipse project for each module of the application. So you will have a project
-for ${clientName}-${projectName}-web-module and another one for
-${clientName}-${projectName}-web. You can do this by
+for ${rootArtifactId}-web-module and another one for
+${rootArtifactId}-web. You can do this by
 executing the following inside both directories.
 
   mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true
@@ -185,9 +185,6 @@ You also must execute this (once), this adds the classpath variable M2_REPO
 pointing to your maven jar repository.
 
   mvn eclipse:add-maven-repo -Declipse.workspace=<path_to_ecplise_workspace>
-
-The path_to_eclipse_workspace is the path to the directory in which the
-${clientName}-${projectName}-web-module and ${clientName}-${projectName}-web are placed.
 
 Finally from eclipse, you must go to File->import and select "Existing Projects
 into Workspace", there you must select one of the modules to add it, after this,

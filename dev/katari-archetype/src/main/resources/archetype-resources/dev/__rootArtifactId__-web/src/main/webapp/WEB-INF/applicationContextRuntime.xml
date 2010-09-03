@@ -11,10 +11,10 @@
       http://www.globant.com/schema/katari/katari.xsd">
 
   <!-- Property override configure post-processor. It configures the beans with
-  properties from ${clientName}-${projectName}.properties -->
+  properties from ${artifactId}.properties -->
   <bean
     class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
-    <property name="location" value="classpath:/${clientName}-${projectName}.properties"/>
+    <property name="location" value="classpath:/${rootArtifactId}.properties"/>
   </bean>
 
 </beans>

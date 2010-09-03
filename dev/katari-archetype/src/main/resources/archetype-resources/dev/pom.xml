@@ -6,7 +6,7 @@
 
   <parent>
     <groupId>\${groupId}</groupId>
-    <artifactId>\${clientName}-\${projectName}</artifactId>
+    <artifactId>\${rootArtifactId}</artifactId>
     <version>\${version}</version>
   </parent>
 
@@ -15,7 +15,7 @@
   <artifactId>dev</artifactId>
   <packaging>pom</packaging>
   <name>\${friendlyName} - dev</name>
-  <url>http://maven.corp.globant.com/projects/globant/\${groupId}/\${clientName}-\${projectName}/\${version}</url>
+  <url>http://maven.corp.globant.com/projects/globant/\${groupId}/\${artifactId}/\${version}</url>
 
   <!-- List of dependencies for all modules in the application. This section
   sets the version of the dependencies. Each module must define its specific
@@ -374,7 +374,7 @@
 
       <dependency>
         <groupId>\${groupId}</groupId>
-        <artifactId>\${clientName}-\${projectName}-style</artifactId>
+        <artifactId>\${rootArtifactId}-style</artifactId>
         <version>\${version}</version>
       </dependency>
 
@@ -488,12 +488,12 @@
   <!-- The location where deploy and site-deploy leaves the artifacts -->
   <distributionManagement>
     <repository>
-      <id>\${clientName}-\${projectName}-artifacts-repository</id>
+      <id>\${artifactId}-artifacts-repository</id>
       <url>dav:http://maven.corp.globant.com/repositories/globant</url>
     </repository>
     <site>
-      <id>\${clientName}-\${projectName}-artifacts-repository</id>
-      <url>dav:http://maven.corp.globant.com/projects/globant/\${groupId}/\${clientName}-\${projectName}/\${version}</url>
+      <id>\${artifactId}-artifacts-repository</id>
+      <url>dav:http://maven.corp.globant.com/projects/globant/\${groupId}/\${artifactId}/\${version}</url>
     </site>
   </distributionManagement>
 

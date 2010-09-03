@@ -25,10 +25,6 @@ mvn archetype:generate -DarchetypeArtifactId=katari-archetype \
 
  This will ask for the following information:
 
- * the client name
-
- * the project name
-
  * the project friendly name
 
  * the group id
@@ -39,9 +35,8 @@ mvn archetype:generate -DarchetypeArtifactId=katari-archetype \
 
  []
 
- For consistency, we recommend that the artifactId is of the form
- $clientName-$projectName and the groupId is of the form
- com.globant.$clientName.$projectName.
+ For consistency, we recommend the groupId is of the form <your
+ domain>.$artifactId.
 
  You can also create the project in batch mode, passing all the information in
  the command line. For example, for a client called acme and a project named
@@ -53,7 +48,6 @@ mvn archetype:generate -DarchetypeArtifactId=katari-archetype \
   -DarchetypeRepository="http://katari.globant.com/nexus/content/repositories/globant" \
   -Drepository="http://katari.globant.com/nexus/content/repositories/globant" \
   -DinteractiveMode=false \
-  -DclientName=acme -DprojectName=coyote \
   -DfriendlyName="Acme tools for the coyote" \
   -DgroupId=com.globant.acme.coyote -DartifactId=acme-coyote
 ----

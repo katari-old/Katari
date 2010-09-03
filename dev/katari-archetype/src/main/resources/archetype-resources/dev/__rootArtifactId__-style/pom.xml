@@ -13,7 +13,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>\${groupId}</groupId>
-  <artifactId>\${clientName}-\${projectName}-style</artifactId>
+  <artifactId>\${artifactId}</artifactId>
   <packaging>jar</packaging>
   <name>\${friendlyName} - style</name>
   <description>This module contains a style for the web application. It
@@ -48,13 +48,13 @@
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
         <includes>
-          <include>com/globant/\${clientName}/\${projectName}/style/footer.dec</include>
+          <include>\${packageInPathFormat}/style/footer.dec</include>
         </includes>
       </resource>
       <resource>
         <directory>src/main/resources</directory>
         <excludes>
-          <exclude>com/globant/\${clientName}/\${projectName}/style/footer.dec</exclude>
+          <exclude>\${packageInPathFormat}/style/footer.dec</exclude>
         </excludes>
       </resource>
     </resources>

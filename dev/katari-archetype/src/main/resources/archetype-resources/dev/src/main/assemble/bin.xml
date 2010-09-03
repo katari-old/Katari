@@ -18,24 +18,24 @@
     </fileSet>
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-web/target</directory>
+      <directory>${rootArtifactId}-web/target</directory>
       <includes>
-        <include>${parentArtifactId}-web.war</include>
-        <include>${parentArtifactId}-web.ddl</include>
+        <include>${rootArtifactId}-web.war</include>
+        <include>${rootArtifactId}.ddl</include>
       </includes>
     </fileSet>
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-web/src/main/sql</directory>
+      <directory>${rootArtifactId}-web/src/main/sql</directory>
       <includes>
         <include>db-setup.sql</include>
       </includes>
     </fileSet>
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-web/src/test/resources</directory>
+      <directory>${rootArtifactId}-web/src/test/resources</directory>
       <includes>
-        <include>${parentArtifactId}.properties</include>
+        <include>${rootArtifactId}.properties</include>
         <include>log4j.properties</include>
       </includes>
     </fileSet>
@@ -56,38 +56,13 @@
     </fileSet>
     <!-- We copy each module. -->
     <fileSet>
-      <outputDirectory>/doc/${parentArtifactId}-core</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-core/target/site</directory>
+      <outputDirectory>/doc/${rootArtifactId}-style</outputDirectory>
+      <directory>${rootArtifactId}-style/target/site</directory>
       <includes/>
     </fileSet>
     <fileSet>
-      <outputDirectory>/doc/${parentArtifactId}-style</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-style/target/site</directory>
-      <includes/>
-    </fileSet>
-    <fileSet>
-      <outputDirectory>/doc/${parentArtifactId}-web</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-web/target/site</directory>
-      <includes/>
-    </fileSet>
-    <fileSet>
-      <outputDirectory>/doc/${parentArtifactId}-classic-menu</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-classic-menu/target/site</directory>
-      <includes/>
-    </fileSet>
-    <fileSet>
-      <outputDirectory>/doc/${parentArtifactId}-tools</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-tools/target/site</directory>
-      <includes/>
-    </fileSet>
-    <fileSet>
-      <outputDirectory>/doc/${parentArtifactId}-reporting</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-reporting/target/site</directory>
-      <includes/>
-    </fileSet>
-    <fileSet>
-      <outputDirectory>/doc/${parentArtifactId}-ajax</outputDirectory>
-      <directory>${artifactId}/${parentArtifactId}-ajax/target/site</directory>
+      <outputDirectory>/doc/${rootArtifactId}-web</outputDirectory>
+      <directory>${rootArtifactId}-web/target/site</directory>
       <includes/>
     </fileSet>
   </fileSets>

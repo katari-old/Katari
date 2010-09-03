@@ -17,7 +17,7 @@
 
   <body>
 
-      <menu name="\${artifactId} - \${friendlyName}">
+    <menu name="\${friendlyName}">
       <item name="Parent" href="../index.html" />
       <item name="Introduction" href="index.html" />
     </menu>

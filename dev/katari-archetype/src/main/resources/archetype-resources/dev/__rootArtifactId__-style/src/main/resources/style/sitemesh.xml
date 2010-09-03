@@ -1,0 +1,22 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<sitemesh>
+  <property name="decorators-file" value="/${packageInPathFormat}/style/decorators.xml" />
+  <excludes file="${symbol_dollar}{decorators-file}" />
+
+  <page-parsers>
+    <parser content-type="text/html"
+      class="com.opensymphony.module.sitemesh.parser.FastPageParser" />
+    <parser content-type="text/html;charset=ISO-8859-1"
+      class="com.opensymphony.module.sitemesh.parser.FastPageParser" />
+  </page-parsers>
+
+  <decorator-mappers>
+    <mapper class="com.globant.katari.core.sitemesh.FullUriConfigDecoratorMapper">
+      <param name="config" value="${symbol_dollar}{decorators-file}" />
+    </mapper>
+  </decorator-mappers>
+  <!-- vim: set ts=2 sw=2 et: -->
+</sitemesh>
+

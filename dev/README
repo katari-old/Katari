@@ -193,9 +193,6 @@ pointing to your maven jar repository.
 
   mvn eclipse:add-maven-repo -Declipse.workspace=<path_to_ecplise_workspace>
 
-The path_to_eclipse_workspace is the path to the directory in which the
-katari-sample-module and katari-sample are placed.
-
 Finally from eclipse, you must go to File->import and select "Existing Projects
 into Workspace", there you must select one of the modules to add it, after this,
 repeat this step with the other module.

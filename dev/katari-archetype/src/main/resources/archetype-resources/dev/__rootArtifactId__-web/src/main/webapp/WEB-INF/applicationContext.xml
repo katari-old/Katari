@@ -18,7 +18,7 @@
   <import resource="classpath:/com/globant/katari/core/applicationContext.xml"/>
 
   <!-- The home module. -->
-  <katari:import module="com.globant.${clientName}.${projectName}.web.home"/>
+  <katari:import module="${package}.web.home"/>
 
   <!-- The classic menu module. -->
   <katari:import module="com.globant.katari.menu.classic"/>
@@ -38,7 +38,7 @@
   <katari:import module="com.globant.katari.login.local"/>
 
   <!-- The user module. -->
-  <katari:import module="com.globant.${clientName}.${projectName}.web.user"/>
+  <katari:import module="${package}.web.user"/>
 
   <!-- The core user module. -->
   <katari:import module="com.globant.katari.hibernate.coreuser"/>
@@ -58,10 +58,10 @@
 
   <!-- The style module. It provides a sample style and serves the static
   content used in the application. -->
-  <katari:import module="com.globant.${clientName}.${projectName}.style"/>
+  <katari:import module="${package}.style"/>
 
   <!-- The Institutional module. It has some static pages. -->
-  <katari:import module="com.globant.${clientName}.${projectName}.web.institutional"/>
+  <katari:import module="${package}.web.institutional"/>
 
   <!-- The hibernate properties, They are referenced from the hibernate bean. -->
   <bean id="katari.hibernateProperties"
@@ -153,7 +153,7 @@
     class="com.globant.katari.hibernate.DevelopmentDataBaseChecker">
     <constructor-arg ref="katari.dataSource"/>
     <constructor-arg>
-      <value>${clientName}_${projectName}_marker_666</value>
+      <value>${rootArtifactId.replace('-', '_')}_marker_666</value>
     </constructor-arg>
   </bean>
 
@@ -161,7 +161,7 @@
   object that delegates the user handling to the user domain object.
   -->
   <bean id="katari.userDetailsService" lazy-init='true'
-    class="com.globant.${clientName}.${projectName}.web.integration.DomainUserDetailsService">
+    class="${package}.web.integration.DomainUserDetailsService">
     <constructor-arg>
       <ref bean="userRepository"/>
     </constructor-arg>

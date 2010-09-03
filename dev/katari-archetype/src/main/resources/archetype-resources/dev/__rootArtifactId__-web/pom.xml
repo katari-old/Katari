@@ -15,7 +15,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>\${groupId}</groupId>
-  <artifactId>\${clientName}-\${projectName}-web</artifactId>
+  <artifactId>\${artifactId}</artifactId>
   <packaging>war</packaging>
   <name>\${friendlyName} - web</name>
 
@@ -168,7 +168,7 @@
     current groupId. -->
     <dependency>
       <groupId>\${groupId}</groupId>
-      <artifactId>\${clientName}-\${projectName}-style</artifactId>
+      <artifactId>\${rootArtifactId}-style</artifactId>
     </dependency>
 
     <dependency>
@@ -235,22 +235,22 @@
   </dependencies>
 
   <build>
-    <finalName>\${clientName}-\${projectName}</finalName>
+    <finalName>\${artifactId}</finalName>
 
-    <!-- Filters the \${clientName}-\${projectName}.properties resource. -->
+    <!-- Filters the \${rootArtifactId}.properties resource. -->
     <testResources>
       <testResource>
         <directory>src/test/resources</directory>
         <filtering>true</filtering>
         <includes>
-          <include>\${clientName}-\${projectName}.properties</include>
+          <include>\${rootArtifactId}.properties</include>
           <include>log4j.properties</include>
         </includes>
       </testResource>
       <testResource>
         <directory>src/test/resources</directory>
         <excludes>
-          <exclude>\${clientName}-\${projectName}.properties</exclude>
+          <exclude>\${rootArtifactId}.properties</exclude>
           <exclude>log4j.properties</exclude>
         </excludes>
       </testResource>
@@ -371,7 +371,7 @@
             <phase>test-compile</phase>
             <configuration>
               <includes>
-                <include>com/globant/\${clientName}/\${projectName}/web/testsupport/database/TestDbSupport.java</include>
+                <include>\${packageInPathFormat}/web/testsupport/database/TestDbSupport.java</include>
               </includes>
               <!-- Workaround for unable to get lock on ... See
                    http://jira.codehaus.org/browse/SONAR-172 -->
@@ -442,7 +442,7 @@
         <!-- Versions 6.1.2 - 6.1.10 makes groovy fail. -->
         <version>${dependency.jetty-plugin.version}</version>
         <configuration>
-          <contextPath>\${clientName}-\${projectName}</contextPath>
+          <contextPath>\${artifactId}</contextPath>
           <connectors>
             <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
               <port>8088</port>
@@ -492,7 +492,7 @@
               file:///${symbol_dollar}{project.basedir}/src/main/webapp/WEB-INF/applicationContext.xml,
               classpath:/com/globant/katari/tools/dummyDataSourceContext.xml
             </argument>
-            <argument>${symbol_dollar}{project.basedir}/target/\${clientName}-\${projectName}.ddl</argument>
+            <argument>${symbol_dollar}{project.basedir}/target/\${rootArtifactId}.ddl</argument>
           </arguments>
 
         </configuration>
@@ -545,7 +545,7 @@
                     <!-- Deploys the exploded webapp. -->
                     <location>${symbol_dollar}{basedir}/src/main/webapp</location>
                     <properties>
-                      <context>\${clientName}-\${projectName}</context>
+                      <context>\${artifactId}</context>
                     </properties>
                   </deployable>
                 </deployables>
