@@ -2,7 +2,7 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Katari">
+<project name="\${friendlyName}">
 
   <skin>
     <groupId>com.globant.katari</groupId>

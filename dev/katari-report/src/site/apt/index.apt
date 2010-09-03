@@ -21,7 +21,7 @@ Using this module
  form:
 
 ------
-<import resource="classpath:/com/globant/katari/report/module.xml"/>
+<katari:import module="com.globant.katari.report"/>
 ------
 
 Design

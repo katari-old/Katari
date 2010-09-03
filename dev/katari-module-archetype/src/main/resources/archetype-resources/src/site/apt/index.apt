@@ -1,11 +1,6 @@
 ~~~ vim: set sw=1 et ts=1 ai:
- -----
- The Site
- -----
- Pablo Gra\~na
- -----
 
-Katari - module archetype
+${artifactId} - ${friendlyName}
 
- An archetype to create Katari module.
+ ${friendlyName}
 

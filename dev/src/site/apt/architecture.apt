@@ -127,21 +127,30 @@ Architecture
  application has a main bean definition file usually called
  applicationContext.xml, located in the WEB-INF directory of the webapp. This
  file imports the module spring files, called module.xml (for example
- /com/globant/katari/editablepages/module.xml), and overrides some other beans
- to configure the modules (for example, the data source connection information.)
+ /com/globant/katari/editablepages/module.xml) with the katari:import element,
+ and overrides some other beans to configure the modules (for example, the data
+ source connection information.)
 
  A typical applicationContext.xml file looks like this:
 
 ----
-<beans ... >
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:p="http://www.springframework.org/schema/p"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
   <!-- The katari global beans. -->
   <import resource="classpath:/com/globant/katari/core/applicationContext.xml"/>
 
   <!-- The home module. -->
-  <import resource="classpath:/com/globant/katari/sample/home/module.xml"/>
+  <katari:import module="com.globant.katari.sample.home"/>
 
   <!-- The classic menu module. -->
-  <import resource="classpath:/com/globant/katari/menu/classic/module.xml"/>
+  <katari:import module="com.globant.katari.menu.classic"/>
 
   .... more modules ....
 

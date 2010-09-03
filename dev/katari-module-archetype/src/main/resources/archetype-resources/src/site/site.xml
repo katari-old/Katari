@@ -2,12 +2,12 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Katari">
+<project name="\${friendlyName}">
 
   <skin>
     <groupId>com.globant.katari</groupId>
     <artifactId>katari-siteskin</artifactId>
-    <version>${symbol_dollar}{version}</version>
+    <version>${version}</version>
   </skin>
 
   <bannerLeft>
@@ -17,7 +17,7 @@
 
   <body>
 
-    <menu name="Katari - local login">
+      <menu name="\${artifactId} - \${friendlyName}">
       <item name="Parent" href="../index.html" />
       <item name="Introduction" href="index.html" />
     </menu>

@@ -395,7 +395,7 @@ public class HelloController extends AbstractController {
 
 ----
 <!-- The hello module. It is a simple almost empty module. -->
-<import resource="classpath:/com/globant/acme/coyote/web/hello/module.xml"/>
+<katari:import module="com.globant.acme.coyote.web.hello"/>
 ----
 
  Now, compile and run the app:

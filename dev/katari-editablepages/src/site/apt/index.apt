@@ -36,7 +36,7 @@ Using this module
  form:
 
 ------
-<import resource="classpath:/com/globant/katari/editablepages/module.xml"/>
+<katari:import module="com.globant.katari.editablepages"/>
 ------
 
  This module also provides a weblet that can be used to show editable page

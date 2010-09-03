@@ -186,7 +186,7 @@ Using this module
  form:
 
 ------
-<import resource="classpath:/com/globant/katari/search/module.xml"/>
+<katari:import module="com.globant.katari.search"/>
 ------
 
  Importing module.xml will automatically index and search on all the entities
