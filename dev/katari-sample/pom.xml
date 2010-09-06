@@ -620,7 +620,7 @@
          case that apache cannot be reached normally. This is specifically used
          to build katari inside Globant in hudson. -->
     <cargo.tomcatLocation>
-      http://apache.xmundo.com.ar/tomcat/tomcat-5/v5.5.28/bin/apache-tomcat-5.5.28.zip
+      http://katari.globant.com/nexus/content/repositories/tools/com/globant/tools/apache-tomcat/5.5.28/apache-tomcat-5.5.28.zip
     </cargo.tomcatLocation>
   </properties>
 
