@@ -204,10 +204,11 @@ acme-coyote-hello
  The generated maven package contains a katari module described in:
 
 ----
-src/main/resources/com/globant/acme/coyote/web/hello/module.xml:
+src/main/resources/com/globant/acme/coyote/hello/module.xml:
 
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:katari="http://www.globant.com/schema/katari"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
@@ -269,7 +270,7 @@ src/main/resources/com/globant/acme/coyote/web/hello/module.xml:
  This module declares a spring dispatcher servlet configured in:
 
 ----
-src/main/resources/com/globant/acme/coyote/web/hello/view/spring-servlet.xml
+src/main/resources/com/globant/acme/coyote/hello/view/spring-servlet.xml
 ----
 
  This file declares a spring controller (HelloController) that listens to the
@@ -335,7 +336,6 @@ src/main/resources/com/globant/acme/coyote/web/hello/view/spring-servlet.xml
  Our hello world page will have the view and application layers. Create a new
  package for both layers (application and view) under the hello package.
 
-
  The archetype creates a controller named HelloController in the view package
  that extends AbstractController.
 
@@ -372,7 +372,6 @@ public class HelloController extends AbstractController {
 
 ----
 <html>
-
   <head>
     <title>Hello</title>
   </head>
@@ -383,13 +382,41 @@ public class HelloController extends AbstractController {
 </html>
 ----
 
- The archetype created a new module but it is not registered in your
- application. For this, open the applicationContext.xml under webapp/WEB-INF and
- add a line of the form:
+ The archetype created a new module but it is not yet registered in your
+ application. You need to add the correct dependencies in your webapp, and
+ register the module in katari.
+
+ To declare the dependencies, add to dev/pom.xml somewhere in the
+ dependencyManagement section:
+
+----
+<dependency>
+  <groupId>com.globant.acme.coyote</groupId>
+  <artifactId>acme-coyote-hello</artifactId>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
+----
+
+ And in dev/acme-coyote-web, somewhere in the dependencies section:
+ 
+----
+<dependency>
+  <groupId>com.globant.acme.coyote</groupId>
+  <artifactId>acme-coyote-hello</artifactId>
+</dependency>
+----
+
+ This is just maven standard dependecy management information. It is a good
+ practice to centally declare the versions of all dependencies in your modules,
+ so you don't accidentally mix different versions for the same library. This is
+ what the dependencyManagement element of dev/pom.xml is for.
+ 
+ To register the module in katari, open the applicationContext.xml under
+ webapp/WEB-INF and add a line of the form:
 
 ----
 <!-- The hello module. It is a simple almost empty module. -->
-<katari:import module="com.globant.acme.coyote.web.hello"/>
+<katari:import module="com.globant.acme.coyote.hello"/>
 ----
 
  Now, compile and run the app:
