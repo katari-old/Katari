@@ -4,6 +4,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:p="http://www.springframework.org/schema/p"
       xmlns:katari="http://www.globant.com/schema/katari"
       xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
@@ -249,6 +250,29 @@
     class='com.globant.katari.editablepages.view.FckEditorConfiguration'
     p:height='400'/>
     -->
+
+  <!-- Externalizes the location of the compass files for mirroring and
+       indexing.  -->
+  <bean id='search.compassEngineConnection'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value-ref='indexLocation' />
+
+  <!-- The value of this bean is intended to be overridden in the properties
+       file. -->
+  <bean id='indexLocation'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='target/compass' />
+
+    <!-- Externalizes the location of the compass files for indexing. -->
+  <bean id='search.compassIndexEngineConnection'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value-ref='indexTempLocation' />
+
+  <!-- The value of this bean is intended to be overridden in the properties
+       file. -->
+  <bean id='indexTempLocation'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='target/compass-temp' />
 
 </beans>
 

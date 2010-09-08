@@ -125,11 +125,15 @@
   </bean>
 
   <!-- Overridable bean to define the file system location to store the lucene
-       index. -->
+       index to use to perform mirror and search operations. -->
   <bean id='search.compassEngineConnection'
     class='com.globant.katari.core.spring.StringHolder'
     p:value='target/compass/' />
 
+  <!-- Overridable bean to define the file system location to store the lucene
+       index to use to perform indexing operations. This is a temporary
+       location. Once the indexing finishes, the index is copied to
+       search.compassEngineConnection -->
   <bean id='search.compassIndexEngineConnection'
     class='com.globant.katari.core.spring.StringHolder'
     p:value='target/compass-tmp/' />
@@ -151,7 +155,8 @@
     </property>
     <property name="indexProperties">
       <map>
-        <entry key="compass.engine.connection" value="target/compass-tmp"/>
+        <entry key="compass.engine.connection"
+          value-ref="search.compassIndexEngineConnection"/>
       </map>
     </property>
   </bean>
