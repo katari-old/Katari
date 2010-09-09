@@ -556,6 +556,25 @@
         </exclusions>
       </dependency>
 
+      <!-- This is necessary to support tomcat 6, otherwise deploying in tomcat
+           6 will fail with a linkage error related to javax.el. But we need
+           juel-api for tomcat 5.5.
+           
+           This is only relevant if you use the shindig module. -->
+      <!--
+      <dependency>
+        <groupId>de.odysseus.juel</groupId>
+        <artifactId>juel-impl</artifactId>
+        <version>2.1.2</version>
+        <exclusions>
+          <exclusion>
+            <groupId>de.odysseus.juel</groupId>
+            <artifactId>juel-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      -->
+
     </dependencies>
   </dependencyManagement>
 

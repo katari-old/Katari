@@ -12,15 +12,35 @@
         </p>
       </answer>
     </faq>
-    <faq id="jetty-katari.properties-not-found">
-      <question>
-        Jetty is failing with file not found for katari.properties
-      </question>
+    <faq id="tomcat-6">
+      <question>Deploying in tomcat 6 fails with a linkage error related to
+        javax.el</question>
       <answer>
         <p>
-          Jetty looks for katari.properties in the target directory.
-          You must run 'mvn process-test-resources' (or any other goal that
-          includes it) before running jetty:run.
+          Tomcat 6 bundles javax.el somewhere in the classloader hierarchy. The
+          katari-shindig module also uses javax.el, and brings the
+          implementation (juel-impl) and the api (juel-api - this contains
+          javax.el). To create a war that can be deployed in tomcat 6, add:
+        </p>
+        <source>
+    <![CDATA[    <dependency>
+      <groupId>de.odysseus.juel</groupId>
+      <artifactId>juel-impl</artifactId>
+      <version>2.1.2</version>
+      <exclusions>
+        <exclusion>
+          <groupId>de.odysseus.juel</groupId>
+          <artifactId>juel-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>]]>
+        </source>
+        <p>
+          to the dependencyManagement section.
+        </p>
+        <p>
+          Unfortunately, it is not possible to create a war that will run both
+          in tomcat 6 and tomcat 5.5.
         </p>
       </answer>
     </faq>
