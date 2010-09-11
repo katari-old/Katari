@@ -974,6 +974,24 @@ form span.buttons, form ul.glasslist .buttonBarClass {
 }
 
 /* Social Dashboard */
+#custom-gadgets{
+  background:url(../image/bg_gadgetContainerTools.png) repeat-x left top;
+}
+
+.gadgetContainerTools{
+  height:34px;
+  font-size:10px;
+  line-height:34px;
+  margin-bottom:10px;
+  text-align:right;
+}
+
+.gadgetContainerTools a{
+  background:url(../image/icon_addWidget.png) left top no-repeat;
+  color:#838383;
+  padding:3px 0 3px 20px;
+}
+
 .canvasContainer {
   display: inline;
 }
@@ -993,6 +1011,9 @@ form span.buttons, form ul.glasslist .buttonBarClass {
   margin-right:20px;
 }
 
+#top-gadgets{
+  
+}
 .gadgetPortlet{
   border:1px solid #c9dda5;
   margin-bottom:52px;
@@ -1040,8 +1061,10 @@ form span.buttons, form ul.glasslist .buttonBarClass {
   width:16px;
 }
 .titleBar .icon {
-  margin:6px;
   float:left;
+  height:16px;
+  line-height:16px;
+  margin:6px 6px 6px 0;
 }
 .titleBar a.minimizeButton {
   background:url(../image/icon_minimize.png) 0 0 repeat-x;
@@ -1068,28 +1091,42 @@ form span.buttons, form ul.glasslist .buttonBarClass {
   width:1px;
 }
 
-/** Gadget Directory */
-li.directory_entry {
-  margin-bottom: 12px;
-  border-bottom: 1px solid #D9E2F4;
-  list-style-image: none;
-  list-style-type: none;
-}
-li.directory_entry.last {
-  border-bottom: none;
-}
-li.directory_entry div.gadget {
-  float: left;
-  text-align: center;
-  width: 140px;
-}
-li.directory_entry div.info {
-  margin-left: 150px;
-  margin-right: 110px;
-}
-li.directory_entry div.author {
-  float: right;
-  overflow: hidden;
-  width: 100px;
+/* Gadget Directory */
+.genLink a{
+  color:#838383;
+  font-size:11px;
 }
 
+table.directory{
+  font-size:11px;
+  margin:10px 0;
+  table-layout:fixed;
+}
+
+.directory_entry td {
+  border-bottom:1px solid #ECECEC;
+  padding:8px;
+  vertical-align:top;
+}
+
+table.directory .gadget {
+  text-align: center;
+}
+
+table.directory .gadget div{
+  margin-top:8px;
+}
+
+table.directory .info h5 {
+  color:#838383;
+  font-size:12px;
+  margin:0 0 8px 0;
+}
+
+table.directory .info p{
+  line-height:18px;
+}
+
+table.directory .author {
+  font-size:11px;
+}
