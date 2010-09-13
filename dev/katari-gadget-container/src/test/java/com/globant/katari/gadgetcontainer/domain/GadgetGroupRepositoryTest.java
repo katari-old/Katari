@@ -7,7 +7,6 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.io.File;
 
-import org.hamcrest.CoreMatchers;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;

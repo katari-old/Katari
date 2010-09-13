@@ -16,8 +16,7 @@
     hibernate dependent beans.
   </description>
 
-  <!-- Hibernate SessionFactory formerly an
-  org.springframework.orm.hibernate3.LocalSessionFactoryBean-->
+  <!-- Hibernate SessionFactory -->
   <bean id="katari.sessionFactory"
     class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
     lazy-init="true">
@@ -45,7 +44,6 @@
   <!-- ============================================================= -->
 
   <!-- Adds a database checker to the list of ping services -->
-
   <bean class="com.globant.katari.core.ping.PingServicesExpander"
     lazy-init="false">
     <constructor-arg ref="katari.pingServices"/>
