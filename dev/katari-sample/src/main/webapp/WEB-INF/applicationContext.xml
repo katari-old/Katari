@@ -84,6 +84,17 @@
         <prop key="hibernate.dialect">
           org.hibernate.dialect.MySQL5InnoDBDialect
         </prop>
+        <!-- Do not put connection information here (eg: hibernate.c3p0.), they
+             will be ignored. -->
+
+        <!-- Maximum number of nested objects fetch in one query. Recommended
+             values between 0 and 3. -->
+        <!-- prop key="hibernate.max_fetch_depth">3</prop -->
+
+        <!-- The size for Hibernate batch fetching of associations. This
+             controls the number of queries that are run when a lazy collection
+             gets initialized. Recommended values 4, 8, 16. -->
+        <prop key="hibernate.default_batch_fetch_size">16</prop>
 
         <!-- For postgresql.
         <prop key="hibernate.dialect">
@@ -93,8 +104,8 @@
 
         <!-- WARNING: When this is set to 'auto', which is the default option
         for Hibernate, it's not possible to change the isolation level of any
-        transaction. Spring sets it to 'on_close' , but in this way, the
-        tests never return the connections, thus emptying the connection pool.
+        transaction. Spring sets it to 'on_close', but in this way, the tests
+        never return the connections, thus emptying the connection pool.
 
         To avoid this, we set it to 'after_transaction', but there may be
         unexpected side effect we don't know of yet -->
@@ -111,7 +122,36 @@
     <property name="password" value="katari"/>
     <property name="minPoolSize" value='5'/>
     <property name="maxPoolSize" value='5'/>
+
+    <!-- The number of milliseconds a client calling getConnection() will wait
+         for a Connection to be checked-in or acquired when the pool is
+         exhausted. Zero means wait indefinitely. Setting any positive value
+         will cause the getConnection() call to time-out and break with an
+         SQLException after the specified number of milliseconds. -->
     <property name="checkoutTimeout" value='10000'/>
+
+    <!-- Determines how many connections at a time c3p0 will try to acquire
+         when the pool is exhausted -->
+    <property name="acquireIncrement" value='3'/>
+
+    <!-- The number of seconds between each test of all idle, pooled but
+         unchecked-out connections. Set to 1 minute here. A broken connection
+         will not be kept in the pool for longer than a minute. -->
+    <property name="idleConnectionTestPeriod" value='60'/>
+
+    <!-- Defines the query that will be executed for all connection tests. The
+         following value only works in mysql.
+         For oracle use 'select 1 from dual'. -->
+    <property name="preferredTestQuery" value='select 1;'/>
+
+    <!-- Specify the maximum number of seconds to keep an idle connection
+         (in this case, 7 hours). For mysql, it should be lower that the
+         wait_timeout mysqld option. wait_timeout is 8 hours by default. -->
+    <property name="maxIdleTime" value='25200'/>
+
+    <!-- Maximum Number of prepared statements that will be cached. Disabled
+         here. -->
+    <property name="maxStatements" value='0'/>
 
     <!-- Convenient but expensive. -->
     <!-- property name="testConnectionOnCheckout" value='true'/-->
