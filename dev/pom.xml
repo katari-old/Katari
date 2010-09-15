@@ -65,6 +65,9 @@
     <module>katari-gadget-container</module>
     <!-- Katari open social container. -->
     <module>katari-shindig</module>
+    <!-- Integration tests. It includes tests for katari-archetype and
+         katari-module-archetype. -->
+    <module>katari-it</module>
   </modules>
 
   <!-- List of dependencies for all modules in the application. This section
@@ -877,12 +880,12 @@ try {
       </plugin>
 
       <plugin>
-        <configuration>
-          <siteDirectory>target/site-src</siteDirectory>
-        </configuration>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <inherited>false</inherited>
+        <configuration>
+          <siteDirectory>target/site-src</siteDirectory>
+        </configuration>
       </plugin>
 
     </plugins>
