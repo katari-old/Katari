@@ -230,7 +230,8 @@
         <version>${dependency.spring.version}</version>
       </dependency>
 
-      <!-- Needed by spring -->
+      <!-- Needed by hibernate. We could also use cglib, that is reported to be
+           faster. But javassist is the default. -->
       <dependency>
         <groupId>javassist</groupId>
         <artifactId>javassist</artifactId>
@@ -366,13 +367,6 @@
       </dependency>
 
       <dependency>
-        <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-        <artifactId>selenium-java-client-driver</artifactId>
-        <version>${dependency.selenium-java-client-driver.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
         <groupId>\${groupId}</groupId>
         <artifactId>\${rootArtifactId}-style</artifactId>
         <version>\${version}</version>
@@ -450,17 +444,39 @@
         <version>${version}</version>
       </dependency>
 
+      <!-- This is necessary to support tomcat 6, otherwise deploying in tomcat
+           6 will fail with a linkage error related to javax.el. But we need
+           juel-api for tomcat 5.5.
+           
+           This is only relevant if you use the shindig module. -->
+      <!--
+      <dependency>
+        <groupId>de.odysseus.juel</groupId>
+        <artifactId>juel-impl</artifactId>
+        <version>2.1.2</version>
+        <exclusions>
+          <exclusion>
+            <groupId>de.odysseus.juel</groupId>
+            <artifactId>juel-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      -->
+
     </dependencies>
   </dependencyManagement>
 
   <build>
+
     <pluginManagement>
       <plugins>
+
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>cobertura-maven-plugin</artifactId>
           <version>2.4</version>
         </plugin>
+
       </plugins>
     </pluginManagement>
 
@@ -476,26 +492,8 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>clirr-maven-plugin</artifactId>
-        <version>2.2.1</version>
-      </plugin>
-
     </plugins>
   </build>
-
-  <reporting>
-    <plugins>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>clirr-maven-plugin</artifactId>
-        <version>2.2.1</version>
-      </plugin>
-
-    </plugins>
-  </reporting>
 
   <!-- The location where deploy and site-deploy leaves the artifacts -->
   <distributionManagement>
