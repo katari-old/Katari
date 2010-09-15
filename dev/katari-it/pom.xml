@@ -15,6 +15,28 @@
   <packaging>jar</packaging>
   <name>Katari - integration tests</name>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <tasks unless="skipTest">
+                <echo message="${message}"/>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>test-archetypes</id>
@@ -28,7 +50,6 @@
                 <phase>pre-integration-test</phase>
                 <configuration>
                   <tasks unless="skipTest">
-                    <echo message="To skip me, just call mvn -Dmaven.test.skip=true"/>
                     <delete dir="${project.build.directory}/it"
                       includeemptydirs="true"/>
                   </tasks>
@@ -67,6 +88,9 @@
           </plugin>
         </plugins>
       </build>
+      <properties>
+        <message></message>
+      </properties>
     </profile>
   </profiles>
 
@@ -84,6 +108,28 @@
       <version>${version}</version>
     </dependency>
   </dependencies>
+
+  <properties>
+    <message>
+    You can now run an integration test for katari-archetype with:
+
+    mvn -P test-archetypes install
+
+    This runs the archetype to create a project called acme-coyote builds the
+    projects and runs the tests. To be able to correctly run the tests, you
+    need to create a database like this:
+
+    create database acme_coyote;
+    grant all privileges on acme_coyote.* to acme_coyote@localhost
+      identified by 'acme_coyote';
+    use acme_coyote;
+    create table acme_coyote_marker_666(drop_database varchar (50));
+    insert into acme_coyote_marker_666 values ('YES, DROP ME');
+
+    You also need to register a profile with this information. You can use
+    katari as example.
+    </message>
+  </properties>
 
   <!-- vim: set ts=2 et sw=2 ai: -->
 </project>
