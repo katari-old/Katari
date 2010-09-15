@@ -7,10 +7,9 @@ To start using this application, you need:
 1- mysql version 5.0 or newer. You will a mysql database with an account with
 full access to it.
 
-2- jdk-1.5.0 or newer, up to use jdk-1.6. The katari sample application was
-never tested on 1.6.
+2- jdk-1.5.0 or newer. The katari sample application was never tested on 1.6.
 
-3- maven-2.0.9.
+3- maven-2.2.
 
 4- A properly configured maven repository proxy or access to the public maven
 repositories.
@@ -173,9 +172,6 @@ through maven:
 This must be run in katari-sample directory.
 
 Note: you have to activate the cargo-inplace profile to start tomcat with cargo.
-
-Maven instructions
-------------------
 
 Eclipse instructions
 --------------------
