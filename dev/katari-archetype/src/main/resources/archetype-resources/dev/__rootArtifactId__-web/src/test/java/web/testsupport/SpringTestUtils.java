@@ -50,6 +50,18 @@ public final class SpringTestUtils {
   private SpringTestUtils() {
   }
 
+  /** Gets the configured data source.
+   *
+   * @return a DataSource.
+   */
+  public static synchronized DataSource getDataSource() {
+    if (dataSource == null) {
+      beanFactory = getBeanFactory();
+      dataSource = (DataSource) beanFactory.getBean("dataSource");
+    }
+    return dataSource;
+  }
+
   /** Gets the connection to the database.
    *
    * @return a Connection.

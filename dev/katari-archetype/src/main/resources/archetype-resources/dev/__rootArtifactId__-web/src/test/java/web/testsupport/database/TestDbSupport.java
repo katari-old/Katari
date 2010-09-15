@@ -13,6 +13,8 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 import ${package}.web.testsupport.SpringTestUtils;
 
+import com.globant.katari.tools.DatabaseTestSupport;
+
 /** This class contains methods to initialize a cleaned database.
  *
  * @author nicolas.frontini
@@ -34,7 +36,8 @@ public class TestDbSupport extends TestCase {
         "src/test/resources/log4j.properties");
   }
 
-  /** This is a setup method of this TestCase.
+  /** Recreates the database, dropping all objects and running the
+   * corresponding ddl and sql scripts.
    */
   public final void testDoSetup() throws Exception {
     log.trace("Entering testDoSetup");
@@ -42,13 +45,16 @@ public class TestDbSupport extends TestCase {
     log.info("Cleaning database");
     LocalSessionFactoryBean sessionFactory = (LocalSessionFactoryBean)
         SpringTestUtils.getBeanFactory().getBean("&katari.sessionFactory");
-    DatabaseTestSupport databaseTestSupport = DatabaseTestSupport.create(
-        sessionFactory);
-    databaseTestSupport.dropAll(testMarker);
+    DatabaseTestSupport databaseTestSupport;
+    databaseTestSupport = DatabaseTestSupport.create(sessionFactory);
+    databaseTestSupport.dropAll(SpringTestUtils.getDataSource(), testMarker);
 
-    databaseTestSupport.runSqlSentences("target/${rootArtifactId}.ddl");
-    databaseTestSupport.runSqlSentences("src/main/sql/db-setup.sql");
-    databaseTestSupport.runSqlSentences("src/test/sql/db-setup.sql");
+    databaseTestSupport.runSqlSentences(SpringTestUtils.getDataSource(),
+        "target/${rootArtifactId}.ddl");
+    databaseTestSupport.runSqlSentences(SpringTestUtils.getDataSource(),
+        "src/main/sql/db-setup.sql");
+    databaseTestSupport.runSqlSentences(SpringTestUtils.getDataSource(),
+        "src/test/sql/db-setup.sql");
 
     log.trace("Leaving testDoSetup");
   }
