@@ -85,15 +85,6 @@
 
     </plugins>
 
-    <!-- Should be inherited from parent.
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav</artifactId>
-      </extension>
-    </extensions>
-    -->
-
   </build>
 
   <!-- The scm information used by continuous integration and documentation. -->
