@@ -22,7 +22,7 @@
       <!--url>http://www.apache.org/licenses/LICENSE-2.0.txt</url -->
       <url>LICENSE</url>
       <distribution>repo</distribution>
-      <comments />
+      <comments/>
     </license>
   </licenses>
 
@@ -68,6 +68,7 @@
     <!-- Integration tests. It includes tests for katari-archetype and
          katari-module-archetype. -->
     <module>katari-it</module>
+    <module>katari-jsmodule</module>
   </modules>
 
   <!-- List of dependencies for all modules in the application. This section
@@ -708,40 +709,40 @@
                 <!-- Copy and filter the apt files for the site-->
                 <!-- First, copy everything but apts. -->
                 <copy todir="target/site-src/" preservelastmodified="true">
-                  <fileset dir="src/site/" excludes="**/*.apt" />
+                  <fileset dir="src/site/" excludes="**/*.apt"/>
                 </copy>
                 <!-- Now, copy only apts, but filtered. -->
                 <copy todir="target/site-src/" preservelastmodified="true" filtering="true">
                   <filterset>
-                    <filter token="version" value="${version}" />
+                    <filter token="version" value="${version}"/>
                   </filterset>
-                  <fileset dir="src/site/" includes="**/*.apt" />
+                  <fileset dir="src/site/" includes="**/*.apt"/>
                 </copy>
 
                 <!-- Copy and filter the apt files for the user manual book -->
                 <copy todir="target/book-src/apt" preservelastmodified="true" filtering="true">
                   <filterset>
-                    <filter token="version" value="${version}" />
+                    <filter token="version" value="${version}"/>
                   </filterset>
-                  <fileset dir="src/site/apt" />
+                  <fileset dir="src/site/apt"/>
                 </copy>
 
                 <!-- Copy the module indexes -->
-                <copy file="katari-editablepages/src/site/apt/index.apt" tofile="target/book-src/apt/katari-editablepages.apt" preservelastmodified="true" />
-                <copy file="katari-report/src/site/apt/index.apt" tofile="target/book-src/apt/katari-reports.apt" preservelastmodified="true" />
-                <copy file="katari-search/src/site/apt/index.apt" tofile="target/book-src/apt/katari-search.apt" preservelastmodified="true" />
+                <copy file="katari-editablepages/src/site/apt/index.apt" tofile="target/book-src/apt/katari-editablepages.apt" preservelastmodified="true"/>
+                <copy file="katari-report/src/site/apt/index.apt" tofile="target/book-src/apt/katari-reports.apt" preservelastmodified="true"/>
+                <copy file="katari-search/src/site/apt/index.apt" tofile="target/book-src/apt/katari-search.apt" preservelastmodified="true"/>
 
                 <!-- Copy the images for the pdf -->
                 <copy todir="target/generated-site/pdf/user-manual/images">
-                  <fileset dir="target/site/images" />
+                  <fileset dir="target/site/images"/>
                 </copy>
                 <copy todir="target/generated-site/pdf/user-manual/images">
-                  <fileset dir="src/site/resources/images" />
+                  <fileset dir="src/site/resources/images"/>
                 </copy>
 
                 <!-- Prepare the pdf generation through latex -->
                 <copy todir="target/generated-site/latex/user-manual/images">
-                  <fileset dir="target/generated-site/pdf/user-manual/images" />
+                  <fileset dir="target/generated-site/pdf/user-manual/images"/>
                 </copy>
 
               </tasks>
@@ -757,14 +758,14 @@
               <tasks>
                 <copy todir="target/site/pdf" flatten="true">
                   <fileset dir="target/generated-site/pdf">
-                    <include name="**/*.pdf" />
+                    <include name="**/*.pdf"/>
                   </fileset>
                 </copy>
                 <!-- If the latex generated pdfs are there, replace the doxia
                      generated ones (latex is WAAAYYYYY better).-->
                 <copy todir="target/site/pdf" flatten="true" overwrite="true">
                   <fileset dir="target/generated-site/latex">
-                    <include name="**/*.pdf" />
+                    <include name="**/*.pdf"/>
                   </fileset>
                 </copy>
               </tasks>
@@ -968,4 +969,3 @@ try {
 
 <!-- vim: set ts=2 et sw=2 ai tw=80: -->
 </project>
-

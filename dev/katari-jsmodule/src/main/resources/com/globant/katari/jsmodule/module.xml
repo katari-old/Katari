@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.globant.com/schema/katari
+    http://www.globant.com/schema/katari/katari.xsd">
+
+  <bean id="jsmodule.module" class="com.globant.katari.core.web.ConfigurableModule">
+    <property name="entryPoints">
+      <!--
+        The servlet mappings. It maps the spring DispatcherServlet to *.do.
+      -->
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The spring-mvc controller servlet -->
+            <entry key=".*\.do">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="org.springframework.web.servlet.DispatcherServlet" />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/jsmodule/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+  </bean>
+<!-- vim: set ts=2 sw=2 et ai: -->  
+</beans>
+
