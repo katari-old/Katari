@@ -111,6 +111,7 @@
 
   <properties>
     <message>
+    <![CDATA[
     You can now run an integration test for katari-archetype with:
 
     mvn -P test-archetypes install
@@ -126,8 +127,23 @@
     create table acme_coyote_marker_666(drop_database varchar (50));
     insert into acme_coyote_marker_666 values ('YES, DROP ME');
 
-    You also need to register a profile with this information. You can use
-    katari as example.
+    You also need to register a profile with this information:
+    
+    <profile>
+      <id>katari-it</id>
+      <properties>
+        <acme_coyote.datasource.url>
+          jdbc:mysql://localhost/acme_coyote
+        </acme_coyote.datasource.url>
+        <acme_coyote.datasource.username>
+          acme_coyote
+        </acme_coyote.datasource.username>
+        <acme_coyote.datasource.password>
+          acme_coyote
+        </acme_coyote.datasource.password>
+      </properties>
+    </profile>
+    ]]>
     </message>
   </properties>
 
