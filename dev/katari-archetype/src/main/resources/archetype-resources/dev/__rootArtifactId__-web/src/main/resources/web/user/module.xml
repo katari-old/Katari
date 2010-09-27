@@ -93,6 +93,7 @@
        search module. -->
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='search.indexableClasses'/>
+    <constructor-arg value='true'/>
     <constructor-arg>
       <list>
         <value>${package}.web.user.domain.User</value>
@@ -102,6 +103,7 @@
   </bean>
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='search.adapters'/>
+    <constructor-arg value='true'/>
     <constructor-arg>
       <list>
         <bean class="${package}.web.user.domain.UserSearchAdapter">
