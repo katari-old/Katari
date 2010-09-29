@@ -24,8 +24,8 @@ import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.time.application.SaveTimeEntryCommand;
 import com.globant.katari.sample.time.domain.TimeEntry;
 import com.globant.katari.sample.time.domain.TimeRepository;
-import com.globant.katari.sample.user.domain.User;
-import com.globant.katari.sample.user.domain.UserRepository;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.domain.UserRepository;
 
 /** Test the MyTimeController.
  *
@@ -53,7 +53,7 @@ public class MyTimeEntryControllerTest extends TestCase {
     timeRepository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils
-        .getBeanFactory().getBean("userRepository");
+        .getBeanFactory().getBean("user.userRepository");
     User user = userRepository.findUser(1);
     DataHelper.createTimeEntry(timeRepository, user);
 

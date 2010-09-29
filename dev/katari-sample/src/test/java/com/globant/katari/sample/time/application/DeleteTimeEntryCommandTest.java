@@ -8,7 +8,7 @@ import com.globant.katari.sample.testsupport.DataHelper;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.time.domain.TimeEntry;
 import com.globant.katari.sample.time.domain.TimeRepository;
-import com.globant.katari.sample.user.domain.UserRepository;
+import com.globant.katari.user.domain.UserRepository;
 
 /** This class represents a TestCase of the delete time entry commnad.
  *
@@ -40,7 +40,7 @@ public class DeleteTimeEntryCommandTest extends TestCase {
     timeRepository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils.getBeanFactory()
-        .getBean("userRepository");
+        .getBean("user.userRepository");
     DataHelper.removeExtraTimeEntries(timeRepository);
     DataHelper.createTimeEntry(
         timeRepository, userRepository.findUser(userId));

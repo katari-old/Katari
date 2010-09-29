@@ -27,8 +27,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
-import com.globant.katari.sample.user.application.SaveUserCommand;
-import com.globant.katari.sample.user.domain.User;
+import com.globant.katari.user.application.SaveUserCommand;
+import com.globant.katari.user.domain.User;
 
 /** A wicket page to add or modify a user.
  *

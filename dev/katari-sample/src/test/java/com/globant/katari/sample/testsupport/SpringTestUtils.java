@@ -88,7 +88,7 @@ public final class SpringTestUtils {
       appContext.setConfigLocations(new String[] {
         "/WEB-INF/applicationContext.xml",
         "/WEB-INF/applicationContextRuntime.xml",
-        "classpath:/com/globant/katari/sample/user/view/spring-servlet.xml" });
+        "classpath:/com/globant/katari/user/view/spring-servlet.xml" });
       appContext.refresh();
       beanFactory = appContext;
     }
@@ -104,7 +104,7 @@ public final class SpringTestUtils {
       log.info("Creating a beanFactory");
       userModuleBeanFactory = new FileSystemXmlApplicationContext(
           new String[]
-          {"classpath:/com/globant/katari/sample/user/view/spring-servlet.xml"},
+          {"classpath:/com/globant/katari/user/view/spring-servlet.xml"},
           getBeanFactory());
     }
     return userModuleBeanFactory;

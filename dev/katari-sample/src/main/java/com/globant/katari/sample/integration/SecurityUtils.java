@@ -8,7 +8,8 @@ import org.acegisecurity.Authentication;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.globant.katari.sample.user.domain.User;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.integration.DomainUserDetails;
 
 /** Security related utilities.
  *

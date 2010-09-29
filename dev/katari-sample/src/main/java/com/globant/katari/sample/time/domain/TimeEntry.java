@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.Validate;
 
-import com.globant.katari.sample.user.domain.User;
+import com.globant.katari.user.domain.User;
 
 /** A time entry stores the amount of work performed by a user on a given
  * project.

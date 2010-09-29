@@ -8,7 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.globant.katari.sample.user.domain.User;
+import com.globant.katari.user.domain.User;
 
 /** This class is responsible for managing the persistence of time entries.
  *

@@ -6,8 +6,8 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import com.globant.katari.sample.testsupport.SpringTestUtils;
-import com.globant.katari.sample.user.domain.User;
-import com.globant.katari.sample.user.domain.UserRepository;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.domain.UserRepository;
 
 /** This class represents a TestCase of the time entry repository.
  *
@@ -29,7 +29,7 @@ public class TimeRepositoryTest extends TestCase {
     timeRepository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils.getBeanFactory().getBean(
-        "userRepository");
+        "user.userRepository");
     List<TimeEntry> list = timeRepository.getTimeEntries(
         userRepository.findUser(1), new Date());
     for (TimeEntry timeEntry : list) {

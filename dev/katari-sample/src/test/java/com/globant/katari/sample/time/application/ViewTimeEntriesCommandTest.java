@@ -10,8 +10,8 @@ import com.globant.katari.sample.testsupport.SecurityTestUtils;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.time.domain.TimeEntry;
 import com.globant.katari.sample.time.domain.TimeRepository;
-import com.globant.katari.sample.user.domain.User;
-import com.globant.katari.sample.user.domain.UserRepository;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.domain.UserRepository;
 
 /** This class represents a TestCase of the view time entries commnad.
  *
@@ -35,7 +35,7 @@ public class ViewTimeEntriesCommandTest extends TestCase {
     TimeRepository repository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
     UserRepository userRepository = (UserRepository)
-        SpringTestUtils.getBeanFactory().getBean("userRepository");
+        SpringTestUtils.getBeanFactory().getBean("user.userRepository");
     user = userRepository.findUser(1);
     DataHelper.createTimeEntry(repository, user);
     SecurityTestUtils.setContextUser(user);

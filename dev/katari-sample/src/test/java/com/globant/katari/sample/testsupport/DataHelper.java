@@ -15,8 +15,9 @@ import com.globant.katari.sample.time.domain.Project;
 import com.globant.katari.sample.time.domain.TimeEntry;
 import com.globant.katari.sample.time.domain.TimePeriod;
 import com.globant.katari.sample.time.domain.TimeRepository;
-import com.globant.katari.sample.user.domain.User;
-import com.globant.katari.sample.user.domain.UserRepository;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.domain.UserFilter;
+import com.globant.katari.user.domain.UserRepository;
 
 /** Utility class to help in the setup of test cases that need to interact with
  * the database.
@@ -42,7 +43,7 @@ public final class DataHelper {
   public static void removeExtraUsers(final UserRepository repository) {
     Validate.notNull(repository, "The user repository cannot be null");
     //  Removes the unneeded users.
-    for (User user : repository.getUsers()) {
+    for (User user : repository.getUsers(new UserFilter())) {
       log.debug("Found user " + user.getName());
       boolean canDelete = !user.getName().equals("admin");
       canDelete = canDelete & !user.getName().startsWith("base-");

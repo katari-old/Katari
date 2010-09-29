@@ -24,13 +24,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
-import com.globant.katari.sample.user.application.DeleteUserCommand;
-import com.globant.katari.sample.user.application.Password;
-import com.globant.katari.sample.user.application.Profile;
-import com.globant.katari.sample.user.application.SaveUserCommand;
-import com.globant.katari.sample.user.application.UserFilterCommand;
-import com.globant.katari.sample.user.domain.User;
-import com.globant.katari.sample.user.domain.filter.Paging;
+import com.globant.katari.user.application.DeleteUserCommand;
+import com.globant.katari.user.application.Password;
+import com.globant.katari.user.application.Profile;
+import com.globant.katari.user.application.SaveUserCommand;
+import com.globant.katari.user.application.UserFilterCommand;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.domain.filter.Paging;
 import com.globant.katari.tools.KatariWicketTester;
 
 public class UserPageTest {

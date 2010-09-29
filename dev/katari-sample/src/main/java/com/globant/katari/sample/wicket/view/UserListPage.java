@@ -17,10 +17,10 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.globant.katari.sample.integration.SecurityUtils;
-import com.globant.katari.sample.user.application.DeleteUserCommand;
-import com.globant.katari.sample.user.application.UserFilterCommand;
-import com.globant.katari.sample.user.domain.User;
-import com.globant.katari.sample.user.domain.filter.ContainsFilter;
+import com.globant.katari.user.application.DeleteUserCommand;
+import com.globant.katari.user.application.UserFilterCommand;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.domain.filter.ContainsFilter;
 
 /** Paginates through all the users.
  *

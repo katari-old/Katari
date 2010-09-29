@@ -9,8 +9,8 @@ import com.globant.katari.sample.testsupport.DataHelper;
 import com.globant.katari.sample.testsupport.SecurityTestUtils;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.time.domain.TimeRepository;
-import com.globant.katari.sample.user.domain.User;
-import com.globant.katari.sample.user.domain.UserRepository;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.domain.UserRepository;
 
 /** This class represents a TestCase of the user project hours report command.
  *
@@ -32,7 +32,7 @@ public class UserProjectHoursReportCommandTest extends TestCase {
     TimeRepository repository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
     UserRepository userRepository = (UserRepository)
-        SpringTestUtils.getBeanFactory().getBean("userRepository");
+        SpringTestUtils.getBeanFactory().getBean("user.userRepository");
 
     User user = userRepository.findUser(1);
     Calendar tmpCalendar = Calendar.getInstance();

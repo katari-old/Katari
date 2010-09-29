@@ -7,6 +7,8 @@
       http://www.globant.com/schema/katari
       http://www.globant.com/schema/katari/katari.xsd">
 
+  <!-- TODO: create a test that loads this application context. -->
+
   <!-- setup wicket application -->
   <bean id="wicket.application"
       class="com.globant.katari.sample.wicket.SampleApplication">
@@ -26,14 +28,14 @@
 
   <!-- Commands -->
   <bean name="userFilterCommand" scope="prototype"
-      class="com.globant.katari.sample.user.application.UserFilterCommand" >
+      class="com.globant.katari.user.application.UserFilterCommand" >
     <constructor-arg index="0" >
       <ref bean="user.userRepository" />
     </constructor-arg>
   </bean>
 
   <bean name="createUserCommand" scope="prototype"
-      class="com.globant.katari.sample.user.application.SaveUserCommand" >
+      class="com.globant.katari.user.application.SaveUserCommand" >
     <constructor-arg index="0" >
       <ref bean="user.userRepository" />
     </constructor-arg>
@@ -49,13 +51,13 @@
   </bean>
 
   <bean id='profile' scope='prototype'
-    class="com.globant.katari.sample.user.application.Profile"/>
+    class="com.globant.katari.user.application.Profile"/>
 
   <bean id='password' scope='prototype'
-    class="com.globant.katari.sample.user.application.Password"/>
+    class="com.globant.katari.user.application.Password"/>
 
   <bean name="deleteUserCommand" scope="prototype"
-      class="com.globant.katari.sample.user.application.DeleteUserCommand" >
+      class="com.globant.katari.user.application.DeleteUserCommand" >
     <constructor-arg index="0" >
       <ref bean="user.userRepository" />
     </constructor-arg>

@@ -19,8 +19,8 @@ import com.globant.katari.sample.testsupport.SecurityTestUtils;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.time.application.UserProjectHoursReportCommand;
 import com.globant.katari.sample.time.domain.TimeRepository;
-import com.globant.katari.sample.user.domain.User;
-import com.globant.katari.sample.user.domain.UserRepository;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.domain.UserRepository;
 
 /** Test the UserProjectHoursReportController.
  *
@@ -50,7 +50,7 @@ public class UserProjectHoursReportControllerTest extends TestCase {
     timeRepository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils
-        .getBeanFactory().getBean("userRepository");
+        .getBeanFactory().getBean("user.userRepository");
     DataHelper.createTimeEntry(timeRepository, userRepository.findUser(1));
   }
 

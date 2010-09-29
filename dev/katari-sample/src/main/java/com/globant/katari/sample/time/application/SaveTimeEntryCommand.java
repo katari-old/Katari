@@ -6,14 +6,14 @@ import org.apache.commons.lang.Validate;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
-import com.globant.katari.sample.integration.SecurityUtils;
+import com.globant.katari.user.integration.SecurityUtils;
 import com.globant.katari.core.application.ValidatableCommand;
 import com.globant.katari.sample.time.domain.Activity;
 import com.globant.katari.sample.time.domain.Project;
 import com.globant.katari.sample.time.domain.TimeEntry;
 import com.globant.katari.sample.time.domain.TimePeriod;
 import com.globant.katari.sample.time.domain.TimeRepository;
-import com.globant.katari.sample.user.domain.User;
+import com.globant.katari.user.domain.User;
 
 /** Save user command.
  *

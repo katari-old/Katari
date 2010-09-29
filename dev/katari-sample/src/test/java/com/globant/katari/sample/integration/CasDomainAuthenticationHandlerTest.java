@@ -27,7 +27,7 @@ public class CasDomainAuthenticationHandlerTest extends TestCase {
 //*/
 //protected final void setUp() {
 //  repository = (UserRepository) SpringTestUtils.getBeanFactory().getBean(
-//      "userRepository");
+//      "user.userRepository");
 //  casDomainAuthHandler = new CasDomainAuthenticationHandler(repository);
 //}
 
