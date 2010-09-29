@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 import org.acegisecurity.ConfigAttributeDefinition;
 import org.acegisecurity.intercept.web.AbstractFilterInvocationDefinitionSource;
+import org.acegisecurity.SecurityConfig;
+import org.acegisecurity.ConfigAttribute;
 import org.apache.commons.lang.Validate;
 
 import com.globant.katari.core.web.ModuleContext;
@@ -87,11 +89,11 @@ public class ModuleFilterInvocationDefinitionSource extends
 
       String strippedUrl = ModuleUtils.stripModuleNameFromUrl(url);
       String[] roles = moduleMapper.getRolesForUrl(strippedUrl);
-      return SecurityUtils.buildConfigAttributeDefinition(roles);
+      return buildConfigAttributeDefinition(roles);
     }
 
     String[] roles = defaultMapper.getRolesForUrl(url);
-    return SecurityUtils.buildConfigAttributeDefinition(roles);
+    return buildConfigAttributeDefinition(roles);
   }
 
   /** It returns null, there's no need to implement this method it is optional.
@@ -102,4 +104,35 @@ public class ModuleFilterInvocationDefinitionSource extends
     return null;
   }
 
+  /** Builds a <code>ConfigAttributeDefinition</code> from the array of
+   * roles.
+   *
+   * The config attribute definition is built from different
+   * <code>ConfigAttribute</code>.
+   *
+   * @param roles The roles to build the ConfigAttributeDefinition for.  It
+   * cannot be null.
+   *
+   * @return ConfigAttributeDefinition. It returns null if an empty array is
+   * given.
+   */
+  private static ConfigAttributeDefinition buildConfigAttributeDefinition(
+      final String[] roles) {
+    Validate.notNull(roles, "The roles array cannot be null");
+    if (roles.length == 0) {
+      return null;
+    }
+    ConfigAttributeDefinition configAttributeDefinition
+      = new ConfigAttributeDefinition();
+    for (String currentRole : roles) {
+      if (currentRole == null || "".equals(currentRole.trim())) {
+        throw new IllegalArgumentException("The Roles array contains an empty"
+            + " role value");
+      }
+      ConfigAttribute configAttribute = new SecurityConfig(currentRole.trim());
+      configAttributeDefinition.addConfigAttribute(configAttribute);
+    }
+    return configAttributeDefinition;
+  }
 }
+
