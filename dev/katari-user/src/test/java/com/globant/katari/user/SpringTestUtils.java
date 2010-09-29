@@ -37,7 +37,7 @@ public final class SpringTestUtils {
 
   /** User module Bean factory.
    */
-  private static ApplicationContext userModuleBeanFactory;
+  private static ApplicationContext servletBeanFactory;
 
   /** The katari transaction manager for the application context.
    */
@@ -83,7 +83,7 @@ public final class SpringTestUtils {
    *
    * @return a BeanFactory
    */
-  public static synchronized ApplicationContext getBeanFactory() {
+  private static synchronized ApplicationContext getBeanFactory() {
     if (beanFactory == null) {
       log.info("Creating a beanFactory");
       ServletContext sc = new MockServletContext("./src/main/webapp",
@@ -102,15 +102,38 @@ public final class SpringTestUtils {
    *
    * @return a BeanFactory
    */
-  public static synchronized ApplicationContext getUserModuleBeanFactory() {
-    if (userModuleBeanFactory == null) {
+  private static synchronized ApplicationContext getServletBeanFactory() {
+    if (servletBeanFactory == null) {
       log.info("Creating a beanFactory");
-      userModuleBeanFactory = new FileSystemXmlApplicationContext(
+      servletBeanFactory = new FileSystemXmlApplicationContext(
           new String[]
-          {"classpath:/com/globant/katari/sample/user/view/spring-servlet.xml"},
+          {"classpath:/com/globant/katari/user/view/spring-servlet.xml"},
           getBeanFactory());
     }
-    return userModuleBeanFactory;
+    return servletBeanFactory;
+  }
+
+  /** Obtains a bean from the application bean factory.
+   *
+   * @param beanName the name of the bean to search for in the bean factory.
+   * It cannot be null.
+   *
+   * @return the bean named beanName, or null if not found.
+   */
+  public static Object getBean(final String beanName) {
+    return getBeanFactory().getBean(beanName);
+  }
+
+  /** Obtains a bean from the spring dispatcher servlet bean factory or its
+   *  parent.
+   *
+   * @param beanName the name of the bean to search for in the bean factory.
+   * It cannot be null.
+   *
+   * @return the bean named beanName, or null if not found.
+   */
+  public static Object getServletBean(final String beanName) {
+    return getServletBeanFactory().getBean(beanName);
   }
 
   /** Obtains the transactionManager from the application context.
@@ -140,15 +163,18 @@ public final class SpringTestUtils {
     transactionStatus = getTransactionManager().getTransaction(
         new DefaultTransactionDefinition());
   }
-  
+
   /** Commits the pending transaction, if any.
    */
   public static synchronized void endTransaction() {
     if (transactionStatus != null) {
-     transactionManager.commit(transactionStatus);
-     transactionStatus = null;
+      if (transactionStatus.isRollbackOnly()) {
+        transactionManager.rollback(transactionStatus);
+      } else {
+        transactionManager.commit(transactionStatus);
+      }
+      transactionStatus = null;
     }
   }
-
 }
 

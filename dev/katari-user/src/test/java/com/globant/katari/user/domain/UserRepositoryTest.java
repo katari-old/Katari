@@ -4,16 +4,13 @@ package com.globant.katari.user.domain;
 
 import java.util.List;
 
-import org.hamcrest.Description;
-import org.hamcrest.Factory;
-import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.Before;
-import org.junit.internal.matchers.TypeSafeMatcher;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
+import static com.globant.katari.user.OrderedUsers.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,9 +42,9 @@ public class UserRepositoryTest {
    */
   @Before
   public final void setUp() {
-    userRepository = (UserRepository) SpringTestUtils.getBeanFactory().getBean(
+    userRepository = (UserRepository) SpringTestUtils.getBean(
         "user.userRepository");
-    roleRepository = (RoleRepository) SpringTestUtils.getBeanFactory().getBean(
+    roleRepository = (RoleRepository) SpringTestUtils.getBean(
         "coreuser.roleRepository");
     addUsersAndRoles();
     SpringTestUtils.beginTransaction();
@@ -152,7 +149,7 @@ public class UserRepositoryTest {
     // Verify ascending order.
     assertThat(userList, notNullValue());
     assertThat(userList.size(), is(3));
-    assertThat(userList, IsOrdered.isInAscendingOrder());
+    assertThat(userList, inAscendingOrder());
 
     // Set the descending order.
     sorting.setAscendingOrder(false);
@@ -162,7 +159,7 @@ public class UserRepositoryTest {
     // Verify descending order.
     assertThat(userList, notNullValue());
     assertThat(userList.size(), is(3));
-    assertThat(userList, IsOrdered.isInDescendingOrder());
+    assertThat(userList, inDescendingOrder());
   }
 
   /** Test getUsers using paging filter.
@@ -248,48 +245,6 @@ public class UserRepositoryTest {
     assertThat(role.getName(), is("ADMINISTRATOR"));
     role = roleRepository.findRole(role.getId());
     assertThat(role.getName(), is("ADMINISTRATOR"));
-  }
-
-  private static class IsOrdered<T extends List<User>>
-    extends TypeSafeMatcher<List<User>> {
-    
-    boolean ascending = false;
-
-    public IsOrdered(final boolean isAscending) {
-      ascending = isAscending;
-    }
-
-    @Override
-    public boolean matchesSafely(List<User> list) {
-      User previous = list.get(0);
-      for (User current: list) {
-        int result = previous.getName().compareToIgnoreCase(current.getName());
-        if (ascending && result > 0) {
-            return false;
-        } else {
-          if (!ascending && result < 0) {
-            return false;
-          }
-        }
-        previous = current;
-      }
-      return true;
-    }
-
-    public void describeTo(Description description) {
-      description.appendText("not in descendent order");
-    }
-
-    @Factory
-    public static <T extends List<User>> Matcher<List<User>>
-        isInDescendingOrder() {
-      return new IsOrdered<T>(false);
-    }
-    @Factory
-    public static <T extends List<User>> Matcher<List<User>>
-        isInAscendingOrder() {
-      return new IsOrdered<T>(true);
-    }
   }
 }
 

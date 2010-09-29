@@ -65,6 +65,8 @@
     <module>katari-gadget-container</module>
     <!-- Katari open social container. -->
     <module>katari-shindig</module>
+    <!-- Katari user module. -->
+    <module>katari-user</module>
     <!-- Integration tests. It includes tests for katari-archetype and
          katari-module-archetype. -->
     <module>katari-it</module>
@@ -523,6 +525,12 @@
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-gadget-container</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-user</artifactId>
         <version>${version}</version>
       </dependency>
 

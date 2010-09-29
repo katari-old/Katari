@@ -2,15 +2,11 @@
 
 package com.globant.katari.user.domain;
 
-import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
-import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
-
-import com.globant.katari.user.SpringTestUtils;
 
 /* This class represents a TestCase of the user. In this class we will test all
  * the features of the user.
