@@ -1,9 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
     <groupId>com.globant.katari</groupId>
     <artifactId>dev</artifactId>
-    <version>0.24-SNAPSHOT</version>
+    <version>0.23-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -22,7 +25,7 @@
             <phase>pre-integration-test</phase>
             <configuration>
               <tasks unless="skipTest">
-                <echo message="${message}" />
+                <echo message="${message}"/>
               </tasks>
             </configuration>
             <goals>
@@ -47,7 +50,8 @@
                 <phase>pre-integration-test</phase>
                 <configuration>
                   <tasks unless="skipTest">
-                    <delete dir="${project.build.directory}/it" includeemptydirs="true" />
+                    <delete dir="${project.build.directory}/it"
+                      includeemptydirs="true"/>
                   </tasks>
                 </configuration>
                 <goals>
@@ -85,7 +89,7 @@
         </plugins>
       </build>
       <properties>
-        <message />
+        <message></message>
       </properties>
     </profile>
   </profiles>
