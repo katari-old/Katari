@@ -99,6 +99,7 @@
     <dependency>
       <groupId>com.globant.katari</groupId>
       <artifactId>katari-archetype</artifactId>
+      <type>maven-archetype</type>
       <version>${version}</version>
     </dependency>
     <dependency>
