@@ -14,13 +14,13 @@
   <import resource="classpath:/com/globant/katari/core/applicationContext.xml"/>
 
   <!-- The search module. -->
-  <import resource="classpath:/com/globant/katari/search/module.xml"/>
+  <katari:import module="classpath:/com/globant/katari/search"/>
 
   <!-- The user core module. -->
-  <import resource="classpath:/com/globant/katari/hibernate/coreuser/module.xml"/>
+  <katari:import module="classpath:/com/globant/katari/hibernate/coreuser"/>
 
   <!-- The user module. -->
-  <import resource="classpath:/${packageInPathFormat}/web/user/module.xml"/>
+  <katari:import module="classpath:/com/globant/katari/user"/>
 
   <!-- A sample datasource. Do not use this for production. -->
   <bean id="dataSource"

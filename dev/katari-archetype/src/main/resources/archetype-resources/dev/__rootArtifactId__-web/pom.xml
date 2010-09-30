@@ -229,6 +229,11 @@
 
     <dependency>
       <groupId>com.globant.katari</groupId>
+      <artifactId>katari-user</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
       <artifactId>katari-gadget-container</artifactId>
     </dependency>
 

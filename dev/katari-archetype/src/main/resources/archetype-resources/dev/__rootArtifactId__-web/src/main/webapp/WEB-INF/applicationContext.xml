@@ -39,7 +39,7 @@
   <katari:import module="com.globant.katari.login.local"/>
 
   <!-- The user module. -->
-  <katari:import module="${package}.web.user"/>
+  <katari:import module="com.globant.katari.user"/>
 
   <!-- The core user module. -->
   <katari:import module="com.globant.katari.hibernate.coreuser"/>
@@ -211,7 +211,7 @@
   object that delegates the user handling to the user domain object.
   -->
   <bean id="katari.userDetailsService" lazy-init='true'
-    class="${package}.web.integration.DomainUserDetailsService">
+    class="com.globant.katari.user.integration.DomainUserDetailsService">
     <constructor-arg>
       <ref bean="userRepository"/>
     </constructor-arg>

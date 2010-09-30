@@ -17,10 +17,7 @@ import com.globant.katari.user.integration.DomainUserDetails;
  * logged on user.
  *
  * TODO There is a class named SecurityUtils in katari-core, check if it is ok.
- *
- * @author nicolas.frontini
  */
-@Deprecated
 public final class SecurityUtils {
 
   /** The class logger.

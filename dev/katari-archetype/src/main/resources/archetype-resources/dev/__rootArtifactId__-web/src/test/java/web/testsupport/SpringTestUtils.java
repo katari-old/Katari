@@ -91,7 +91,7 @@ public final class SpringTestUtils {
       appContext.setConfigLocations(new String[] {
         "/WEB-INF/applicationContext.xml",
         "/WEB-INF/applicationContextRuntime.xml",
-        "classpath:/${packageInPathFormat}/web/user/view/spring-servlet.xml" });
+        "classpath:/com/globant/katari/user/view/spring-servlet.xml" });
       appContext.refresh();
       beanFactory = appContext;
     }
@@ -107,25 +107,10 @@ public final class SpringTestUtils {
       log.info("Creating a beanFactory");
       userModuleBeanFactory = new FileSystemXmlApplicationContext(
           new String[]
-          {"classpath:/${packageInPathFormat}/web/user/view/spring-servlet.xml"},
+          {"classpath:/com/globant/katari/user/view/spring-servlet.xml"},
           getBeanFactory());
     }
     return userModuleBeanFactory;
-  }
-
-  /** This method returns a BeanFactory.
-   *
-   * @return a BeanFactory
-   */
-  public static synchronized ApplicationContext getTimeModuleBeanFactory() {
-    if (timeModuleBeanFactory == null) {
-      log.info("Creating a beanFactory");
-      timeModuleBeanFactory = new FileSystemXmlApplicationContext(
-          new String[]
-          {"classpath:/${packageInPathFormat}/web/time/view/spring-servlet.xml"},
-          getBeanFactory());
-    }
-    return timeModuleBeanFactory;
   }
 }
 

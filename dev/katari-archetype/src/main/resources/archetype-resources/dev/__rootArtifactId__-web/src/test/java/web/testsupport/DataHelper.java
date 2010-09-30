@@ -13,8 +13,9 @@ import org.apache.commons.logging.LogFactory;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
-import ${package}.web.user.domain.User;
-import ${package}.web.user.domain.UserRepository;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.domain.UserRepository;
+import com.globant.katari.user.domain.UserFilter;
 
 /** Utility class to help in the setup of test cases that need to interact with
  * the database.
@@ -40,7 +41,7 @@ public final class DataHelper {
   public static void removeExtraUsers(final UserRepository repository) {
     Validate.notNull(repository, "The user repository cannot be null");
     //  Removes the unneeded users.
-    for (User user : repository.getUsers()) {
+    for (User user : repository.getUsers(new UserFilter())) {
       log.debug("Found user " + user.getName());
       boolean canDelete = !user.getName().equals("admin");
       canDelete = canDelete & !user.getName().startsWith("base-");

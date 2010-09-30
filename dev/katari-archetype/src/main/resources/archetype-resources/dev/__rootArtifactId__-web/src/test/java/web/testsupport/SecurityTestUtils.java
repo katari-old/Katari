@@ -8,8 +8,8 @@ package ${package}.web.testsupport;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 
-import ${package}.web.integration.DomainUserDetails;
-import ${package}.web.user.domain.User;
+import com.globant.katari.user.integration.DomainUserDetails;
+import com.globant.katari.user.domain.User;
 
 /** Utility class to give support to test cases.
  */

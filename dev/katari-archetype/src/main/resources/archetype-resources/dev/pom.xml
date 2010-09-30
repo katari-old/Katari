@@ -434,6 +434,12 @@
 
       <dependency>
         <groupId>com.globant.katari</groupId>
+        <artifactId>katari-user</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
         <artifactId>katari-shindig</artifactId>
         <version>${version}</version>
       </dependency>

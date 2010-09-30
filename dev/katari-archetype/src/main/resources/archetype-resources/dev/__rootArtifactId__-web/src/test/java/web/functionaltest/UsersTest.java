@@ -10,8 +10,9 @@ import junit.framework.TestCase;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import ${package}.web.testsupport.SpringTestUtils;
-import ${package}.web.user.domain.User;
-import ${package}.web.user.domain.UserRepository;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.domain.UserRepository;
+import com.globant.katari.user.domain.UserFilter;
 
 /** Test the user module welcome page.
  *
@@ -44,7 +45,7 @@ public class UsersTest extends TestCase {
    */
   private void addUsers() {
     // Removes the unneeded users.
-    for (Object element : repository.getUsers()) {
+    for (Object element : repository.getUsers(new UserFilter())) {
       User user = (User) element;
       if (!user.getName().equals("admin")) {
         repository.remove(user);

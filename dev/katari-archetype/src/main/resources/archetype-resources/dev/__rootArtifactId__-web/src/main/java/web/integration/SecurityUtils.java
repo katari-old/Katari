@@ -11,7 +11,8 @@ import org.acegisecurity.Authentication;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ${package}.web.user.domain.User;
+import com.globant.katari.user.domain.User;
+import com.globant.katari.user.integration.DomainUserDetails;
 
 /** Security related utilities.
  *
@@ -19,8 +20,6 @@ import ${package}.web.user.domain.User;
  * logged on user.
  *
  * TODO There is a class named SecurityUtils in katari-core, check if it is ok.
- *
- * @author nicolas.frontini
  */
 public final class SecurityUtils {
 
