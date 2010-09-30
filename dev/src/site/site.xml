@@ -59,6 +59,7 @@
       <item name="Katari Console" href="/katari-console/index.html"/>
       <item name="Katari Tools" href="/katari-tools/index.html"/>
       <item name="Katari Archetype" href="/katari-archetype/index.html"/>
+      <item name="Katari User" href="/katari-user/index.html"/>
       <item name="Katari Style" href="/katari-style/index.html"/>
       <item name="Katari Sample" href="/katari-sample/index.html"/>
       <item name="Katari Sample without database"
@@ -68,7 +69,6 @@
     <menu name="Documentation in PDF">
       <item name="Release Notes" href="pdf/release-notes.pdf" />
       <item name="User Manual" href="pdf/user-manual.pdf" />
-      <!-- item name="Architecture" href="pdf/katari-architecture.pdf" / -->
     </menu>
 
     <menu name="For Developers">
