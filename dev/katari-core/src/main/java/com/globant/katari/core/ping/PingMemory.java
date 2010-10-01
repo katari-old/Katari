@@ -2,8 +2,6 @@
 
 package com.globant.katari.core.ping;
 
-import org.apache.commons.lang.Validate;
-
 import com.globant.katari.core.ping.PingService;
 import com.globant.katari.core.ping.PingResult;
 
