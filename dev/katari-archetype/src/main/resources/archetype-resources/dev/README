@@ -9,6 +9,9 @@ full access to it.
 
 3- maven-2.2.
 
+4- A properly configured maven repository proxy or access to the public maven
+repositories.
+
 Quick start guide
 -----------------
 
@@ -77,6 +80,15 @@ this as a child of <settings> in ~/.m2/settings.xml:
       <mirrorOf>*,!sonar</mirrorOf>
     </mirror>
   </mirrors>
+
+Also, you need access to a tomcat distribution to run the functional tests. This
+is only needed if you are running behind a proxy. For example:
+
+  <properties>
+    <cargo.tomcatLocation>
+      http://maven.corp.globant.com/tools/containers/apache-tomcat-5.5.17.zip
+    </cargo.tomcatLocation>
+  </properties>
 
 Supported software
 ------------------
@@ -226,6 +238,14 @@ Then, launch jetty:
 mvn jetty:run
 
 Connect to the remote debuging port, 8000 in this case.
+
+If you are behind  a proxy
+--------------------------
+
+If you are behind a proxy and the server needs to make http requests to external
+resources, then define MAVEN_OPTS as:
+
+MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128"
 
 -- vim: set ts=2 et sw=2 tw=80:
 

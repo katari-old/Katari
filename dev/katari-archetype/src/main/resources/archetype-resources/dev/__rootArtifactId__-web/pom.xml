@@ -334,7 +334,7 @@
           <container>
             <containerId>tomcat5x</containerId>
             <zipUrlInstaller>
-              <url>${cargo.tomcatLocation}</url>
+              <url>${symbol_dollar}{cargo.tomcatLocation}</url>
             </zipUrlInstaller>
             <systemProperties>
               <!-- Hopefully avoids a java.util.ConcurrentModificationException
@@ -533,7 +533,7 @@
               <container>
                 <containerId>tomcat5x</containerId>
                 <zipUrlInstaller>
-                  <url>${cargo.tomcatLocation}</url>
+                  <url>${symbol_dollar}{cargo.tomcatLocation}</url>
                 </zipUrlInstaller>
                 <systemProperties>
                   <!-- Hopefully avoids a
