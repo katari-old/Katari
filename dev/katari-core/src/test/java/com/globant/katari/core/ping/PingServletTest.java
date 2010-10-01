@@ -6,6 +6,9 @@ import static org.easymock.classextension.EasyMock.*;
 
 import java.io.PrintWriter;
 
+import java.util.List;
+import java.util.LinkedList;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +25,7 @@ public class PingServletTest {
   @Test
   public void testService() throws Exception {
 
-    PingServices pingServices = new PingServices();
+    List<PingService> pingServices = new LinkedList<PingService>();
 
     // Mocks the Web Application Context
     WebApplicationContext wac = createMock(WebApplicationContext.class);

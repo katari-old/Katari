@@ -205,9 +205,9 @@
   <katari:menuBar id='katari.menuBar' />
 
   <!-- A list of pingServices.  -->
-  <bean id="katari.pingServices"
-    class="com.globant.katari.core.ping.PingServices">
-  </bean>
+  <util:list id='katari.pingServices'>
+    <bean class='com.globant.katari.core.ping.PingMemory'/>
+  </util:list>
 
   <!-- ============================================================= -->
   <!-- ================== Security related beans =================== -->

@@ -58,14 +58,15 @@ public class PingServlet extends HttpServlet {
     boolean isOk = true;
 
     StringBuffer output = new StringBuffer();
-    PingServices services = getPingServices();
+    List<PingService> services = getPingServices();
 
     if (services == null) {
       output.append("Loading spring context: FAIL\n");
     } else {
       output.append("Loading spring context: SUCCESS\n");
-      List<PingResult> results = services.ping();
-      for (final PingResult result : results) {
+
+      for (final PingService service : services) {
+        PingResult result = service.ping();
         output.append(result.getMessage() + "\n");
         if (!result.isOk()) {
           isOk = false;
@@ -93,12 +94,13 @@ public class PingServlet extends HttpServlet {
    *
    * @return the list of ping services or null if an error ocurred.
    */
-  private PingServices getPingServices() {
-    PingServices services = null;
+  @SuppressWarnings("unchecked")
+  private List<PingService> getPingServices() {
+    List<PingService> services = null;
     WebApplicationContext context = WebApplicationContextUtils
         .getWebApplicationContext(getServletContext());
     if (context != null) {
-      services = (PingServices) context.getBean("katari.pingServices");
+      services = (List<PingService>) context.getBean("katari.pingServices");
     }
     return services;
   }

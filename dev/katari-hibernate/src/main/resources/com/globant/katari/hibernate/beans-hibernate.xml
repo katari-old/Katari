@@ -39,14 +39,9 @@
     </property>
   </bean>
 
-  <!-- ============================================================= -->
-  <!-- ================== Security related beans =================== -->
-  <!-- ============================================================= -->
-
   <!-- Adds a database checker to the list of ping services -->
-  <bean class="com.globant.katari.core.ping.PingServicesExpander"
-    lazy-init="false">
-    <constructor-arg ref="katari.pingServices"/>
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.pingServices'/>
     <constructor-arg>
       <list>
         <!-- The database ping -->
@@ -58,6 +53,10 @@
       </list>
     </constructor-arg>
   </bean>
+
+  <!-- ============================================================= -->
+  <!-- ================== Security related beans =================== -->
+  <!-- ============================================================= -->
 
   <!-- A bean to override the query to perform to test if the database is
        alive. -->
