@@ -15,7 +15,9 @@
   <artifactId>dev</artifactId>
   <packaging>pom</packaging>
   <name>\${friendlyName} - dev</name>
-  <url>http://maven.corp.globant.com/projects/globant/\${groupId}/\${artifactId}/\${version}</url>
+  <url>
+    http://maven.corp.globant.com/repositories/site/\${groupId}/\${rootArtifactId}/\${version}
+  </url>
 
   <!-- List of dependencies for all modules in the application. This section
   sets the version of the dependencies. Each module must define its specific
@@ -504,12 +506,12 @@
   <!-- The location where deploy and site-deploy leaves the artifacts -->
   <distributionManagement>
     <repository>
-      <id>\${artifactId}-artifacts-repository</id>
-      <url>dav:http://maven.corp.globant.com/repositories/globant</url>
+      <id>\${rootArtifactId}-artifacts-repository</id>
+      <url>dav:http://maven.corp.globant.com/nexus/content/repositories/globant</url>
     </repository>
     <site>
-      <id>\${artifactId}-artifacts-repository</id>
-      <url>dav:http://maven.corp.globant.com/projects/globant/\${groupId}/\${artifactId}/\${version}</url>
+      <id>\${rootArtifactId}-artifacts-repository</id>
+      <url>dav:http://maven.corp.globant.com/nexus/content/repositories/site/\${groupId}/\${rootArtifactId}/\${version}</url>
     </site>
   </distributionManagement>
 
