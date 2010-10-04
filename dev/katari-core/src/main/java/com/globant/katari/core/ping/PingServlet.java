@@ -31,7 +31,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  *
  * or
  *
- * Apllication startup failed.
+ * Application startup failed.
  *
  * This allows the user to simply grep for the the output to run a quick test
  * to check if the application is running.
