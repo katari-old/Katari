@@ -85,7 +85,7 @@
                       value="${packageInPathFormat}/style/asset"/>
                     <entry key="debug" value-ref='debugMode'/>
                     <entry key="debugPrefix"
-                      value="../${artifactId}-style/src/main/resources"/>
+                      value="../${artifactId}/src/main/resources"/>
                     <entry key="requestCacheContent" value="true"/>
                     <entry key="mimeType_png" value="image/png"/>
                     <entry key="mimeType_gif" value="image/gif"/>
