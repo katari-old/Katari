@@ -998,6 +998,7 @@ form span.buttons, form ul.glasslist .buttonBarClass {
 
 .gadgetContainer iframe {
   border: 0px;
+  overflow: hidden;
 }
 
 .canvasColumn {
@@ -1081,7 +1082,7 @@ form span.buttons, form ul.glasslist .buttonBarClass {
 .iframeContainer{
   border-top:1px solid #f0f0f0;
   padding:10px;
-  text-align:center;;
+  text-align:center;
 }
 
 /* A 1px float element to force a min height in the parent object. */
