@@ -207,18 +207,8 @@
     </constructor-arg>
   </bean>
 
-  <!-- An implementation of UserDetailsService that builds a user details
-  object that delegates the user handling to the user domain object.
-  -->
-  <bean id="katari.userDetailsService" lazy-init='true'
-    class="com.globant.katari.user.integration.DomainUserDetailsService">
-    <constructor-arg>
-      <ref bean="userRepository"/>
-    </constructor-arg>
-  </bean>
-
-  <!-- We use the userRepository from the user module. -->
-  <alias name="user.userRepository" alias="userRepository"/>
+  <!-- We use the userDetailsService from the user module. -->
+  <alias name="user.userDetailsService" alias="katari.userDetailsService"/>
 
   <!-- Port mappings for HTTP/HTTPS access. -->
   <bean id='katari.httpsPortMapper'
