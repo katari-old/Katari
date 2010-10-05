@@ -297,7 +297,7 @@ public class StaticContentServlet extends HttpServlet {
     // set the content-type header
     response.setContentType(contentType);
 
-    if (requestCacheContent) {
+    if (!debug && requestCacheContent) {
       // set heading information for caching static content
       response.setDateHeader("Date", now);
       response.setDateHeader("Expires", expires);

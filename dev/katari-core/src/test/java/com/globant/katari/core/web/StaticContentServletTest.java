@@ -207,6 +207,7 @@ public class StaticContentServletTest {
         "com/globant/katari/core/web");
     config.addInitParameter("debug", "true");
     config.addInitParameter("debugPrefix", "target/test-data");
+    config.addInitParameter("requestCacheContent", "true");
 
     StaticContentServlet staticContentServlet = new StaticContentServlet();
     staticContentServlet.init(config);
@@ -225,6 +226,7 @@ public class StaticContentServletTest {
     staticContentServlet.service(request, response);
     String output = response.getContentAsString().trim();
     assertEquals("Sample not modified.", output);
+    assertEquals("-1", response.getHeader("Expires"));
 
     // Now, create a new file and check that it was found.
     FileWriter out = new FileWriter(sample);
