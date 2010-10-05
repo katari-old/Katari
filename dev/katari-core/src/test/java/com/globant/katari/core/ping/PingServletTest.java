@@ -64,14 +64,19 @@ public class PingServletTest {
     out.close();
     out.println("Loading spring context: SUCCESS\n"
         + "Application started successfully");
+    out.close();
+    out.println("Loading spring context: SUCCESS\n"
+        + "Application started successfully");
     replay(out);
     HttpServletResponse response = createNiceMock(HttpServletResponse.class);
     response.setContentType("text/plain");
-    expect(response.getWriter()).andReturn(out);
+    expect(response.getWriter()).andReturn(out).anyTimes();
     replay(response);
 
     PingServlet servlet = new PingServlet();
     servlet.init(config);
+    servlet.service(request, response);
+    // This returns the caced value.
     servlet.service(request, response);
     verify(out);
   }
