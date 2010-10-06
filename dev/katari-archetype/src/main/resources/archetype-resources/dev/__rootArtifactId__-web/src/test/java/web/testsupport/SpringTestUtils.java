@@ -33,15 +33,15 @@ public final class SpringTestUtils {
    */
   private static DataSource dataSource = null;
 
-  /** Bean fectory.
+  /** Bean factory.
    */
   private static ApplicationContext beanFactory;
 
-  /** User module Bean fectory.
+  /** User module Bean factory.
    */
   private static ApplicationContext userModuleBeanFactory;
 
-  /** Time entry module Bean fectory.
+  /** Time entry module Bean factory.
    */
   private static ApplicationContext timeModuleBeanFactory;
 

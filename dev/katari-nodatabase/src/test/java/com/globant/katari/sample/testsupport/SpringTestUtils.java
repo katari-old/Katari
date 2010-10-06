@@ -21,7 +21,7 @@ public final class SpringTestUtils {
    */
   private static Log log = LogFactory.getLog(SpringTestUtils.class);
 
-  /** Bean fectory.
+  /** Bean factory.
    */
   private static ApplicationContext beanFactory;
 

@@ -32,7 +32,7 @@ public class TestUtils {
    */
   private static Log log = LogFactory.getLog(TestUtils.class);
 
-  /** The global application bean fectory.
+  /** The global application bean factory.
    */
   private static ApplicationContext beanFactory;
 

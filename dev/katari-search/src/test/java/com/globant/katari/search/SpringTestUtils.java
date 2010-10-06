@@ -24,7 +24,7 @@ public final class SpringTestUtils {
    */
   private static ApplicationContext beanFactory = null;
 
-  /** Module Bean fectory, a singleton.
+  /** Module Bean factory, a singleton.
    */
   private static ApplicationContext moduleBeanFactory = null;
 
