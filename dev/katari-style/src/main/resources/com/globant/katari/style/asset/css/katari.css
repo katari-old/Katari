@@ -27,7 +27,7 @@ div#container {
   margin:0 auto; /* center, not in IE5 */
   width:100%;
   background:#ffffff;
-  
+
   height:auto !important; /* real browsers */
   height:100%; /* IE6: treated as min-height*/
 
@@ -555,7 +555,7 @@ form input, form select, form textarea, .loginContainer input {
 
 #header #data span { float:right; }
 
-#version {  
+#version {
   background-image: url(../image/footer-bg.png);
   color:#838383;
   height:20px;
@@ -1013,7 +1013,7 @@ form span.buttons, form ul.glasslist .buttonBarClass {
 }
 
 #top-gadgets{
-  
+
 }
 .gadgetPortlet{
   border:1px solid #c9dda5;
