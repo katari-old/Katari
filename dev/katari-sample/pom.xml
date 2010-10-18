@@ -248,8 +248,19 @@
     </dependency>
 
     <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-jsmodule</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.compass-project</groupId>
       <artifactId>compass</artifactId>
+    </dependency>
+
+    <!-- Javascript dependencies -->
+    <dependency>
+      <groupId>com.globant.jslib</groupId>
+      <artifactId>jquery</artifactId>
     </dependency>
 
   </dependencies>

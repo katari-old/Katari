@@ -5,7 +5,7 @@
     <title>Select Application</title>
 
     <script type='text/javascript'
-      src='${baseweb}/module/gadgetcontainer/assets/js/jquery-1.4.2.js'>
+      src='${baseweb}/module/jsmodule/com/globant/jslib/jquery/jquery.js'>
     </script>
 
     <script type='text/javascript'>

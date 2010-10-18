@@ -72,6 +72,9 @@
   <!-- The Institutional module. It has some static pages. -->
   <katari:import module="${package}.web.institutional"/>
 
+  <!-- Module to serve static content. -->
+  <katari:import module="com.globant.katari.jsmodule" />
+
   <!-- The hibernate properties, They are referenced from the hibernate bean.
        -->
   <bean id="katari.hibernateProperties"

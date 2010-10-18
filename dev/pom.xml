@@ -535,6 +535,12 @@
       </dependency>
 
       <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-jsmodule</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>jtidy</groupId>
         <artifactId>jtidy</artifactId>
         <version>r938</version>
@@ -586,6 +592,13 @@
         </exclusions>
       </dependency>
       -->
+
+      <!-- Javascript dependencies. -->
+      <dependency>
+        <groupId>com.globant.jslib</groupId>
+        <artifactId>jquery</artifactId>
+        <version>1.4.2</version>
+      </dependency>
 
     </dependencies>
   </dependencyManagement>

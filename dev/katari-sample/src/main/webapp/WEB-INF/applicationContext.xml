@@ -73,6 +73,9 @@
   <!-- The social graph module. -->
   <katari:import module="com.globant.katari.shindig" />
 
+  <!-- Module to serve static content. -->
+  <katari:import module="com.globant.katari.jsmodule" />
+
   <!-- Module with sample gadgets. -->
   <katari:import module="com.globant.katari.sample.gadget" />
 
