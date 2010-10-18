@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -122,6 +123,8 @@ public class StaticContentServletTest {
     StaticContentServlet staticContentServlet = new StaticContentServlet();
     staticContentServlet.init(config);
     staticContentServlet.service(request, response);
+
+    assertFalse(staticContentServlet.isInDebugMode());
   }
 
   /* Tests the doPost Method.
@@ -190,8 +193,8 @@ public class StaticContentServletTest {
   /* Tests that the servlet throws an exception if the staticContentPath is not
    * specified. 
    */
-  @Test(expected = RuntimeException.class)
-  public void testInit_noStaticContentPath() {
+  @Test(expected = ServletException.class)
+  public void testInit_noStaticContentPath() throws ServletException {
     MockServletConfig config = new MockServletConfig();
     StaticContentServlet staticContentServlet = new StaticContentServlet();
     staticContentServlet.init(config);
@@ -237,6 +240,8 @@ public class StaticContentServletTest {
     staticContentServlet.service(request, response);
     output = response.getContentAsString().trim();
     assertEquals("Sample is now modified.", output);
+
+    assertTrue(staticContentServlet.isInDebugMode());
   }
 }
 
