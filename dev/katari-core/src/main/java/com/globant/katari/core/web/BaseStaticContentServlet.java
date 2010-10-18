@@ -184,7 +184,10 @@ public abstract class BaseStaticContentServlet extends HttpServlet {
     String contentType = getContentType(name);
     if (contentType == null) {
       response.sendError(HttpServletResponse.SC_NOT_FOUND);
-      response.getWriter().write("<html><head><title>404</title></head>"
+      response.getWriter().write(
+          "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'"
+          + " 'http://www.w3.org/TR/html4/strict.dtd'>"
+          + "<html><head><title>404</title></head>"
           + "<body>Resource not found</body></html>");
       log.trace("Leaving findStaticResource with SC_NOT_FOUND");
       response.flushBuffer();
