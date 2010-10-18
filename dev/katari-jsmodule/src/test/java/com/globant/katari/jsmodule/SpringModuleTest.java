@@ -5,10 +5,7 @@ package com.globant.katari.jsmodule;
 import javax.servlet.ServletContext;
 
 import org.springframework.web.context.support.XmlWebApplicationContext;
-import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.core.io.FileSystemResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ByteArrayResource;
 
 import org.springframework.mock.web.MockServletContext;
 
@@ -37,7 +34,7 @@ public class SpringModuleTest {
     appContext = new XmlWebApplicationContext();
     appContext.setServletContext(sc);
     appContext.setConfigLocations(new String[] {
-      "classpath:com/globant/katari/jsmodule/module.xml" });
+      "classpath:applicationContext.xml" });
     appContext.refresh();
   }
 

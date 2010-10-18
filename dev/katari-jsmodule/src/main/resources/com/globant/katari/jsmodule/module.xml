@@ -6,33 +6,38 @@
     http://www.globant.com/schema/katari
     http://www.globant.com/schema/katari/katari.xsd">
 
-  <bean id="jsmodule.module" class="com.globant.katari.core.web.ConfigurableModule">
+  <bean id="jsmodule.module"
+    class="com.globant.katari.core.web.ConfigurableModule">
     <property name="entryPoints">
-      <!--
-        The servlet mappings. It maps the spring DispatcherServlet to *.do.
-      -->
       <bean class="org.springframework.beans.factory.config.MapFactoryBean">
         <property name="sourceMap">
           <map>
-            <!-- The spring-mvc controller servlet -->
-            <entry key=".*\.do">
+            <entry key="/.*">
               <bean class="com.globant.katari.core.web.ServletAndParameters">
                 <constructor-arg index="0">
-                  <bean class="org.springframework.web.servlet.DispatcherServlet" />
+                  <bean class="com.globant.katari.jsmodule.view.ContentModuleServlet"/>
                 </constructor-arg>
                 <constructor-arg index="1">
                   <map>
-                    <entry key="contextConfigLocation">
-                      <value>
-                        classpath:/com/globant/katari/jsmodule/view/spring-servlet.xml
-                      </value>
-                    </entry>
+                    <entry key="debug" value-ref='debugMode'/>
+                    <entry key="requestCacheContent" value="true"/>
                   </map>
                 </constructor-arg>
               </bean>
             </entry>
           </map>
         </property>
+      </bean>
+    </property>
+
+    <!-- Everybody can access the static resources. -->
+    <property name="urlToRoleMapper">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
+        <constructor-arg index="0">
+          <map>
+            <entry key="/**/*" value="IS_AUTHENTICATED_ANONYMOUSLY" />
+          </map>
+        </constructor-arg>
       </bean>
     </property>
   </bean>

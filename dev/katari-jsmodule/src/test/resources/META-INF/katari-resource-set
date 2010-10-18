@@ -1,0 +1,8 @@
+
+staticContentPath=com/globant/katari/jsmodule/view
+
+mimeType.js=text/javascript
+mimeType.png=image/png
+
+debugPrefix=../katari-jsmodule/src/test/resources
+
