@@ -269,6 +269,14 @@ public class HtmlValidationFilter implements Filter {
     enabled = isEnabled;
   }
 
+  /** Returns true if validation is enabled.
+   *
+   * @return if html validation is enabled.
+   */
+  public boolean isEnabled() {
+    return enabled;
+  }
+
   /** Configures the list of patters for the urls that should be ignored on the
    * validation process.
    * @param theIgnoredUrlpatterns the list of url patterns, it cannot be null.

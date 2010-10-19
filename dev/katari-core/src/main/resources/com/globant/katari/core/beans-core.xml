@@ -206,6 +206,12 @@
 
   <!-- A list of pingServices.  -->
   <util:list id='katari.pingServices'>
+    <bean class='com.globant.katari.core.ping.PingConfiguration'>
+      <constructor-arg index='0' ref='debugMode'/>
+      <constructor-arg index='1'>
+        <util:property-path path="htmlValidator.enabled"/>
+      </constructor-arg>
+    </bean>
     <bean class='com.globant.katari.core.ping.PingMemory'/>
   </util:list>
 
