@@ -1,5 +1,15 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.24
+
+* What's new since version 0.22
+
+ * New module katari-jsmodule. Supports katari packaged js libraries.
+
+ * Various bug fixes, most from the generated archetype.
+
+ * More information shown in the ping service (memory, debug configuration).
+
 Release notes for version 0.23
 
 * What's new since version 0.22
