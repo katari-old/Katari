@@ -136,8 +136,8 @@ public class TaskDashboardCommandTest {
     }
 
     task.put("friendlyName", "The friendly name");
-    task.put("nextExecutionTime", "10-20-2010 15:30");
-    task.put("lastExecutionTime", "10-20-2010 13:30");
+    task.put("nextExecutionTime", "2010-10-20T18:30:00Z");
+    task.put("lastExecutionTime", "2010-10-20T16:30:00Z");
 
     JSONObject information = new JSONObject();
     information.put("Processing row", "104");

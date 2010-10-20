@@ -45,8 +45,8 @@
 
         /** Formats the information column.
         */
-        var informationFormatter = function(cell, row, oColumn, sData) {
-          var values = row.getData('information');
+        var informationFormatter = function(cell, row, column, data) {
+          var values = row.getData(column.key);
           var tmp = [];
           for(x in values) {
             if (tmp.length != 0) {
@@ -61,8 +61,8 @@
 
         /** Formats the progressPercent column.
         */
-        var percentageFormatter = function(cell, row, oColumn, sData) {
-          var value = row.getData('progressPercent');
+        var percentageFormatter = function(cell, row, column, data) {
+          var value = row.getData(column.key);
           var tmp = [];
           tmp.push("<div style='width:200px; border: 1px solid #999'>");
           if (value) {
@@ -77,12 +77,32 @@
           cell.innerHTML = tmp.join("");
         };
 
+        /** Formats the date columns (very hacky).
+        */
+        var dateFormatter = function(cell, row, column, data) {
+          var value = row.getData(column.key);
+
+          var struct = /(\d{4})-?(\d{2})-?(\d{2})(?:[T ](\d{2}):?(\d{2}):?(\d{2})(?:\.(\d{3,}))?(?:(Z)|([+\-])(\d{2})(?::?(\d{2}))?))/.exec(value);
+
+          timestamp = Date.UTC(+struct[1], +struct[2] - 1, +struct[3],
+            +struct[4], +struct[5], +struct[6]);
+
+          cell.innerHTML = YAHOO.util.Date.format(new Date(timestamp),
+            {format: "%Y-%m-%d %T"});
+        }
+
         var columns = [
           {key: "friendlyName", label: "Name"},
           {key: "progressPercent", label: "%", formatter: percentageFormatter},
-          {key: "lastExecutionTime", label: "Last run on"},
-          {key: "nextExecutionTime", label: "Will run on"},
           {
+            key: "lastExecutionTime",
+            label: "Last run on",
+            formatter: dateFormatter
+          }, {
+            key: "nextExecutionTime",
+            label: "Will run on",
+            formatter: dateFormatter
+          }, {
             key: "information",
             label: "Information",
             formatter: informationFormatter

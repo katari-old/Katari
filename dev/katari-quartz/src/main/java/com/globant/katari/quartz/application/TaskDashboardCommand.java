@@ -4,6 +4,7 @@ package com.globant.katari.quartz.application;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -46,7 +47,8 @@ public class TaskDashboardCommand implements Command<JsonRepresentation> {
   public TaskDashboardCommand(final Scheduler theScheduler) {
     Validate.notNull(theScheduler, "The Scheduler cannot be null");
     scheduler = theScheduler;
-    dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+    dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
   }
 
   /** Return the json representation of the Task.
@@ -58,13 +60,17 @@ public class TaskDashboardCommand implements Command<JsonRepresentation> {
    *    "progressPercent": "10",
    *    "friendlyName": "The Friendly Name",
    *    "information": {...},
-   *    "nextExecutionTime": "10/19/2010 20:00",
-   *    "lastExecutionTime": "10/19/2010 14:00",
+   *    "nextExecutionTime": "2010-10-19T20:00:00Z",
+   *    "lastExecutionTime": "2010-10-19T14:00:00Z",
    *  }
    * ]
+   * </code>
+   *
    * The progressPercent, nextExecutionTime and lastExecutionTime are optional.
    * If they are not known, then they are not sent to the client.
-   * </code>
+   *
+   * Dates are in iso 8601, extended format. They are in utc, designated with
+   * the Z suffix. Precision is up to the second.
    *
    * @return a json representation, never null.
    */
