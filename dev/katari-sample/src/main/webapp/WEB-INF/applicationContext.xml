@@ -79,6 +79,33 @@
   <!-- Module with sample gadgets. -->
   <katari:import module="com.globant.katari.sample.gadget" />
 
+  <!-- Module with quartz -->
+  <katari:import module="com.globant.katari.quartz" />
+
+  <!-- REMOVE THIS IN PRODUCTION. -->
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='quartz.schedulerTasks'/>
+    <constructor-arg>
+      <list>
+        <bean id="sampleBeanJobDetailTrigger"
+          class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+          <property name="jobDetail">
+            <bean id="sampleBeanJobDetail"
+              class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+              <property name="targetObject">
+                <bean class='com.globant.katari.sample.SampleScheduledCommand' />
+              </property>
+              <property name="targetMethod" value="execute"/>
+              <property name="concurrent" value="true"/>
+            </bean>
+          </property>
+          <property name="startDelay" value="5000"/>
+          <property name="repeatInterval" value="200000"/>
+        </bean>
+      </list>
+    </constructor-arg>
+  </bean>
+
   <!-- The hibernate properties. They are referenced from the hibernate bean. -->
   <bean id="katari.hibernateProperties"
     class="org.springframework.beans.factory.config.PropertiesFactoryBean">

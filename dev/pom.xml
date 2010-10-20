@@ -71,6 +71,7 @@
          katari-module-archetype. -->
     <module>katari-it</module>
     <module>katari-jsmodule</module>
+    <module>katari-quartz</module>
   </modules>
 
   <!-- List of dependencies for all modules in the application. This section
@@ -541,6 +542,12 @@
       </dependency>
 
       <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-quartz</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>jtidy</groupId>
         <artifactId>jtidy</artifactId>
         <version>r938</version>
@@ -577,7 +584,7 @@
       <!-- This is necessary to support tomcat 6, otherwise deploying in tomcat
            6 will fail with a linkage error related to javax.el. But we need
            juel-api for tomcat 5.5.
-           
+
            This is only relevant if you use the shindig module. -->
       <!--
       <dependency>
