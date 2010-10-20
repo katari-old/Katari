@@ -5,16 +5,11 @@ package com.globant.katari.core.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 
 import java.net.URL;
 import java.net.URLDecoder;
 
 import java.util.Calendar;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -147,7 +142,7 @@ public abstract class BaseStaticContentServlet extends HttpServlet {
    *
    * @throws ServletException in case of error.
    *
-   * TODO See if it shuold use pathInfo instead of servletPath.
+   * TODO See if it should use pathInfo instead of servletPath.
    */
   private void serveStaticContent(final HttpServletRequest request, final
       HttpServletResponse response) throws ServletException, IOException {

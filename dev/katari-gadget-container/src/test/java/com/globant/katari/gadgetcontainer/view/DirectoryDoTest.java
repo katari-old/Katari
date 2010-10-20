@@ -20,7 +20,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
-import com.globant.katari.core.spring.controller.JsonCommandController;
 
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.mock.web.MockHttpServletRequest;
