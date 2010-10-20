@@ -27,24 +27,24 @@
     p:exposeRequestAttributes='true'/>
 
   <bean name='/socialPage.do'
-    class='com.globant.katari.gadgetcontainer.view.JsonCommandController'>
+    class='com.globant.katari.core.spring.controller.JsonCommandController'>
     <lookup-method name="createCommandBean" bean="gadgetGroupCommand" />
   </bean>
  
   <bean name='/moveGadget.do'
-    class='com.globant.katari.gadgetcontainer.view.JsonCommandController'>
+    class='com.globant.katari.core.spring.controller.JsonCommandController'>
     <lookup-method name="createCommandBean" bean="moveGadgetCommand" />
   </bean>
 
   <!-- Endpoint to add an application to a group. -->
   <bean name='/addApplicationToGroup.do'
-    class='com.globant.katari.gadgetcontainer.view.JsonCommandController'>
+    class='com.globant.katari.core.spring.controller.JsonCommandController'>
     <lookup-method name="createCommandBean" bean="addApplicationToGroupCommand" />
   </bean>
 
   <!-- Endpoint to remove an application from a group. -->
   <bean name='/removeApplicationFromGroup.do'
-    class='com.globant.katari.gadgetcontainer.view.JsonCommandController'>
+    class='com.globant.katari.core.spring.controller.JsonCommandController'>
     <lookup-method name="createCommandBean"
       bean="removeApplicationFromGroupCommand" />
   </bean>

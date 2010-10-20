@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 import com.globant.katari.core.application.Command;
+import com.globant.katari.core.application.JsonRepresentation;
+
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;

@@ -1,6 +1,6 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
 
-package com.globant.katari.gadgetcontainer.application;
+package com.globant.katari.core.application;
 
 import org.apache.commons.lang.Validate;
 

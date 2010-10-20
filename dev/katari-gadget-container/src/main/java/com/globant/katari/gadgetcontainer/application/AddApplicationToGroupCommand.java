@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.globant.katari.core.application.Command;
+import com.globant.katari.core.application.JsonRepresentation;
+
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;

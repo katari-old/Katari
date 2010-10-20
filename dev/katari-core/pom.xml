@@ -140,6 +140,11 @@
       <artifactId>jtidy</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+    </dependency>
+
     <!-- Provided by the container -->
     <dependency>
       <groupId>javax.servlet</groupId>

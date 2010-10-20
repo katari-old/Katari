@@ -1,6 +1,6 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
 
-package com.globant.katari.gadgetcontainer.view;
+package com.globant.katari.core.spring.controller;
 
 import static org.easymock.classextension.EasyMock.*;
 
@@ -20,7 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.globant.katari.core.application.Command;
 
 import org.json.JSONObject;
-import com.globant.katari.gadgetcontainer.application.JsonRepresentation;
+
+import com.globant.katari.core.application.JsonRepresentation;
 
 /** Test for the controller {@link JsonCommandController}
  *

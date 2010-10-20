@@ -1,6 +1,6 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
 
-package com.globant.katari.gadgetcontainer.view;
+package com.globant.katari.core.spring.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,8 +9,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 
-import com.globant.katari.gadgetcontainer.application.JsonRepresentation;
-
+import com.globant.katari.core.application.JsonRepresentation;
 import com.globant.katari.core.application.Command;
 
 /** Executes a Command&lt;JsonRepresentation&gt; and writes the resulting json
