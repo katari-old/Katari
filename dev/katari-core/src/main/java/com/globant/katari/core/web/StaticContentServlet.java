@@ -4,23 +4,15 @@ package com.globant.katari.core.web;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
-import java.net.URL;
-import java.net.URLDecoder;
-
-import java.util.Calendar;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.Validate;
 
@@ -66,19 +58,10 @@ public class StaticContentServlet extends BaseStaticContentServlet {
    */
   private static final long serialVersionUID = 1;
 
-  /** The buffer size used to transfer bytes to the client.
-   */
-  private static final int BUFFER_SIZE = 4096;
-
   /** The class logger.
    */
   private static Logger log = LoggerFactory.getLogger(
       StaticContentServlet.class);
-
-  /** Provide a formatted date for setting heading information when caching
-   * static content.
-   */
-  private final Calendar lastModified = Calendar.getInstance();
 
   /** Store the path prefix to use with static resources.
    */
