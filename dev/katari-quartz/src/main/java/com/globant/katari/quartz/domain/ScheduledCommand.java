@@ -10,7 +10,7 @@ import com.globant.katari.core.application.Command;
  *
  * This command is used to execute tasks that can provide information such as
  * progress and friendly display name to the user. This kind of command is
- * usually ran as a scheduled job.
+ * usually run as a scheduled job.
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
