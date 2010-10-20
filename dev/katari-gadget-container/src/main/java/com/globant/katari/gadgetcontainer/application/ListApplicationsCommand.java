@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.LinkedList;
 
 import com.globant.katari.core.application.Command;
-import com.globant.katari.core.application.JsonRepresentation;
 
 import com.globant.katari.gadgetcontainer.domain.ApplicationRepository;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
