@@ -6,7 +6,11 @@ Release notes for version 0.24
 
  * New module katari-jsmodule. Supports katari packaged js libraries.
 
- * Various bug fixes, most from the generated archetype.
+ * New module katari-quartz. This module makes it possible for other modules to
+ schedule tasks sharing a quartz instance. It also provides a simple
+ monitoring panel. Thanks Emiliano Arango for this.
+ 
+ * Various bug fixes, most from the project archetype.
 
  * More information shown in the ping service (memory, debug configuration).
 
