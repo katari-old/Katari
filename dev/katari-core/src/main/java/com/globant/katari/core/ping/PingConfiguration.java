@@ -5,11 +5,6 @@ package com.globant.katari.core.ping;
 import com.globant.katari.core.ping.PingService;
 import com.globant.katari.core.ping.PingResult;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryPoolMXBean;
-import java.lang.management.MemoryType;
-import java.lang.management.MemoryUsage;
-
 /** Gives information about the current application configuration, in
  * particular, debug mode and html validation mode.
  */
