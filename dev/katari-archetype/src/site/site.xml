@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="\${friendlyName}">
+<project name="Katari archetype">
 
   <skin>
     <groupId>com.globant.katari</groupId>
@@ -14,7 +14,7 @@
 
   <body>
 
-    <menu name="$\{friendlyName} - $\{artifactId}">
+    <menu name="Katari - archetype">
       <item name="Parent" href="../index.html" />
       <item name="Introduction" href="index.html" />
     </menu>
