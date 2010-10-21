@@ -98,8 +98,8 @@ public class HibernateSecureUrlMacroFilter implements Filter {
     // consider the debugParameter in a development database. This is checked
     // after the debugParameter because checkForDevelopmentDatabase hits the
     // database.
-    if (debugParameter != null &&
-        developmentDataBaseChecker.checkForDevelopmentDatabase()) {
+    if (debugParameter != null
+        && developmentDataBaseChecker.checkForDevelopmentDatabase()) {
       HttpSession session = servletRequest.getSession();
       if (Boolean.valueOf(debugParameter)) {
         log.debug("Enabling security debug mode.");

@@ -2,16 +2,11 @@
 
 package com.globant.katari.hibernate.coreuser;
 
-import org.acegisecurity.ConfigAttribute;
-import org.acegisecurity.ConfigAttributeDefinition;
-import org.acegisecurity.SecurityConfig;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.Authentication;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.apache.commons.lang.Validate;
 
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 import com.globant.katari.hibernate.coreuser.domain.CoreUserDetails;

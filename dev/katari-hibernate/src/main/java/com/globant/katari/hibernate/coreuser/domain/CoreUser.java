@@ -33,7 +33,7 @@ import org.compass.annotations.SearchableProperty;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn( name = "user_type",
+@DiscriminatorColumn(name = "user_type",
     discriminatorType = DiscriminatorType.STRING)
 @Table(name = "users")
 public abstract class CoreUser {
@@ -70,8 +70,6 @@ public abstract class CoreUser {
    * Builds a user with the most basic data it needs to have.
    *
    * @param theName The user name. It cannot be null.
-   *
-   * @param theMail The user email address.
    */
   public CoreUser(final String theName) {
     Validate.notNull(theName, "The user name cannot be null");
