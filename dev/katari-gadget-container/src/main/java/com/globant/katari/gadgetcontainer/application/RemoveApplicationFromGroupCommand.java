@@ -18,7 +18,7 @@ import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
 /** Removes a gadget instance from a gadget group.
- * 
+ *
  * This command expects a gadget group name and the gadget instance id.
  *
  * The gadget group must be customizable, owned by the logged in user, and the
@@ -98,7 +98,7 @@ public class RemoveApplicationFromGroupCommand
 
   /** Sets the id of the gadget instance to remove, as provided by the client.
    *
-   * @param name the id of the gadget instance to remove.
+   * @param id the id of the gadget instance to remove.
    */
   public void setGadgetId(final long id) {
     gadgetId = id;

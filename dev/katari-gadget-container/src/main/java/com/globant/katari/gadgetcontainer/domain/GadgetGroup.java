@@ -53,7 +53,20 @@ public class GadgetGroup {
   /** The enumeration for the type of gadget group.
    */
   public static enum Type {
-    SHARED, CUSTOMIZABLE, TEMPLATE
+
+    /** A shared group is shared by many users and cannot be customizable.
+     */
+    SHARED,
+
+    /** A customizable group is owned by only one user, and users can add, move
+     * and remove gadgets.
+     */
+    CUSTOMIZABLE,
+
+    /** A template is never used by final users, it is used to create other
+     * customizable gadget groups.
+     */
+    TEMPLATE
   };
 
   /** The class logger.
@@ -155,13 +168,17 @@ public class GadgetGroup {
     type = Type.TEMPLATE;
   }
 
-  /** @return the id, 0 for a newly created object.
+  /** Obtains the group id.
+   *
+   * @return the id, 0 for a newly created object.
    */
   public long getId() {
     return id;
   }
 
-  /** @return the group name, never null.
+  /** Obtains the group name.
+   *
+   * @return the group name, never null.
    */
   public String getName() {
     return name;
@@ -303,7 +320,7 @@ public class GadgetGroup {
     for (GadgetInstance gadget : gadgetsInColumn) {
       log.debug("Moving gadget with id {} to {}.", gadget.getId(), newOrder);
       gadget.move(column, newOrder);
-      ++ newOrder;
+      ++newOrder;
     }
     log.trace("Leaving move");
   }
@@ -314,6 +331,8 @@ public class GadgetGroup {
    *
    * @param user the user that will own the new gadget group. It cannot be
    * null.
+   *
+   * @return a new gadged group, never null.
    */
   public GadgetGroup createFromTemplate(final CoreUser user) {
     Validate.notNull(user, "The user cannot be null.");

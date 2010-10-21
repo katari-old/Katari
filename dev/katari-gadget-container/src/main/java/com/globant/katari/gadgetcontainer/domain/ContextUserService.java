@@ -22,9 +22,9 @@ public class ContextUserService {
   /** The class logger.
    */
   private static Logger log = LoggerFactory.getLogger(ContextUserService.class);
-  
+
   /** Returns the currently logged in user.
-   * 
+   *
    * @return The currently logged in user, null if the user is anonymous.
    */
   public CoreUser getCurrentUser() {
@@ -45,14 +45,13 @@ public class ContextUserService {
     }
     CoreUser user = details.getCoreUser();
     log.trace("Leaving getCurrentUser");
-    
+
     return user;
   }
 
   /** Retrieves from the context the user.
    *
    * @return {@link String} the userId, 0 if the user was anonymous.
-   * @throws CanvasException if the operation can not be completed.
    */
   public long getCurrentUserId() {
     log.trace("Entering getCurrentUserId");

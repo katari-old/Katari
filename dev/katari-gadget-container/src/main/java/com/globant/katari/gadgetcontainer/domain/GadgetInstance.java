@@ -90,13 +90,17 @@ public class GadgetInstance {
     order = source.order;
   }
 
-  /** @return long the id of the gadget instance.
+  /** The gadget instance id.
+   *
+   * @return long the id of the gadget instance.
    */
   public long getId() {
     return id;
   }
 
-  /** @return {@link String} location of the gadget xml spec.
+  /** The application for this gadget instance.
+   *
+   * @return the application, never null.
    */
   public Application getApplication() {
     return application;
@@ -129,7 +133,7 @@ public class GadgetInstance {
   }
 
   /** The column where the gadget is to be positioned in the group.
-   * 
+   *
    * It starts from 0, and must be smaller than the number of columns in the
    * containing group.
    *
@@ -138,7 +142,7 @@ public class GadgetInstance {
   public int getColumn() {
     return column;
   }
- 
+
   /** The order of the gadget in the column.
    *
    * Two gadgets with the same vaule appears in an undefined order.

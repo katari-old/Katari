@@ -102,7 +102,7 @@ public class MoveGadgetCommand implements Command<JsonRepresentation> {
 
   /** Sets id of the gadget instance to move, as provided by the client.
    *
-   * @param name the id of the gadget to move.
+   * @param id the id of the gadget to move.
    */
   public void setGadgetInstanceId(final long id) {
     gadgetInstanceId = id;
@@ -133,9 +133,9 @@ public class MoveGadgetCommand implements Command<JsonRepresentation> {
     return order;
   }
 
-  /** The target column to move the gadget to.
+  /** The target position to move the gadget to.
    *
-   * @param targetColumn the column to move the gadget to.
+   * @param targetOrder the position to move the gadget to, 0 for the first.
    */
   public void setOrder(final int targetOrder) {
     order = targetOrder;

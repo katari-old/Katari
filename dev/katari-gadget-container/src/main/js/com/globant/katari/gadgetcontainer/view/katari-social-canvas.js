@@ -166,11 +166,11 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
    * +-> iframe(id='Application-N)
    *
    * Finally, it stores as jquery data in the parent div:
-   * 
+   *
    * - the gadget (this) under the 'gadgetInstance'.
    *
    * - the gadget group under the 'gadgetGroup'.
-   *   
+   *
    * So, if you have a jQuery object fo the gadget div, you can use:
    *
    * jQuery('#gadget_Application-N').data().gadgetInstance;
@@ -213,7 +213,7 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
    * @param contentToClose The jquery wrapped element to remove when closing
    * the gadget. This dom object must contain a 'gadgetGroup' jquery data
    * element.
-   * 
+   *
    * @param contentToMinMax The jquery wrapped element to minimize or restore.
    */
   this.createTitleBar = function(contentToClose, contentToMinMax) {
@@ -434,7 +434,7 @@ katari.social.GadgetGroup = function(sContainer) {
         update: function(event, ui) {
           if (ui.sender === null) {
             var newColumn = ui.item.parent().data().columnNumber;
-            var newPosition = jQuery.inArray(ui.item.attr('id'), 
+            var newPosition = jQuery.inArray(ui.item.attr('id'),
                 ui.item.parent().sortable('toArray'));
             that.move(ui.item.data().gadgetInstance, newColumn, newPosition);
           }

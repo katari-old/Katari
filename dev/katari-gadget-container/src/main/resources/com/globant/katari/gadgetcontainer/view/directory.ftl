@@ -12,7 +12,7 @@
       var gadgetContainerElements = ${result?size};
       var addApplicationToGroup = function(groupName, applicationId) {
         var that = this;
-        
+
         var parameters = 'groupName=' + groupName + '&applicationId=' +
           applicationId;
 
@@ -21,7 +21,7 @@
             parameters,
           function(data) {
             var row;
-          
+
             row = jQuery('tr.item_' + applicationId);
             row.hide();
             // Show the 'no more elements' banner if the list is empty.
@@ -79,7 +79,7 @@
                 <input class="btn" type="button" value="Add it now"
                   onclick='addApplicationToGroup("${command.gadgetGroupName}", ${application.id})'>
               </div>
-            </td>              
+            </td>
             <td class='info'>
               <h5>${application.title}</h5>
               <#if application.description??>

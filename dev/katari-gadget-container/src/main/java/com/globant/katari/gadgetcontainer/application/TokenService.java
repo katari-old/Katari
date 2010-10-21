@@ -21,7 +21,7 @@ import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
  */
 public class TokenService {
 
-  /** Log
+  /** The class logger.
    */
   private final Logger log = getLogger(TokenService.class);
 

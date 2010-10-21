@@ -22,7 +22,7 @@ import com.globant.katari.shindig.domain.Application;
 import com.globant.katari.gadgetcontainer.domain.ApplicationRepository;
 
 /** Adds an application to a gadget group.
- * 
+ *
  * This command expects a gadget group name and the application id. It adds the
  * application to the column 0, position 0 in the gadget group.
  *
@@ -115,7 +115,7 @@ public class AddApplicationToGroupCommand
 
   /** Sets the id of the application to add, as provided by the client.
    *
-   * @param name the id of the application to add.
+   * @param id the id of the application to add.
    */
   public void setApplicationId(final long id) {
     applicationId = id;

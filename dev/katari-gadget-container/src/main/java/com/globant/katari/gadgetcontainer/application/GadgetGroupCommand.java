@@ -165,6 +165,11 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
    * @param uid The id of the user making the request.
    *
    * @param group The group to convert to json. It cannot be null.
+   *
+   * @return a json object that represents the gadget group. See javadoc of
+   * execute for the json structure.
+   *
+   * @throws JSONException when the json object could not be generated.
    */
   private JSONObject toJson(final long uid, final GadgetGroup group)
     throws JSONException {

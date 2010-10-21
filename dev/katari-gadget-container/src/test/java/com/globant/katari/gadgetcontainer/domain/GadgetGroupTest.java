@@ -86,7 +86,7 @@ public class GadgetGroupTest {
   public void move_pastLastColumn() {
     GadgetGroup group = new GadgetGroup(user, "name", 1);
     GadgetInstance instance;
-     
+
     instance = new GadgetInstance(application, 0, 0);
     ReflectionUtils.setAttribute(instance, "id", 1);
     group.add(instance);
@@ -107,7 +107,7 @@ public class GadgetGroupTest {
   public void move_wrongGadget() {
     GadgetGroup group = new GadgetGroup(user, "name", 1);
     GadgetInstance instance;
-     
+
     instance = new GadgetInstance(application, 0, 0);
     ReflectionUtils.setAttribute(instance, "id", 1);
     group.add(instance);
@@ -127,7 +127,7 @@ public class GadgetGroupTest {
   @Test
   public void move_sameColumn() {
     GadgetGroup group = new GadgetGroup(user, "name", 1);
-     
+
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
     ReflectionUtils.setAttribute(col0Order0, "id", 1);
     group.add(col0Order0);
@@ -147,7 +147,7 @@ public class GadgetGroupTest {
   @Test
   public void move_toEmptyColumn() {
     GadgetGroup group = new GadgetGroup(user, "name", 2);
-     
+
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
     ReflectionUtils.setAttribute(col0Order0, "id", 1);
     group.add(col0Order0);
@@ -167,7 +167,7 @@ public class GadgetGroupTest {
   @Test
   public void move_toLargeColumn() {
     GadgetGroup group = new GadgetGroup(user, "name", 2);
-     
+
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
     ReflectionUtils.setAttribute(col0Order0, "id", 1);
     group.add(col0Order0);

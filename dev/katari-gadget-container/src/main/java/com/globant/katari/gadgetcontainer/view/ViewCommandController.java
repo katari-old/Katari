@@ -30,7 +30,7 @@ public abstract class ViewCommandController extends AbstractCommandController {
    * result.
    *
    * You must set the view name before calling this operation.
-   * 
+   *
    * {@inheritDoc}
    */
   @Override
