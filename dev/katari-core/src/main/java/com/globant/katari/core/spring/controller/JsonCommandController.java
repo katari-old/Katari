@@ -41,16 +41,15 @@ public abstract class JsonCommandController extends AbstractCommandController {
     return null;
   }
 
-  /** {@inheritDoc}
+  /** Creates a command bean.
+   *
+   * This is intended to be implemented by spring, through getter injection.
    *
    * @return {@link Command&lt;JsonRepresentation&gt;}
    */
   protected abstract Command<JsonRepresentation> createCommandBean();
 
-  /** Create a new {@link Command} instance.
-   *
-   * @see org.springframework.web.servlet.mvc.BaseCommandController#getCommand(
-   *  javax.servlet.http.HttpServletRequest)
+  /** {@inheritDoc}.
    */
   @Override
   protected Object getCommand(final HttpServletRequest request)

@@ -16,7 +16,8 @@ class ModuleRequestWrapper extends HttpServletRequestWrapper {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(ModuleRequestWrapper.class);
+  private static Logger log = LoggerFactory.getLogger(
+      ModuleRequestWrapper.class);
 
   /** The path where the application is mapped.
    */

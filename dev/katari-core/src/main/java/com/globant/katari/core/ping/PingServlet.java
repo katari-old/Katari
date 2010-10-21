@@ -36,11 +36,9 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  *
  * This allows the user to simply grep for the the output to run a quick test
  * to check if the application is running.
- * 
+ *
  * Given that some tests can be relatively expensive, and the page is not
  * secured, this servlet caches the result of the pings for 30 seconds.
- * 
- * TODO: use ehcache when integrated in katari.
  */
 public class PingServlet extends HttpServlet {
 
@@ -51,12 +49,12 @@ public class PingServlet extends HttpServlet {
   /** The number of milliseconds that the ping result is cached for.
    */
   private static final long CACHE_TIMEOUT_MILLIS = 30000;
-  
+
   /** The last time the ping operations where called, or the epoch if never
    * called.
    */
   private Date lastCalled = new Date(0);
-  
+
   /** The result of the last call to the ping operations, null if never called.
    */
   private String lastResult = null;
@@ -73,7 +71,7 @@ public class PingServlet extends HttpServlet {
       final HttpServletResponse response) throws IOException {
 
     response.setContentType("text/plain");
-    
+
     if (lastCalled.getTime() + CACHE_TIMEOUT_MILLIS < new Date().getTime()) {
       lastResult = doPingServices().toString();
       lastCalled = new Date();

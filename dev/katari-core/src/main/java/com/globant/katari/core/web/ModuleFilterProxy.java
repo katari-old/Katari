@@ -96,7 +96,7 @@ public final class ModuleFilterProxy implements Filter {
   private static class PriorityComparator
       implements Comparator<FilterMapping> {
 
-    /** @{inheritDoc}
+    /** {@inheritDoc}
      *
      * Lower priority comes first.
      */

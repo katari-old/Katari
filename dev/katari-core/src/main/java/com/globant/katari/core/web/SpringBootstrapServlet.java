@@ -39,7 +39,8 @@ public final class SpringBootstrapServlet extends HttpServlet {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(SpringBootstrapServlet.class);
+  private static Logger log = LoggerFactory.getLogger(
+      SpringBootstrapServlet.class);
 
   /** The target servlet that this servlet delegates all requests.
    *

@@ -83,6 +83,8 @@ public class StaticContentServlet extends BaseStaticContentServlet {
    *
    * It sets the default packages for static resources.
    *
+   * @throws ServletException in case of error.
+   *
    * @param config The servlet configuration
    */
   public void init(final ServletConfig config) throws ServletException {

@@ -2,9 +2,6 @@
 
 package com.globant.katari.core.ping;
 
-import com.globant.katari.core.ping.PingService;
-import com.globant.katari.core.ping.PingResult;
-
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryPoolMXBean;
 import java.lang.management.MemoryType;
@@ -46,6 +43,21 @@ public class PingMemory implements PingService {
     return new PingResult(true, message.toString());
   }
 
+  /** The number of bytes in a kilobyte.
+   */
+  private static final int KB = 1024;
+
+  /** The number of bytes in a megabyte.
+   */
+  private static final int MB = KB * KB;
+
+  /** The number of bytes in a gigabyte.
+   */
+  private static final int GB = KB * MB;
+
+  /** The divisor for the fraction of the memory size.
+   */
+  private static final int FRACTION_DIVISOR = 100;
 
   /** Converts a filesize to a human readable format.
    *
@@ -55,11 +67,7 @@ public class PingMemory implements PingService {
    *
    * @return The formatted filesize, never null.
    */
-  private String formatSize (final long size) {
-
-    final long KB = 1024;
-    final long MB = 1024 * KB;
-    final long GB = 1024 * MB;
+  private String formatSize(final long size) {
 
     long number, reminder;
     String result;
@@ -68,15 +76,15 @@ public class PingMemory implements PingService {
       result = insertSeparator(size) + " B";
     } else if (size < MB) {
       number = size / KB;
-      reminder = (size * 100 / KB) % 100;
+      reminder = (size * FRACTION_DIVISOR / KB) % FRACTION_DIVISOR;
       result = String.format("%s.%02d KB", insertSeparator(number), reminder);
     } else if (size < GB) {
       number = size / MB;
-      reminder = (size * 100 / MB ) % 100;
+      reminder = (size * FRACTION_DIVISOR / MB) % FRACTION_DIVISOR;
       result = String.format("%s.%02d MB", insertSeparator(number), reminder);
     } else {
       number = size / GB;
-      reminder = (size * 100 / GB) % 100;
+      reminder = (size * FRACTION_DIVISOR / GB) % FRACTION_DIVISOR;
       result = String.format("%s.%02d GB", insertSeparator(number), reminder);
     }
 
@@ -86,18 +94,23 @@ public class PingMemory implements PingService {
     return result.replace(".00", "");
   }
 
+  /** The number of digits for the thousand separator.
+   */
+  private static final int THOUSAND_DIGITS = 3;
+
   /** Converts a positive number to a string while inserting separators.
    *
    * @param number A positive number to add thousands separator for.
    *
    * @return The number with thousand separators as a String.
    */
-  private String insertSeparator (final long number) {
+  private String insertSeparator(final long number) {
     StringBuilder result = new StringBuilder();
 
     result.append(String.format("%d", number));
 
-    for (int i = result.length() - 3; i > 0; i -= 3) {
+    for (int i = result.length() - THOUSAND_DIGITS; i > 0;
+        i -= THOUSAND_DIGITS) {
       result.insert(i, ",");
     }
     return result.toString();

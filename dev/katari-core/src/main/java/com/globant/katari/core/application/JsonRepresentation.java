@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 /** A json representation of an object, based on JSON.
- * 
+ *
  * It wraps a JSONObject or a JSONArray to provide a unified interface to write
  * a json string to a writer.
  */
@@ -51,8 +51,13 @@ public class JsonRepresentation {
    *
    * @param writer The writer to write the json representation to. It cannot be
    * null.
+   *
+   * @throws JSONException if the json object could not be writen to the
+   * writer.
+   *
+   * @return the provided writer, for writer chaining.
    */
-  public Writer	write(final Writer writer) throws JSONException {
+  public Writer write(final Writer writer) throws JSONException {
     if (jsonArray != null) {
       return jsonArray.write(writer);
     } else {

@@ -265,24 +265,24 @@ public class FreemarkerDecoratorServlet extends
    * @param additionalTemplatePaths a ; separated list of paths of the form
    * [file|class]://[something], or /[something]. It cannot be null.
    *
-   * @param additionalPrefixes a ; separated list of prefixes to be prepended
-   * to each of the additionalTemplatePaths. Each new path is added to the list
-   * before the original one, so it takes priority over it.
+   * @param additionalDebugPrefixes a ; separated list of prefixes to be
+   * prepended to each of the additionalTemplatePaths. Each new path is added
+   * to the list before the original one, so it takes priority over it.
    *
    * @return a list of template loaders, one for each path. Never returns null.
    *
    * @throws ServletException if initialization failed.
    */
   private List<TemplateLoader> getAdditionalLoaders(final String
-      additionalTemplatePaths, final String additionalPrefixes)
+      additionalTemplatePaths, final String additionalDebugPrefixes)
       throws ServletException {
     Validate.notNull(additionalTemplatePaths);
 
     String[] paths = additionalPaths.split(";");
     String[] prefixes = null;
 
-    if (debug && additionalPrefixes != null) {
-      prefixes = additionalPrefixes.split(";");
+    if (debug && additionalDebugPrefixes != null) {
+      prefixes = additionalDebugPrefixes.split(";");
 
       Validate.isTrue(paths.length == prefixes.length && debug,
           "AdditionalTemplatePaths and AdditionalDebugPrefixes must have the"

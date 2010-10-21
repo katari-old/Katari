@@ -2,9 +2,6 @@
 
 package com.globant.katari.core.ping;
 
-import com.globant.katari.core.ping.PingService;
-import com.globant.katari.core.ping.PingResult;
-
 /** Gives information about the current application configuration, in
  * particular, debug mode and html validation mode.
  */

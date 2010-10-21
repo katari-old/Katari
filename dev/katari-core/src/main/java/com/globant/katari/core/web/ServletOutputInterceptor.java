@@ -202,6 +202,8 @@ public abstract class ServletOutputInterceptor extends
    * This operation must be called before accessing the buffered output stream.
    *
    * If we are in writeThrough mode, we also flush the wrapped response.
+   *
+   * @throws IOException in case of error.
    */
   @Override
   public void flushBuffer() throws IOException {

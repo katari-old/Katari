@@ -21,7 +21,8 @@ class RootRequestDispatcher implements RequestDispatcher {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(RootRequestDispatcher.class);
+  private static Logger log = LoggerFactory.getLogger(
+      RootRequestDispatcher.class);
 
   /** If true, this request dispatcher disptaches to the wrapped request.
   */
@@ -82,8 +83,8 @@ class RootRequestDispatcher implements RequestDispatcher {
       throw new RuntimeException("Only http is supported.");
     }
     if (log.isTraceEnabled()) {
-      log.trace("Entering forward('" +
-          ((HttpServletRequest)request).getRequestURI() + "...')");
+      log.trace("Entering forward('"
+          + ((HttpServletRequest) request).getRequestURI() + "...')");
       log.trace("Request type is: " + request.getClass());
     }
     if (ignoreModule) {

@@ -18,7 +18,8 @@ public class KatariHandler extends NamespaceHandlerSupport {
    */
   public final void init() {
     PropertiesParser propertiesParser = new PropertiesParser();
-    ConditionalImportParser importParser = new ConditionalImportParser(propertiesParser);
+    ConditionalImportParser importParser;
+    importParser = new ConditionalImportParser(propertiesParser);
     registerBeanDefinitionParser("menuBar", new MenuBarBeanDefinitionParser());
     registerBeanDefinitionParser("import", importParser);
     registerBeanDefinitionParser("properties", propertiesParser);

@@ -24,6 +24,14 @@ import org.apache.commons.lang.Validate;
 @SuppressWarnings(value = { "deprecation" })
 public class ServletContextWrapper implements ServletContext {
 
+  /** The servlet version supported, major.
+   */
+  private static final int SERVLET_VERSION_MAJOR = 2;
+
+  /** The servlet version supported, minor.
+   */
+  private static final int SERVLET_VERSION_MINOR = 4;
+
   /** The servlet context to which all methods will delegate the
    * implementation.
    *
@@ -102,7 +110,7 @@ public class ServletContextWrapper implements ServletContext {
    * Updating the servlet version forces a change in this operation.
    */
   public int getMajorVersion() {
-    return 2;
+    return SERVLET_VERSION_MAJOR;
   }
 
   /** {@inheritDoc}
@@ -110,7 +118,7 @@ public class ServletContextWrapper implements ServletContext {
    * Updating the servlet version forces a change in this operation.
    */
   public int getMinorVersion() {
-    return 4;
+    return SERVLET_VERSION_MINOR;
   }
 
   /** {@inheritDoc}

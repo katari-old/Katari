@@ -76,7 +76,7 @@ public class PropertiesParser implements BeanDefinitionParser {
    * This attribute is set to true by the import element parsing (see
    * katariImportStarted.
    */
-  public boolean katariImportStarted = false;
+  private boolean katariImportStarted = false;
 
   /** {@inheritDoc}
    *
@@ -188,7 +188,7 @@ public class PropertiesParser implements BeanDefinitionParser {
    * application context.
    */
   public void katariImportStarted() {
-    this.katariImportStarted = true;
+    katariImportStarted = true;
   }
 }
 

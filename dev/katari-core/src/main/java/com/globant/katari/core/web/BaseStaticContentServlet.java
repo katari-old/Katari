@@ -85,6 +85,8 @@ public abstract class BaseStaticContentServlet extends HttpServlet {
    * It sets the default packages for static resources.
    *
    * @param config The servlet configuration. It cannot be null.
+   *
+   * @throws ServletException in case of error.
    */
   public void init(final ServletConfig config) throws ServletException {
     log.trace("Entering init");

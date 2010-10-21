@@ -27,7 +27,8 @@ public class DelegatingEntryPoint implements AuthenticationEntryPoint {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(DelegatingEntryPoint.class);
+  private static Logger log = LoggerFactory.getLogger(
+      DelegatingEntryPoint.class);
 
   /** Commences an authentication scheme.
    *

@@ -41,7 +41,8 @@ public final class ModuleContainerServlet extends HttpServlet {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(ModuleContainerServlet.class);
+  private static Logger log = LoggerFactory.getLogger(
+      ModuleContainerServlet.class);
 
   /** A map of module names to module configuration.
    *
@@ -120,8 +121,8 @@ public final class ModuleContainerServlet extends HttpServlet {
     Validate.notNull(moduleMapping, "The module mapping cannot be null");
 
     List<HttpServlet> initializedServlets = new ArrayList<HttpServlet>();
-    for (Map.Entry<String, ServletAndParameters> entry :
-        moduleMapping.entrySet()) {
+    for (Map.Entry<String, ServletAndParameters> entry
+        : moduleMapping.entrySet()) {
       ServletAndParameters servletAndParameters;
       servletAndParameters = (ServletAndParameters) entry.getValue();
       HttpServlet servlet =  servletAndParameters.getServlet();
@@ -229,8 +230,8 @@ public final class ModuleContainerServlet extends HttpServlet {
     Validate.notNull(path, "The path cannot be null");
 
     // Iterates over all the modules.
-    for (Map.Entry<String, Map<String, ServletAndParameters>> entry :
-        modulesMap.entrySet()) {
+    for (Map.Entry<String, Map<String, ServletAndParameters>> entry
+        : modulesMap.entrySet()) {
       String module = entry.getKey();
       if (path.startsWith("/" + module + "/") || path.equals("/"
             + module)) {
@@ -273,8 +274,8 @@ public final class ModuleContainerServlet extends HttpServlet {
 
     Validate.notNull(path, "The path cannot be null");
 
-    for (Map.Entry<String, ServletAndParameters> entry :
-        moduleMapping.entrySet()) {
+    for (Map.Entry<String, ServletAndParameters> entry
+        : moduleMapping.entrySet()) {
       String uri = entry.getKey();
       if (log.isDebugEnabled()) {
         log.debug("Verifying if path " + path + " matches " + uri);

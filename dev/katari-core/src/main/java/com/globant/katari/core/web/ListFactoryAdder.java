@@ -9,13 +9,30 @@ import java.util.List;
 @Deprecated
 public class ListFactoryAdder extends ListFactoryAppender {
 
-  /** {@inheritDoc}
+  /** Constructor.
+   *
+   * @param target the bean name of the target list to add the elements, it
+   * cannot be null.
+   *
+   * @param elements the list of elements to add to the target list, it cannot
+   * be null.
    */
   public ListFactoryAdder(final String target, final List<?> elements) {
     super(target, elements);
   }
 
-  /** {@inheritDoc}
+  /** Constructor.
+   *
+   * @param target the bean name of the target list to add the elements, it
+   * cannot be null.
+   *
+   * @param optional indicates if the target list must exist. If true, nothing
+   * happens if the target list does not exist. If false,
+   * postProcessBeanFactory throws an exception if the target list does not
+   * exist.
+   *
+   * @param elements the list of elements to add to the target list, it cannot
+   * be null.
    */
   public ListFactoryAdder(final String target, final boolean optional,
       final List<?> elements) {

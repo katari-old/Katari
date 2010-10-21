@@ -15,7 +15,8 @@ public class ModuleWithEntryPoints implements Module {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(ModuleWithEntryPoints.class);
+  private static Logger log = LoggerFactory.getLogger(
+      ModuleWithEntryPoints.class);
 
   /** The module context.
    *

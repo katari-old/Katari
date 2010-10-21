@@ -57,9 +57,7 @@ public class ModuleFilterInvocationDefinitionSource extends
     defaultMapper = theDefaultMapper;
   }
 
-  /**
-   * It returns the <source>ConfigAttributeDefinition</source> for the
-   * specified url.
+  /** It returns the ConfigAttributeDefinition for the specified url.
    *
    * If the request corresponds to a module (mapped to [ctx]/module), it asks
    * the module for ConfigAttributeDefinition. Otherwise, it uses a global

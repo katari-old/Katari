@@ -47,7 +47,8 @@ public final class SpringBootstrapListener implements ServletContextListener,
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(SpringBootstrapListener.class);
+  private static Logger log = LoggerFactory.getLogger(
+      SpringBootstrapListener.class);
 
   /** The target filter that this filter delegates all requests.
    *

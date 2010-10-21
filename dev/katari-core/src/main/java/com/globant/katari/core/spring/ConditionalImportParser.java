@@ -1,5 +1,6 @@
 /*
-http://robertmaldon.blogspot.com/2007/04/conditionally-defining-spring-beans.html
+http://robertmaldon.blogspot.com/2007/04/
+  conditionally-defining-spring-beans.html
  */
 
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
@@ -15,8 +16,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
-/**
- * Implements the conditional import spring extension.
+/** Implements the conditional import spring extension.
  *
  * This class parses the import element from the katari namespace. That element
  * works like spring import tag, but specific for katari modules, and the import
@@ -64,11 +64,21 @@ public class ConditionalImportParser implements BeanDefinitionParser {
    */
   private static final String CLASSPATH_PREFIX = "classpath:";
 
+  /** Interpretes the katari:properties element, used here to check that no
+   * katari:properties come after any katari:import.
+   *
+   * This is never null.
+   */
   private PropertiesParser propertiesParser;
 
+  /** Constructor.
+   *
+   * @param thePropertiesParser this is used to check that no katari:properties
+   * come after any katari:import. It is never null.
+   */
   public ConditionalImportParser(final PropertiesParser thePropertiesParser) {
     super();
-    this.propertiesParser = thePropertiesParser;
+    propertiesParser = thePropertiesParser;
   }
 
   /** Parses an import element.

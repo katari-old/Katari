@@ -19,7 +19,8 @@ class ModuleServletConfig implements ServletConfig {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(ModuleServletConfig.class);
+  private static Logger log = LoggerFactory.getLogger(
+      ModuleServletConfig.class);
 
   /** The servlet context.
    *

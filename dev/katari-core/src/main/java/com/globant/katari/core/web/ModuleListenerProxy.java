@@ -46,7 +46,8 @@ public final class ModuleListenerProxy implements ServletContextListener,
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(ModuleListenerProxy.class);
+  private static Logger log = LoggerFactory.getLogger(
+      ModuleListenerProxy.class);
 
   /** The target filter that this filter delegates all requests.
    *

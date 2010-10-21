@@ -39,7 +39,8 @@ public class SecureUrlMacroFilter implements Filter {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(SecureUrlMacroFilter.class);
+  private static Logger log = LoggerFactory.getLogger(
+      SecureUrlMacroFilter.class);
 
   /** The secure url macro helper.
    *
