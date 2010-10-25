@@ -87,10 +87,9 @@
     <constructor-arg value='quartz.schedulerTasks'/>
     <constructor-arg>
       <list>
-        <bean id="sampleBeanJobDetailTrigger"
-          class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <bean class="org.springframework.scheduling.quartz.SimpleTriggerBean">
           <property name="jobDetail">
-            <bean id="sampleBeanJobDetail"
+            <bean
               class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
               <property name="targetObject">
                 <bean class='com.globant.katari.sample.SampleScheduledCommand' />
@@ -101,6 +100,19 @@
           </property>
           <property name="startDelay" value="5000"/>
           <property name="repeatInterval" value="200000"/>
+        </bean>
+        <bean class="org.springframework.scheduling.quartz.CronTriggerBean"
+          p:cronExpression='0 0 0 * * ?'>
+          <property name="jobDetail">
+            <bean
+              class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+              p:targetMethod='execute'
+              p:concurrent='true' >
+              <property name="targetObject">
+                <bean class='com.globant.katari.sample.SampleScheduledCommand' />
+              </property>
+            </bean>
+          </property>
         </bean>
       </list>
     </constructor-arg>

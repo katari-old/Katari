@@ -37,10 +37,11 @@ public class TaskDashboardCommandTest {
   private Date last = new Date(110, 9, 20, 13, 30, 0);
   private Date next = new Date(110, 9, 20, 15, 30, 0);
 
-  /** Creates a scheduler that contains the provided command.
+  /** Creates a scheduler that contains the provided command, and a null
+   * previous fire time if nullPreviousTime is null.
    */
-  private Scheduler createScheduler(final ScheduledCommand command)
-      throws Exception {
+  private Scheduler createScheduler(final ScheduledCommand command,
+      final boolean nullPreviousTime) throws Exception {
     Scheduler scheduler = createMock(Scheduler.class);
     JobDetail detail = createMock(JobDetail.class);
     JobDataMap dataMap = createMock(JobDataMap.class);
@@ -67,7 +68,11 @@ public class TaskDashboardCommandTest {
     expect(trigger.getJobName()).andReturn(jobName);
     expect(detail.getName()).andReturn(jobName);
     expect(trigger.getNextFireTime()).andReturn(next);
-    expect(trigger.getPreviousFireTime()).andReturn(last);
+    if (nullPreviousTime) {
+      expect(trigger.getPreviousFireTime()).andReturn(null);
+    } else {
+      expect(trigger.getPreviousFireTime()).andReturn(last);
+    }
 
     replay(scheduler);
     replay(detail);
@@ -90,14 +95,14 @@ public class TaskDashboardCommandTest {
     replay(job);
 
     TaskDashboardCommand command;
-    command = new TaskDashboardCommand(createScheduler(job));
+    command = new TaskDashboardCommand(createScheduler(job, false));
 
     JsonRepresentation result = command.execute();
 
     StringWriter writer = new StringWriter();
     result.write(writer);
 
-    assertThat(writer.toString(), is(baselineJson(true)));
+    assertThat(writer.toString(), is(baselineJson(true, true)));
   }
 
   @Test
@@ -112,14 +117,36 @@ public class TaskDashboardCommandTest {
     replay(job);
 
     TaskDashboardCommand command;
-    command = new TaskDashboardCommand(createScheduler(job));
+    command = new TaskDashboardCommand(createScheduler(job, false));
 
     JsonRepresentation result = command.execute();
 
     StringWriter writer = new StringWriter();
     result.write(writer);
 
-    assertThat(writer.toString(), is(baselineJson(false)));
+    assertThat(writer.toString(), is(baselineJson(false, true)));
+  }
+
+  @Test
+  public void testExecute_noFireTime() throws Exception {
+
+    ScheduledCommand job = createMock(ScheduledCommand.class);
+    expect(job.getProgressPercent()).andReturn(null);
+    expect(job.getDisplayName()).andReturn("The friendly name");
+    Map<String, String> information = new HashMap<String,String>();
+    information.put("Processing row","104");
+    expect(job.getInformation()).andReturn(information);
+    replay(job);
+
+    TaskDashboardCommand command;
+    command = new TaskDashboardCommand(createScheduler(job, true));
+
+    JsonRepresentation result = command.execute();
+
+    StringWriter writer = new StringWriter();
+    result.write(writer);
+
+    assertThat(writer.toString(), is(baselineJson(false, false)));
   }
 
   /** Creates the baseline json string, a string with a sample json object.
@@ -128,7 +155,8 @@ public class TaskDashboardCommandTest {
    *
    * @throws JSONException
    */
-  private String baselineJson(final boolean isRunning) throws JSONException {
+  private String baselineJson(final boolean isRunning,
+      final boolean hasLastTime) throws JSONException {
 
     JSONObject task = new JSONObject();
     if (isRunning) {
@@ -137,7 +165,9 @@ public class TaskDashboardCommandTest {
 
     task.put("friendlyName", "The friendly name");
     task.put("nextExecutionTime", "2010-10-20T18:30:00Z");
-    task.put("lastExecutionTime", "2010-10-20T16:30:00Z");
+    if (hasLastTime) {
+      task.put("lastExecutionTime", "2010-10-20T16:30:00Z");
+    }
 
     JSONObject information = new JSONObject();
     information.put("Processing row", "104");

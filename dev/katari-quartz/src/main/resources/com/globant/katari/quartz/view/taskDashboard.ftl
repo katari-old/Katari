@@ -63,9 +63,14 @@
           };
 
           /** Formats the date columns (very hacky).
+          *
+          * Returns "" for a null date.
           */
           var dateFormatter = function(cell, row, column, data) {
             var value = row.getData(column.key);
+            if (value == null) {
+              return "";
+            }
 
             var struct = /(\d{4})-?(\d{2})-?(\d{2})(?:[T ](\d{2}):?(\d{2}):?(\d{2})(?:\.(\d{3,}))?(?:(Z)|([+\-])(\d{2})(?::?(\d{2}))?))/.exec(value);
 

@@ -36,7 +36,7 @@ public class TaskDashboardCommand implements Command<JsonRepresentation> {
 
   /** The date formatter, never null.
    *
-   * TODO: Decide if an ISO date will be bettar.
+   * This is initialized to an iso 8601 extended format.
    */
   private final SimpleDateFormat dateFormatter;
 
@@ -99,14 +99,14 @@ public class TaskDashboardCommand implements Command<JsonRepresentation> {
 
   /** Formats the given date with the pattern built in the constructor.
    *
-   * @param date the date. If it is null, then it returns an empty string.
+   * @param date the date. If it is null, then it returns null.
    *
-   * @return the string representation of the formated Date or an empty string
-   * if the given date is null. Never returns null.
+   * @return the string representation of the formated Date or null if the
+   * given date is null.
    */
   private String formatDate(final Date date) {
     if(date == null) {
-      return "";
+      return null;
     } else {
       return dateFormatter.format(date);
     }
