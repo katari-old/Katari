@@ -187,7 +187,7 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
     return map;
   }
 
-  /** Make Expressions available to subclasses so they can create ELContexts
+  /** Make Expressions available to subclasses so they can create ELContexts.
    */
   protected Expressions getExpressions() {
     return expressions;
@@ -247,21 +247,24 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
       throws ContainerConfigException {
     for (File file : files) {
       try {
-        if (file == null) continue;
+        if (file == null) {
+          continue;
+        }
         log.info("Reading container config: " + file.getName());
         if (file.isDirectory()) {
           loadFiles(file.listFiles(), all);
-        } else if (file.getName().toLowerCase(Locale.ENGLISH).endsWith(".js") ||
-            file.getName().toLowerCase(Locale.ENGLISH).endsWith(".json")) {
+        } else if (file.getName().toLowerCase(Locale.ENGLISH).endsWith(".js")
+            || file.getName().toLowerCase(Locale.ENGLISH).endsWith(".json")) {
           if (!file.exists()) {
             throw new ContainerConfigException(
                 "The file '" + file.getAbsolutePath() + "' doesn't exist.");
           }
           loadFromString(ResourceLoader.getContent(file), all);
         } else {
-          if (log.isLoggable(Level.FINEST))
+          if (log.isLoggable(Level.FINEST)) {
             log.finest(file.getAbsolutePath()
                 + " doesn't seem to be a JS or JSON file.");
+          }
         }
       } catch (IOException e) {
         throw new ContainerConfigException("The file '"
@@ -282,8 +285,9 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
       for (String entry : files) {
         log.info("Reading container config: " + entry);
         String content = ResourceLoader.getContent(entry);
-        if (content == null || content.length() == 0)
+        if (content == null || content.length() == 0) {
           throw new IOException("The file " + entry + "is empty");
+        }
         loadFromString(content, all);
       }
     } catch (IOException e) {
@@ -316,10 +320,10 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
         clone.put(field, update);
       } else {
         // Merge if object type is JSONObject.
-        if (update instanceof JSONObject &&
-            existing instanceof JSONObject) {
-          clone.put(field, mergeObjects((JSONObject)existing,
-                                        (JSONObject)update));
+        if (update instanceof JSONObject
+            && existing instanceof JSONObject) {
+          clone.put(field, mergeObjects((JSONObject) existing,
+                                        (JSONObject) update));
         } else {
           // Otherwise we just overwrite it.
           clone.put(field, update);
