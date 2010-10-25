@@ -55,6 +55,7 @@ public class SampleScheduledCommand implements ScheduledCommand {
     try {
       Thread.sleep(100000);
     } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
     }
     startedOn = null;
     return null;
