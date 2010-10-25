@@ -53,8 +53,11 @@ public abstract class CoreUser {
   private long id = 0;
 
   /** The name of the user.
+   *
+   * This is never null. User name must be unique.
    */
-  @Column(name = "name", nullable = false, length = USER_NAME_LENGTH)
+  @Column(name = "name", nullable = false, unique = true,
+      length = USER_NAME_LENGTH)
   @SearchableProperty
   private String name;
 

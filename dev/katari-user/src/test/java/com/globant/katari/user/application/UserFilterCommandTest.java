@@ -48,8 +48,10 @@ public class UserFilterCommandTest {
   private void addUsers() {
 
     //  Removes the unneeded users.
-    for (User user : userRepository.getUsers(new UserFilter())) {
-      userRepository.remove(user);
+    while (userRepository.getUsers(new UserFilter()).size() != 0) {
+      for (User user : userRepository.getUsers(new UserFilter())) {
+        userRepository.remove(user);
+      }
     }
 
     // Add users.
@@ -57,19 +59,19 @@ public class UserFilterCommandTest {
     user.changePassword("admin");
     userRepository.save(user);
 
-    user = new User("nico", "mail@none");
+    user = new User("nico", "nico@none");
     user.changePassword("pass");
     userRepository.save(user);
 
-    user = new User("nicanor", "mail@none");
+    user = new User("nicanor", "nicanor@none");
     user.changePassword("pass");
     userRepository.save(user);
 
-    user = new User("juan", "mail@none");
+    user = new User("juan", "juan@none");
     user.changePassword("pass");
     userRepository.save(user);
 
-    user = new User("ramon", "mail@none");
+    user = new User("ramon", "ramon@none");
     user.changePassword("pass");
     userRepository.save(user);
   }

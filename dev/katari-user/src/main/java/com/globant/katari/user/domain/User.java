@@ -37,8 +37,11 @@ public class User extends CoreUser {
   private static final int PASSWORD_LENGTH = 20;
 
   /** The email of the user.
+   *
+   * This is never null. Email must be unique.
    */
-  @Column(name = "email", nullable = false, length = EMAIL_LENGTH)
+  @Column(name = "email", nullable = false, unique = true,
+      length = EMAIL_LENGTH)
   @SearchableProperty
   private String email;
 

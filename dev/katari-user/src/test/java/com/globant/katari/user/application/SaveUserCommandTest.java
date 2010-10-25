@@ -85,7 +85,7 @@ public class SaveUserCommandTest {
     user.addRole(roleRepository.getRoles().get(3));
     userRepository.save(user);
 
-    user = new User("UserTest", "mail@none");
+    user = new User("UserTest", "UserTest@none");
     user.changePassword("pass");
     user.addRole(roleRepository.getRoles().get(1));
     user.addRole(roleRepository.getRoles().get(2));
@@ -117,7 +117,7 @@ public class SaveUserCommandTest {
   @Test
   public final void testExecute_editUserName() {
     //  Add a user.
-    User user = new User("newUser", "mail@none");
+    User user = new User("newUser", "newUser@none");
     userRepository.save(user);
 
     user = userRepository.findUserByName("newUser");

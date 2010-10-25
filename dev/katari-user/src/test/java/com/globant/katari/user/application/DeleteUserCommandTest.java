@@ -40,8 +40,10 @@ public class DeleteUserCommandTest {
   /* Removes the unneded users.
    */
   private void cleanUserRepository() {
-    for (User user : userRepository.getUsers(new UserFilter())) {
-      userRepository.remove(user);
+    while (userRepository.getUsers(new UserFilter()).size() != 0) {
+      for (User user : userRepository.getUsers(new UserFilter())) {
+        userRepository.remove(user);
+      }
     }
 
     // Add a user.

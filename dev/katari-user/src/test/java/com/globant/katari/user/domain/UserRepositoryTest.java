@@ -84,7 +84,7 @@ public class UserRepositoryTest {
     user.addRole(roleRepository.findRoleByName("ADMINISTRATOR"));
     userRepository.save(user);
 
-    user = new User("nicanor", "mail@none");
+    user = new User("nicanor", "nicanor@none");
     user.changePassword("pass");
     user.addRole(sampleRole);
     user.addRole(roleRepository.findRoleByName("ADMINISTRATOR"));

@@ -167,14 +167,14 @@ public final class SpringTestUtils {
   /** Commits the pending transaction, if any.
    */
   public static synchronized void endTransaction() {
-    if (transactionStatus != null) {
+    if (transactionStatus != null && !transactionStatus.isCompleted()) {
       if (transactionStatus.isRollbackOnly()) {
         transactionManager.rollback(transactionStatus);
       } else {
         transactionManager.commit(transactionStatus);
       }
-      transactionStatus = null;
     }
+    transactionStatus = null;
   }
 }
 

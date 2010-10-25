@@ -38,8 +38,10 @@ public class DomainUserDetailsServiceTest {
       adminRole = roleRepository.findRoleByName("ADMINISTRATOR");
     }
 
-    for (User user : repository.getUsers(new UserFilter())) {
-      repository.remove(user);
+    while (repository.getUsers(new UserFilter()).size() != 0) {
+      for (User user : repository.getUsers(new UserFilter())) {
+        repository.remove(user);
+      }
     }
 
     // Add a user.
