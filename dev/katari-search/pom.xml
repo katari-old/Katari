@@ -116,12 +116,6 @@
       <artifactId>compass</artifactId>
     </dependency>
 
-    <!-- Included in module.xml, not used in any source. -->
-    <dependency>
-      <groupId>quartz</groupId>
-      <artifactId>quartz</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>

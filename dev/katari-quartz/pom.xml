@@ -42,7 +42,7 @@
     <!-- Runtime dependencies. -->
 
     <dependency>
-      <groupId>quartz</groupId>
+      <groupId>opensymphony</groupId>
       <artifactId>quartz</artifactId>
     </dependency>
 

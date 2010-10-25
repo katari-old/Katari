@@ -170,7 +170,9 @@
   <!-- We remove the reindex because it looks like, during the phase that
        creates the sql statements, quartz tries to index a compass database
        that is not correctly initialized. This makes the index fail leaving a
-       lock that makes all tests fail. This happens randomly. -->
+       lock that makes all tests fail. This happens randomly.
+       
+       Also, we should use katari-quartz -->
   <!-- Quartz -->
   <!-- bean id="search.jobDetail"
     class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
