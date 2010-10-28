@@ -15,6 +15,7 @@ import java.io.StringWriter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 import com.globant.katari.gadgetcontainer.application.TokenService;
@@ -80,7 +81,7 @@ public class GadgetGroupCommandTest {
     command.setGroupName(groupName);
 
     assertThat(command.execute().write(new StringWriter()).toString(),
-        is(baselineJson(true)));
+        is(baselineJson(true, false)));
 
     verify(userService);
     verify(repository);
@@ -108,7 +109,7 @@ public class GadgetGroupCommandTest {
     command.setGroupName(groupName);
 
     assertThat(command.execute().write(new StringWriter()).toString(),
-        is(baselineJson(false)));
+        is(baselineJson(false, false)));
 
     verify(userService);
     verify(repository);
@@ -140,7 +141,33 @@ public class GadgetGroupCommandTest {
     command.setGroupName(groupName);
 
     assertThat(command.execute().write(new StringWriter()).toString(),
-        is(baselineJson(true)));
+        is(baselineJson(true, false)));
+
+    verify(userService);
+    verify(repository);
+  }
+
+  @Test
+  public void testExecute_noGadgets() throws Exception {
+    String groupName = "theGroup";
+
+    GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, 3);
+    Application application = new Application(gadgetXmlUrl);
+
+    GadgetGroupRepository repository = createMock(GadgetGroupRepository.class);
+    expect(repository.findGadgetGroup(0, groupName)).andReturn(gadgetGroup);
+    replay(repository);
+
+    ContextUserService userService = createMock(ContextUserService.class);
+    expect(userService.getCurrentUser()).andReturn(user);
+    replay(userService);
+
+    GadgetGroupCommand command;
+    command = new GadgetGroupCommand(repository, userService, tokenService);
+    command.setGroupName(groupName);
+
+    assertThat(command.execute().write(new StringWriter()).toString(),
+        is(baselineJson(false, true)));
 
     verify(userService);
     verify(repository);
@@ -152,7 +179,8 @@ public class GadgetGroupCommandTest {
    *
    * @throws JSONException
    */
-  private String baselineJson(final boolean isCustomizable)
+  private String baselineJson(final boolean isCustomizable,
+      final boolean noGadgets)
     throws JSONException {
     try {
       JSONObject groupJson = new JSONObject();
@@ -162,17 +190,20 @@ public class GadgetGroupCommandTest {
       groupJson.put("viewerId", 0);
       groupJson.put("numberOfColumns", 3);
       groupJson.put("customizable", isCustomizable);
+      groupJson.put("gadgets", new JSONArray());
 
-      JSONObject gadgetJson = new JSONObject();
-      gadgetJson.put("id", 0);
-      gadgetJson.put("title", "Test title");
-      gadgetJson.put("appId", 0);
-      gadgetJson.put("column", 1);
-      gadgetJson.put("order", 2);
-      gadgetJson.put("url", gadgetXmlUrl);
-      gadgetJson.put("icon", "");
-      gadgetJson.put("securityToken", "mockToken");
-      groupJson.append("gadgets", gadgetJson);
+      if (!noGadgets) {
+        JSONObject gadgetJson = new JSONObject();
+        gadgetJson.put("id", 0);
+        gadgetJson.put("title", "Test title");
+        gadgetJson.put("appId", 0);
+        gadgetJson.put("column", 1);
+        gadgetJson.put("order", 2);
+        gadgetJson.put("url", gadgetXmlUrl);
+        gadgetJson.put("icon", "");
+        gadgetJson.put("securityToken", "mockToken");
+        groupJson.append("gadgets", gadgetJson);
+      }
       return groupJson.toString();
     } catch(JSONException e) {
       throw new RuntimeException("Error generating json", e);

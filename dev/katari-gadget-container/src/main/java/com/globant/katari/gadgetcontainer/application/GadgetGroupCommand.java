@@ -8,6 +8,7 @@ import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
@@ -189,6 +190,7 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
       groupJson.put("numberOfColumns", group.getNumberOfColumns());
       groupJson.put("customizable", group.isCustomizable());
 
+      JSONArray gadgets = new JSONArray();
       for (GadgetInstance gadget : group.getGadgets()) {
         JSONObject gadgetJson = new JSONObject();
         gadgetJson.put("id", gadget.getId());
@@ -200,9 +202,9 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
         gadgetJson.put("url", gadget.getApplication().getUrl());
         String token = tokenService.createSecurityToken(uid, owner, gadget);
         gadgetJson.put("securityToken", token);
-
-        groupJson.append("gadgets", gadgetJson);
+        gadgets.put(gadgetJson);
       }
+      groupJson.put("gadgets", gadgets);
     }
     return groupJson;
   }
