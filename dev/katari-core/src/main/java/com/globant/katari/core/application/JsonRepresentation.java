@@ -64,5 +64,23 @@ public class JsonRepresentation {
       return jsonObject.write(writer);
     }
   }
+  
+  /** Obtains the underlying JSONObject.
+   * 
+   * @return the underlying JSONObject or null if this representation wrapps an
+   * array.
+   */
+  public JSONObject getJsonObject() {
+    return jsonObject;
+  }
+
+  /** Obtains the underlying JSONArray.
+   * 
+   * @return the underlying JSONArray or null if this representation wrapps an
+   * object.
+   */
+  public JSONArray getJsonArray() {
+    return jsonArray;
+  }
 }
 

@@ -24,6 +24,8 @@ public class JsonRepresentationTest {
     rep.write(writer);
 
     assertThat(writer.toString(), is("{}"));
+    assertThat(rep.getJsonObject(), is(not(nullValue())));
+    assertThat(rep.getJsonArray(), is(nullValue()));
   }
 
   @Test
@@ -35,6 +37,8 @@ public class JsonRepresentationTest {
     rep.write(writer);
 
     assertThat(writer.toString(), is("[]"));
+    assertThat(rep.getJsonObject(), is(nullValue()));
+    assertThat(rep.getJsonArray(), is(not(nullValue())));
   }
 }
 
