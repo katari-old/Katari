@@ -147,15 +147,14 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
       group = templ.createFromTemplate(user);
       gadgetGroupRepository.save(group);
     }
+
+    // The gadget group is never null here, it was found or created from a
+    // template.
     JsonRepresentation result = null;
-    if (group != null) {
-      try {
-        result = new JsonRepresentation(toJson(uid, group));
-      } catch (JSONException e) {
-        throw new RuntimeException("Error serializing to json", e);
-      }
-    } else {
-      result = new JsonRepresentation(new JSONObject());
+    try {
+      result = new JsonRepresentation(toJson(uid, group));
+    } catch (JSONException e) {
+      throw new RuntimeException("Error serializing to json", e);
     }
     log.trace("Leaving execute");
     return result;
