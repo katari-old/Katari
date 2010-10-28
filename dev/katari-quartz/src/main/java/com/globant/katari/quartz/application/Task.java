@@ -19,6 +19,10 @@ public class Task {
    */
   private final ScheduledCommand command;
 
+  /** True if the task is currently running.
+   */
+  private final boolean isRunning;
+
   /** The time that the task will run again.
    *
    * This may be null if the task will never run again.
@@ -33,16 +37,19 @@ public class Task {
    *
    * @param theCommand the command that the task runs. It cannot be null.
    *
+   * @param running a boolean indicating if the job is currently running.
+   *
    * @param theNextExecutionTime the time when the task will run. Null if it
    * will never run again.
    *
    * @param theLastExecutionTime the last time that the task ran, or null if it
    * never run before.
    */
-  public Task(final ScheduledCommand theCommand,
+  public Task(final ScheduledCommand theCommand, final boolean running,
       final Date theNextExecutionTime, final Date theLastExecutionTime) {
     Validate.notNull(theCommand, "The ScheduledCommand cannot be null");
     command = theCommand;
+    isRunning = running;
     nextExecutionTime = theNextExecutionTime;
     lastExecutionTime = theLastExecutionTime;
   }
@@ -55,7 +62,15 @@ public class Task {
     return command;
   }
 
-  /** The time that the taks will run.
+  /** Is the task running?
+   *
+   * @return a boolean indicating if the task is running.
+   */
+  public boolean isRunning() {
+    return isRunning;
+  }
+
+  /** The time that the tasks will run.
    *
    * @return the time that the task will run, or null if it will never run
    * again, usually if it was a one time task.

@@ -2,9 +2,7 @@
 
 package com.globant.katari.quartz.application;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.*;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
@@ -13,6 +11,7 @@ import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,6 +24,7 @@ import com.globant.katari.quartz.domain.ScheduledCommand;
 
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.quartz.Trigger;
 import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
@@ -43,7 +43,13 @@ public class TaskDashboardCommandTest {
   private Scheduler createScheduler(final ScheduledCommand command,
       final boolean nullPreviousTime) throws Exception {
     Scheduler scheduler = createMock(Scheduler.class);
-    JobDetail detail = createMock(JobDetail.class);
+    JobDetail detail1 = createMock(JobDetail.class);
+    JobDetail detail2 = createMock(JobDetail.class);
+
+    JobExecutionContext context = createMock(JobExecutionContext.class);
+    expect(context.getJobDetail()).andReturn(detail1).anyTimes();
+    replay(context);
+
     JobDataMap dataMap = createMock(JobDataMap.class);
     MethodInvokingJobDetailFactoryBean methodInvoking;
     methodInvoking = createMock(MethodInvokingJobDetailFactoryBean.class);
@@ -51,31 +57,40 @@ public class TaskDashboardCommandTest {
 
     String group1 = "group1";
     String trigger1 = "trigger1";
-    String job1 = "job1";
-    String[] jobs = new String[] { job1 };
+    String[] jobs = new String[] { "job1", "job2" };
     String[] groups = new String[] { group1 };
     String[] triggers = new String[] { trigger1 };
 
+    LinkedList runningJobs = new LinkedList();
+    runningJobs.add(context);
+
+    expect(scheduler.getCurrentlyExecutingJobs()).andReturn(runningJobs);
     expect(scheduler.getJobGroupNames()).andReturn(groups);
     expect(scheduler.getTriggerNames(group1)).andReturn(triggers);
     expect(scheduler.getJobNames(group1)).andReturn(jobs);
-    expect(scheduler.getJobDetail(job1, group1)).andReturn(detail);
-    expect(detail.getJobDataMap()).andReturn(dataMap);
-    expect(dataMap.get("methodInvoker")).andReturn(methodInvoking);
-    expect(methodInvoking.getTargetObject()).andReturn(command);
-    expect(scheduler.getTrigger(trigger1, group1)).andReturn(trigger);
+    expect(scheduler.getJobDetail("job1", group1)).andReturn(detail1);
+    expect(scheduler.getJobDetail("job2", group1)).andReturn(detail2);
+    expect(detail1.getJobDataMap()).andReturn(dataMap);
+    expect(detail2.getJobDataMap()).andReturn(dataMap);
+    expect(dataMap.get("methodInvoker")).andReturn(methodInvoking).anyTimes();
+    expect(methodInvoking.getTargetObject()).andReturn(command).anyTimes();
+    expect(scheduler.getTrigger(trigger1, group1)).andReturn(trigger)
+      .anyTimes();
     String jobName = "jobName";
     expect(trigger.getJobName()).andReturn(jobName);
-    expect(detail.getName()).andReturn(jobName);
-    expect(trigger.getNextFireTime()).andReturn(next);
+    expect(trigger.getJobName()).andReturn("jobName2");
+    expect(detail1.getName()).andReturn(jobName);
+    expect(detail2.getName()).andReturn("jobName2");
+    expect(trigger.getNextFireTime()).andReturn(next).anyTimes();
     if (nullPreviousTime) {
-      expect(trigger.getPreviousFireTime()).andReturn(null);
+      expect(trigger.getPreviousFireTime()).andReturn(null).anyTimes();
     } else {
-      expect(trigger.getPreviousFireTime()).andReturn(last);
+      expect(trigger.getPreviousFireTime()).andReturn(last).anyTimes();
     }
 
     replay(scheduler);
-    replay(detail);
+    replay(detail1);
+    replay(detail2);
     replay(dataMap);
     replay(methodInvoking);
     replay(trigger);
@@ -87,11 +102,11 @@ public class TaskDashboardCommandTest {
   public void testExecute() throws Exception {
 
     ScheduledCommand job = createMock(ScheduledCommand.class);
-    expect(job.getProgressPercent()).andReturn(new Integer(4));
-    expect(job.getDisplayName()).andReturn("The friendly name");
+    expect(job.getProgressPercent()).andReturn(new Integer(4)).anyTimes();
+    expect(job.getDisplayName()).andReturn("The friendly name").anyTimes();
     Map<String, String> information = new HashMap<String,String>();
     information.put("Processing row","104");
-    expect(job.getInformation()).andReturn(information);
+    expect(job.getInformation()).andReturn(information).anyTimes();
     replay(job);
 
     TaskDashboardCommand command;
@@ -109,11 +124,11 @@ public class TaskDashboardCommandTest {
   public void testExecute_noProgress() throws Exception {
 
     ScheduledCommand job = createMock(ScheduledCommand.class);
-    expect(job.getProgressPercent()).andReturn(null);
-    expect(job.getDisplayName()).andReturn("The friendly name");
+    expect(job.getProgressPercent()).andReturn(null).anyTimes();
+    expect(job.getDisplayName()).andReturn("The friendly name").anyTimes();
     Map<String, String> information = new HashMap<String,String>();
     information.put("Processing row","104");
-    expect(job.getInformation()).andReturn(information);
+    expect(job.getInformation()).andReturn(information).anyTimes();
     replay(job);
 
     TaskDashboardCommand command;
@@ -131,11 +146,11 @@ public class TaskDashboardCommandTest {
   public void testExecute_noFireTime() throws Exception {
 
     ScheduledCommand job = createMock(ScheduledCommand.class);
-    expect(job.getProgressPercent()).andReturn(null);
-    expect(job.getDisplayName()).andReturn("The friendly name");
+    expect(job.getProgressPercent()).andReturn(null).anyTimes();
+    expect(job.getDisplayName()).andReturn("The friendly name").anyTimes();
     Map<String, String> information = new HashMap<String,String>();
     information.put("Processing row","104");
-    expect(job.getInformation()).andReturn(information);
+    expect(job.getInformation()).andReturn(information).anyTimes();
     replay(job);
 
     TaskDashboardCommand command;
@@ -158,24 +173,30 @@ public class TaskDashboardCommandTest {
   private String baselineJson(final boolean isRunning,
       final boolean hasLastTime) throws JSONException {
 
-    JSONObject task = new JSONObject();
+    JSONObject task1 = new JSONObject();
+    JSONObject task2 = new JSONObject();
     if (isRunning) {
-      task.put("progressPercent", 4);
+      task1.put("progressPercent", 4);
+      task2.put("progressPercent", 4);
     }
-
-    task.put("friendlyName", "The friendly name");
-    task.put("nextExecutionTime", "2010-10-20T18:30:00Z");
+    task1.put("friendlyName", "The friendly name");
+    task2.put("friendlyName", "The friendly name");
+    task1.put("nextExecutionTime", "2010-10-20T18:30:00Z");
+    task2.put("nextExecutionTime", "2010-10-20T18:30:00Z");
     if (hasLastTime) {
-      task.put("lastExecutionTime", "2010-10-20T16:30:00Z");
+      task1.put("lastExecutionTime", "2010-10-20T16:30:00Z");
+      task2.put("lastExecutionTime", "2010-10-20T16:30:00Z");
     }
-
     JSONObject information = new JSONObject();
     information.put("Processing row", "104");
-
-    task.put("information", information);
+    task1.put("information", information);
+    task2.put("information", information);
+    task1.put("isRunning", true);
+    task2.put("isRunning", false);
 
     JSONArray tasks = new JSONArray();
-    tasks.put(task);
+    tasks.put(task1);
+    tasks.put(task2);
 
     return tasks.toString();
   }

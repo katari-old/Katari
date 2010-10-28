@@ -16,7 +16,7 @@ public class TaskTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testTask_invalid() {
-    new Task(null, new Date(), new Date());
+    new Task(null, false, new Date(), new Date());
   }
 
   @Test
@@ -25,7 +25,7 @@ public class TaskTest {
     Date last = new Date(System.currentTimeMillis() - 1000);
 
     MockScheduledCommand cmd = new MockScheduledCommand();
-    Task task = new Task(cmd, next, last);
+    Task task = new Task(cmd, false, next, last);
 
     assertThat(task.getCommand(), is((ScheduledCommand) cmd));
     assertThat(task.getCommand().getDisplayName(), is("Mock Impl"));
@@ -33,6 +33,8 @@ public class TaskTest {
 
     assertThat(task.getNextExecutionTime(), is(next));
     assertThat(task.getLastExecutionTime(), is(last));
+
+    assertThat(task.isRunning(), is(false));
   }
 }
 

@@ -21,16 +21,17 @@
     p:exposeSpringMacroHelpers='true'
     p:exposeRequestAttributes='true'/>
 
-  <!-- Controllers  -->
+  <!-- Controllers. -->
   <bean name="/asyncTaskDashboard.do"
     class='com.globant.katari.core.spring.controller.JsonCommandController'>
      <lookup-method name="createCommandBean" bean="taskDashboardCommand" />
   </bean>
 
   <bean name="/taskDashboard.do"
-    class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-    <property name='viewName' value='taskDashboard' />
-  </bean>
+    class="com.globant.katari.core.spring.controller.CommandController">
+    <constructor-arg index='0' value='taskDashboard' />
+    <lookup-method name="createCommandBean" bean="taskDashboardCommand" />
+   </bean>
 
   <bean name='taskDashboardCommand'
     class='com.globant.katari.quartz.application.TaskDashboardCommand'

@@ -21,8 +21,8 @@
           var dataSource = new YAHOO.util.DataSource("asyncTaskDashboard.do");
           dataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
           dataSource.responseSchema = {
-            fields: ["friendlyName", "progressPercent", "information",
-            "nextExecutionTime", "lastExecutionTime"]
+            fields: ["friendlyName", "isRunning", "progressPercent",
+            "information", "nextExecutionTime", "lastExecutionTime"]
           };
           dataSource.doBeforeParseData = function (request, response) {
             return response;
@@ -32,34 +32,37 @@
           */
           var informationFormatter = function(cell, row, column, data) {
             var values = row.getData(column.key);
-            var tmp = [];
+            var content = [];
             for(x in values) {
-              if (tmp.length != 0) {
-                tmp.push(', ');
+              if (content.length != 0) {
+                content.push(', ');
               }
-              tmp.push(x);
-              tmp.push(": ");
-              tmp.push(values[x]);
+              content.push(x);
+              content.push(": ");
+              content.push(values[x]);
             }
-            cell.innerHTML = tmp.join("");
+            cell.innerHTML = content.join("");
           };
 
           /** Formats the progressPercent column.
           */
           var percentageFormatter = function(cell, row, column, data) {
             var value = row.getData(column.key);
-            var tmp = [];
-            tmp.push("<div style='width:200px; border: 1px solid #999'>");
+            var isRunning = row.getData('isRunning');
+            var content = [];
+            content.push("<div style='width:200px; border: 1px solid #999'>");
             if (value) {
-              tmp.push("<div style='background-color:#AFF584; width:" + value +
-                  "%; text-align:right'>");
-              tmp.push(value + "%");
-              tmp.push("</div>");
+            content.push("<div style='background-color:#AFF584; width:" +
+                value + "%; text-align:right'>");
+              content.push(value + "%");
+              content.push("</div>");
+            } else if (isRunning) {
+              content.push("Running");
             } else {
-              tmp.push("Unknown");
+              content.push("Task not running");
             }
-            tmp.push("</div>");
-            cell.innerHTML = tmp.join("");
+            content.push("</div>");
+            cell.innerHTML = content.join("");
           };
 
           /** Formats the date columns (very hacky).
@@ -130,8 +133,8 @@
   </head>
 
   <body>
-    <div id="task-list" style="margin-top:10px;">
-      <!-- table here -->
+    <div id="task-list" class='yui-dt' style="margin-top:10px;">
+      <!-- Table goes here -->
     </div>
     <input id='task-refresh' type="submit" value="Refresh Now" class="btn"
       style="margin-top:10px;"/>

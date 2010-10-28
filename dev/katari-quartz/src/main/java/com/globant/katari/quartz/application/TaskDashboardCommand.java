@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
@@ -59,6 +60,7 @@ public class TaskDashboardCommand implements Command<JsonRepresentation> {
    *  {
    *    "progressPercent": "10",
    *    "friendlyName": "The Friendly Name",
+   *    "isRunning": "true" / "false",
    *    "information": {...},
    *    "nextExecutionTime": "2010-10-19T20:00:00Z",
    *    "lastExecutionTime": "2010-10-19T14:00:00Z",
@@ -84,6 +86,7 @@ public class TaskDashboardCommand implements Command<JsonRepresentation> {
         JSONObject taskJson = new JSONObject();
         taskJson.put("progressPercent", command.getProgressPercent());
         taskJson.put("friendlyName", command.getDisplayName());
+        taskJson.put("isRunning", task.isRunning());
         taskJson.put("information", command.getInformation());
         taskJson.put("nextExecutionTime",
             formatDate(task.getNextExecutionTime()));
@@ -116,9 +119,12 @@ public class TaskDashboardCommand implements Command<JsonRepresentation> {
    *
    * @return the list of tasks, never null.
    */
+  @SuppressWarnings("unchecked")
   public List<Task> getTasks() {
     List<Task> tasks = new ArrayList<Task>();
     try {
+      List<JobExecutionContext> runningJobs;
+      runningJobs = scheduler.getCurrentlyExecutingJobs();
       String[] groups = scheduler.getJobGroupNames();
       for(String group : groups) {
         String[] triggers = scheduler.getTriggerNames(group);
@@ -137,8 +143,10 @@ public class TaskDashboardCommand implements Command<JsonRepresentation> {
                 if(trigger.getJobName().equals(detail.getName())) {
                   Date nextExecutionTime = trigger.getNextFireTime();
                   Date lastExecutionTime = trigger.getPreviousFireTime();
+                  boolean jobIsRunning;
+                  jobIsRunning = isJobDetailInContext(runningJobs, detail);
                   Task task = new Task((ScheduledCommand) targetObject,
-                      nextExecutionTime, lastExecutionTime);
+                      jobIsRunning, nextExecutionTime, lastExecutionTime);
                   tasks.add(task);
                 }
               }
@@ -150,6 +158,26 @@ public class TaskDashboardCommand implements Command<JsonRepresentation> {
     } catch (SchedulerException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  /** Decides if the job detail is in the provided list of JobExecutionContext.
+   *
+   * @param executionContexts the list of job execution contexts.
+   *
+   * @param detail the job detail to search.
+   *
+   * @return true if the job detail was found in any of the job execution
+   * contexts.
+   */
+  private boolean isJobDetailInContext(
+      final List<JobExecutionContext> executionContexts,
+      final JobDetail detail) {
+    for (JobExecutionContext context : executionContexts) {
+      if (context.getJobDetail().equals(detail)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
