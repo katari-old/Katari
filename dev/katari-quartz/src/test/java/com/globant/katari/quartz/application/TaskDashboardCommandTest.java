@@ -173,6 +173,9 @@ public class TaskDashboardCommandTest {
   private String baselineJson(final boolean isRunning,
       final boolean hasLastTime) throws JSONException {
 
+    JSONObject information = new JSONObject();
+    information.put("Processing row", "104");
+
     JSONObject task1 = new JSONObject();
     JSONObject task2 = new JSONObject();
     if (isRunning) {
@@ -181,19 +184,16 @@ public class TaskDashboardCommandTest {
     }
     task1.put("friendlyName", "The friendly name");
     task2.put("friendlyName", "The friendly name");
+    task1.put("isRunning", true);
+    task2.put("isRunning", false);
+    task1.put("information", information);
+    task2.put("information", information);
     task1.put("nextExecutionTime", "2010-10-20T18:30:00Z");
     task2.put("nextExecutionTime", "2010-10-20T18:30:00Z");
     if (hasLastTime) {
       task1.put("lastExecutionTime", "2010-10-20T16:30:00Z");
       task2.put("lastExecutionTime", "2010-10-20T16:30:00Z");
     }
-    JSONObject information = new JSONObject();
-    information.put("Processing row", "104");
-    task1.put("information", information);
-    task2.put("information", information);
-    task1.put("isRunning", true);
-    task2.put("isRunning", false);
-
     JSONArray tasks = new JSONArray();
     tasks.put(task1);
     tasks.put(task2);
