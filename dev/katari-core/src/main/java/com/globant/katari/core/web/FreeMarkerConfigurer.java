@@ -14,6 +14,9 @@ import freemarker.cache.TemplateLoader;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.ClassTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
+
 import org.springframework.ui.freemarker.SpringTemplateLoader;
 
 import org.slf4j.Logger;
@@ -201,6 +204,18 @@ public class FreeMarkerConfigurer extends
         debugPrefixes.add(prefix);
       }
     }
+  }
+
+  /** {@inheritDoc}
+   *
+   * Creates a configuration object with the json enabled object wrapper.
+   */
+  @Override
+  public Configuration createConfiguration() throws IOException,
+      TemplateException {
+    Configuration configuration = super.createConfiguration();
+    configuration.setObjectWrapper(new JsonRepresentationWrapper());
+    return configuration;
   }
 }
 
