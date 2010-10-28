@@ -79,7 +79,8 @@ public final class JsonRepresentationModel implements TemplateHashModel,
       try {
         value = object.getString(key);
       } catch (JSONException e) {
-        throw new RuntimeException("Error converting " + key + " to string.", e);
+        throw new RuntimeException("Error converting " + key + " to string.",
+            e);
       }
       log.trace("Leaving get with string");
       return new SimpleScalar(value);
@@ -96,13 +97,13 @@ public final class JsonRepresentationModel implements TemplateHashModel,
    * @throws TemplateModelException if the wrapped object references a json
    * object instead of a json array.
    */
-  public TemplateModel get(int index) throws TemplateModelException {
+  public TemplateModel get(final int index) throws TemplateModelException {
     JSONArray array = representation.getJsonArray();
     if (array == null) {
       // This is not an array, bail out.
       throw new TemplateModelException("Tried to iterate over a json object.");
     }
-    
+
     JSONObject object = array.optJSONObject(index);
     if (object != null) {
       TemplateModel model;
@@ -128,6 +129,13 @@ public final class JsonRepresentationModel implements TemplateHashModel,
     return new SimpleScalar(value);
   }
 
+  /** {@inheritDoc}
+   *
+   * Returns the true if the wrapped json object is empty.
+   *
+   * @throws TemplateModelException if the wrapped object references a json
+   * array instead of a json object.
+   */
   public boolean isEmpty() throws TemplateModelException {
     JSONObject object = representation.getJsonObject();
     if (object == null) {
@@ -137,6 +145,13 @@ public final class JsonRepresentationModel implements TemplateHashModel,
     return object.length() == 0;
   }
 
+  /** {@inheritDoc}
+   *
+   * Returns the length of the wrapped json array.
+   *
+   * @throws TemplateModelException if the wrapped object references a json
+   * object instead of a json array.
+   */
   public int size() throws TemplateModelException {
     JSONArray array = representation.getJsonArray();
     if (array == null) {

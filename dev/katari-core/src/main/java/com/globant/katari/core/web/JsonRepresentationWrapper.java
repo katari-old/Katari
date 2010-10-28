@@ -23,18 +23,18 @@ public final class JsonRepresentationWrapper extends DefaultObjectWrapper {
 
   /** {@inheritDoc}
    */
-  public TemplateModel wrap(Object object) throws TemplateModelException {
+  public TemplateModel wrap(final Object object)
+      throws TemplateModelException {
     log.trace("Entering wrap");
+    TemplateModel model;
     if (object instanceof JsonRepresentation) {
-      TemplateModel model;
       model = new JsonRepresentationModel((JsonRepresentation) object);
       log.trace("Leaving wrap with JsonRepresentationWrapper");
-      return model;
     } else {
-      TemplateModel model = super.wrap(object);;
+      model = super.wrap(object);
       log.trace("Leaving wrap with a default wrapper");
-      return model;
     }
+    return model;
   }
 }
 
