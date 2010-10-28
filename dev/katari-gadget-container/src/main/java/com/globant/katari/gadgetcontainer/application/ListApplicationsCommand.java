@@ -94,7 +94,7 @@ public class ListApplicationsCommand implements Command<List<Application>> {
     GadgetGroup group;
     group = gadgetGroupRepository.findGadgetGroup(uid, gadgetGroupName);
     if (group == null) {
-      throw new RuntimeException("Group " + group + " not found.");
+      throw new RuntimeException("Group " + gadgetGroupName + " not found.");
     }
     if (!group.isCustomizable()) {
       throw new RuntimeException("Group " + group + " is not customizable.");
