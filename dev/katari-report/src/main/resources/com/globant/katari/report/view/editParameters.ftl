@@ -4,7 +4,7 @@
 <head>
   <title>Edit Parameters Descriptors</title>
   <!-- Load the YUI Loader script: -->
-  <script>
+  <script type='text/javascript'>
     var loader = new YAHOO.util.YUILoader({
         require: ["calendar"],
         base: '${baseweb}/module/ajax/yui/',
@@ -58,11 +58,11 @@
       YAHOO.util.Event.addListener(trigger, "click", myCalendar.show, myCalendar, true);
       myCalendar.render();
     }
-    
+
     function reloadDropdown() {
       document.getElementById("reloading").value='true';
       document.getElementById("reportForm").submit();
-    }    
+    }
   </script>
 </head>
 
@@ -95,8 +95,8 @@
             <#case "java.util.Date">
               <td>
                 <@spring.bind "command.values[${parameter.name}]"/>
-                <input id="calText_${rowCounter}" type="text" name="${spring.status.expression}" readonly="1" 
-                   value="${command.values[parameter.name]!''}"/>                   
+                <input id="calText_${rowCounter}" type="text" name="${spring.status.expression}" readonly="1"
+                   value="${command.values[parameter.name]!''}"/>
               </td>
               <td>
                 <image src="${baseweb}/module/decorator/image/calendar.gif" id="f_trigger_c${rowCounter}"
@@ -129,7 +129,7 @@
                 <#if parameter.dropdown>
                   <@spring.formSingleSelect "command.values[${parameter.name}]", command.getDropdownOptions(parameter), "onChange=\"reloadDropdown();\"" />
                 <#else>
-                  <@spring.formInput "command.values[${parameter.name}]"/>                  
+                  <@spring.formInput "command.values[${parameter.name}]"/>
                 </#if>
               </td>
               <td>&nbsp;</td>
@@ -156,7 +156,7 @@
         <tr>
           <td>&nbsp;</td>
           <td>
-            <input type="hidden" id="reloading" name="reloading" value="false"/>          
+            <input type="hidden" id="reloading" name="reloading" value="false"/>
             <input type="hidden" name="parameterReportId" value="${command.reportId}"/>
             <input class="btn" type="submit" value="show report"/>
           </td>
@@ -164,9 +164,12 @@
         </tr>
       </tbody>
     </table>
-    
+
   </form>
 
 </body>
 
+<!-- vim: set ts=2 et sw=2 ai filetype=xml: -->
+
 </html>
+

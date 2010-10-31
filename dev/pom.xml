@@ -397,25 +397,13 @@
       <dependency>
         <groupId>jasperreports</groupId>
         <artifactId>jasperreports</artifactId>
-        <version>2.0.4</version>
-      </dependency>
-
-      <!-- Jasperreports depends on itext [1.02b,), so it will get any version
-      newer than 1.02b. We pin itext version to 2.1.5.
-
-      As of this writing, itext is in version 2.1.7. Using it brings
-      bouncycastle:bctsp-jdk14:jar:138, not yet available in globant maven repo.
-      -->
-      <dependency>
-        <groupId>com.lowagie</groupId>
-        <artifactId>itext</artifactId>
-        <version>2.1.5</version>
+        <version>3.5.3</version>
       </dependency>
 
       <dependency>
         <groupId>org.apache.poi</groupId>
         <artifactId>poi</artifactId>
-        <version>3.0.2-FINAL</version>
+        <version>3.6</version>
       </dependency>
 
       <dependency>

@@ -84,6 +84,18 @@
       </list>
     </constructor-arg>
   </bean>
+
+  <!-- Spring mvc generates invalid ids when we binding an array. We exclude
+       the parameters page. -->
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.htmlValidator.ignoredUrlpatterns' />
+    <constructor-arg>
+      <list>
+        <value>.*reports/editParameters.do.*</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
 </beans>
 
 <!-- vim: set ts=2 et sw=2 ai: -->
