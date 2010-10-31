@@ -23,17 +23,17 @@ insert into applications (id, title, url) values (2, 'ToDo',
  'http://www.labpixies.com/campaigns/todo/todo.xml');
 insert into applications (id, title, url) values (3, 'Flood It',
  'http://www.labpixies.com/campaigns/flood/flood.xml');
-insert into applications (id, title, icon, url) values (4, 'Chess',
- 'http://ning.j2play.net/j2play-images/ImageServlet?id=7231',
- 'http://ning.j2play.net/ning/web/game-200/app.xml');
+-- insert into applications (id, title, icon, url) values (4, 'Chess',
+ -- 'http://ning.j2play.net/j2play-images/ImageServlet?id=7231',
+ -- 'http://ning.j2play.net/ning/web/game-200/app.xml');
 
 -- Creates two gadget groups.
 insert into gadget_groups (name, type, number_of_columns)
  values ('top', 0, 2);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
  group_order) values (2, 1, 0, 0);
-insert into gadget_instances (application_id, gadget_group_id, group_column,
- group_order) values (4, 1, 1, 0);
+-- insert into gadget_instances (application_id, gadget_group_id, group_column,
+ -- group_order) values (4, 1, 1, 0);
 
 insert into gadget_groups (name, type, number_of_columns)
  values ('main', 2, 3);
