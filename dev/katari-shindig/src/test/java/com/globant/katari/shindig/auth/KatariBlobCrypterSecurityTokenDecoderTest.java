@@ -1,6 +1,6 @@
 package com.globant.katari.shindig.auth;
 
-import static org.apache.shindig.auth.SecurityTokenDecoder.SECURITY_TOKEN_NAME;
+import static org.apache.shindig.auth.SecurityTokenCodec.SECURITY_TOKEN_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;

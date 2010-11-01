@@ -6,8 +6,14 @@ import org.apache.commons.lang.Validate;
 import org.apache.shindig.common.crypto.BlobCrypter;
 import org.apache.shindig.common.crypto.BlobCrypterException;
 
-/**
- * Implementation of token decoder.
+/** Implementation of token decoder.
+ *
+ * This is an implementation of SecurityTokenCodec that can be configured with
+ * an external BlobCrypter, instead of creating itself the crypters with
+ * information from ContainerConfig, as the default token decoder does.
+ *
+ * The BlobCrypter created by the default codec can only obtain the password
+ * from a file. 
  *
  * This is a hack because shindig's BlobCrypterSecurityToken#decrypt is package
  * access.
@@ -15,10 +21,9 @@ import org.apache.shindig.common.crypto.BlobCrypterException;
  * @see {@link org.apache.shindig.auth.BlobCrypterSecurityTokenDecoder}
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
- *
  */
 public class KatariBlobCrypterSecurityTokenDecoder
-      implements SecurityTokenDecoder {
+      implements SecurityTokenCodec {
 
   /** {@link String} the name of the domain related with this decoder.
    * Never null.
@@ -81,6 +86,21 @@ public class KatariBlobCrypterSecurityTokenDecoder
     try {
       return BlobCrypterSecurityToken.decrypt(
           crypter, container, domain, crypted, activeUrl);
+    } catch (BlobCrypterException e) {
+      throw new SecurityTokenException(e);
+    }
+  }
+  
+  public String encodeToken(SecurityToken token) throws SecurityTokenException {
+    if (! (token instanceof BlobCrypterSecurityToken)) {
+      throw new SecurityTokenException(
+          "Can only encode BlogCrypterSecurityTokens");
+    }
+
+    BlobCrypterSecurityToken t = (BlobCrypterSecurityToken)token;
+
+    try {
+      return t.encrypt();
     } catch (BlobCrypterException e) {
       throw new SecurityTokenException(e);
     }

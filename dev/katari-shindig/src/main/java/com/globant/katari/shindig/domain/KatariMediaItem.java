@@ -3,6 +3,7 @@
 package com.globant.katari.shindig.domain;
 
 import org.apache.shindig.social.opensocial.model.Activity;
+import org.apache.shindig.social.opensocial.model.Address;
 import org.apache.shindig.social.opensocial.model.MediaItem;
 
 import javax.persistence.Column;
@@ -98,7 +99,9 @@ public class KatariMediaItem implements MediaItem {
     url = theUrl;
   }
 
-  /** Creates a media item with all the attributes copied from source.
+  /** Creates a media item with some attributes copied from source.
+   * 
+   * This is a partial implementation, will be finished in future releases.
    *
    * @param source The original media item. It cannot be null.
    */
@@ -155,6 +158,193 @@ public class KatariMediaItem implements MediaItem {
    */
   public void setThumbnailUrl(final String url) {
     this.thumbnailUrl = url;
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getAlbumId() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setAlbumId(String albumId) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getCreated() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setCreated(String created) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getDescription() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setDescription(String description) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getDuration() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setDuration(String duration) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getFileSize() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setFileSize(String fileSize) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getId() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setId(String id) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getLanguage() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setLanguage(String language) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getLastUpdated() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setLastUpdated(String lastUpdated) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public Address getLocation() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setLocation(Address location) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getNumComments() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setNumComments(String numComments) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getNumViews() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setNumViews(String numViews) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getNumVotes() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setNumVotes(String numVotes) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getRating() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setRating(String rating) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getStartTime() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setStartTime(String startTime) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getTaggedPeople() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setTaggedPeople(String taggedPeople) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getTags() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setTags(String tags) {
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getTitle() {
+    return null;
+  }
+
+  /** {@inheritDoc}
+   */
+  public void setTitle(String title) {
   }
 }
 

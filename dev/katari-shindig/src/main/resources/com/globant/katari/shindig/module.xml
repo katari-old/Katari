@@ -128,7 +128,7 @@
                 <constructor-arg index="1">
                   <map>
                     <entry key="handlers">
-                      <value>org.apache.shindig.gadgets.handlers</value>
+                      <value>org.apache.shindig.handlers</value>
                     </entry>
                   </map>
                 </constructor-arg>
@@ -142,7 +142,7 @@
                 <constructor-arg index="1">
                   <map>
                     <entry key="handlers">
-                      <value>org.apache.shindig.gadgets.handlers</value>
+                      <value>org.apache.shindig.handlers</value>
                     </entry>
                   </map>
                 </constructor-arg>
@@ -171,6 +171,15 @@
                 <constructor-arg index="0">
                   <bean
                     class="org.apache.shindig.gadgets.servlet.GadgetRenderingServlet"
+                    />
+                </constructor-arg>
+              </bean>
+            </entry>
+            <entry key="/gadgets/accel">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="org.apache.shindig.gadgets.servlet.HtmlAccelServlet"
                     />
                 </constructor-arg>
               </bean>

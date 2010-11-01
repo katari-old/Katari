@@ -4,7 +4,7 @@ package com.globant.katari.shindig;
 
 import org.apache.commons.lang.Validate;
 
-import org.apache.shindig.auth.SecurityTokenDecoder;
+import org.apache.shindig.auth.SecurityTokenCodec;
 import org.apache.shindig.common.crypto.BlobCrypter;
 import org.apache.shindig.config.ContainerConfig;
 import org.apache.shindig.gadgets.http.HttpFetcher;
@@ -40,7 +40,7 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
 
   /** Security token decoder.
    */
-  private final SecurityTokenDecoder tokenDecoder;
+  private final SecurityTokenCodec tokenDecoder;
 
   /** Crypter implementation to crypt the tokens.
    */
@@ -67,7 +67,7 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
    */
   public ShindigServicesModule(final PersonService personServiceImpl,
       final ActivityService activityServiceImpl,
-      final SecurityTokenDecoder decoder, final BlobCrypter blobCrypter,
+      final SecurityTokenCodec decoder, final BlobCrypter blobCrypter,
       final String theContextPath) {
 
     Validate.notNull(personServiceImpl,
@@ -104,7 +104,7 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
 
     bind(PersonService.class).toInstance(personService);
     bind(ActivityService.class).toInstance(activityService);
-    bind(SecurityTokenDecoder.class).toInstance(tokenDecoder);
+    bind(SecurityTokenCodec.class).toInstance(tokenDecoder);
     bind(BlobCrypter.class).toInstance(crypter);
 
     bind(String.class).annotatedWith(Names.named("shindig.canonical.json.db"))

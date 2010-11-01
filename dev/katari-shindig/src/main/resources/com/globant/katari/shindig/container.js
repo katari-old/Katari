@@ -32,6 +32,14 @@
   "gadgets.jsUriTemplate":
     "http://%host%%context%/module/shindig/gadgets/js/%js%",
 
+  //New configuration for iframeUri generation:
+  "gadgets.uri.iframe.lockedDomainSuffix" :  "-a.example.com:8080",
+  "gadgets.uri.iframe.unlockedDomain" : "www.example.com:8080",
+  "gadgets.uri.iframe.basePath" : "/gadgets/ifr",
+
+  "gadgets.uri.js.host" : "http://www.example.com/",
+  "gadgets.uri.js.path" : "/",
+	
   // Callback URL.  Scheme relative URL for easy switch between https/http.
   "gadgets.oauthGadgetCallbackTemplate":
     "//%host%%context%/module/shindig/gadgets/oauthcallback",
@@ -48,6 +56,29 @@
   //
   "gadgets.securityTokenType": "secure",
 
+  // URI for the default shindig test instance.
+  "defaultShindigTestHost": "localhost:8098",
+
+  // Authority (host:port without scheme) for the proxy and concat servlets.
+  "defaultShindigProxyConcatAuthority": "localhost:8098",
+
+  // Default Uri config: these must be overridden - specified here for testing purposes
+  "gadgets.uri.iframe.unlockedDomain": "${Cur['defaultShindigTestHost']}",
+  "gadgets.uri.iframe.lockedDomainSuffix": "${Cur['defaultShindigTestHost']}",
+
+  // Default Js Uri config: also must be overridden.
+  "gadgets.uri.js.host": "${Cur['defaultShindigTestHost']}",
+  "gadgets.uri.js.path": "%context%/module/shindig/gadgets/js",
+
+  // Default concat Uri config; used for testing.
+  "gadgets.uri.concat.host" : "${Cur['defaultShindigProxyConcatAuthority']}",
+  "gadgets.uri.concat.path" : "%context%/module/shindig/gadgets/concat",
+  "gadgets.uri.concat.js.splitToken" : "false",
+
+  // Default proxy Uri config; used for testing.
+  //"gadgets.uri.proxy.host" : "${Cur['defaultShindigProxyConcatAuthority']}",
+  //"gadgets.uri.proxy.path" : "%context%/module/shindig/gadgets/proxy",
+
   // This is not used, you should check the config.property file to assign the
   // key. "gadgets.securityTokenKeyFile": "/file.txt",
 
@@ -60,14 +91,18 @@
   "gadgets.features": {
     "core.io": {
       // Note: /proxy is an open proxy. Be careful how you expose this!
-      "proxyUrl": "http://%host%%context%/module/shindig/gadgets/proxy?refresh=%refresh%&url=%url%%rewriteMime%",
+      "proxyUrl": "http://%host%%context%/module/shindig/gadgets/proxy?container=default&refresh=%refresh%&url=%url%%rewriteMime%",
       "jsonProxyUrl":
         "http://%host%%context%/module/shindig/gadgets/makeRequest"
     },
     "views": {
       "profile": {
         "isOnlyVisible": false,
-        "urlTemplate": "http://localhost:8098%context%/module/shindig/gadgets/profile?{var}",
+        "urlTemplate": "http://localhost:8098%context%/module/shindig/gadgets/profile?{var}"
+      },
+      "home": {
+        "isOnlyVisible": false,
+        "urlTemplate": "http://localhost:8098%context%/module/shindig/gadgets/home?{var}",
         "aliases": ["DASHBOARD", "default"]
       },
       "canvas": {
