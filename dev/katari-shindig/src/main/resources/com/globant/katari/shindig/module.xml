@@ -24,6 +24,7 @@
                 <constructor-arg ref='shindig.personService'/>
                 <constructor-arg ref='shindig.blobCrypterDecoder'/>
                 <constructor-arg ref='shindig.tokenCrypter'/>
+                <constructor-arg ref='shindig.hostAndPort'/>
                 <constructor-arg ref='shindig.contextPath'/>
               </bean>
               <bean class='org.apache.shindig.gadgets.oauth.OAuthModule'/>
@@ -349,6 +350,11 @@
   <bean id="shindig.containerDomain"
       class="com.globant.katari.core.spring.StringHolder">
     <property name="value" value="shindig" />
+  </bean>
+
+  <bean id="shindig.hostAndPort"
+      class="com.globant.katari.core.spring.StringHolder">
+      <property name="value" value="localhost:8098" />
   </bean>
 
   <bean id="shindig.contextPath"

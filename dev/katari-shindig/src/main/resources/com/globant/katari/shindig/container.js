@@ -71,13 +71,15 @@
   "gadgets.uri.js.path": "%context%/module/shindig/gadgets/js",
 
   // Default concat Uri config; used for testing.
-  "gadgets.uri.concat.host" : "${Cur['defaultShindigProxyConcatAuthority']}",
+  //"gadgets.uri.concat.host" : "${Cur['defaultShindigProxyConcatAuthority']}",
+  "gadgets.uri.concat.host" : "%hostAndPort%",
   "gadgets.uri.concat.path" : "%context%/module/shindig/gadgets/concat",
   "gadgets.uri.concat.js.splitToken" : "false",
 
   // Default proxy Uri config; used for testing.
   //"gadgets.uri.proxy.host" : "${Cur['defaultShindigProxyConcatAuthority']}",
-  //"gadgets.uri.proxy.path" : "%context%/module/shindig/gadgets/proxy",
+  "gadgets.uri.proxy.host" : "%hostAndPort%",
+  "gadgets.uri.proxy.path" : "%context%/module/shindig/gadgets/proxy",
 
   // This is not used, you should check the config.property file to assign the
   // key. "gadgets.securityTokenKeyFile": "/file.txt",

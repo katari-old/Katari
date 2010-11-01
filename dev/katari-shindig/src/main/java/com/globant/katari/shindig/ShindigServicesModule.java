@@ -45,6 +45,13 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
    */
   private final BlobCrypter crypter;
 
+  /** The web host and port.
+   *
+   * This cannot be determined automatically because shindig needs it very
+   * early in the startup cycle. It is never null.
+   */
+  private final String hostAndPort;
+
   /** The web context path where the application will be deployed.
    *
    * This cannot be determined automatically because shindig needs it very
@@ -66,6 +73,10 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
    * @param blobCrypter The implementation of the BlobCrypter. It cannot be
    * null.
    *
+   * @param theHostAndPort The web host and port where the application will be
+   * deployed. This cannot be determined automatically because shindig needs it
+   * very early in the startup cycle. It cannot be null.
+   * 
    * @param theContextPath The web context path where the application will be
    * deployed. This cannot be determined automatically because shindig needs it
    * very early in the startup cycle. It cannot be null.
@@ -73,7 +84,7 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
   public ShindigServicesModule(final PersonService personServiceImpl,
       final ActivityService activityServiceImpl,
       final SecurityTokenCodec decoder, final BlobCrypter blobCrypter,
-      final String theContextPath) {
+      final String theHostAndPort, final String theContextPath) {
 
     Validate.notNull(personServiceImpl,
         "The person service implementation cannot be null.");
@@ -83,6 +94,7 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
         "The token decoder implementation cannot be null.");
     Validate.notNull(blobCrypter,
         "The blob crypter implementation cannot be null.");
+    Validate.notNull(theHostAndPort, "The host and port cannot be null.");
     Validate.notNull(theContextPath, "The context path cannot be null.");
 
     personService = personServiceImpl;
@@ -90,6 +102,7 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
     tokenDecoder = decoder;
     crypter = blobCrypter;
     contextPath = theContextPath;
+    hostAndPort = theHostAndPort;
   }
 
   /** Wires the shindig services to the corresponding Katari implementations.
@@ -105,6 +118,8 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
 
     bind(String.class).annotatedWith(Names.named("katari.contextPath"))
         .toInstance(contextPath);
+    bind(String.class).annotatedWith(Names.named("katari.hostAndPort"))
+        .toInstance(hostAndPort);
     bind(ContainerConfig.class).to(SpringJsonContainerConfig.class);
 
     bind(PersonService.class).toInstance(personService);

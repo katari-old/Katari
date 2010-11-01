@@ -3,12 +3,16 @@
 package com.globant.katari.shindig;
 
 import static org.apache.shindig.config.ContainerConfig.DEFAULT_CONTAINER;
+
 import static com.globant.katari.shindig
   .SpringJsonContainerConfig.CONTAINER_KEY;
 import static com.globant.katari.shindig
   .SpringJsonContainerConfig.PARENT_KEY;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.*;
 
 import org.apache.shindig.config.ContainerConfig;
 import org.apache.shindig.config.ContainerConfigException;
@@ -70,8 +74,8 @@ public class SpringJsonContainerConfigTest {
   @Test
   public void parseBasicConfig() throws Exception {
     ContainerConfig config = new SpringJsonContainerConfig(
-        createDefaultContainer().getAbsolutePath(), "/context",
-        Expressions.forTesting());
+        createDefaultContainer().getAbsolutePath(), "localhost:8098",
+        "/context", Expressions.forTesting());
 
     assertEquals(1, config.getContainers().size());
     for (String container : config.getContainers()) {
@@ -97,7 +101,8 @@ public class SpringJsonContainerConfigTest {
 
     ContainerConfig config = new SpringJsonContainerConfig(
         childFile.getAbsolutePath() + SpringJsonContainerConfig.FILE_SEPARATOR
-        + parentFile.getAbsolutePath(), "/context", Expressions.forTesting());
+        + parentFile.getAbsolutePath(), "localhost:8098", "/context",
+        Expressions.forTesting());
 
     assertEquals(NESTED_VALUE, config.getString(CONTAINER_A, NESTED_KEY));
     assertEquals(NESTED_VALUE, config.getString(CONTAINER_B, NESTED_KEY));
@@ -120,7 +125,8 @@ public class SpringJsonContainerConfigTest {
     File parentFile = createDefaultContainer();
     ContainerConfig config = new SpringJsonContainerConfig(
         childFile.getAbsolutePath() + SpringJsonContainerConfig.FILE_SEPARATOR
-        + parentFile.getAbsolutePath(), "/context", Expressions.forTesting());
+        + parentFile.getAbsolutePath(), "localhost:8098", "/context",
+        Expressions.forTesting());
 
     String value = config.getString(CHILD_CONTAINER, TOP_LEVEL_NAME);
     assertEquals(TOP_LEVEL_VALUE, value);
@@ -147,8 +153,8 @@ public class SpringJsonContainerConfigTest {
   @Test
   public void invalidContainerReturnsNull() throws Exception {
     ContainerConfig config = new SpringJsonContainerConfig(
-        createDefaultContainer().getAbsolutePath(), "/config",
-        Expressions.forTesting());
+        createDefaultContainer().getAbsolutePath(), "localhost:8098",
+        "/config", Expressions.forTesting());
     assertNull("Did not return null for invalid container.",
         config.getString("fake", PARENT_KEY));
   }
@@ -161,14 +167,14 @@ public class SpringJsonContainerConfigTest {
     json.put(ARRAY_NAME, ARRAY_ALT_VALUE);
 
     new SpringJsonContainerConfig(createContainer(json).getAbsolutePath(),
-        "/context", Expressions.forTesting());
+        "localhost:8098", "/context", Expressions.forTesting());
   }
 
   @Test
   public void pathQuery() throws Exception {
     ContainerConfig config = new SpringJsonContainerConfig(
-        createDefaultContainer().getAbsolutePath(), "/context",
-        Expressions.forTesting());
+        createDefaultContainer().getAbsolutePath(), "localhost:8098",
+        "/context", Expressions.forTesting());
     String path = "${" + NESTED_KEY + "['" + NESTED_NAME + "']}";
     String data = config.getString(DEFAULT_CONTAINER, path);
     assertEquals(NESTED_VALUE, data);
@@ -183,7 +189,7 @@ public class SpringJsonContainerConfigTest {
     json.put("world", "Earth");
 
     ContainerConfig config = new SpringJsonContainerConfig(
-        createContainer(json).getAbsolutePath(), "/context",
+        createContainer(json).getAbsolutePath(), "localhost:8098", "/context",
         Expressions.forTesting());
 
     assertEquals("Hello, Earth!", config.getString(DEFAULT_CONTAINER,
@@ -202,7 +208,8 @@ public class SpringJsonContainerConfigTest {
     File parentFile = createDefaultContainer();
     ContainerConfig config = new SpringJsonContainerConfig(
         childFile.getAbsolutePath() + SpringJsonContainerConfig.FILE_SEPARATOR
-        + parentFile.getAbsolutePath(), "/context", Expressions.forTesting());
+        + parentFile.getAbsolutePath(), "localhost:8098", "/context",
+        Expressions.forTesting());
 
     assertEquals(TOP_LEVEL_VALUE, config.getString(CHILD_CONTAINER,
           "parentExpression"));
@@ -214,7 +221,7 @@ public class SpringJsonContainerConfigTest {
     JSONObject json = new JSONObject(
         "{ 'gadgets.container' : ['default'], features : { osapi : null }}");
     SpringJsonContainerConfig config = new SpringJsonContainerConfig(
-        createContainer(json).getAbsolutePath(), "/context",
+        createContainer(json).getAbsolutePath(), "localhost:8098", "/context",
         Expressions.forTesting());
     assertNull(config.getMap("default", "features").get("osapi"));
   }
@@ -234,6 +241,7 @@ public class SpringJsonContainerConfigTest {
     // small nested data.
     JSONObject nestedJson = new JSONObject();
     nestedJson.put(NESTED_NAME, "%context%/" + NESTED_VALUE);
+    nestedJson.put("endpoint", "%hostAndPort%/" + NESTED_VALUE);
 
     json.put(NESTED_KEY, nestedJson);
     File childFile = createContainer(json);
@@ -245,44 +253,50 @@ public class SpringJsonContainerConfigTest {
   public void constructor_context() throws Exception {
 
     ContainerConfig config = new SpringJsonContainerConfig(
-        createContextContainer(), "/context", Expressions.forTesting());
+        createContextContainer(), "localhost:8098", "/context",
+        Expressions.forTesting());
 
     Map<String, Object> nested = config.getMap(DEFAULT_CONTAINER, NESTED_KEY);
     String nestedValue = nested.get(NESTED_NAME).toString();
-    assertEquals("/context/" + NESTED_VALUE, nestedValue);
+    assertThat(nestedValue, containsString("/context/"));
   }
 
   @Test
   public void constructor_contextNoSlash() throws Exception {
 
     ContainerConfig config = new SpringJsonContainerConfig(
-        createContextContainer(), "context", Expressions.forTesting());
+        createContextContainer(), "localhost:8098", "context",
+        Expressions.forTesting());
 
     Map<String, Object> nested = config.getMap(DEFAULT_CONTAINER, NESTED_KEY);
     String nestedValue = nested.get(NESTED_NAME).toString();
-    assertEquals("/context/" + NESTED_VALUE, nestedValue);
+    assertThat(nestedValue, containsString("/context/"));
   }
 
   @Test
   public void constructor_contextOnlyTrailing() throws Exception {
 
     ContainerConfig config = new SpringJsonContainerConfig(
-        createContextContainer(), "context/", Expressions.forTesting());
+        createContextContainer(), "localhost:8098", "context/",
+        Expressions.forTesting());
 
     Map<String, Object> nested = config.getMap(DEFAULT_CONTAINER, NESTED_KEY);
     String nestedValue = nested.get(NESTED_NAME).toString();
-    assertEquals("/context/" + NESTED_VALUE, nestedValue);
+    assertThat(nestedValue, containsString("/context/"));
   }
 
   @Test
   public void constructor_contextTwoSlashes() throws Exception {
 
     ContainerConfig config = new SpringJsonContainerConfig(
-        createContextContainer(), "context/", Expressions.forTesting());
+        createContextContainer(), "localhost:8098", "context/",
+        Expressions.forTesting());
 
     Map<String, Object> nested = config.getMap(DEFAULT_CONTAINER, NESTED_KEY);
     String nestedValue = nested.get(NESTED_NAME).toString();
-    assertEquals("/context/" + NESTED_VALUE, nestedValue);
+    assertThat(nestedValue, containsString("/context/"));
+    nestedValue = nested.get("endpoint").toString();
+    assertThat(nestedValue, containsString("localhost:8098"));
   }
 }
 

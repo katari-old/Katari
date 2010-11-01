@@ -44,7 +44,8 @@ import javax.el.ValueExpression;
  * See config/container.js for an example configuration.
  *
  * This is almost the same as shindigs JsonContainerConfig, but replaces
- * %context% with the provided contextPath.
+ * %context% with the provided contextPath, and %hostAndPort% with the provided
+ * host and port values, a string of the form host:port.
  */
 @Singleton
 public class SpringJsonContainerConfig extends AbstractContainerConfig {
@@ -69,6 +70,12 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
 
   private final Expressions expressions;
 
+  /** The web application host and port.
+   *
+   * This is never null.
+   */
+  private final String hostAndPort;
+
   /** The web application context path.
    *
    * This is never null.
@@ -80,6 +87,9 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
    * @param containers A comma separated list of configuration resources. It
    * cannot be null.
    *
+   * @param theHostAndPort The configured web application host and port, of the
+   * form hostname:port. The :port part is optional. It cannot be null.
+   *
    * @param contextPath The configured web application context path. It cannot
    * be null.
    *
@@ -88,11 +98,15 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
   @Inject
   public SpringJsonContainerConfig(
       @Named("shindig.containers.default") final String containers,
+      @Named("katari.hostAndPort") final String theHostAndPort,
       @Named("katari.contextPath") final String contextPath,
       final Expressions theExpressions)
         throws ContainerConfigException {
 
+    Validate.notNull(theHostAndPort, "The host and port cannot be null.");
     Validate.notNull(contextPath, "The context path cannot be null.");
+
+    hostAndPort = theHostAndPort;
 
     String tmpContext;
     if (!contextPath.startsWith("/")) {
@@ -367,6 +381,7 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
     throws ContainerConfigException {
     // Context must start with / and must not end with /.
     String json = json2.replaceAll("%context%", context);
+    json = json.replaceAll("%hostAndPort%", hostAndPort);
 
     try {
       JSONObject contents = new JSONObject(json);
