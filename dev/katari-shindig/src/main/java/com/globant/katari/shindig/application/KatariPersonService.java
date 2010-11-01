@@ -11,7 +11,6 @@ import java.util.concurrent.Future;
 
 import org.apache.shindig.auth.SecurityToken;
 import org.apache.shindig.common.util.ImmediateFuture;
-import org.apache.shindig.protocol.ProtocolException;
 import org.apache.shindig.protocol.RestfulCollection;
 import org.apache.shindig.social.opensocial.model.Person;
 import org.apache.shindig.social.opensocial.spi.CollectionOptions;
@@ -48,8 +47,7 @@ public class KatariPersonService extends HibernateDaoSupport implements
   @SuppressWarnings("unchecked")
   public Future<RestfulCollection<Person>> getPeople(final Set<UserId> userIds,
       final GroupId groupId, final CollectionOptions collectionOptions,
-      final Set<String> fields, final SecurityToken token)
-      throws ProtocolException {
+      final Set<String> fields, final SecurityToken token) {
 
     log.trace("Entering getPeople");
 
@@ -88,11 +86,9 @@ public class KatariPersonService extends HibernateDaoSupport implements
    * @param token The gadget token.It cannot be null.
    *
    * @return a person.
-   *
-   * @throws ProtocolException if id or token is null.
    */
   public Future<Person> getPerson(final UserId id, final Set<String> fields,
-      final SecurityToken token) throws ProtocolException {
+      final SecurityToken token) {
     log.trace("Entering getPerson");
 
     Validate.notNull(id, "The Id can not be null");

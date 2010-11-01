@@ -61,7 +61,8 @@ public class TaskDashboardCommandTest {
     String[] groups = new String[] { group1 };
     String[] triggers = new String[] { trigger1 };
 
-    LinkedList runningJobs = new LinkedList();
+    LinkedList<JobExecutionContext> runningJobs;
+    runningJobs = new LinkedList<JobExecutionContext>();
     runningJobs.add(context);
 
     expect(scheduler.getCurrentlyExecutingJobs()).andReturn(runningJobs);

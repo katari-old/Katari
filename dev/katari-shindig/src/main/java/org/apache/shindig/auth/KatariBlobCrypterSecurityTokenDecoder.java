@@ -13,7 +13,7 @@ import org.apache.shindig.common.crypto.BlobCrypterException;
  * information from ContainerConfig, as the default token decoder does.
  *
  * The BlobCrypter created by the default codec can only obtain the password
- * from a file. 
+ * from a file.
  *
  * This is a hack because shindig's BlobCrypterSecurityToken#decrypt is package
  * access.
@@ -60,7 +60,6 @@ public class KatariBlobCrypterSecurityTokenDecoder
    *  implementation: {@link AnonymousSecurityToken}
    *
    *  @throws SecurityTokenException if can not decrypt the given token.
-   *  @throws IllegalArgumentException if the given tokenParameters is null.
    */
   public SecurityToken createToken(final Map<String, String> tokenParameters)
       throws SecurityTokenException {
@@ -90,14 +89,15 @@ public class KatariBlobCrypterSecurityTokenDecoder
       throw new SecurityTokenException(e);
     }
   }
-  
-  public String encodeToken(SecurityToken token) throws SecurityTokenException {
-    if (! (token instanceof BlobCrypterSecurityToken)) {
+
+  public String encodeToken(final SecurityToken token)
+        throws SecurityTokenException {
+    if (!(token instanceof BlobCrypterSecurityToken)) {
       throw new SecurityTokenException(
           "Can only encode BlogCrypterSecurityTokens");
     }
 
-    BlobCrypterSecurityToken t = (BlobCrypterSecurityToken)token;
+    BlobCrypterSecurityToken t = (BlobCrypterSecurityToken) token;
 
     try {
       return t.encrypt();

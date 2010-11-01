@@ -89,7 +89,7 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
   public SpringJsonContainerConfig(
       @Named("shindig.containers.default") final String containers,
       @Named("katari.contextPath") final String contextPath,
-      final Expressions expressions)
+      final Expressions theExpressions)
         throws ContainerConfigException {
 
     Validate.notNull(contextPath, "The context path cannot be null.");
@@ -107,7 +107,7 @@ public class SpringJsonContainerConfig extends AbstractContainerConfig {
     }
     context = tmpContext;
 
-    this.expressions = expressions;
+    this.expressions = theExpressions;
     config = createContainers(loadContainers(containers));
     init();
   }

@@ -47,7 +47,7 @@ public class Application {
   /** The optional gadget icon.
    *
    * This is obtained from the gadget xml.
-   * 
+   *
    * It is null if not known.
    */
   @Column(nullable = true)
@@ -56,7 +56,7 @@ public class Application {
   /** The optional gadget description.
    *
    * This is obtained from the gadget xml.
-   * 
+   *
    * It is null if not known.
    */
   @Column(length = 4096, nullable = true)
@@ -65,7 +65,7 @@ public class Application {
   /** The optional gadget author.
    *
    * This is obtained from the gadget xml.
-   * 
+   *
    * It is null if not known.
    */
   @Column(nullable = true)
@@ -74,7 +74,7 @@ public class Application {
   /** The optional gadget thumbnail.
    *
    * This is obtained from the gadget xml.
-   * 
+   *
    * It is null if not known.
    */
   @Column(nullable = true)
@@ -140,7 +140,7 @@ public class Application {
     }
   }
 
-  /** Retuns the result of evaluating an xpath expression
+  /** Retuns the result of evaluating an xpath expression.
    */
   private String getXpathValue(final Document document,
       final String expression) throws XPathExpressionException {

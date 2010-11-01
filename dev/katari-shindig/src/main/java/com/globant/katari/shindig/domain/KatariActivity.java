@@ -44,6 +44,10 @@ import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 @Table(name = "shindig_activities")
 public class KatariActivity implements Activity {
 
+  /** The default database length for a text field.
+   */
+  private static final int DEFAULT_LENGTH = 255;
+
   /** The id of the activity.
    *
    * This is 0 for a newly created activity.
@@ -72,7 +76,7 @@ public class KatariActivity implements Activity {
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "body", length = 255)
+  @Column(name = "body", length = DEFAULT_LENGTH)
   private String body;
 
   /**
@@ -80,7 +84,7 @@ public class KatariActivity implements Activity {
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "body_id", length = 255)
+  @Column(name = "body_id", length = DEFAULT_LENGTH)
   private String bodyId;
 
   /**
@@ -88,7 +92,7 @@ public class KatariActivity implements Activity {
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "external_id", length = 255)
+  @Column(name = "external_id", length = DEFAULT_LENGTH)
   private String externalId;
 
   /** model field.
@@ -132,7 +136,7 @@ public class KatariActivity implements Activity {
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "stream_favicon_url", length = 255)
+  @Column(name = "stream_favicon_url", length = DEFAULT_LENGTH)
   private String streamFaviconUrl;
 
   /**
@@ -140,14 +144,14 @@ public class KatariActivity implements Activity {
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "stream_source_url", length = 255)
+  @Column(name = "stream_source_url", length = DEFAULT_LENGTH)
   private String streamSourceUrl;
 
   /** model field.
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "stream_url", length = 255)
+  @Column(name = "stream_url", length = DEFAULT_LENGTH)
   private String streamUrl;
 
   /**
@@ -155,7 +159,7 @@ public class KatariActivity implements Activity {
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "stream_title", length = 255)
+  @Column(name = "stream_title", length = DEFAULT_LENGTH)
   private String streamTitle;
 
   /** The template parameters associated to this activity.
@@ -174,7 +178,7 @@ public class KatariActivity implements Activity {
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "title", length = 255, nullable = false)
+  @Column(name = "title", length = DEFAULT_LENGTH, nullable = false)
   private String title;
 
   /**
@@ -182,7 +186,7 @@ public class KatariActivity implements Activity {
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "title_id", length = 255)
+  @Column(name = "title_id", length = DEFAULT_LENGTH)
   private String titleId;
 
   /**
@@ -190,7 +194,7 @@ public class KatariActivity implements Activity {
    *
    * @see org.apache.shindig.social.opensocial.model.Activity
    */
-  @Column(name = "url", length = 255)
+  @Column(name = "url", length = DEFAULT_LENGTH)
   private String url;
 
   /** Needed by hibernate.
@@ -393,8 +397,8 @@ public class KatariActivity implements Activity {
 
   /** {@inheritDoc}
    */
-  public void setStreamFaviconUrl(final String url) {
-    streamFaviconUrl = url;
+  public void setStreamFaviconUrl(final String iconUrl) {
+    streamFaviconUrl = iconUrl;
   }
 
   /** {@inheritDoc}
@@ -405,8 +409,8 @@ public class KatariActivity implements Activity {
 
   /** {@inheritDoc}
    */
-  public void setStreamSourceUrl(final String url) {
-    streamSourceUrl = url;
+  public void setStreamSourceUrl(final String theStreamSourceUrl) {
+    streamSourceUrl = theStreamSourceUrl;
   }
 
   /** {@inheritDoc}
@@ -429,8 +433,8 @@ public class KatariActivity implements Activity {
 
   /** {@inheritDoc}
    */
-  public void setStreamUrl(final String url) {
-    streamUrl = url;
+  public void setStreamUrl(final String theStreamUrl) {
+    streamUrl = theStreamUrl;
   }
 
   /** {@inheritDoc}
@@ -465,8 +469,8 @@ public class KatariActivity implements Activity {
 
   /** {@inheritDoc}
    */
-  public void setTitleId(final String id) {
-    titleId = id;
+  public void setTitleId(final String theTitleId) {
+    titleId = theTitleId;
   }
 
   /** {@inheritDoc}
@@ -489,7 +493,7 @@ public class KatariActivity implements Activity {
 
   /** {@inheritDoc}
    */
-  public void setUserId(final String id) {
+  public void setUserId(final String theUserId) {
     throw new RuntimeException("This is not supported."
        + " Call the constructor instead.");
   }

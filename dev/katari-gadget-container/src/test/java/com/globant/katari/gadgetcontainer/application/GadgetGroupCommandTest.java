@@ -152,7 +152,6 @@ public class GadgetGroupCommandTest {
     String groupName = "theGroup";
 
     GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, 3);
-    Application application = new Application(gadgetXmlUrl);
 
     GadgetGroupRepository repository = createMock(GadgetGroupRepository.class);
     expect(repository.findGadgetGroup(0, groupName)).andReturn(gadgetGroup);

@@ -64,10 +64,10 @@ public class ShindigSocialApiGuiceModule extends AbstractModule {
       named("shindig.bean.converter.atom"))
       .to(BeanXStreamAtomConverter.class);
 
-    bind(new TypeLiteral<List<AuthenticationHandler>>() { } )
+    bind(new TypeLiteral<List<AuthenticationHandler>>(){ })
       .toProvider(AuthenticationHandlerProvider.class);
 
-    bind(new TypeLiteral<Set<Object>>() { } ).annotatedWith(
+    bind(new TypeLiteral<Set<Object>>(){ }).annotatedWith(
       named("org.apache.shindig.social.handlers")).toInstance(getHandlers());
 
     bind(Long.class).annotatedWith(
@@ -75,9 +75,9 @@ public class ShindigSocialApiGuiceModule extends AbstractModule {
      .toInstance(60L);
   }
 
-  /**
-   * Hook to provide a Set of request handlers. Subclasses may override to add
-   * or replace additional handlers.
+  /** Hook to provide a Set of request handlers.
+   *
+   * Subclasses may override to add or replace additional handlers.
    */
   protected Set<Object> getHandlers() {
     return ImmutableSet.<Object> of(ActivityHandler.class,

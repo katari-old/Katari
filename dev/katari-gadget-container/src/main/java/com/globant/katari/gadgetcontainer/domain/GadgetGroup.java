@@ -42,8 +42,6 @@ import com.globant.katari.shindig.domain.Application;
  * gadget group. Template gadget groups are not intended to be shown to the
  * user, they serve as the basis to create new gadget groups for users.
  *
- * TODO: decide if a group can contain more than one Application.
- *
  * @author waabox(emiliano[dot]arango[at]globant[dot]com)
  */
 @Entity

@@ -12,13 +12,18 @@ import  org.apache.shindig.protocol.ProtocolException;
  * IllegalArgumentException this method throws ProtocolException, which as a
  * checked exception.
  */
-public class Validate {
+public final class Validate {
 
   /** We assume that the validation errors correspond to a 'Receiving an
    * unsupported, nonstandard parameter', so we return a 400 BAD REQUEST http
    * statuc code.
    */
   private static final int DEFAULT_CODE = SC_BAD_REQUEST;
+
+  /** A private constructor for a utility class.
+   */
+  private Validate() {
+  }
 
   /**
    * Validate that the specified argument is not null; otherwise throwing an
@@ -29,11 +34,8 @@ public class Validate {
    * @param object the object to check.
    *
    * @param message the exception message if invalid. It cannot be null.
-   *
-   * @throws ProtocolException if the precondition is not met.
    */
-  public static final void notNull(final Object object, final String message)
-    throws ProtocolException {
+  public static void notNull(final Object object, final String message) {
     if (object == null) {
       throw new ProtocolException(DEFAULT_CODE, message);
     }
@@ -46,19 +48,15 @@ public class Validate {
    * expression, such as validating a primitive number or using your own custom
    * validation expression.
    *
-   * Validate.isTrue( (i > 0), "The value must be greater than zero");
-   *
-   * Validate.isTrue( myObject.isOk(), "The object is not OK");
+   * Validate.isTrue(myObject.isOk(), "The object is not OK");
    *
    * @param expression the boolean expression to check.
    *
    * @param message the exception message if invalid. It cannot be null.
-   *
-   * @throws ProtocolException if the precondition is not met.
    */
-  public static final void isTrue(final boolean expression,
-      final String message) throws ProtocolException {
-    if (expression == false) {
+  public static void isTrue(final boolean expression,
+      final String message) {
+    if (!expression) {
       throw new ProtocolException(DEFAULT_CODE, message);
     }
   }
@@ -72,11 +70,9 @@ public class Validate {
    * @param collection the collection to check.
    *
    * @param message the exception message if invalid. It cannot be null.
-   *
-   * @throws ProtocolException if the precondition is not met.
    */
-  public static final void notEmpty(final Collection<?> collection,
-      final String message) throws ProtocolException {
+  public static void notEmpty(final Collection<?> collection,
+      final String message) {
     if (collection == null || collection.size() == 0) {
       throw new ProtocolException(DEFAULT_CODE, message);
     }
@@ -91,11 +87,9 @@ public class Validate {
    * @param string the string to check.
    *
    * @param message the exception message if invalid. It cannot be null.
-   *
-   * @throws ProtocolException if the precondition is not met.
    */
-  public static final void notEmpty(final String string, final String message)
-    throws ProtocolException {
+  public static void notEmpty(final String string,
+      final String message) {
     if (string == null || string.length() == 0) {
       throw new ProtocolException(DEFAULT_CODE, message);
     }

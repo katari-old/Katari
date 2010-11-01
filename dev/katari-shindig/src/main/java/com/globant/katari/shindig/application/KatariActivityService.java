@@ -58,7 +58,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
    *
    * This is never null.
    */
-  ApplicationRepository applicationRepository;
+  private ApplicationRepository applicationRepository;
 
   /** Constructor, builds a KatariActivityService.
    *
@@ -97,14 +97,12 @@ public class KatariActivityService extends HibernateDaoSupport implements
    *
    * @return the found activities, in the specified order. It never returns
    * null.
-   *
-   * @throws ProtocolException in case of error.
    */
   @SuppressWarnings("unchecked")
   public Future<RestfulCollection<Activity>> getActivities(
       final Set<UserId> userIds, final GroupId groupId, final String appId,
       final Set<String> fields, final CollectionOptions options,
-      final SecurityToken token) throws ProtocolException {
+      final SecurityToken token) {
 
     log.trace("Entering getActivities");
 
@@ -161,8 +159,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
   public Future<RestfulCollection<Activity>> getActivities(final UserId userId,
       final GroupId groupId, final String appId,
       final Set<String> fields, final CollectionOptions options,
-      final Set<String> activityIds, final SecurityToken token)
-      throws ProtocolException {
+      final Set<String> activityIds, final SecurityToken token) {
 
     log.trace("Entering getActivities");
 
@@ -218,7 +215,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
   public Future<Activity> getActivity(final UserId userId,
       final GroupId groupId, final String appId,
       final Set<String> fields, final String activityId,
-      final SecurityToken token) throws ProtocolException {
+      final SecurityToken token) {
 
     log.trace("Entering getActivity");
 
@@ -249,8 +246,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
    */
   public Future<Void> deleteActivities(final UserId userId,
       final GroupId groupId, final String appId,
-      final Set<String> activityIds, final SecurityToken token)
-      throws ProtocolException {
+      final Set<String> activityIds, final SecurityToken token) {
 
     log.trace("Entering deleteActivity");
     throw new UnsupportedOperationException();
@@ -275,8 +271,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
    */
   public Future<Void> createActivity(final UserId userId,
       final GroupId groupId, final String appId, final Set<String> fields,
-      final Activity activity, final SecurityToken token)
-      throws ProtocolException {
+      final Activity activity, final SecurityToken token) {
 
     log.trace("Entering createActivity");
 
@@ -302,8 +297,8 @@ public class KatariActivityService extends HibernateDaoSupport implements
    *
    * @param userIds The user ids of the activities to search. It cannot be null.
    *
-   * @param groupId only supports @self, that returns all the activities from all
-   * the provided users. It cannot be null.
+   * @param groupId only supports @self, that returns all the activities from
+   * all the provided users. It cannot be null.
    *
    * @param appId The application id of activities. It cannot be null.
    *
@@ -361,6 +356,9 @@ public class KatariActivityService extends HibernateDaoSupport implements
           criteria.add(Restrictions.like(options.getFilter(),
               options.getFilterValue(), MatchMode.ANYWHERE));
           break;
+        default:
+          throw new RuntimeException("Unsupported filter operation "
+              + options.getFilterOperation());
         }
       }
     }

@@ -21,7 +21,6 @@ import com.google.inject.Provides;
 import com.google.inject.name.Names;
 
 import com.globant.katari.shindig.application.FakeUserHttpFetcher;
-import com.globant.katari.shindig.SpringJsonContainerConfig;
 
 /** Bindings for katari implementation of shindig services.
  *
@@ -46,6 +45,11 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
    */
   private final BlobCrypter crypter;
 
+  /** The web context path where the application will be deployed.
+   *
+   * This cannot be determined automatically because shindig needs it very
+   * early in the startup cycle. It is never null.
+   */
   private final String contextPath;
 
   /** Constructor.
@@ -53,13 +57,14 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
    * @param personServiceImpl The implementation of the person service. It
    * cannot be null.
    *
-   * @param activityService The implementation of the activity service. It
+   * @param activityServiceImpl The implementation of the activity service. It
    * cannot be null.
    *
    * @param decoder The implementation of the SecurityTokenDecoder. It cannot
    * be null.
    *
-   * @param blobCrypter The implementation of the BlobCrypter. It cannot be null.
+   * @param blobCrypter The implementation of the BlobCrypter. It cannot be
+   * null.
    *
    * @param theContextPath The web context path where the application will be
    * deployed. This cannot be determined automatically because shindig needs it
@@ -122,14 +127,16 @@ public class ShindigServicesModule extends ShindigSocialApiGuiceModule {
    *
    * @param fetcher The original fetcher. It cannot be null.
    *
-   * @param blobCrypter The implementation of the BlobCrypter. It cannot be
+   * @param theCrypter The implementation of the BlobCrypter. It cannot be
    * null.
+   *
+   * @return an instance of the DefaultServiceFetcher, never null.
    */
   @Provides
   DefaultServiceFetcher provideServiceFetcher(final ContainerConfig config,
-      final HttpFetcher fetcher, final BlobCrypter crypter) {
+      final HttpFetcher fetcher, final BlobCrypter theCrypter) {
     DefaultServiceFetcher serviceFetcher = new DefaultServiceFetcher(config,
-          new FakeUserHttpFetcher(config, fetcher, crypter));
+          new FakeUserHttpFetcher(config, fetcher, theCrypter));
     return serviceFetcher;
   }
 }

@@ -100,7 +100,7 @@ public class KatariMediaItem implements MediaItem {
   }
 
   /** Creates a media item with some attributes copied from source.
-   * 
+   *
    * This is a partial implementation, will be finished in future releases.
    *
    * @param source The original media item. It cannot be null.
@@ -168,7 +168,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setAlbumId(String albumId) {
+  public void setAlbumId(final String albumId) {
   }
 
   /** {@inheritDoc}
@@ -179,7 +179,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setCreated(String created) {
+  public void setCreated(final String created) {
   }
 
   /** {@inheritDoc}
@@ -190,7 +190,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setDescription(String description) {
+  public void setDescription(final String description) {
   }
 
   /** {@inheritDoc}
@@ -201,7 +201,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setDuration(String duration) {
+  public void setDuration(final String duration) {
   }
 
   /** {@inheritDoc}
@@ -212,7 +212,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setFileSize(String fileSize) {
+  public void setFileSize(final String fileSize) {
   }
 
   /** {@inheritDoc}
@@ -223,7 +223,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setId(String id) {
+  public void setId(final String id) {
   }
 
   /** {@inheritDoc}
@@ -234,7 +234,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setLanguage(String language) {
+  public void setLanguage(final String language) {
   }
 
   /** {@inheritDoc}
@@ -245,7 +245,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setLastUpdated(String lastUpdated) {
+  public void setLastUpdated(final String lastUpdated) {
   }
 
   /** {@inheritDoc}
@@ -256,7 +256,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setLocation(Address location) {
+  public void setLocation(final Address location) {
   }
 
   /** {@inheritDoc}
@@ -267,7 +267,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setNumComments(String numComments) {
+  public void setNumComments(final String numComments) {
   }
 
   /** {@inheritDoc}
@@ -278,7 +278,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setNumViews(String numViews) {
+  public void setNumViews(final String numViews) {
   }
 
   /** {@inheritDoc}
@@ -289,7 +289,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setNumVotes(String numVotes) {
+  public void setNumVotes(final String numVotes) {
   }
 
   /** {@inheritDoc}
@@ -300,7 +300,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setRating(String rating) {
+  public void setRating(final String rating) {
   }
 
   /** {@inheritDoc}
@@ -311,7 +311,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setStartTime(String startTime) {
+  public void setStartTime(final String startTime) {
   }
 
   /** {@inheritDoc}
@@ -322,7 +322,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setTaggedPeople(String taggedPeople) {
+  public void setTaggedPeople(final String taggedPeople) {
   }
 
   /** {@inheritDoc}
@@ -333,7 +333,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setTags(String tags) {
+  public void setTags(final String tags) {
   }
 
   /** {@inheritDoc}
@@ -344,7 +344,7 @@ public class KatariMediaItem implements MediaItem {
 
   /** {@inheritDoc}
    */
-  public void setTitle(String title) {
+  public void setTitle(final String title) {
   }
 }
 
