@@ -15,6 +15,14 @@ import com.globant.katari.quartz.domain.ScheduledCommand;
  */
 public class SampleScheduledCommand implements ScheduledCommand {
 
+  /** The duration of the task, in millis.
+   */
+  private static final int DURATION = 100000;
+
+  /** Milliseconds per second.
+   */
+  private static final int MS_PER_SECOND = 1000;
+
   /** The time that execute started, null if this task is not beign executed.
    */
   private Date startedOn = null;
@@ -30,7 +38,7 @@ public class SampleScheduledCommand implements ScheduledCommand {
   public Integer getProgressPercent() {
     Date when = startedOn;
     if (when != null) {
-      return (int) ((new Date()).getTime() - when.getTime()) / 1000;
+      return (int) ((new Date()).getTime() - when.getTime()) / MS_PER_SECOND;
     } else {
       return null;
     }
@@ -53,7 +61,7 @@ public class SampleScheduledCommand implements ScheduledCommand {
   public Void execute() {
     startedOn = new Date();
     try {
-      Thread.sleep(100000);
+      Thread.sleep(DURATION);
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
     }
