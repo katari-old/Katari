@@ -90,12 +90,12 @@
         <bean class="org.springframework.scheduling.quartz.SimpleTriggerBean">
           <property name="jobDetail">
             <bean
-              class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+              class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+              p:targetMethod='execute'
+              p:concurrent='false' >
               <property name="targetObject">
                 <bean class='com.globant.katari.sample.SampleScheduledCommand' />
               </property>
-              <property name="targetMethod" value="execute"/>
-              <property name="concurrent" value="true"/>
             </bean>
           </property>
           <property name="startDelay" value="100000"/>
@@ -107,7 +107,7 @@
             <bean
               class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
               p:targetMethod='execute'
-              p:concurrent='true' >
+              p:concurrent='false' >
               <property name="targetObject">
                 <bean class='com.globant.katari.sample.SampleScheduledCommand' />
               </property>
