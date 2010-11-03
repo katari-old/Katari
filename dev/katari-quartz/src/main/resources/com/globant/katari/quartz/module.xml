@@ -58,8 +58,7 @@
         <constructor-arg index="0">
           <map>
             <!-- should be in another module -->
-            <entry key='/taskDashboard.do' value='ROLE_ADMINISTRATOR' />
-            <entry key='/asyncTaskDashboard.do' value='ROLE_ADMINISTRATOR' />
+            <entry key='/**/*' value='ROLE_ADMINISTRATOR' />
           </map>
         </constructor-arg>
       </bean>

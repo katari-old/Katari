@@ -32,7 +32,7 @@ import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
 /** @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
 @SuppressWarnings("deprecation")
-public class TaskDashboardCommandTest {
+public class ListTasksCommandTest {
 
   private Date last = new Date(110, 9, 20, 13, 30, 0);
   private Date next = new Date(110, 9, 20, 15, 30, 0);
@@ -110,8 +110,8 @@ public class TaskDashboardCommandTest {
     expect(job.getInformation()).andReturn(information).anyTimes();
     replay(job);
 
-    TaskDashboardCommand command;
-    command = new TaskDashboardCommand(createScheduler(job, false));
+    ListTasksCommand command;
+    command = new ListTasksCommand(createScheduler(job, false));
 
     JsonRepresentation result = command.execute();
 
@@ -132,8 +132,8 @@ public class TaskDashboardCommandTest {
     expect(job.getInformation()).andReturn(information).anyTimes();
     replay(job);
 
-    TaskDashboardCommand command;
-    command = new TaskDashboardCommand(createScheduler(job, false));
+    ListTasksCommand command;
+    command = new ListTasksCommand(createScheduler(job, false));
 
     JsonRepresentation result = command.execute();
 
@@ -154,8 +154,8 @@ public class TaskDashboardCommandTest {
     expect(job.getInformation()).andReturn(information).anyTimes();
     replay(job);
 
-    TaskDashboardCommand command;
-    command = new TaskDashboardCommand(createScheduler(job, true));
+    ListTasksCommand command;
+    command = new ListTasksCommand(createScheduler(job, true));
 
     JsonRepresentation result = command.execute();
 

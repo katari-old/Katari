@@ -22,19 +22,19 @@
     p:exposeRequestAttributes='true'/>
 
   <!-- Controllers. -->
-  <bean name="/asyncTaskDashboard.do"
+  <bean name="/getTasks.do"
     class='com.globant.katari.core.spring.controller.JsonCommandController'>
-     <lookup-method name="createCommandBean" bean="taskDashboardCommand" />
+     <lookup-method name="createCommandBean" bean="listTasksCommand" />
   </bean>
 
   <bean name="/taskDashboard.do"
     class="com.globant.katari.core.spring.controller.CommandController">
     <constructor-arg index='0' value='taskDashboard' />
-    <lookup-method name="createCommandBean" bean="taskDashboardCommand" />
+    <lookup-method name="createCommandBean" bean="listTasksCommand" />
    </bean>
 
-  <bean name='taskDashboardCommand'
-    class='com.globant.katari.quartz.application.TaskDashboardCommand'
+  <bean name='listTasksCommand'
+    class='com.globant.katari.quartz.application.ListTasksCommand'
     scope='prototype'>
     <constructor-arg index='0' ref='quartz.schedulerFactory' />
   </bean>

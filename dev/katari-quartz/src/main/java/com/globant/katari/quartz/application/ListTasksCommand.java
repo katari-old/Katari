@@ -29,7 +29,7 @@ import com.globant.katari.quartz.domain.ScheduledCommand;
 /** Command to obtain the list of scheduled commands that quartz
  * executes.
  */
-public class TaskDashboardCommand implements Command<JsonRepresentation> {
+public class ListTasksCommand implements Command<JsonRepresentation> {
 
   /** The Quartz's scheduler, never null.
    */
@@ -45,7 +45,7 @@ public class TaskDashboardCommand implements Command<JsonRepresentation> {
    *
    * @param theScheduler the Quartz scheduler. It cannot be null.
    */
-  public TaskDashboardCommand(final Scheduler theScheduler) {
+  public ListTasksCommand(final Scheduler theScheduler) {
     Validate.notNull(theScheduler, "The Scheduler cannot be null");
     scheduler = theScheduler;
     dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

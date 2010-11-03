@@ -13,14 +13,14 @@ import com.globant.katari.quartz.SpringTestUtils;
 
 /** @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
-public class TaskDashboardCommandSpringTest {
+public class ListTasksCommandSpringTest {
 
-  private TaskDashboardCommand command;
+  private ListTasksCommand command;
 
   @Before
   public void setUp() throws Exception {
-    command = (TaskDashboardCommand) SpringTestUtils.getContext().getBean(
-        "taskDashboardCommand");
+    command = (ListTasksCommand) SpringTestUtils.getContext().getBean(
+        "listTasksCommand");
   }
 
   @Test

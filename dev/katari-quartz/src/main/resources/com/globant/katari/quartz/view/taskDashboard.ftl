@@ -18,7 +18,7 @@
         // The function to call when all script/css resources have been loaded
         onSuccess: function() {
 
-          var dataSource = new YAHOO.util.DataSource("asyncTaskDashboard.do");
+          var dataSource = new YAHOO.util.DataSource("getTasks.do");
           dataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
           dataSource.responseSchema = {
             fields: ["friendlyName", "isRunning", "progressPercent",
