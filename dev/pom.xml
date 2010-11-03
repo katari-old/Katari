@@ -384,9 +384,9 @@
       </dependency>
 
       <dependency>
-        <groupId>opensymphony</groupId>
+        <groupId>org.quartz-scheduler</groupId>
         <artifactId>quartz</artifactId>
-        <version>1.6.3</version>
+        <version>1.8.4</version>
       </dependency>
 
       <!-- This and taglibs.standard are needed by tomcat. -->
