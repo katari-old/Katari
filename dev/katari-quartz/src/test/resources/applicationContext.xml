@@ -14,21 +14,13 @@
   <bean id='someObject'
     class='com.globant.katari.quartz.MockScheduledCommand' />
 
-  <bean id="sampleBeanJobDetail"
-    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-    <property name="targetObject" ref="someObject"/>
-    <property name="targetMethod" value="execute"/>
-    <property name="concurrent" value="true"/>
-  </bean>
-
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='quartz.schedulerTasks'/>
     <constructor-arg>
       <list>
-        <bean class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-          <property name="jobDetail" ref="sampleBeanJobDetail"/>
-          <property name="startDelay" value="5000"/>
-          <property name="repeatInterval" value="7200000"/>
+        <bean class="com.globant.katari.quartz.domain.CronTrigger">
+          <constructor-arg index='0' value="0 0 0 * * ?"/>
+          <constructor-arg index='1' value="someObject"/>
         </bean>
       </list>
     </constructor-arg>

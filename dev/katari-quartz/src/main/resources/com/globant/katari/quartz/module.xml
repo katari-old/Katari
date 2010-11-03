@@ -74,6 +74,30 @@
     <property name='triggers' ref='quartz.schedulerTasks' />
   </bean>
 
+  <!-- Basic quartz schedules. -->
+  <!-- Run monthly, at 2 AM, on every 1st of the month. The 2 AM time is to
+       avoid DST changes related problems. -->
+  <bean id='quartz.monthly' class='com.globant.katari.core.spring.StringHolder'
+    p:value='0 0 2 1 * ?'/>
+
+  <!-- Run weekly, at 2 AM, on every sunday. The 2 AM time is to avoid DST
+       changes related problems. -->
+  <bean id='quartz.weekly' class='com.globant.katari.core.spring.StringHolder'
+    p:value='0 0 2 ? * SUN'/>
+
+  <!-- Run daily, at 2 AM. This is to avoid DST changes related problems. -->
+  <bean id='quartz.daily' class='com.globant.katari.core.spring.StringHolder'
+    p:value='0 0 2 * * ?'/>
+
+  <!-- Run hourly. -->
+  <bean id='quartz.hourly' class='com.globant.katari.core.spring.StringHolder'
+    p:value='0 0 * * * ?'/>
+
+  <!-- Run every 5 minutes. -->
+  <bean id='quartz.everyFiveMinutes'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='0 0/5 * * * ?	'/>
+
 </beans>
 <!-- vim: set ts=2 et sw=2 ai : -->
 

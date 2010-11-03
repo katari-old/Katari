@@ -79,40 +79,28 @@
   <!-- Module with sample gadgets. -->
   <katari:import module="com.globant.katari.sample.gadget" />
 
-  <!-- Module with quartz -->
+  <!-- Provides task scheduling with quartz. -->
   <katari:import module="com.globant.katari.quartz" />
 
   <!-- REMOVE THIS IN PRODUCTION. -->
+
+  <bean name='sampleScheduledCommand1'
+    class='com.globant.katari.sample.SampleScheduledCommand' />
+
+  <bean name='sampleScheduledCommand2'
+    class='com.globant.katari.sample.SampleScheduledCommand' />
+
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='quartz.schedulerTasks'/>
     <constructor-arg>
       <list>
-        <bean class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-          <property name="jobDetail">
-            <bean
-              class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
-              p:targetMethod='execute'
-              p:concurrent='false' >
-              <property name="targetObject">
-                <bean class='com.globant.katari.sample.SampleScheduledCommand' />
-              </property>
-            </bean>
-          </property>
-          <property name="startDelay" value="100000"/>
-          <property name="repeatInterval" value="200000"/>
+        <bean class="com.globant.katari.quartz.domain.CronTrigger">
+          <constructor-arg index='0' ref="quartz.daily"/>
+          <constructor-arg index='1' value="sampleScheduledCommand1"/>
         </bean>
-        <bean class="org.springframework.scheduling.quartz.CronTriggerBean"
-          p:cronExpression='0 0 0 * * ?'>
-          <property name="jobDetail">
-            <bean
-              class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
-              p:targetMethod='execute'
-              p:concurrent='false' >
-              <property name="targetObject">
-                <bean class='com.globant.katari.sample.SampleScheduledCommand' />
-              </property>
-            </bean>
-          </property>
+        <bean class="com.globant.katari.quartz.domain.CronTrigger">
+          <constructor-arg index='0' ref="quartz.everyFiveMinutes"/>
+          <constructor-arg index='1' value="sampleScheduledCommand2"/>
         </bean>
       </list>
     </constructor-arg>
