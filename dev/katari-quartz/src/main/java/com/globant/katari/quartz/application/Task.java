@@ -14,6 +14,18 @@ import com.globant.katari.quartz.domain.ScheduledCommand;
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
 public class Task {
+  
+  /** The quartz schedule group name, never null.
+   * 
+   * The group name and the job name uniquely identify a job.
+   */
+  private final String groupName;
+
+  /** The quartz schedule name, never null.
+   * 
+   * The group name and the job name uniquely identify a job.
+   */
+  private final String jobName;
 
   /** The command to run in this task, never null.
    */
@@ -34,6 +46,11 @@ public class Task {
   private final Date lastExecutionTime;
 
   /** Builds a new instance of the Task.
+   * 
+   * @param theGroupName the name of the quartz group of this task. It cannot
+   * be null.
+   *
+   * @param theJobName the name of the quartz job. It cannot be null.
    *
    * @param theCommand the command that the task runs. It cannot be null.
    *
@@ -45,13 +62,40 @@ public class Task {
    * @param theLastExecutionTime the last time that the task ran, or null if it
    * never run before.
    */
-  public Task(final ScheduledCommand theCommand, final boolean running,
+  public Task(final String theGroupName, final String theJobName,
+      final ScheduledCommand theCommand, final boolean running,
       final Date theNextExecutionTime, final Date theLastExecutionTime) {
+    Validate.notNull(theGroupName, "The group name cannot be null");
+    Validate.notNull(theJobName, "The job name cannot be null");
     Validate.notNull(theCommand, "The ScheduledCommand cannot be null");
+    groupName = theGroupName;
+    jobName = theJobName;
     command = theCommand;
     isRunning = running;
     nextExecutionTime = theNextExecutionTime;
     lastExecutionTime = theLastExecutionTime;
+  }
+
+  /** The group name.
+   * 
+   * The group name and the job name uniquely identify a job in a quartz
+   * scheduler.
+   * 
+   * @return the quartz group name, never returns null.
+   */
+  public String getGroupName() {
+    return groupName;
+  }
+  
+  /** The job name.
+   * 
+   * The group name and the job name uniquely identify a job in a quartz
+   * scheduler.
+   * 
+   * @return the quartz job name, never returns null.
+   */
+  public String getJobName() {
+    return jobName;
   }
 
   /** The command to execute when the task runs.

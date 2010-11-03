@@ -125,28 +125,32 @@ public class ListTasksCommand implements Command<JsonRepresentation> {
     try {
       List<JobExecutionContext> runningJobs;
       runningJobs = scheduler.getCurrentlyExecutingJobs();
-      String[] groups = scheduler.getJobGroupNames();
-      for(String group : groups) {
-        String[] triggers = scheduler.getTriggerNames(group);
-        String[] jobs = scheduler.getJobNames(group);
-        for(String job : jobs) {
-          JobDetail detail = scheduler.getJobDetail(job, group);
+      String[] groupNames = scheduler.getJobGroupNames();
+      // Iterate over all group names.
+      for(String groupName : groupNames) {
+        String[] triggers = scheduler.getTriggerNames(groupName);
+        String[] jobNames = scheduler.getJobNames(groupName);
+        // Iterate over all job names.
+        for(String jobName : jobNames) {
+          JobDetail detail = scheduler.getJobDetail(jobName, groupName);
           JobDataMap dataMap =  detail.getJobDataMap();
-          MethodInvokingJobDetailFactoryBean jobDetailFactoryBean;
           Object mi = dataMap.get("methodInvoker");
           if(mi instanceof MethodInvokingJobDetailFactoryBean) {
+            MethodInvokingJobDetailFactoryBean jobDetailFactoryBean;
             jobDetailFactoryBean = (MethodInvokingJobDetailFactoryBean) mi;
             Object targetObject = jobDetailFactoryBean.getTargetObject();
             if(targetObject instanceof ScheduledCommand) {
               for(String theTrigger : triggers) {
-                Trigger trigger = scheduler.getTrigger(theTrigger, group);
+                Trigger trigger = scheduler.getTrigger(theTrigger, groupName);
+                // What if one job has many triggers?
                 if(trigger.getJobName().equals(detail.getName())) {
                   Date nextExecutionTime = trigger.getNextFireTime();
                   Date lastExecutionTime = trigger.getPreviousFireTime();
-                  boolean jobIsRunning;
-                  jobIsRunning = isJobDetailInContext(runningJobs, detail);
-                  Task task = new Task((ScheduledCommand) targetObject,
-                      jobIsRunning, nextExecutionTime, lastExecutionTime);
+                  boolean isJobRunning;
+                  isJobRunning = isJobDetailInContext(runningJobs, detail);
+                  Task task = new Task(groupName, jobName,
+                      (ScheduledCommand) targetObject, isJobRunning,
+                      nextExecutionTime, lastExecutionTime);
                   tasks.add(task);
                 }
               }
