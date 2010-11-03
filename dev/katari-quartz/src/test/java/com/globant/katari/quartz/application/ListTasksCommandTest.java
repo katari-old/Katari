@@ -183,6 +183,10 @@ public class ListTasksCommandTest {
       task1.put("progressPercent", 4);
       task2.put("progressPercent", 4);
     }
+    task1.put("groupName", "group1");
+    task2.put("groupName", "group1");
+    task1.put("jobName", "job1");
+    task2.put("jobName", "job2");
     task1.put("friendlyName", "The friendly name");
     task2.put("friendlyName", "The friendly name");
     task1.put("isRunning", true);

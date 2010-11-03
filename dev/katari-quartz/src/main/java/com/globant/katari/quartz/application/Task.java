@@ -14,15 +14,15 @@ import com.globant.katari.quartz.domain.ScheduledCommand;
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
 public class Task {
-  
+
   /** The quartz schedule group name, never null.
-   * 
+   *
    * The group name and the job name uniquely identify a job.
    */
   private final String groupName;
 
   /** The quartz schedule name, never null.
-   * 
+   *
    * The group name and the job name uniquely identify a job.
    */
   private final String jobName;
@@ -46,7 +46,7 @@ public class Task {
   private final Date lastExecutionTime;
 
   /** Builds a new instance of the Task.
-   * 
+   *
    * @param theGroupName the name of the quartz group of this task. It cannot
    * be null.
    *
@@ -77,21 +77,21 @@ public class Task {
   }
 
   /** The group name.
-   * 
+   *
    * The group name and the job name uniquely identify a job in a quartz
    * scheduler.
-   * 
+   *
    * @return the quartz group name, never returns null.
    */
   public String getGroupName() {
     return groupName;
   }
-  
+
   /** The job name.
-   * 
+   *
    * The group name and the job name uniquely identify a job in a quartz
    * scheduler.
-   * 
+   *
    * @return the quartz job name, never returns null.
    */
   public String getJobName() {

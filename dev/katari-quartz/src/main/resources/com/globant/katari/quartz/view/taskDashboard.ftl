@@ -21,8 +21,9 @@
           var dataSource = new YAHOO.util.DataSource("getTasks.do");
           dataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
           dataSource.responseSchema = {
-            fields: ["friendlyName", "isRunning", "progressPercent",
-            "information", "nextExecutionTime", "lastExecutionTime"]
+            fields: ["groupName", "jobName", "friendlyName", "isRunning",
+            "progressPercent", "information", "nextExecutionTime",
+            "lastExecutionTime"]
           };
           dataSource.doBeforeParseData = function (request, response) {
             return response;
@@ -84,6 +85,19 @@
               {format: "%Y-%m-%d %T"});
           }
 
+          /** Shows the 'run now' button.
+          */
+          var showRunNowButton = function(cell, row, column, data) {
+            var isRunning = row.getData('isRunning');
+            var disabled = '';
+            if (isRunning) {
+              disabled = "disabled='disabled'";
+            }
+            var content = "<input type='button' " + disabled
+              + " class='btn' value='Run Now'>";
+            cell.innerHTML = content;
+          }
+
           var columns = [
             {key: "friendlyName", label: "Name"},
             {
@@ -102,6 +116,10 @@
               key: "information",
               label: "Information",
               formatter: informationFormatter
+            }, {
+              key: "runNow",
+              label: '',
+              formatter: showRunNowButton
             }
           ];
 
@@ -111,6 +129,34 @@
 
           var table = new YAHOO.widget.DataTable("task-list", columns,
             dataSource, config);
+
+          // Listens for the click event in the 'runNow' cell.
+          table.subscribe('cellClickEvent', function(ev) {
+            var target = YAHOO.util.Event.getTarget(ev);
+            var column = table.getColumn(target);
+            var isRunning = table.getRecord(target).getData('isRunning');
+            if (column.key == 'runNow' && !isRunning) {
+              if (confirm('Are you sure?')) {
+                var groupName = table.getRecord(target).getData('groupName');
+                var jobName = table.getRecord(target).getData('jobName');
+                var params = [];
+                params.push('groupName=' + encodeURIComponent(groupName));
+                params.push('jobName=' + encodeURIComponent(jobName));
+                var url = 'runTask.do?' + params.join('&');
+                table.getRecord(target).setData('isRunning', true);
+                var callback = {
+                  success: function(o) {
+                    refreshNow();
+                  },
+                  failure: function(o) {
+                  },
+                };
+                YAHOO.util.Connect.asyncRequest('GET', url, callback);
+              }
+            } else {
+              table.onEventShowCellEditor(ev);
+            }
+          });
 
           // Sends a request to the DataSource for more data when the user
           // clicks the refresh button, or after a timeout.

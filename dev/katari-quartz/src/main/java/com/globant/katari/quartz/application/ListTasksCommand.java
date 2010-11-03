@@ -58,6 +58,8 @@ public class ListTasksCommand implements Command<JsonRepresentation> {
    * <code>
    * [
    *  {
+   *    "groupName": "group-name",
+   *    "jobName": "job-name",
    *    "progressPercent": "10",
    *    "friendlyName": "The Friendly Name",
    *    "isRunning": "true" / "false",
@@ -84,6 +86,8 @@ public class ListTasksCommand implements Command<JsonRepresentation> {
       for (Task task : tasks) {
         ScheduledCommand command = task.getCommand();
         JSONObject taskJson = new JSONObject();
+        taskJson.put("groupName", task.getGroupName());
+        taskJson.put("jobName", task.getJobName());
         taskJson.put("progressPercent", command.getProgressPercent());
         taskJson.put("friendlyName", command.getDisplayName());
         taskJson.put("isRunning", task.isRunning());
