@@ -24,7 +24,7 @@
   </modules>
 
   <prerequisites>
-    <maven>2.2</maven>
+    <maven>2.1</maven>
   </prerequisites>
 
   <build>

@@ -54,8 +54,8 @@
     </dependency>
 
     <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
     </dependency>
 
     <!-- Runtime dependencies -->
@@ -245,6 +245,11 @@
     <dependency>
       <groupId>com.globant.katari</groupId>
       <artifactId>katari-jsmodule</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-quartz</artifactId>
     </dependency>
 
     <dependency>
