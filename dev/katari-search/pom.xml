@@ -47,6 +47,11 @@
 
     <dependency>
       <groupId>com.globant.katari</groupId>
+      <artifactId>katari-quartz</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
       <artifactId>katari-tools</artifactId>
     </dependency>
 

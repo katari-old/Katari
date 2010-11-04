@@ -11,6 +11,8 @@
   <!-- The katari global beans. -->
   <import resource="classpath:/com/globant/katari/core/applicationContext.xml"/>
 
+  <import resource="classpath:/com/globant/katari/quartz/module.xml"/>
+
   <!-- This module (search). -->
   <import resource="classpath:/com/globant/katari/search/module.xml"/>
 
