@@ -1,0 +1,61 @@
+# Get a full svn repository.
+# For normal trunk/branches/tags" layout, use --stdlayout 
+
+git svn clone -T main -t release -b branch http://katari.globant.com/svn/katari
+
+# Discard local modification
+git checkout path/to/file/to/revert
+
+# Like svn update. Only works with no local modifications.
+# Do git stash or git commit before rebase.
+git svn rebase
+
+# or
+
+git stash
+git svn rebase
+git stash apply
+git stash clear
+
+# Local commit (all local changes)
+
+git commit -a 
+
+# Push changes to the remote svn server.
+
+git svn dcommit
+
+# Fixing the latest non-published commit.
+
+git commit --amend
+
+# Fixing an old commit (not published).
+#
+# master is the branch you are working on.
+
+git checkout bad
+# make changes here and update the index
+git commit --amend
+git rebase --onto HEAD bad master
+
+# If there where conflicts, resolv and:
+git rebase --continue
+
+# Branch:
+
+# Create a local branch
+git branch <branch-name>
+
+# Switch to branch
+git checkout <branch-name>
+
+# List local branches:
+git branch
+
+# List remote branches:
+git branch -r
+
+# Create a local branch to track a remote branch.
+git checkout -b <local-branch> <remote-branch>
+
+
