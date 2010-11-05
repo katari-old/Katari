@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <import resource="classpath:com/globant/katari/core/beans-core.xml"/>
+  <import resource="classpath:com/globant/katari/email/module.xml"/>
+
+<!-- vim: set ts=2 et sw=2 ai tw=80: -->
+</beans>
+

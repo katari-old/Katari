@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xmlns:p="http://www.springframework.org/schema/p"
+      xmlns:util="http://www.springframework.org/schema/util"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <bean id='email.module'
+      class='com.globant.katari.core.web.ConfigurableModule' />
+
+  <bean name='email.smtpHostname' 
+    class='com.globant.katari.core.spring.StringHolder' p:value="hostname"/>
+
+  <bean name='email.smtpPort' 
+    class='com.globant.katari.core.spring.StringHolder' p:value="25"/>
+
+  <bean name='email.smtpUsername' 
+    class='com.globant.katari.core.spring.StringHolder' p:value="username"/>
+
+  <bean name='email.smtpPassword' 
+    class='com.globant.katari.core.spring.StringHolder' p:value="password"/>
+
+  <bean name='email.smtpIsSsl' 
+    class='com.globant.katari.core.spring.StringHolder' p:value="false"/>
+
+  <!-- freemarker config -->
+  <bean id="katari.email.freemarkerConfig"
+    class="com.globant.katari.core.web.FreeMarkerConfigurer"
+    p:templateLoaderPath="classpath:/com/globant/katari/email/view/"
+    p:debugPrefix='../katari-registration/src/main/resources'
+    p:debug-ref='debugMode'/>
+
+  <bean name="katari.emailFactory"
+    class="com.globant.katari.email.application.EmailSender">
+    <constructor-arg index='0' ref='email.smtpHostname' />
+    <constructor-arg index='1' ref='email.smtpPort' />
+    <constructor-arg index='2' ref='email.smtpUsername' />
+    <constructor-arg index='3' ref='email.smtpPassword' />
+    <constructor-arg index='4' ref='email.smtpIsSsl' />
+    <constructor-arg index='5'>
+      <bean factory-bean="katari.email.freemarkerConfig"
+        factory-method="getConfiguration" />
+    </constructor-arg>
+  </bean>
+
+</beans>
+<!-- vim: set ts=2 et sw=2 ai : -->

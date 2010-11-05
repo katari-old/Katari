@@ -1,0 +1,15 @@
+~~~ vim: set sw=1 et ts=1 ai:
+
+Email sender
+
+ This is the Katari email implementation based on Apache Commons-Email.
+
+Configuration
+
+ To use this module you have to override a couple of beans:
+ email.smtpHostname : String, The smtp hostname.
+ email.smtpPort : Integer, The smtp port.
+ email.smtpUsername : String, The smtp username.
+ email.smtpPassword : String, The smtp password.
+ email.smtpIsSsl : Boolean, True if the server connection rides on SSL or not.
+
