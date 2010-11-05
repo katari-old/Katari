@@ -36,7 +36,7 @@
     p:debugPrefix='../katari-registration/src/main/resources'
     p:debug-ref='debugMode'/>
 
-  <bean name="katari.emailFactory"
+  <bean name="katari.emailSender"
     class="com.globant.katari.email.application.EmailSender">
     <constructor-arg index='0' ref='email.smtpHostname' />
     <constructor-arg index='1' ref='email.smtpPort' />

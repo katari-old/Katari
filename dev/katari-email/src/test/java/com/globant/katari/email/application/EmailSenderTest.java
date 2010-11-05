@@ -22,7 +22,7 @@ public class EmailSenderTest {
 
   @Before
   public void setUp() throws Exception {
-    emailSender = (EmailSender) getContext().getBean("katari.emailFactory");
+    emailSender = (EmailSender) getContext().getBean("katari.emailSender");
   }
 
   @Test
