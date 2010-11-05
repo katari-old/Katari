@@ -1,4 +1,6 @@
 <#import "spring.ftl" as spring />
+<#import "katari.ftl" as katari />
+
 <html>
 
   <head>
@@ -63,15 +65,17 @@
             <td>${user.email}</td>
             <#-- Delete a user -->
             <td>
-              <#if currentUserId != user.id>
-                <form method="POST" action="userDelete.do" class='innerform'>
-                  <input type="hidden"  name="userId" value="${user.id}"
-                      class="text" />
-                  <span class="btnContainer"><input class="btn" type="submit"
-                      value="delete" onclick="return confirm('Are you sure you'
-                      + ' want to delete the user ${user.name}?');" /></span>
-                </form>
-              </#if>
+              <@katari.secureUrlArea url="userDelete.do"; url>
+                <#if currentUserId != user.id>
+                  <form method="POST" action="userDelete.do" class='innerform'>
+                    <input type="hidden"  name="userId" value="${user.id}"
+                        class="text" />
+                    <span class="btnContainer"><input class="btn" type="submit"
+                        value="delete" onclick="return confirm('Are you sure you'
+                        + ' want to delete the user ${user.name}?');" /></span>
+                  </form>
+                </#if>
+              </@katari.secureUrlArea>
             </td>
           </tr>
           </#list>

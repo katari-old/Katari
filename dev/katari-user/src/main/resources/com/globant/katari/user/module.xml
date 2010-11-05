@@ -59,7 +59,7 @@
           <map>
             <entry key="/userDelete.do" value="ROLE_ADMINISTRATOR" />
             <entry key="/createUser.do" value="ROLE_ADMINISTRATOR" />
-            <entry key="/**/*" value="IS_AUTHENTICATED_FULLY" />
+            <entry key="/**/*" value="ROLE_ADMINISTRATOR" />
           </map>
         </constructor-arg>
       </bean>
