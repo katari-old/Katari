@@ -17,7 +17,9 @@ import com.globant.katari.email.model.EmailModel;
  */
 public class EmailSenderTest {
 
-  /**  */
+  private static final String TEMPLATE = 
+      "com/globant/katari/email/view/templateTestEmail.ftl";
+
   private EmailSender emailSender;
 
   @Before
@@ -32,7 +34,7 @@ public class EmailSenderTest {
     EmailModel model = new EmailModel("emiliano.arango@gmail.com", 
         "waabox@gmail.com", values, "test the empty message", "just a test");
     try {
-      emailSender.send(model, "templateTestEmail.ftl");
+      emailSender.send(model, TEMPLATE);
       fail("we expect a runtime exception.");
     } catch (Exception e) {
       assertEquals("Can not send the email", e.getMessage());
@@ -64,7 +66,7 @@ public class EmailSenderTest {
     Map<String, Object> values = new HashMap<String, Object>();
     String valueToModel = "some value";
     values.put("oneKey", valueToModel);
-    String output = emailSender.createHtml("templateTestEmail.ftl", values);
+    String output = emailSender.createHtml(TEMPLATE, values);
     assertTrue(output.contains(valueToModel));
   }
 

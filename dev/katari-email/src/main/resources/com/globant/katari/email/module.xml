@@ -32,7 +32,7 @@
   <!-- freemarker config -->
   <bean id="katari.email.freemarkerConfig"
     class="com.globant.katari.core.web.FreeMarkerConfigurer"
-    p:templateLoaderPath="classpath:/com/globant/katari/email/view/"
+    p:templateLoaderPath="classpath:/"
     p:debugPrefix='../katari-registration/src/main/resources'
     p:debug-ref='debugMode'/>
 
