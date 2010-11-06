@@ -30,7 +30,7 @@
     class='com.globant.katari.core.spring.StringHolder' p:value="false"/>
 
   <!-- freemarker config -->
-  <bean id="katari.email.freemarkerConfig"
+  <bean id="freemarkerConfig"
     class="com.globant.katari.core.web.FreeMarkerConfigurer"
     p:templateLoaderPath="classpath:/"
     p:debugPrefix='../katari-registration/src/main/resources'
@@ -44,7 +44,7 @@
     <constructor-arg index='3' ref='email.smtpPassword' />
     <constructor-arg index='4' ref='email.smtpIsSsl' />
     <constructor-arg index='5'>
-      <bean factory-bean="katari.email.freemarkerConfig"
+      <bean factory-bean="freemarkerConfig"
         factory-method="getConfiguration" />
     </constructor-arg>
   </bean>
