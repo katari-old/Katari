@@ -1,8 +1,38 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.25
+
+* What's new since version 0.24
+
+ * New module katari-email.
+
+ * New simpler way to add a quartz job.
+
+ * The quartz console now lets you manually start jobs.
+
+ * Upgraded shindig to version 2.0.2, jasperreports to 3.5.3 and quartz to
+ 1.6.3.
+
+ * User name and email are now unique.
+
+ * Various bug fixes.
+
+Upgrading from 0.24
+
+ * The new shindig version now needs to know the host and port where the
+ application is running. You need to add:
+
+----
+ <bean id='shindig.hostAndPort'
+   class='com.globant.katari.core.spring.StringHolder'
+   p:value='localhost:8088' />
+----
+
+ to your applicationContext.xml file.
+
 Release notes for version 0.24
 
-* What's new since version 0.22
+* What's new since version 0.23
 
  * New module katari-jsmodule. Supports katari packaged js libraries.
 
