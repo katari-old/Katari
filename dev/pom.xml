@@ -769,7 +769,8 @@
                   <fileset dir="src/site/" excludes="**/*.apt"/>
                 </copy>
                 <!-- Now, copy only apts, but filtered. -->
-                <copy todir="target/site-src/" preservelastmodified="true" filtering="true">
+                <copy todir="target/site-src/" preservelastmodified="true"
+                  filtering="true">
                   <filterset>
                     <filter token="version" value="${version}"/>
                   </filterset>
@@ -777,7 +778,8 @@
                 </copy>
 
                 <!-- Copy and filter the apt files for the user manual book -->
-                <copy todir="target/book-src/apt" preservelastmodified="true" filtering="true">
+                <copy todir="target/book-src/apt" preservelastmodified="true"
+                  filtering="true">
                   <filterset>
                     <filter token="version" value="${version}"/>
                   </filterset>
@@ -785,9 +787,27 @@
                 </copy>
 
                 <!-- Copy the module indexes -->
-                <copy file="katari-editablepages/src/site/apt/index.apt" tofile="target/book-src/apt/katari-editablepages.apt" preservelastmodified="true"/>
-                <copy file="katari-report/src/site/apt/index.apt" tofile="target/book-src/apt/katari-reports.apt" preservelastmodified="true"/>
-                <copy file="katari-search/src/site/apt/index.apt" tofile="target/book-src/apt/katari-search.apt" preservelastmodified="true"/>
+                <copy file="katari-editablepages/src/site/apt/index.apt"
+                  tofile="target/book-src/apt/katari-editablepages.apt"
+                  preservelastmodified="true"/>
+                <copy file="katari-report/src/site/apt/index.apt"
+                  tofile="target/book-src/apt/katari-reports.apt"
+                  preservelastmodified="true"/>
+                <copy file="katari-search/src/site/apt/index.apt"
+                  tofile="target/book-src/apt/katari-search.apt"
+                  preservelastmodified="true"/>
+                <copy file="katari-shindig/src/site/apt/index.apt"
+                  tofile="target/book-src/apt/katari-shindig.apt"
+                  preservelastmodified="true"/>
+                <copy file="katari-gadget-container/src/site/apt/index.apt"
+                  tofile="target/book-src/apt/katari-gadget-container.apt"
+                  preservelastmodified="true"/>
+                <copy file="katari-quartz/src/site/apt/index.apt"
+                  tofile="target/book-src/apt/katari-quartz.apt"
+                  preservelastmodified="true"/>
+                <copy file="katari-jsmodule/src/site/apt/index.apt"
+                  tofile="target/book-src/apt/katari-jsmodule.apt"
+                  preservelastmodified="true"/>
 
                 <!-- Copy the images for the pdf -->
                 <copy todir="target/generated-site/pdf/user-manual/images">

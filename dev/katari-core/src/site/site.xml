@@ -14,7 +14,7 @@
 
   <body>
 
-    <menu name="Katari - support package">
+    <menu name="Katari - core">
       <item name="Parent" href="../index.html" />
       <item name="Introduction" href="index.html" />
     </menu>

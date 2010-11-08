@@ -60,9 +60,12 @@
       <item name="Katari Tools" href="/katari-tools/index.html"/>
       <item name="Katari Archetype" href="/katari-archetype/index.html"/>
       <item name="Katari User" href="/katari-user/index.html"/>
+      <item name="Katari Quartz" href="/katari-quartz/index.html"/>
+      <item name="Katari JSModules" href="/katari-jsmodule/index.html"/>
+      <item name="Katari Email" href="/katari-email/index.html"/>
       <item name="Katari Style" href="/katari-style/index.html"/>
       <item name="Katari Sample" href="/katari-sample/index.html"/>
-      <item name="Katari Sample without database"
+      <item name="Katari Sample, no db"
         href="/katari-nodatabase/index.html"/>
     </menu>
 

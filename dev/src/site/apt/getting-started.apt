@@ -36,12 +36,12 @@ mvn archetype:generate -DarchetypeArtifactId=katari-archetype \
  []
 
  For consistency, we recommend the groupId is of the form <your
- domain>.$artifactId.
+ domain>.<artifactId>.
 
  You can also create the project in batch mode, passing all the information in
- the command line. For example, for a client called acme and a project named
- coyote:
-
+ the command line. To see it in action, lets create the coyote application for
+ our client acme:
+ 
 ----
 mvn archetype:generate -DarchetypeArtifactId=katari-archetype \
   -DarchetypeGroupId=com.globant.katari -DarchetypeVersion=@version@ \
@@ -109,8 +109,8 @@ dev
  `-- README
 ----
 
- The structure follows Globant CMMi stanards, with a dev top level module. Below
- that, the archetype creates two modules: web and style.
+ The structure follows Globant CMMi standards, with a dev top level module.
+ Below that, the archetype creates two modules: web and style.
 
  The dev/README provides the necessary information to getting started with the
  project. So follow the instructions under the 'Quick start guide' title and you
@@ -164,39 +164,23 @@ acme-coyote-hello
 |-- pom.xml
 `-- src
     |-- main
-    |   |-- java
-    |   |   `-- com
-    |   |       `-- globant
-    |   |           `-- acme
-    |   |               `-- coyote
-    |   |                   `-- hello
-    |   |                       `-- view
-    |   |                           `-- HelloController.java
-    |   `-- resources
-    |       `-- com
-    |           `-- globant
-    |               `-- acme
-    |                   `-- coyote
-    |                       `-- hello
-    |                           |-- module.xml
-    |                           `-- view
-    |                               |-- hello.ftl
-    |                               `-- spring-servlet.xml
+    |   |-- java/com/globant/acme/coyote/hello/view
+    |   |                                       `-- HelloController.java
+    |   `-- resources/com/globant/acme/coyote/hello
+    |                                           |-- module.xml
+    |                                           `-- view
+    |                                               |-- hello.ftl
+    |                                               `-- spring-servlet.xml
     |-- site
     |   |-- apt
     |   |   `-- index.apt
     |   `-- site.xml
     `-- test
-        |-- java
-        |   `-- com
-        |       `-- globant
-        |           `-- acme
-        |               `-- coyote
-        |                   `-- hello
-        |                       |-- SpringModuleTest.java
-        |                       `-- view
-        |                           |-- HelloControllerTest.java
-        |                           `-- SpringServletTest.java
+        |-- java/com/globant/acme/coyote/hello
+        |                                  |-- SpringModuleTest.java
+        |                                  `-- view
+        |                                      |-- HelloControllerTest.java
+        |                                      `-- SpringServletTest.java
         `-- resources
             `-- log4j.properties
 ----

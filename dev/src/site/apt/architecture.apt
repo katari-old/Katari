@@ -8,10 +8,9 @@ Architecture
  in Katari is a module. Each module is a reusable independent 'vertical cut' in
  the functionality, spanning from the UI down to persistence.
 
- We say that modules are contained in a Katari application, that serves as a
- module container. The module container provides common services to all
- modules, like request dispatching, menu registration, security infrastructure,
- and more.
+ Modules are contained in a Katari application, that serves as a module
+ container. The module container provides common services to all modules, like
+ request dispatching, menu registration, security infrastructure, and more.
 
  The full stack of each module (view, application and domain) can be
  independently packed in a jar and reused in many applications.
@@ -255,8 +254,8 @@ Architecture
 
 * Layers
 
- Katari applications uses a traditional layered model, consisting of the
- following four layers:
+ Katari modules use a traditional layered model, consisting of the following
+ four layers:
 
  [View] It includes the servlet based front controllers (like
  spring-mvc controllers or struts actions) and the view templates (like

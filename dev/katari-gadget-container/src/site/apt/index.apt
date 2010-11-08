@@ -1,13 +1,98 @@
 ~~~ vim: set sw=1 et ts=1 ai:
- -----
- The Site
- -----
- Pablo Gra\~na
- -----
 
-Katari - gadget container
+The gadget container
 
- An open social compliant gadget container.
+ This module provides an open social compliant gadget container.
+
+Using this module
+
+ To include this module in a Katari based application, put in your application
+ context file (usually src/main/webapp/WEB-INF/applicationContext.xml), a line
+ of the form:
+
+-----
+<katari:import module="com.globant.katari.shindig"/>
+-----
+
+ Shindig needs to know where the application is running, so you need to
+ configure the host name, port number, and context path. Override
+ shindig.hostAndPort and shindig.contextPath:
+
+-----
+<bean id='shindig.hostAndPort'
+  class='com.globant.katari.core.spring.StringHolder'
+  p:value='localhost:8088' />
+
+<bean id='shindig.contextPath'
+  class='com.globant.katari.core.spring.StringHolder'
+  p:value='/sample-web' />
+-----
+
+ This makes the gadget container available for your application. You can make
+ it available in any page you want. But first, you must make some gadgets
+ available to show in it. In this version you must manually insert the gadgets
+ into the applications table:
+
+-----
+insert into applications (id, title, url) values (2, 'Activities',
+ 'http://localhost:8098/katari-sample/module/gadget/ActivityTest.xml');
+-----
+
+ This makes the activities gadget available in the application directory, a
+ page where you can select gadgets and include them in your page.
+
+ To include the gadget container in your page, include this in it:
+
+-----
+ <div id='custom-gadgets'>
+   <div class='gadgetContainerTools'>
+     <a href='${baseweb}/module/gadgetcontainer/directory.do \
+     ?returnUrl=/module/institutional/dashboard.do&amp;gadgetGroupName=main'>
+     Add ...</a>
+   </div>
+   <!-- will hold open social gadgets. -->
+ </div>
+ <script type='text/javascript'>
+   $(document).ready(function() {
+     var mainGadgets = new katari.social.GadgetGroup('custom-gadgets');
+     $.getJSON(
+       katari.social.canvasConfig.host +
+         '${baseweb}/module/gadgetcontainer/socialPage.do?groupName=main', 
+       function(data) {
+         mainGadgets.addGadgetsFromJson(data);
+         mainGadgets.render();
+       });
+   });
+ </script>
+-----
+
+ As you can see, you need to create an html container (custom-gadgets in this
+ case) to hold the gadgets. Then you initialize a GadgetGroup object with data
+ coming from gadgetcontainer/socialPage.do.
+
+ This example also adds a button to the gadget directory
+ (gadgetcontainer/directory.do) to add new elements to the page.
+
+Design
+
+ The gadget container organizes gadgets in 'gadget groups', that contains a
+ collection of 'gadget instances'. Each gadget instance has a reference to an
+ application, basically the url for the gadget xml specification.
+
+ You can display gadget groups in a page.
+ 
+ There are three types of gadget groups:  shared (the same
+ gadget group is seen by all users), non shared (each user has his own group)
+ or template.
+ 
+ Non shared gadget groups can be configured by the user, adding, moving or
+ removing gadgets from the group.
+
+ Non-shared gadget groups can be created on demand: if a user tries to access a
+ non existing non-shared gadget group, then katari creates one for him, from a
+ gadget group template with the same name.
+
+Configuration
 
  If debugMode.value is set to true in the configuration property file, then the
  container does not cache the gadget xml spec and does not compress the social

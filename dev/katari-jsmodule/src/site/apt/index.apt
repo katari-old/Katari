@@ -1,6 +1,54 @@
 ~~~ vim: set sw=1 et ts=1 ai:
 
-${artifactId} - ${friendlyName}
+Js modules
 
- ${friendlyName}
+ This module is used to support packing javascript in jar files, making
+ it possible to manage them with maven, deploying to repositories and tracking
+ dependencies and versions.
+
+Using this module
+
+ To include this module in a Katari based application, simply put a line of the
+ form:
+
+------
+<katari:import module="com.globant.katari.jsmodule"/>
+------
+
+ Then, add the dependencies to you pom file:
+ 
+-----
+  <dependency>
+    <groupId>com.globant.jslib</groupId>
+    <artifactId>jquery</artifactId>
+    <version>1.4.2</version>
+  </dependency>
+-----
+
+ And finally, import the javascript file like this:
+
+-----
+  <script type='text/javascript'
+    src='${baseweb}/module/jsmodule/com/globant/jslib/jquery/jquery.js'>
+-----
+
+ Future versions of this module will provide compression, bundling and dynamic
+ dependency management.
+
+Packaging javascript
+
+ To package a javascript library in a jar file, you just create a jar with the
+ js files in it, in a standard java package format. Then you need to add a meta
+ file META-INF/katari-resource-set describing where in the classpath to search
+ for the files. For example, for jquery:
+ 
+-----
+staticContentPath=/com/globant/jslib/jquery
+
+mimeType.js=text/javascript
+
+debugPrefix=../jquery/src/main/resources
+-----
+
+
 

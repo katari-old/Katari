@@ -14,7 +14,7 @@
 
   <body>
 
-    <menu name="Katari - hibernate">
+    <menu name="Katari - quartz">
       <item name="Parent" href="../index.html" />
       <item name="Introduction" href="index.html" />
     </menu>

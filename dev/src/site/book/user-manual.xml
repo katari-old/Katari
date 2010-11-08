@@ -84,6 +84,36 @@
         </section>
       </sections>
     </chapter>
+    <chapter>
+      <id>social-modules</id>
+      <title>Shindig</title>
+      <sections>
+        <section>
+          <id>katari-shindig</id>
+        </section>
+        <section>
+          <id>katari-gadget-container</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>quart-module</id>
+      <title>Task scheduling with quartz</title>
+      <sections>
+        <section>
+          <id>katari-quartz</id>
+        </section>
+      </sections>
+    </chapter>
+    <chapter>
+      <id>js-module</id>
+      <title>Managing js modules</title>
+      <sections>
+        <section>
+          <id>katari-jsmodule</id>
+        </section>
+      </sections>
+    </chapter>
     <!-- chapter>
       <id>static-content</id>
       <title>Serving static content</title>

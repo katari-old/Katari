@@ -1,0 +1,44 @@
+~~~ vim: set sw=1 et ts=1 ai:
+
+Introduction
+
+ This module provides task scheduling with the help of quartz.
+
+Using this module
+
+ To include this module in a Katari based application, put in your application
+ context file (usually src/main/webapp/WEB-INF/applicationContext.xml), a line
+ of the form:
+
+-----
+<katari:import module="com.globant.katari.quartz"/>
+-----
+
+ To add a task to schedule, add to your module.xml:
+
+-----
+  <bean id='search.reindexCommand'
+    class='com.globant.katari.search.integration.ReindexScheduledCommand' >
+    <constructor-arg index="0" ref="search.indexRepository"/>
+  </bean>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='quartz.schedulerTasks'/>
+    <constructor-arg>
+      <list>
+        <bean class="com.globant.katari.quartz.domain.CronTrigger">
+          <constructor-arg index='0' ref="quartz.daily"/>
+          <constructor-arg index='1' value="search.reindexCommand"/>
+        </bean>
+      </list>
+    </constructor-arg>
+  </bean>
+-----
+
+ This is an example taken from the search module. It declares a bean
+ search.reindexCommand and adds it to the quartz.schedulerTasks, with a cron
+ trigger to be run daily.
+
+ The class ReindexScheduledCommand implements ScheduledCommand, from the
+ com.globant.katari.quartz.domain package.
+
