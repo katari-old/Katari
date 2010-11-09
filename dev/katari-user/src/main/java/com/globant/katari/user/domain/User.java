@@ -61,6 +61,11 @@ public class User extends CoreUser {
   @SearchableComponent
   private Set<Role> roles = new HashSet<Role>();
 
+  /** Validates that the user is active. Default value is false.
+   */
+  @Column(name = "is_active", nullable = false)
+  private boolean active = false;
+
   /** The default constructor.
    *
    * Builds an empty user.
@@ -177,6 +182,25 @@ public class User extends CoreUser {
       }
     }
     return false;
+  }
+
+  /** Activates this user. Turns on the login behavior for this account.
+   */
+  public void activate() {
+    active = true;
+  }
+
+  /** Deactivates this user. Turns off the login behavior for this account.
+   */
+  public void deActivate() {
+    active = false;
+  }
+
+  /** Returns if the user is active or not.
+   * @return true if the user is active, false if not.
+   */
+  public boolean isActive() {
+    return active;
   }
 }
 

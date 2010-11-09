@@ -49,5 +49,17 @@ public class UserTest extends TestCase {
     user.addRole(role);
     assertTrue(user.isAdministrator());
   }
+
+  /* Test if the user is active or not, and also checks the method "activate" 
+   * and "deactivate"
+   */
+  public final void testActivation() {
+    User user = new User("pablo", "admin@gmail");
+    assertFalse(user.isActive());
+    user.activate();
+    assertTrue(user.isActive());
+    user.deActivate();
+    assertFalse(user.isActive());
+  }
 }
 

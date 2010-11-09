@@ -144,13 +144,11 @@ public class DomainUserDetails extends CoreUserDetails implements RoleDetails {
 
   /** Indicates whether the user is enabled or disabled.
    *
-   * TODO Implement this.
-   *
    * @return true if the account is enabled, false if the account is disabled.
    * This implementation always returns true.
    */
   public boolean isEnabled() {
-    return true;
+    return user.isActive();
   }
 
   /** Returns the user domain.
