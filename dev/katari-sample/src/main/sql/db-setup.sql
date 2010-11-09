@@ -1,7 +1,7 @@
 -- vim: set ts=2 et sw=2:
 
-insert into users(id, name, email, password, user_type) values (1, 'admin',
-  'admin@none', 'admin', 'user');
+insert into users(id, name, email, password, user_type, is_active) values (1, 'admin',
+  'admin@none', 'admin', 'user', true);
 insert into roles(id, name) values (1, 'ADMINISTRATOR');
 insert into roles(id, name) values (2, 'REPORT_ADMIN');
 insert into users_roles(users_id, roles_id) select users.id, roles.id
