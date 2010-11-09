@@ -9,7 +9,10 @@ import java.lang.NoSuchFieldException;
  *
  * This class includes operations to obtain and set the value of private
  * fields. It looks for them up in the class hierarchy.
+ * 
+ * @deprecated use spring's DirectFieldAccessor instead.
  */
+@Deprecated
 public final class ReflectionUtils {
 
   /** A private constructor for this utility class.
@@ -39,7 +42,7 @@ public final class ReflectionUtils {
     }
   }
 
-  /** Obtains the value of a possible inaccesible field.
+  /** Obtains the value of a possible inaccessible field.
    *
    * @param object The object to set the attribute to. It cannot be null.
    *

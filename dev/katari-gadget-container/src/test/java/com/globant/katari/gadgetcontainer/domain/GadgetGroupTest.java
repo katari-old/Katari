@@ -8,12 +8,11 @@ import static org.easymock.classextension.EasyMock.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.DirectFieldAccessor;
 
 import java.util.Set;
 
 import java.io.File;
-
-import com.globant.katari.tools.ReflectionUtils;
 
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
@@ -88,11 +87,11 @@ public class GadgetGroupTest {
     GadgetInstance instance;
 
     instance = new GadgetInstance(application, 0, 0);
-    ReflectionUtils.setAttribute(instance, "id", 1);
+    new DirectFieldAccessor(instance).setPropertyValue("id", 1);
     group.add(instance);
 
     instance = new GadgetInstance(application, 0, 1);
-    ReflectionUtils.setAttribute(instance, "id", 2);
+    new DirectFieldAccessor(instance).setPropertyValue("id", 2);
     group.add(instance);
 
     // Should fail because there is only 1 column in the group.
@@ -109,11 +108,11 @@ public class GadgetGroupTest {
     GadgetInstance instance;
 
     instance = new GadgetInstance(application, 0, 0);
-    ReflectionUtils.setAttribute(instance, "id", 1);
+    new DirectFieldAccessor(instance).setPropertyValue("id", 1);
     group.add(instance);
 
     instance = new GadgetInstance(application, 0, 1);
-    ReflectionUtils.setAttribute(instance, "id", 2);
+    new DirectFieldAccessor(instance).setPropertyValue("id", 2);
     group.add(instance);
 
     // Should fail because gadget 100 is not in the group.
@@ -129,11 +128,11 @@ public class GadgetGroupTest {
     GadgetGroup group = new GadgetGroup(user, "name", 1);
 
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
-    ReflectionUtils.setAttribute(col0Order0, "id", 1);
+    new DirectFieldAccessor(col0Order0).setPropertyValue("id", 1);
     group.add(col0Order0);
 
     GadgetInstance col0Order1 = new GadgetInstance(application, 0, 1);
-    ReflectionUtils.setAttribute(col0Order1, "id", 2);
+    new DirectFieldAccessor(col0Order1).setPropertyValue("id", 2);
     group.add(col0Order1);
 
     // Move the second gadget to the begining of the column.
@@ -149,11 +148,11 @@ public class GadgetGroupTest {
     GadgetGroup group = new GadgetGroup(user, "name", 2);
 
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
-    ReflectionUtils.setAttribute(col0Order0, "id", 1);
+    new DirectFieldAccessor(col0Order0).setPropertyValue("id", 1);
     group.add(col0Order0);
 
     GadgetInstance col0Order1 = new GadgetInstance(application, 0, 1);
-    ReflectionUtils.setAttribute(col0Order1, "id", 2);
+    new DirectFieldAccessor(col0Order1).setPropertyValue("id", 2);
     group.add(col0Order1);
 
     // Move the second gadget to the begining of the column.
@@ -169,23 +168,23 @@ public class GadgetGroupTest {
     GadgetGroup group = new GadgetGroup(user, "name", 2);
 
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
-    ReflectionUtils.setAttribute(col0Order0, "id", 1);
+    new DirectFieldAccessor(col0Order0).setPropertyValue("id", 1);
     group.add(col0Order0);
 
     GadgetInstance col0Order1 = new GadgetInstance(application, 0, 1);
-    ReflectionUtils.setAttribute(col0Order1, "id", 2);
+    new DirectFieldAccessor(col0Order1).setPropertyValue("id", 2);
     group.add(col0Order1);
 
     GadgetInstance col1Order0 = new GadgetInstance(application, 1, 1);
-    ReflectionUtils.setAttribute(col1Order0, "id", 3);
+    new DirectFieldAccessor(col1Order0).setPropertyValue("id", 3);
     group.add(col1Order0);
 
     GadgetInstance col1Order1 = new GadgetInstance(application, 1, 2);
-    ReflectionUtils.setAttribute(col1Order1, "id", 4);
+    new DirectFieldAccessor(col1Order1).setPropertyValue("id", 4);
     group.add(col1Order1);
 
     GadgetInstance col1Order2 = new GadgetInstance(application, 1, 3);
-    ReflectionUtils.setAttribute(col1Order2, "id", 5);
+    new DirectFieldAccessor(col1Order2).setPropertyValue("id", 5);
     group.add(col1Order2);
 
     // Move the second gadget to the begining of the column.

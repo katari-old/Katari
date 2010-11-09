@@ -17,6 +17,7 @@ import org.apache.wicket.spring.test.ApplicationContextMock;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.DirectFieldAccessor;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.sample.testsupport.SecurityTestUtils;
@@ -29,7 +30,6 @@ import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.filter.Paging;
 
 import com.globant.katari.tools.KatariWicketTester;
-import com.globant.katari.tools.ReflectionUtils;
 
 public class UserListPageTest {
 
@@ -41,7 +41,7 @@ public class UserListPageTest {
   public void setUp() {
     User user = new User("admin", "admin@none");
     // Change the id, otherwise the delete button will always be disabled.
-    ReflectionUtils.setAttribute(user, "id", 1000);
+    new DirectFieldAccessor(user).setPropertyValue("id", 1000);
     SecurityTestUtils.setContextUser(user);
 
     List<User> firstPage = new LinkedList<User>();

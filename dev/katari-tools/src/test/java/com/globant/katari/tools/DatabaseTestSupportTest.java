@@ -5,6 +5,7 @@ package com.globant.katari.tools;
 import java.sql.Connection;
 import java.util.Properties;
 
+import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.hibernate.cfg.Configuration;
 
@@ -30,7 +31,7 @@ public class DatabaseTestSupportTest {
 
     /* EasyMock did not work here because getConfiguration is final. */
     LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-    ReflectionUtils.setAttribute(sessionFactory, "configuration",
+    new DirectFieldAccessor(sessionFactory).setPropertyValue("configuration",
         hibernateConfig);
 
     /*
@@ -56,7 +57,7 @@ public class DatabaseTestSupportTest {
 
     /* EasyMock did not work here because getConfiguration is final. */
     LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-    ReflectionUtils.setAttribute(sessionFactory, "configuration",
+    new DirectFieldAccessor(sessionFactory).setPropertyValue("configuration",
         hibernateConfig);
 
     DatabaseTestSupport dbSupport = new DatabaseTestSupport() {
