@@ -1,3 +1,5 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.email.application;
 
 import java.io.IOException;
@@ -16,27 +18,25 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-/**
- * Email's Factory.
+/** Class to send template based emails.
  *
- * This factory contains all the server information and also the Freemarker
- * freemarkerConfiguration.
+ * With this class, you can send emails in html and plain text, based in a
+ * freemarker template.
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
- *
  */
 public class EmailSender {
 
-  /** The smtp hostname. It's never null. */
+  /** The smtp hostname, never null. */
   private final String hostname;
 
-  /** The smtp post. It's never null. */
+  /** The smtp post, never null. */
   private final Integer smtpPort;
 
-  /** The account name. It's never null. */
+  /** The account name, never null. */
   private final String username;
 
-  /** The account password. It's never null. */
+  /** The account password, never null. */
   private final String password;
 
   /** true if the server is secure TLS. */
@@ -52,7 +52,9 @@ public class EmailSender {
    * @param user the email account user. Cannot be null.
    * @param passwd the password of the email account. Cannot be null.
    * @param isSecure true if the server is TLS.
-   * @param templateConfig the Freemarker freemarkerConfiguration.
+   *
+   * @param templateConfig the Freemarker freemarkerConfiguration. It cannot be
+   * null.
    */
   public EmailSender(final String host, final Integer port,
       final String user, final String passwd, final boolean isSecure,
@@ -61,6 +63,8 @@ public class EmailSender {
     Validate.notNull(port, "The port cannot be null");
     Validate.notNull(user, "The username cannot be null");
     Validate.notNull(passwd, "The password cannot be null");
+    Validate.notNull(templateConfig,
+        "The freemarker configuration cannot be null");
     hostname = host;
     smtpPort = port;
     username = user;
@@ -108,7 +112,7 @@ public class EmailSender {
    * @param model the model of the template.
    * @return the result of the template's processing.
    */
-  String createHtml(final String templateName,
+  private String createHtml(final String templateName,
       final Map<String, Object> model) {
     try {
       StringWriter writer = new StringWriter();
@@ -124,3 +128,4 @@ public class EmailSender {
     }
   }
 }
+

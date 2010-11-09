@@ -32,6 +32,11 @@
     </dependency>
 
     <dependency>
+      <groupId>dumbster</groupId>
+      <artifactId>dumbster</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.globant.katari</groupId>
       <artifactId>katari-tools</artifactId>
     </dependency>
