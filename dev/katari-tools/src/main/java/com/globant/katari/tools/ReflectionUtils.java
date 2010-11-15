@@ -3,13 +3,12 @@
 package com.globant.katari.tools;
 
 import java.lang.reflect.Field;
-import java.lang.NoSuchFieldException;
 
 /** Convenience methods to deal with reflection.
  *
  * This class includes operations to obtain and set the value of private
  * fields. It looks for them up in the class hierarchy.
- * 
+ *
  * @deprecated use spring's DirectFieldAccessor instead.
  */
 @Deprecated
@@ -64,12 +63,16 @@ public final class ReflectionUtils {
     }
   }
 
-  /** Obtains a field from object, searching the full class hierarchy.
+  /** Obtains a field from a class, searching the full class hierarchy.
    *
-   * @param object The object to set the attribute to. It cannot be null.
+   * @param theClass The class to obtain the attribute from. It cannot be null.
    *
    * @param attributeName The name of the attribute to search. It cannot be
    * null.
+   *
+   * @return the requested field, never null.
+   *
+   * @throws NoSuchFieldException if the field was not found.
    */
   @SuppressWarnings("unchecked")
   private static Field getField(final Class<?> theClass, final String

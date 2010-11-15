@@ -127,6 +127,8 @@ public abstract class DatabaseTestSupport {
    * It cannot be null.
    *
    * @param markerTable The name of the marker table. It cannot be null.
+   *
+   * @throws Exception in case of error.
    */
   protected abstract void doDropAll(final Connection connection, final String
       markerTable) throws Exception;
@@ -135,11 +137,15 @@ public abstract class DatabaseTestSupport {
    *
    * Sentences in the file are delimited by a line ending in ;.
    *
+   * @param dataSource the datasource to use to run the sql sentences. It
+   * cannot be null.
+   *
    * @param fileName the String with the file name.
    */
   public void runSqlSentences(final DataSource dataSource, final String
       fileName) {
     log.trace("Entering runSqlSentences('" + fileName + "')");
+    Validate.notNull(dataSource, "The data source cannot be null.");
     Validate.notNull(fileName, "The file name cannot be null.");
 
     Connection connection = null;
@@ -210,7 +216,7 @@ public abstract class DatabaseTestSupport {
           + ". It is probable because the table does not exist. "
           + "Please create it with:", markerTable);
       log.info("create table {} (drop_database varchar (50));",  markerTable);
-      log.info("insert into {} values ('YES, DROP ME');", markerTable );
+      log.info("insert into {} values ('YES, DROP ME');", markerTable);
 
       System.out.println("An exception was caught selecting from "
           + markerTable + ". It is probable because the table does"
