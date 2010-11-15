@@ -10,16 +10,21 @@ import org.springframework.beans.DirectFieldAccessor;
 import com.dumbster.smtp.SimpleSmtpServer;
 import com.dumbster.smtp.SmtpMessage;
 
-public class DummySmtpServer implements Iterable<SmtpMessage> {
+/** Dummy smtp server used for testing.
+ *
+ * This server is based on dumbster, but adds the possibility to start in an OS
+ * selected port.
+ */
+public final class DummySmtpServer implements Iterable<SmtpMessage> {
 
   /** The created SimpleSmtpServer.
    *
    * This is never null.
    */
   private SimpleSmtpServer server;
-  
+
   /** Private constructor.
-   * 
+   *
    * @param smtpServer The dumbster smtp server wrapped by this class. It is
    * never null.
    */
@@ -30,7 +35,7 @@ public class DummySmtpServer implements Iterable<SmtpMessage> {
   /** Creates a dummy smtp server and starts it.
    *
    * @param port the port number that the server will listen to.
-   * 
+   *
    * @return the created dummy server, never null.
    */
   public static DummySmtpServer start(final int port) {
@@ -58,10 +63,10 @@ public class DummySmtpServer implements Iterable<SmtpMessage> {
     socket = (ServerSocket) accesor.getPropertyValue("serverSocket");
     return socket.getLocalPort();
   }
-  
+
   /** Get email received by this instance since start up.
    *
-   * @return 
+   * @return an iterator for all the received emails.
    */
   @SuppressWarnings("unchecked")
   public synchronized Iterator<SmtpMessage> iterator() {
@@ -76,5 +81,4 @@ public class DummySmtpServer implements Iterable<SmtpMessage> {
     return server.getReceivedEmailSize();
   }
 }
-
 

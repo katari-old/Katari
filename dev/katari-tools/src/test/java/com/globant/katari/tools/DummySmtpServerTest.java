@@ -42,7 +42,7 @@ public class DummySmtpServerTest {
     props.put("mail.smtp.host", "localhost");
     props.put("mail.smtp.port", String.valueOf(server.getPortNumber()));
 
-    Session mailSession = Session.getDefaultInstance(props);
+    Session mailSession = Session.getInstance(props);
     Message sentMessage = new MimeMessage(mailSession);
     sentMessage.setFrom(new InternetAddress("from@blah"));
     sentMessage.setRecipient(RecipientType.TO, new InternetAddress("to@blah"));
