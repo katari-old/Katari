@@ -14,8 +14,6 @@ import org.apache.camel.model.ToDefinition;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
 import org.apache.camel.spring.CamelContextFactoryBean;
 
-import org.springframework.beans.BeansException;
-
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /** An event endpoint represents a name where event sources can raise events
@@ -37,19 +35,19 @@ public class EventEndpoint implements BeanPostProcessor {
   /** The aggregator for event responses, never null.
    */
   private AggregationStrategy aggregationStrategy;
-  
+
   /** The null endpoint, where the event is sent when there are no listeners.
-   * 
+   *
    * If null, we use the default endpoint (bean:katari.defaultEventListener).
    * The default is useful when the input and output of an event are of the
    * same type.
    */
   private String nullUri;
-  
+
   /** The source endpoint, never null.
    */
   private String fromUri;
-    
+
   /** Listener endpoints, never null.
    */
   private List<ToDefinition> toDefinitions;
@@ -111,8 +109,8 @@ public class EventEndpoint implements BeanPostProcessor {
    *
    * This implementation does nothing.
    */
-  public Object postProcessAfterInitialization(Object bean, String beanName)
-    throws BeansException {
+  public Object postProcessAfterInitialization(final Object bean,
+      final String beanName) {
     return bean;
   }
 
@@ -121,7 +119,7 @@ public class EventEndpoint implements BeanPostProcessor {
    * Attaches the routes to the camel context named katari.eventBus.
    */
   public Object postProcessBeforeInitialization(final Object bean,
-      final String beanName) throws BeansException {
+      final String beanName) {
 
     if (beanName.equals("katari.eventBus")) {
 
