@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:util="http://www.springframework.org/schema/util"
   xmlns:katari="http://www.globant.com/schema/katari"
+  xmlns:camel="http://camel.apache.org/schema/spring"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd
       http://www.globant.com/schema/katari
-      http://www.globant.com/schema/katari/katari.xsd">
+      http://www.globant.com/schema/katari/katari.xsd
+      http://camel.apache.org/schema/spring
+      http://camel.apache.org/schema/spring/camel-spring.xsd">
 
   <!-- The user module configuration file. This file must be included in the
   application context to use this module. -->
@@ -121,6 +128,40 @@
 
   <!-- We use the userRepository from the user module. -->
   <alias name="user.userRepository" alias="userRepository"/>
+
+  <!-- Events raised. -->
+  <!-- Creates the katari.user.deleteUser endpoint. The delete user sends a
+       DeleteMessage to this endpoint just before deleting the user. Listeners
+       of this event must perform all related actions, like removing data owned
+       by the user being deleted. The response for this event must be a goAhead
+       response. -->
+  <bean class='com.globant.katari.core.spring.EventEndpoint'>
+    <constructor-arg ref='user.deleteMessageAggregator'/>
+    <constructor-arg value='direct:katari.user.deleteUser'/>
+    <constructor-arg ref='user.deleteUserListeners'/>
+  </bean>
+
+  <!-- Creates the katari.user.vetoDeleteUser endpoint. The delete user sends a
+       DeleteMessage to this endpoint before deleting the user. Listeners
+       of this event can stop the deletion by sending a reject message
+       response. If this is the case, the user is not deleted. -->
+  <bean class='com.globant.katari.core.spring.EventEndpoint'>
+    <constructor-arg ref='user.deleteMessageAggregator'/>
+    <constructor-arg value='direct:katari.user.vetoDeleteUser'/>
+    <constructor-arg ref='user.vetoDeleteUserListeners'/>
+  </bean>
+
+  <!-- Collapses all the delete messages into one. -->
+  <bean id="user.deleteMessageAggregator"
+    class="com.globant.katari.user.application.DeleteMessageAggregator"/>
+
+  <!-- The list of event listeners for the deleteUser event. This is intended
+       to be extended with ListFactoryAppender. -->
+  <util:list id='user.deleteUserListeners'/>
+
+  <!-- The list of event listeners for the vetoDeleteUser event. This is intended
+       to be extended with ListFactoryAppender. -->
+  <util:list id='user.vetoDeleteUserListeners'/>
 
 </beans>
 
