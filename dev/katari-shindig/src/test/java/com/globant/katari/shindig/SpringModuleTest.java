@@ -10,8 +10,6 @@ import static org.hamcrest.CoreMatchers.*;
 
 import com.globant.katari.shindig.testsupport.SpringTestUtils;
 
-import com.globant.katari.tools.HibernateUtils;
-
 import com.globant.katari.core.web.ConfigurableModule;
 
 /* Tests the module.xml.
