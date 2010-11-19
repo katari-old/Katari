@@ -245,7 +245,6 @@ public class SaveUserCommand implements Command<Void>, Validatable,
   public Void execute() {
     log.trace("Entering execute");
 
-    // TODO: Is this cast fine here?
     User me = (User) SecurityUtils.getCurrentUser();
     if (me == null) {
       throw new RuntimeException("Not enough privileges");

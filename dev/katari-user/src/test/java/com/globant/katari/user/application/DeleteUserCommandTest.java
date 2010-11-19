@@ -59,7 +59,7 @@ public class DeleteUserCommandTest {
   @Test
   public final void testExecute_pass() {
     User user = userRepository.findUserByName(userName);
-    deleteUserCommand.setUserId(String.valueOf(user.getId()));
+    deleteUserCommand.setUserId(user.getId());
 
     assertThat(userRepository.findUserByName(userName), notNullValue());
     deleteUserCommand.execute();
@@ -70,7 +70,7 @@ public class DeleteUserCommandTest {
   public final void testExecute_failDeleteMyself() {
     SecurityTestUtils.setContextUser(userRepository.findUserByName(userName));
     User user = userRepository.findUserByName(userName);
-    deleteUserCommand.setUserId(String.valueOf(user.getId()));
+    deleteUserCommand.setUserId(user.getId());
 
     assertNotNull(userRepository.findUserByName(userName));
     deleteUserCommand.execute();

@@ -11,12 +11,13 @@ import com.globant.katari.hibernate.coreuser.SecurityUtils;
 
 import com.globant.katari.core.application.Command;
 
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.CamelContext;
+
 import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserRepository;
 
 /** Command to delete a user.
- *
- * @author nicolas.frontini
  */
 public class DeleteUserCommand implements Command<Void> {
 
@@ -24,16 +25,21 @@ public class DeleteUserCommand implements Command<Void> {
    */
   private static Log log = LogFactory.getLog(DeleteUserCommand.class);
 
-  /** The user repository.
+  /** The katari event bus, never null.
+   */
+  private CamelContext eventBus;
+
+  /** The user repository, never null.
    */
   private UserRepository userRepository;
 
   /** The id of the user.
    */
-  private String userId;
+  private long userId;
 
-  /** Constructor to dynamically proxy this type of command.
-   */
+  /** Constructor to dynamically proxy this type of command (mainly used by
+   * wicket).
+  */
   protected DeleteUserCommand() {
   }
 
@@ -41,8 +47,11 @@ public class DeleteUserCommand implements Command<Void> {
    *
    * @param theUserRepository The user repository. It cannot be null.
    */
-  public DeleteUserCommand(final UserRepository theUserRepository) {
+  public DeleteUserCommand(final CamelContext theEventBus,
+      final UserRepository theUserRepository) {
+    Validate.notNull(theEventBus, "The event bus cannot be null");
     Validate.notNull(theUserRepository, "The user repository cannot be null");
+    eventBus = theEventBus;
     userRepository = theUserRepository;
   }
 
@@ -50,16 +59,15 @@ public class DeleteUserCommand implements Command<Void> {
    *
    * @return Returns the user id.
    */
-  public String getUserId() {
+  public long getUserId() {
     return userId;
   }
 
   /** Sets the id of the user.
    *
-   * @param theUserId The id of the user. It cannot be null.
+   * @param theUserId The id of the user.
    */
-  public void setUserId(final String theUserId) {
-    Validate.notNull(theUserId, "The user id cannot be null.");
+  public void setUserId(final long theUserId) {
     userId = theUserId;
   }
 
@@ -76,6 +84,19 @@ public class DeleteUserCommand implements Command<Void> {
       throw new RuntimeException("You cannot delete yourself.");
     }
     User user = userRepository.findUser(Long.valueOf(getUserId()));
+
+    // Notify all interested parties that this user is being deleted.
+    ProducerTemplate producer = eventBus.createProducerTemplate();
+    DeleteMessage response = (DeleteMessage) producer.requestBody(
+        "direct:katari.user.vetoDeleteUser", new DeleteMessage(userId));
+    if (!response.canDelete()) {
+      throw new RuntimeException(
+          "We cannot delete the user: " + response.getMessage("", "\n"));
+    }
+    response = (DeleteMessage) producer.requestBody(
+        "direct:katari.user.deleteUser", new DeleteMessage(userId));
+    // Response is ignored here.
+
     userRepository.remove(user);
     log.trace("Leaving execute");
     return null;

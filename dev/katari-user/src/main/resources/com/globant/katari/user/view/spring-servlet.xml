@@ -106,9 +106,8 @@
 
   <bean name="deleteUserCommand" scope="prototype"
       class="com.globant.katari.user.application.DeleteUserCommand" >
-    <constructor-arg index="0" >
-      <ref bean="user.userRepository" />
-    </constructor-arg>
+    <constructor-arg index='0' ref='katari.eventBus' />
+    <constructor-arg index='1' ref='user.userRepository' />
   </bean>
 
   <bean class

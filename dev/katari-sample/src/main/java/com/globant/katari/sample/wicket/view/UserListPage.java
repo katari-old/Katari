@@ -65,7 +65,7 @@ public class UserListPage extends WebPage {
 
           @Override
           public void onClick() {
-            deleteCommand.setUserId(Long.toString(user.getId()));
+            deleteCommand.setUserId(user.getId());
             deleteCommand.execute();
           }
 

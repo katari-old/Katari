@@ -60,7 +60,7 @@ public class UserListPageTest {
     replay(emptyFilter);
 
     deleteUser = createMock(DeleteUserCommand.class);
-    deleteUser.setUserId("0");
+    deleteUser.setUserId(0);
     expect(deleteUser.execute()).andReturn(null);
     replay(deleteUser);
 
