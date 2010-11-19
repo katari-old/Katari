@@ -2,7 +2,6 @@
 
 package com.globant.katari.hibernate;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import org.junit.Test;

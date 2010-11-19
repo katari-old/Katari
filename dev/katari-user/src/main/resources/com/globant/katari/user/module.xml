@@ -153,7 +153,7 @@
 
   <!-- Collapses all the delete messages into one. -->
   <bean id="user.deleteMessageAggregator"
-    class="com.globant.katari.user.application.DeleteMessageAggregator"/>
+    class="com.globant.katari.hibernate.coreuser.DeleteMessageAggregator"/>
 
   <!-- The list of event listeners for the deleteUser event. This is intended
        to be extended with ListFactoryAppender. -->

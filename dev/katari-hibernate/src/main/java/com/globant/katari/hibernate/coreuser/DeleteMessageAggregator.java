@@ -1,12 +1,14 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
 
-package com.globant.katari.user.application;
+package com.globant.katari.hibernate.coreuser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
+
+import com.globant.katari.hibernate.coreuser.DeleteMessage;
 
 /** Aggregates the result of two endpoints.
  *

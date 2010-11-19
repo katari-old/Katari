@@ -1,20 +1,60 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
 
-package com.globant.katari.user.application;
+package com.globant.katari.hibernate.coreuser;
 
+import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.impl.DefaultExchange;
+import org.apache.camel.impl.DefaultMessage;
 import org.junit.Test;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
-import com.globant.katari.user.application.DeleteMessage;
-
-public class DeleteMessageTest {
+public class DeleteMessageAggregatorTest {
 
   @Test
-  public void testGetUserId() {
+  public void testAggregate_nullOld() {
+    CamelContext camelContext = new DefaultCamelContext();
+
     DeleteMessage message = new DeleteMessage(1);
-    assertThat(message.getUserId(), is(1l));
+    Exchange newExchange = new DefaultExchange(camelContext);
+    DefaultMessage body = new DefaultMessage();
+    body.setBody(message);
+    newExchange.setIn(body);
+
+    DeleteMessageAggregator aggregator = new DeleteMessageAggregator();
+    Exchange result = aggregator.aggregate(null, newExchange);
+
+    DeleteMessage resultMessage = result.getIn().getBody(DeleteMessage.class);
+    assertThat(resultMessage.canDelete(), is(true));
+    assertThat(resultMessage.getUserId(), is(1l));
+  }
+
+  @Test
+  public void testAggregate_nonNullOld() {
+    CamelContext camelContext = new DefaultCamelContext();
+
+    DeleteMessage oldMessage = new DeleteMessage(1).reject("No, you can't.");
+    Exchange oldExchange = new DefaultExchange(camelContext);
+    DefaultMessage oldBody = new DefaultMessage();
+    oldBody.setBody(oldMessage);
+    oldExchange.setIn(oldBody);
+
+    DeleteMessage newMessage = new DeleteMessage(1);
+    Exchange newExchange = new DefaultExchange(camelContext);
+    DefaultMessage newBody = new DefaultMessage();
+    newBody.setBody(newMessage);
+    newExchange.setIn(newBody);
+
+    DeleteMessageAggregator aggregator = new DeleteMessageAggregator();
+    Exchange result = aggregator.aggregate(oldExchange, newExchange);
+
+    DeleteMessage resultMessage = result.getIn().getBody(DeleteMessage.class);
+    assertThat(resultMessage.canDelete(), is(false));
+    assertThat(resultMessage.getUserId(), is(1l));
+    assertThat(resultMessage.getMessage("", ""), is("No, you can't."));
   }
 
   @Test

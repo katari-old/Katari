@@ -14,6 +14,8 @@ import com.globant.katari.core.application.Command;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.CamelContext;
 
+import com.globant.katari.hibernate.coreuser.DeleteMessage;
+
 import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserRepository;
 

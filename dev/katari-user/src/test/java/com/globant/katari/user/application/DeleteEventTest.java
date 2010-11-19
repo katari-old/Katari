@@ -13,6 +13,8 @@ import com.globant.katari.user.SpringTestUtils;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
+import com.globant.katari.hibernate.coreuser.DeleteMessage;
+
 public class DeleteEventTest {
   
   private CamelContext context;
@@ -36,7 +38,7 @@ public class DeleteEventTest {
     }
   }
   public static class Listener2 {
-    public DeleteMessage a(DeleteMessage message) {
+    public DeleteMessage a(final DeleteMessage message) {
       if (message.getUserId() == -100) {
         return message.reject("No, I say you can't delete user.");
       } else {
@@ -45,7 +47,7 @@ public class DeleteEventTest {
     }
   }
   public static class Listener3 {
-    public DeleteMessage a(DeleteMessage message) {
+    public DeleteMessage a(final DeleteMessage message) {
       if (message.getUserId() == -100) {
         return message.reject("You can't delete user.");
       } else {

@@ -1,6 +1,6 @@
 /* vim: set ts=2 et sw=2 cindent fo=qroca: */
 
-package com.globant.katari.user.application;
+package com.globant.katari.hibernate.coreuser;
 
 import org.apache.commons.lang.Validate;
 
@@ -16,8 +16,7 @@ public class DeleteMessage {
 
   /** The class logger.
    */
-  private static Logger log =
-    LoggerFactory.getLogger(DeleteMessageAggregator.class);
+  private static Logger log = LoggerFactory.getLogger(DeleteMessage.class);
 
   /** The id of the user to delete.
    */
