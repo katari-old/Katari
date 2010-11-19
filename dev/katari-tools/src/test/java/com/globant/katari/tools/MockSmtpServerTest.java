@@ -89,7 +89,6 @@ public class MockSmtpServerTest {
   }
 
   public static boolean isOpened(int port) throws IOException {
-    boolean result = false;
     ServerSocket ssocket = null;
     try {
       ssocket = new ServerSocket(port);
