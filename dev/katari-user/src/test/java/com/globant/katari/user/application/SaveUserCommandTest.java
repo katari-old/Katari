@@ -228,6 +228,7 @@ public class SaveUserCommandTest {
     User user = userRepository.findUserByName("TestUserName");
     assertThat(user, notNullValue());
     assertThat(roleRepository.getRoles().size(), is(user.getRoles().size()));
+    assertThat(user.isActive(), is(true));
   }
 
   /** Test change password.

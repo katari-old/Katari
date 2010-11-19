@@ -164,10 +164,11 @@ public class Profile {
     log.trace("Leaving validate");
   }
 
-  /** If it is a new user, the user is created assigning name, email and roles.
+  /** If it is a new user, create an active user with this object name, email
+   * and roles.
    *
-   * The password it changed too. For a preexistent user, the changes to the
-   * previously loaded user are appied, given the name, email and roles.
+   * For a preexistent user, the changes to the previously loaded user are
+   * applied, given the name, email and roles.
    *
    * @param roleRepository to get the roles. It cannot be null.
    *
@@ -183,6 +184,7 @@ public class Profile {
     if (user == null) {
     // New user
       user = new User(getName(), getEmail());
+      user.activate();
     } else {
       // Existing user.
       user.modify(getName(), getEmail());
