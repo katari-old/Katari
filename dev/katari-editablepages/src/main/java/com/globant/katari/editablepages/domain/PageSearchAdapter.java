@@ -20,6 +20,10 @@ import com.globant.katari.search.domain.Action;
  */
 public class PageSearchAdapter implements SearchAdapter {
 
+  /** The maximum number of characters in the summary of the page found.
+   */
+  private static final int MAX_SUMMARY_LENGTH = 100;
+
   /** The class logger.
    */
   private static Logger log = LoggerFactory.getLogger(PageSearchAdapter.class);
@@ -51,7 +55,11 @@ public class PageSearchAdapter implements SearchAdapter {
    * @param object the object to convert. It must be an instance of Page. It
    * cannot be null.
    *
+   * @param score passed directly to the resulting SearchResultElement.
+   *
    * @return a SearchResultElement initialized, never returns null.
+   *
+   * {@inheritDoc}
    */
   public SearchResultElement convert(final Object object, final float score) {
     log.trace("Entering convert");
@@ -71,8 +79,8 @@ public class PageSearchAdapter implements SearchAdapter {
     description.append("; title: " + page.getTitle());
     if (page.getContent() != null) {
       description.append("; content: ");
-      if (page.getContent().length() > 100) {
-        description.append(page.getContent().substring(0, 100));
+      if (page.getContent().length() > MAX_SUMMARY_LENGTH) {
+        description.append(page.getContent().substring(0, MAX_SUMMARY_LENGTH));
         description.append(" ...");
       } else {
         description.append(page.getContent());

@@ -124,7 +124,7 @@ public class ParameterDefinition {
    */
   public Object convertValue(final String value) throws ParseException {
     Validate.notNull(value, "The value cannot be null.");
-    Class< ? > classType;
+    Class<?> classType;
     Object result = null;
 
     try {

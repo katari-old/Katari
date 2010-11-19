@@ -32,6 +32,8 @@ public class DeleteUserListener {
    *
    * @param message The delete event message sent by the user module when a
    * user is about to be deleted.DeleteMessage
+   *
+   * @return returns a goAhead message, never null.
    */
   public DeleteMessage remove(final DeleteMessage message) {
     gadgetRepository.removeGroupsFromUser(message.getUserId());

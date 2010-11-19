@@ -47,6 +47,9 @@ public class DeleteUserCommand implements Command<Void> {
 
   /** The contructor with the user repository.
    *
+   * @param theEventBus The camel context to send the delete event to. It
+   * cannot be null.
+   *
    * @param theUserRepository The user repository. It cannot be null.
    */
   public DeleteUserCommand(final CamelContext theEventBus,
