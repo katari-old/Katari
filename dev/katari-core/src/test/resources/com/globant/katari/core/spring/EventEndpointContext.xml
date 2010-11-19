@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xmlns:camel="http://camel.apache.org/schema/spring"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd
+      http://camel.apache.org/schema/spring
+      http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <import resource="classpath:/com/globant/katari/core/beans-core.xml"/>
+
+  <!-- Collapses all the messages into one. -->
+  <bean id="aggregatorStrategy"
+    class="com.globant.katari.core.spring.EventEndpointTest$StringAggregator"/>
+
+  <!-- Creates a sample endpoint. -->
+  <bean class='com.globant.katari.core.spring.EventEndpoint'>
+    <constructor-arg ref='aggregatorStrategy'/>
+    <constructor-arg value='nullListener'/>
+    <constructor-arg value='direct:e1'/>
+    <constructor-arg>
+      <util:list>
+        <bean class='org.apache.camel.model.ToDefinition' p:uri='x' />
+        <bean class='org.apache.camel.model.ToDefinition' p:uri='y' />
+        <bean class='org.apache.camel.model.ToDefinition' p:uri='z' />
+      </util:list>
+    </constructor-arg>
+  </bean>
+
+  <!-- Creates a sample endpoint with no listeners. -->
+  <bean class='com.globant.katari.core.spring.EventEndpoint'>
+    <constructor-arg ref='aggregatorStrategy'/>
+    <constructor-arg value='nullListener'/>
+    <constructor-arg value='direct:e2'/>
+    <constructor-arg>
+      <util:list/>
+    </constructor-arg>
+  </bean>
+
+  <!-- Endpoints for listeners. -->
+  <camel:endpoint id='x'
+    uri="class:com.globant.katari.core.spring.EventEndpointTest$Listener1"/>
+  <camel:endpoint id='y'
+    uri="class:com.globant.katari.core.spring.EventEndpointTest$Listener2"/>
+  <camel:endpoint id='z'
+    uri="class:com.globant.katari.core.spring.EventEndpointTest$Listener3"/>
+  <camel:endpoint id='nullListener'
+    uri="class:com.globant.katari.core.spring.EventEndpointTest$NullListener"/>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai : -->
+
