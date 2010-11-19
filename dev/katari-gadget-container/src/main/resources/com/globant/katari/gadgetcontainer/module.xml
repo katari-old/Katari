@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
   xmlns:katari="http://www.globant.com/schema/katari"
+  xmlns:camel="http://camel.apache.org/schema/spring"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     http://www.globant.com/schema/katari
-    http://www.globant.com/schema/katari/katari.xsd">
+    http://www.globant.com/schema/katari/katari.xsd
+    http://camel.apache.org/schema/spring
+    http://camel.apache.org/schema/spring/camel-spring.xsd">
 
   <bean id="gadgetcontainer.module"
     class="com.globant.katari.core.web.ConfigurableModule">
@@ -112,6 +116,30 @@
     <constructor-arg index="0" ref="shindig.tokenCrypter" />
     <constructor-arg index="1" ref="shindig.containerDomain" />
     <constructor-arg index="2" ref="shindig.containerName" />
+  </bean>
+
+  <!-- Adds a listener to the delete user event to remove the gadget groups
+       owned by the user. -->
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg index='0' value='user.deleteUserListeners'/>
+    <!-- Don't complain if the user.deleteUserListeners list is not defined. -->
+    <constructor-arg index='1' value='true'/>
+    <constructor-arg index='2'>
+      <list>
+        <bean class='org.apache.camel.model.ToDefinition'
+          p:uri='bean:gadgetcontainer.deleteUserListener' />
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <!--
+  <camel:endpoint id='gadgetcontainer.deleteUserEndpoint'
+    uri='bean:gadgetcontainer.deleteUserListener'/>
+    -->
+
+  <bean id='gadgetcontainer.deleteUserListener'
+    class='com.globant.katari.gadgetcontainer.application.DeleteUserListener'>
+    <constructor-arg ref='gadgetcontainer.gadgetGroupRepository'/>
   </bean>
 
   <!-- vim: set ts=2 sw=2 et ai: -->

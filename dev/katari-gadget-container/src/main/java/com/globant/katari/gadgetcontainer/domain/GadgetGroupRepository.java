@@ -94,5 +94,31 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
     getHibernateTemplate().saveOrUpdate(gadgetGroup);
     log.trace("Leaving save");
   }
+
+  /** Removes all the gadget groups belonging to a user.
+   *
+   * @param userId the owner of the gadget groups to remove.
+   */
+  public void removeGroupsFromUser(final long userId) {
+    // Note: this does not work in mysql, due to 'delete can't specify target
+    // table for update in from clause.'
+    /*
+    getSession().createQuery(
+        "delete GadgetInstance instance where instance.id in ("
+        + "select gadgetInGroup.id from GadgetGroup gadgetGroup,"
+        + " in (gadgetGroup.gadgets) gadgetInGroup "
+        + " where gadgetGroup.owner.id = ?)")
+      .setLong(0, userId).executeUpdate();
+      */
+    List<?> groupIds = getSession().createQuery(
+        "select gadgetInGroup.id from GadgetGroup gadgetGroup,"
+        + " in (gadgetGroup.gadgets) gadgetInGroup"
+        + " where gadgetGroup.owner.id = ?").setLong(0, userId).list();
+
+    getSession().createQuery("delete from GadgetInstance where id in(:ids)")
+      .setParameterList("ids", groupIds).executeUpdate();
+    getSession().createQuery("delete from GadgetGroup where owner.id = ?")
+      .setLong(0, userId).executeUpdate();
+  }
 }
 
