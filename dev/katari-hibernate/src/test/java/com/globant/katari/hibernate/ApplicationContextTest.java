@@ -5,14 +5,26 @@ package com.globant.katari.hibernate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.junit.After;
 
-public class ApplicationContextTest extends TestCase {
+public class ApplicationContextTest {
+
+  private FileSystemXmlApplicationContext beanFactory = null;
+
+  @After
+  public void tearDown() {
+    if (beanFactory != null) {
+      beanFactory.close();
+      beanFactory = null;
+    }
+  }
 
   /* Tests if the katari application context can be loaded.
   */
+  @Test
   public void testLoad() {
-    ApplicationContext beanFactory = new FileSystemXmlApplicationContext(
+    beanFactory = new FileSystemXmlApplicationContext(
         new String[] {
           "classpath:/com/globant/katari/core/beans-core.xml",
           "classpath:/com/globant/katari/hibernate/beans-hibernate.xml",

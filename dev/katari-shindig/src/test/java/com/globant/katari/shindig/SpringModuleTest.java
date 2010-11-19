@@ -29,11 +29,16 @@ public class SpringModuleTest {
   }
 
   /* Generates the ddl file from the hibernate mappings.
+   *
+   * This was commented out because there HibernateUtils starts a second
+   * application context, and there must be only one instance of camel per VM.
    */
+  /*
   @Test
   public void testGenerateDdl() throws Exception {
     HibernateUtils.createDdlScript("target/shindig.ddl",
         "classpath:/com/globant/katari/shindig/applicationContext.xml");
   }
+  */
 }
 

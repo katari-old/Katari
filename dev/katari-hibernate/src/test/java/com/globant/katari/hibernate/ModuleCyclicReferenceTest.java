@@ -14,12 +14,23 @@ import javax.servlet.ServletResponse;
 import org.apache.commons.lang.Validate;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
+import org.junit.After;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
  * @author rcunci
  */
 public class ModuleCyclicReferenceTest {
+
+  private FileSystemXmlApplicationContext beanFactory = null;
+
+  @After
+  public void tearDown() {
+    if (beanFactory != null) {
+      beanFactory.close();
+      beanFactory = null;
+    }
+  }
 
   /**
    * Cyclic dependency test.
@@ -40,7 +51,7 @@ public class ModuleCyclicReferenceTest {
    */
   @Test
   public void testLoad() {
-    new FileSystemXmlApplicationContext( new String[] {
+    beanFactory = new FileSystemXmlApplicationContext( new String[] {
       "classpath:/com/globant/katari/core/applicationContext.xml",
       "src/test/resources/com/globant/katari/hibernate/userApplicationContext.xml",
       "src/test/resources/com/globant/katari/hibernate/spring/cyclicApplicationContext.xml"

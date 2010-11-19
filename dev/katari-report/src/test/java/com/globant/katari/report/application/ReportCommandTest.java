@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -15,10 +16,7 @@ import com.globant.katari.report.ReportsTestSupport;
 import com.globant.katari.report.domain.JasperReportRepository;
 import com.globant.katari.report.domain.ReportDefinition;
 
-
-/**
- * Tests Report Commands.
- * @author gerardo.bercovich
+/** Tests Report Commands.  @author gerardo.bercovich
  */
 public class ReportCommandTest extends
     AbstractTransactionalDataSourceSpringContextTests {
@@ -28,12 +26,6 @@ public class ReportCommandTest extends
 
   /** The Role repository. */
   private RoleRepository roleRepository;
-
-  @Override
-  protected String[] getConfigLocations() {
-    return new String[] {"classpath:/applicationContext.xml",
-        "classpath:/com/globant/katari/report/view/spring-servlet.xml" };
-  }
 
   @Override
   protected void onSetUp() throws Exception {
@@ -181,6 +173,17 @@ public class ReportCommandTest extends
 
   public void setRoleRepository(final RoleRepository roleRepository) {
     this.roleRepository = roleRepository;
+  }
+
+  @Override
+  protected ConfigurableApplicationContext loadContext(final Object key) throws
+      Exception {
+    return ReportsTestSupport.getApplicationContext();
+  }
+
+  @Override
+  protected Object contextKey() {
+    return "notnull";
   }
 }
 
