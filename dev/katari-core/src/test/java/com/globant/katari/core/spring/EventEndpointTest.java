@@ -49,6 +49,13 @@ public class EventEndpointTest {
     assertThat(response, is("message"));
   }
 
+  @Test
+  public void testSend_withDefaultListener() throws Exception {
+    ProducerTemplate template = context.createProducerTemplate();
+    String response = (String) template.requestBody("direct:e3", "message");
+    assertThat(response, is("message"));
+  }
+
   // Some sample listeners
   public static class Listener1 {
     public String a(final String message) {

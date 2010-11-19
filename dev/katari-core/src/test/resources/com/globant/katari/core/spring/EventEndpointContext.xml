@@ -44,6 +44,16 @@
     </constructor-arg>
   </bean>
 
+  <!-- Creates a sample endpoint with no listeners, and the default null
+       endpoint. -->
+  <bean class='com.globant.katari.core.spring.EventEndpoint'>
+    <constructor-arg ref='aggregatorStrategy'/>
+    <constructor-arg value='direct:e3'/>
+    <constructor-arg>
+      <util:list/>
+    </constructor-arg>
+  </bean>
+
   <!-- Endpoints for listeners. -->
   <camel:endpoint id='x'
     uri="class:com.globant.katari.core.spring.EventEndpointTest$Listener1"/>

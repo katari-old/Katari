@@ -163,7 +163,7 @@
     <constructor-arg ref='katari.loginConfigurer' />
   </bean>
 
-  <!-- Mantains a list of web listeners, and forwards each listener in the list
+  <!-- Maintains a list of web listeners, and forwards each listener in the list
   the corresponding event. -->
   <bean id='katari.moduleListenerProxy'
     class='com.globant.katari.core.web.ModuleListenerProxy'/>
@@ -329,6 +329,10 @@
   <!-- The katari event bus. -->
   <camel:camelContext id="katari.eventBus">
   </camel:camelContext>
+
+  <!-- Null, copy endpoint, to add to an empty list of event listeners. -->
+  <bean id='katari.defaultEventListener'
+    class='com.globant.katari.core.spring.CopyProcessor'/>
 
   <!-- ============================================================= -->
   <!-- ============== Security related filter beans ================ -->

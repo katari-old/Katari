@@ -7,9 +7,6 @@ import java.util.LinkedList;
 
 import org.apache.commons.lang.Validate;
 
-import org.apache.camel.CamelContext;
-import org.apache.camel.Exchange;
-import org.apache.camel.impl.DefaultExchange;
 import org.apache.camel.model.FromDefinition;
 import org.apache.camel.model.MulticastDefinition;
 import org.apache.camel.model.RouteDefinition;
@@ -41,8 +38,11 @@ public class EventEndpoint implements BeanPostProcessor {
    */
   private AggregationStrategy aggregationStrategy;
   
-  /** The null endpoint, where the event is sent when there are no listeners,
-   * never null.
+  /** The null endpoint, where the event is sent when there are no listeners.
+   * 
+   * If null, we use the default endpoint (bean:katari.defaultEventListener).
+   * The default is useful when the input and output of an event are of the
+   * same type.
    */
   private String nullUri;
   
@@ -60,7 +60,8 @@ public class EventEndpoint implements BeanPostProcessor {
    * It cannot be null.
    *
    * @param theNullUri an endpoint where the event goes when there are no
-   * listeners. It cannot be null.
+   * listeners. This is necessary when the output and the input of the event
+   * are of different types. It cannot be null.
    *
    * @param sourceUri the source endpoint name. It cannot be null.
    *
@@ -77,6 +78,31 @@ public class EventEndpoint implements BeanPostProcessor {
     Validate.notNull(listeners, "The listeners cannot be null.");
     aggregationStrategy = theAggregationStrategy;
     nullUri = theNullUri;
+    fromUri = sourceUri;
+    toDefinitions = listeners;
+  }
+
+  /** Creates a new event endpoint with a default null endpoint.
+   *
+   * The default null endpoint can be used when the input and output of the
+   * event are of the same type.
+   *
+   * @param theAggregationStrategy aggregates the response of each listener.
+   * It cannot be null.
+   *
+   * @param sourceUri the source endpoint name. It cannot be null.
+   *
+   * @param listeners the list of listeners of the events raised in the
+   * provided source endpoint.
+   */
+  public EventEndpoint(final AggregationStrategy theAggregationStrategy,
+      final String sourceUri, final List<ToDefinition> listeners) {
+    Validate.notNull(theAggregationStrategy,
+        "The aggregation strategy cannot be null.");
+    Validate.notNull(sourceUri, "The source uri cannot be null.");
+    Validate.notNull(listeners, "The listeners cannot be null.");
+    aggregationStrategy = theAggregationStrategy;
+    nullUri = "bean:katari.defaultEventListener";
     fromUri = sourceUri;
     toDefinitions = listeners;
   }
