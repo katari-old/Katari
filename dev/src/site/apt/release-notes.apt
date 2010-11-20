@@ -6,6 +6,8 @@ Release notes for version 0.25
 
  * New module katari-email.
 
+ * Camel integration to decouple modules through events.
+
  * New simpler way to add a quartz job.
 
  * The quartz console now lets you manually start jobs.
