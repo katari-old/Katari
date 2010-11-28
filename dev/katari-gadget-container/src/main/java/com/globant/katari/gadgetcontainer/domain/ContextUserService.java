@@ -3,7 +3,7 @@
 package com.globant.katari.gadgetcontainer.domain;
 
 import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.acegisecurity.providers.AbstractAuthenticationToken;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +30,8 @@ public class ContextUserService {
   public CoreUser getCurrentUser() {
     log.trace("Entering getCurrentUser");
 
-    UsernamePasswordAuthenticationToken authentication;
-    authentication = (UsernamePasswordAuthenticationToken)
+    AbstractAuthenticationToken authentication;
+    authentication = (AbstractAuthenticationToken)
       SecurityContextHolder.getContext().getAuthentication();
 
     if (authentication == null) {
