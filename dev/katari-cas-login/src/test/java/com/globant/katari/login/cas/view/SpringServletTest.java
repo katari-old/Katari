@@ -2,8 +2,6 @@
 
 package com.globant.katari.login.cas.view;
 
-import org.springframework.context.ApplicationContext;
-
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
