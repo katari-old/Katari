@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
     <groupId>com.globant.katari</groupId>
@@ -51,6 +54,8 @@
     <module>katari-ajax</module>
     <!-- Katari cas module for server and client  -->
     <module>katari-cas</module>
+    <!-- Katari cas login module, deprecates the client part of katari-cas. -->
+    <module>katari-cas-login</module>
     <!-- Katari local login module  -->
     <module>katari-local-login</module>
     <!-- Katari scripting console -->
@@ -526,6 +531,12 @@
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-cas</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-cas-login</artifactId>
         <version>${version}</version>
       </dependency>
 

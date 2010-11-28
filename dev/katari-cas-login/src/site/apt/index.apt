@@ -1,0 +1,54 @@
+~~~ vim: set sw=1 et ts=1 ai:
+ -----
+ The Site
+ -----
+ Pablo Gra\~na
+ -----
+
+Katari - CAS login client
+
+ This is a CAS module client for Katari. It integrates with a single sign on
+ CAS server.
+
+ To use it, import this module in your application context:
+
+-----
+  <katari:import module="com.globant.katari.login.cas"/>
+-----
+
+ And tell it where to find the cas server:
+
+-----
+  <bean id="cas-login.casServerUrl"
+    class="com.globant.katari.core.spring.StringHolder"
+    p:value='https://localhost:8443/cas-globant'/>
+-----
+
+ If you want to make the CAS server location customizable through your
+ properties file, you can do:
+
+-----
+  <bean id="cas-login.casServerUrl"
+    class="com.globant.katari.core.spring.StringHolder"
+    p:value-ref='casServerUrl'/>
+
+  <bean id="casServerUrl"
+    class="com.globant.katari.core.spring.StringHolder"
+    p:value='https://localhost:8443/cas-globant'/>
+------
+
+ And define a property:
+
+-----
+  casServerUrl.value=https://some-sso-server.com
+-----
+
+Important notes
+
+ This client only works with a CAS server configured to use https. The
+ certificate has to be issued by a well known CA, and must match the host name.
+ Otherwise, it will no accept information from that server.
+
+ This client also implements single sign out. So if you logout from cas, this
+ module will drop your application session.
+

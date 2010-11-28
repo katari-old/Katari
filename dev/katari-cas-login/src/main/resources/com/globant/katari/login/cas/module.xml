@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:p="http://www.springframework.org/schema/p"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <description>
+    The cas login module.
+  </description>
+
+  <!-- The configuration file for the cas login module. This file must be
+       included in the application context to use this module.  -->
+
+  <!-- These are default beans that must be overriden by the application. -->
+
+  <!-- The katari.userDetailsService. This must be overriden by the application
+  writer.  -->
+  <!-- An implementation of UserDetailsService that authenticates users against
+  an in-memory database that is loaded from the userMap properties. -->
+  <bean id="katari.userDetailsService"
+      class="org.acegisecurity.userdetails.memory.InMemoryDaoImpl">
+    <property name="userMap">
+      <value>
+        admin=password,ROLE_ADMIN
+      </value>
+    </property>
+  </bean>
+
+  <bean id="cas-login.casServerUrl"
+    class="com.globant.katari.core.spring.StringHolder"
+    p:value='https://localhost:8443/cas-globant'/>
+
+  <bean id="cas-login.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+
+    <property name='entryPoints'>
+      <!-- The servlet mappings. It maps the spring
+           EventFilterDispatcherServlet to *.do. -->
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The spring-mvc controller servlet -->
+            <entry key=".*\.do">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean
+                    class="com.globant.katari.core.web.EventFilterDispatcherServlet"
+                    />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/login/cas/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <property name="urlToRoleMapper">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
+        <constructor-arg index="0">
+          <map>
+            <entry key="/**">
+              <list>
+                <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+              </list>
+            </entry>
+          </map>
+        </constructor-arg>
+      </bean>
+    </property>
+
+    <property name="loginProvider">
+      <bean class="com.globant.katari.core.login.LoginProvider">
+        <constructor-arg index="0" ref="cas-login.entryPoint" />
+        <constructor-arg index="1" ref="cas-login.authenticationFilter" />
+        <constructor-arg index="2" ref="cas-login.logoutFilter" />
+      </bean>
+    </property>
+
+  </bean>
+
+  <!-- Redirects the user to the CAS service. -->
+  <bean id="cas-login.entryPoint"
+    class="com.globant.katari.login.cas.CasProcessingFilterEntryPoint"
+    p:servicesUrlBuilder-ref='cas-login.servicesUrlBuilder'/>
+
+  <!-- Listens for a logout request from cas and destroys the session
+  correspondig to the ticket. -->
+  <bean id="cas-login.logoutFilter"
+    class="com.globant.katari.login.cas.CasLogoutFilter">
+    <constructor-arg index='0' ref="cas-login.casTicketRegistry"/>
+    <constructor-arg index='1' ref="cas-login.servicesUrlBuilder"/>
+  </bean>
+
+  <!-- Stores the cas ticket with the related session, used for single sign
+       out. -->
+  <bean id="cas-login.casTicketRegistry"
+    class="com.globant.katari.login.cas.CasTicketRegistry"/>
+
+  <!-- TODO: Replace /casfailed.jsp by something meaningful. -->
+  <bean id="cas-login.authenticationFilter"
+      class="com.globant.katari.login.cas.CasTicketRegisteringProcessingFilter">
+    <property name="authenticationManager">
+      <ref bean="cas-login.authenticationManager"/>
+    </property>
+    <property name="authenticationFailureUrl">
+      <value>/module/cas-login/casfailed.do</value>
+    </property>
+    <property name="defaultTargetUrl"><value>/</value></property>
+    <property name="filterProcessesUrl">
+      <value>/j_acegi_cas_security_check</value>
+    </property>
+
+    <!-- We configure an AuthenticationDetailsSourceImpl to create an instance
+    of FullWebAuthenticationDetails. This object holds a reference to the
+    request object and makes it available to the cas authentication objects.
+    -->
+    <property name='authenticationDetailsSource'>
+      <bean class="org.acegisecurity.ui.AuthenticationDetailsSourceImpl">
+        <property name="clazz">
+          <value>com.globant.katari.login.cas.FullWebAuthenticationDetails</value>
+        </property>
+      </bean>
+    </property>
+    <property name="casTicketRegistry" ref="cas-login.casTicketRegistry"/>
+  </bean>
+
+  <!-- This is a collection of authenticators. It finds the first privider that
+  supports the authentication, and delegates the authentication to it. This
+  instance only supports cas. -->
+  <bean id="cas-login.authenticationManager"
+      class="org.acegisecurity.providers.ProviderManager">
+    <property name="providers">
+      <list>
+        <ref bean="cas-login.authenticationProvider"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- An authentication provider that validates cas ticket. -->
+  <bean id="cas-login.authenticationProvider"
+      class="com.globant.katari.login.cas.CasAuthenticationProvider">
+    <!-- Generates an acegisecurity UserDetails object from the CAS token. -->
+    <property name="casAuthoritiesPopulator">
+      <ref bean="cas-login.authoritiesPopulator"/>
+    </property>
+    <!-- Reject proxy tickets. -->
+    <property name="casProxyDecider">
+      <ref bean="cas-login.rejectProxyTickets"/>
+    </property>
+    <!-- -->
+    <property name="ticketValidator">
+      <ref bean="cas-login.proxyTicketValidator"/>
+    </property>
+    <!-- We do not support stateless clients, all new requests must be
+    authenticated though cas. -->
+    <!--
+    <property name="statelessTicketCache">
+      <ref bean="statelessTicketCache"/>
+    </property>
+    -->
+    <property name="statelessTicketCache">
+      <bean class="com.globant.katari.login.cas.DummyStatelessTicketCache"/>
+    </property>
+    <property name="key">
+      <value>katari-cas-login.authenticationProvider</value>
+    </property>
+  </bean>
+
+  <!-- This rejects all proxy tickets, so only service tickets are accepted.-->
+  <bean id="cas-login.rejectProxyTickets"
+      class="org.acegisecurity.providers.cas.proxy.RejectProxyTickets"/>
+
+  <bean id="cas-login.proxyTicketValidator"
+      class="com.globant.katari.login.cas.CasProxyTicketValidator">
+    <property name='servicesUrlBuilder'>
+      <ref bean='cas-login.servicesUrlBuilder'/>
+    </property>
+  </bean>
+
+  <!-- This implementation relies on the client provided url (in a Host
+  header). This may turn to be a security issue.
+  -->
+  <bean id="cas-login.servicesUrlBuilder"
+      class="com.globant.katari.login.cas.ServicesUrlBuilder">
+    <!-- Cas base url. -->
+    <!-- constructor-arg index="0" value='https://sso.corp.globant.com'/ -->
+    <constructor-arg index="0" ref='cas-login.casServerUrl'/>
+    <!-- The service url fragment. This validates the cas ticket. -->
+    <constructor-arg index='1' value="j_acegi_cas_security_check"/>
+  </bean>
+
+  <!-- Once CAS authenticates the user and password, acegi needs to generate
+  the UserDetails object. This bean delegates the creation of the UserDetails
+  object to the katari.userDetailsService. -->
+  <bean id="cas-login.authoritiesPopulator"
+      class="org.acegisecurity.providers.cas.populator.DaoCasAuthoritiesPopulator">
+    <property name="userDetailsService">
+      <ref bean="katari.userDetailsService"/>
+    </property>
+  </bean>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 : -->
+

@@ -29,11 +29,13 @@
   To have cas login support you have to enable the cas module.
   for most of the scenarios the local one should be enough
   -->
-  <!-- The cas module.
-  <katari:import module="com.globant.katari.cas"/>
-  -->
+  <!-- The cas module. -->
+  <katari:import module="com.globant.katari.login.cas"/>
+
   <!-- The local login module (recomended) -->
+  <!--
   <katari:import module="com.globant.katari.login.local"/>
+  -->
 
   <!-- The user module. -->
   <katari:import module="com.globant.katari.user"/>
@@ -332,6 +334,15 @@
   <bean id='indexTempLocation'
     class='com.globant.katari.core.spring.StringHolder'
     p:value='target/compass-temp' />
+
+  <!-- The url of the CAS server sso implementation. -->
+  <bean id="cas-login.casServerUrl"
+    class="com.globant.katari.core.spring.StringHolder"
+    p:value-ref='casServerUrl'/>
+
+  <bean id="casServerUrl"
+    class="com.globant.katari.core.spring.StringHolder"
+    p:value='https://localhost:8443/cas-globant'/>
 
 </beans>
 
