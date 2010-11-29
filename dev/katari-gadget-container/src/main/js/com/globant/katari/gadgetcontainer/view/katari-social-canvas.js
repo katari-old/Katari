@@ -184,6 +184,7 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
    */
   this.render = function(gadgetGroup, containerElement) {
     var gadgetDiv = jQuery("<div class='gadgetPortlet'></div>");
+    gadgetDiv.addClass(sTitle.replace(/[^a-zA-Z0-9_]/g, "_"));
 
     var iframe = jQuery("<iframe>");
     var iframeContainer = jQuery("<div></div>");
