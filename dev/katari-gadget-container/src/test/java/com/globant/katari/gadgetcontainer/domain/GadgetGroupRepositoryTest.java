@@ -97,8 +97,23 @@ public class GadgetGroupRepositoryTest {
     assertThat(group.getGadgets().iterator().next().getUrl(), is(url));
   }
 
-  /** Creates one gadget group for the user (named 'for user'), and another for
-   * everybody (named 'for everybody').
+  @Test
+  public void testRemoveGroupsFromUser() {
+    createGadgetGroups(url);
+    repository.removeGroupsFromUser(user.getId());
+    GadgetGroup group = repository.findGadgetGroup(user.getId(), "for me");
+    assertThat(group, is(nullValue()));
+  }
+
+  @Test
+  public void testRemoveGroupsFromUser_noGroups() {
+    // This simply tests that removeGroupsFromUser does not throw an exception.
+    repository.removeGroupsFromUser(user.getId());
+  }
+
+  /** Creates one gadget group for the user (named 'for me'), and another for
+   * everybody (named 'for everybody') and a gadget group template (named 'for
+   * user').
    */
   private void createGadgetGroups(final String gadgetUrl) {
     GadgetGroup group = new GadgetGroup(user, "for me", 2);

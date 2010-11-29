@@ -115,10 +115,13 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
         + " in (gadgetGroup.gadgets) gadgetInGroup"
         + " where gadgetGroup.owner.id = ?").setLong(0, userId).list();
 
-    getSession().createQuery("delete from GadgetInstance where id in(:ids)")
-      .setParameterList("ids", groupIds).executeUpdate();
-    getSession().createQuery("delete from GadgetGroup where owner.id = ?")
-      .setLong(0, userId).executeUpdate();
+    if (!groupIds.isEmpty()) {
+      // Only delete groups if there are groups for the user.
+      getSession().createQuery("delete from GadgetInstance where id in(:ids)")
+        .setParameterList("ids", groupIds).executeUpdate();
+      getSession().createQuery("delete from GadgetGroup where owner.id = ?")
+        .setLong(0, userId).executeUpdate();
+    }
   }
 }
 
