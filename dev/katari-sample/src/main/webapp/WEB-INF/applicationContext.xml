@@ -30,12 +30,12 @@
   for most of the scenarios the local one should be enough
   -->
   <!-- The cas module. -->
+  <!--
   <katari:import module="com.globant.katari.login.cas"/>
+  -->
 
   <!-- The local login module (recomended) -->
-  <!--
   <katari:import module="com.globant.katari.login.local"/>
-  -->
 
   <!-- The user module. -->
   <katari:import module="com.globant.katari.user"/>
