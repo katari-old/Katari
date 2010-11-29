@@ -1036,7 +1036,12 @@ form span.buttons, form ul.glasslist .buttonBarClass {
 .ui-sortable-placeholder * {
   visibility: hidden;
 }
+
+.customizable .titleBar h2:hover {
+  cursor: move;
+}
 /* End For Drag & Drop */
+
 .titleBar {
   background:url(../image/bg_titleBar.png) 0 0 repeat-x;
   border-bottom:1px solid #c9dda5;

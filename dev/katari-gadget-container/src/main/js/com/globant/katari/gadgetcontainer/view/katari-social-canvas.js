@@ -184,6 +184,7 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
    */
   this.render = function(gadgetGroup, containerElement) {
     var gadgetDiv = jQuery("<div class='gadgetPortlet'></div>");
+
     var iframe = jQuery("<iframe>");
     var iframeContainer = jQuery("<div></div>");
     iframeContainer.attr("class", "iframeContainer");
@@ -406,6 +407,9 @@ katari.social.GadgetGroup = function(sContainer) {
 
     // Adds all the columns to the provided container.
     var containerDiv = jQuery('#' + container);
+    if (this.isCustomizable) {
+      containerDiv.addClass('customizable');
+    }
     jQuery.each(this.columns, function(index, column) {
       containerDiv.append(column);
     });
@@ -424,12 +428,18 @@ katari.social.GadgetGroup = function(sContainer) {
   };
 
   /** Configure the jquery sortables in portlet mode.
+   *
+   * @param gadgetGroupElement The html element that contains the gadget group.
+   *
+   * @param gadgetGroupElementId The id of the gadgetGroupElement. TODO: remove
+   * this.
    */
   this.makeSortable = function(gadgetGroupElement, gadgetGroupElementId) {
     if (this.isCustomizable) {
       var that = this;
       var containers = jQuery(".canvasColumn", gadgetGroupElement);
       containers.sortable({
+        handle: 'h2',
         connectWith: '#' + gadgetGroupElementId + ' .canvasColumn',
         update: function(event, ui) {
           if (ui.sender === null) {
