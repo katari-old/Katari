@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.globant.katari.registration.application;
 
 import static com.globant.katari.registration.SpringTestUtils.*;
@@ -57,7 +54,7 @@ public class ResetPasswordCommandTest {
     emailSender.send(isA(EmailModel.class), isA(String.class));
     replay(emailSender);
 
-    configurer = new EmailConfigurer("emiliano.arango@globant.com", 
+    configurer = new EmailConfigurer("emiliano.arango@globant.com",
         "reset", "template", "lol");
 
     requestCommand = (RequestForgotPasswordCommand) getContext().getBean(
@@ -100,9 +97,9 @@ public class ResetPasswordCommandTest {
 
     RecoverPasswordRequest request = null;
 
-    request = (RecoverPasswordRequest) 
+    request = (RecoverPasswordRequest)
       registrationRepository.getHibernateTemplate().find(
-          "from RecoverPasswordRequest where userId = ?", 
+          "from RecoverPasswordRequest where userId = ?",
             userFromEmail.getId()).get(0);
 
     resetCommand.setUserId(userFromEmail.getId());
@@ -125,7 +122,7 @@ public class ResetPasswordCommandTest {
 
     RecoverPasswordRequest request;
     request = RecoverPasswordRequestFactory.generate(user, new Date(
-        System.currentTimeMillis() - TimeUnit.HOURS.toMillis(40)));
+        System.currentTimeMillis() - 40 * 60 * 60 * 1000));
 
     registrationRepository.saveRecoverPasswordRequest(request);
     resetCommand.setUserId(user.getId());
