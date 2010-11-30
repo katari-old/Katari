@@ -17,7 +17,7 @@ import com.globant.katari.core.application.Command;
  * request.
  *
  * This controller should be configured in spring to inject a prototype
- * instance of a controller.
+ * instance of a Katari's command.
  *
  * When the request is handled, this controller executes the command without
  * any validation and forwards to the provided view.
