@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xmlns:p="http://www.springframework.org/schema/p"
+      xmlns:util="http://www.springframework.org/schema/util"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <bean id='registration.module'
+      class='com.globant.katari.core.web.ConfigurableModule'>
+
+    <property name='entryPoints'>
+      <bean
+        class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <entry key=".*\.do">
+              <bean
+                class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="com.globant.katari.core.web.EventFilterDispatcherServlet"/>
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/registration/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <!-- The menu bar. -->
+    <property name="menuBar">
+      <katari:menuBar>
+        <katari:menuNode name='Registration'>
+          <katari:menuItem name='Register' link='register.do' />
+        </katari:menuNode>
+      </katari:menuBar>
+    </property>
+
+    <property name="urlToRoleMapper">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper"
+        id='registration.urlToRoleMapper'>
+        <constructor-arg index="0">
+          <map>
+            <entry key='/register.do' value='ROLE_ANONYMOUS' />
+            <entry key='/forgotPassword.do' value='ROLE_ANONYMOUS' />
+            <entry key='/resetPassword.do' value='ROLE_ANONYMOUS' />
+            <entry key='/activateUser.do' value='ROLE_ANONYMOUS' />
+          </map>
+        </constructor-arg>
+      </bean>
+    </property>
+  </bean>
+
+  <!-- We expose the user repository as a public bean. It is used for the
+    security modules. -->
+  <bean id='registration.registrationRepository'
+    class='com.globant.katari.registration.domain.RegistrationRepository'>
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
+  </bean>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.persistentClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.registration.domain.RecoverPasswordRequest</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+</beans>
+<!-- vim: set ts=2 et sw=2 ai : -->

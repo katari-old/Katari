@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd">
+
+  <!-- freemarker config -->
+  <bean id="freemarkerConfig"
+    class="com.globant.katari.core.web.FreeMarkerConfigurer"
+    p:templateLoaderPath="classpath:/com/globant/katari/registration/view/"
+    p:debugPrefix='../katari-registration/src/main/resources'
+    p:debug-ref='debugMode'/>
+
+  <bean id="freemarkerViewResolver"
+    class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+    p:prefix="/" p:suffix=".ftl"
+    p:exposeSpringMacroHelpers='true'
+    p:exposeRequestAttributes='true'/>
+
+  <bean name='/register.do'
+    class='com.globant.katari.core.spring.controller.SimpleFormCommandController'>
+    <property name="formView" value="userRegistration" />
+    <property name="successView" value="userRegistrationSucess" />
+    <property name="validator" ref="commandValidator" />
+    <lookup-method name='createCommandBean'
+      bean='registration.registerUserCommand' />
+  </bean>
+
+  <bean name='/forgotPassword.do'
+    class='com.globant.katari.core.spring.controller.SimpleFormCommandController'>
+    <property name="formView" value="requestForgotPassword" />
+    <property name="successView" value="requestForgotPasswordSucess" />
+    <property name="validator" ref="commandValidator" />
+    <lookup-method name='createCommandBean'
+      bean='registration.requestForgotPasswordCommand' />
+  </bean>
+
+  <bean name='/resetPassword.do'
+    class='com.globant.katari.core.spring.controller.CommandController'>
+    <constructor-arg index='0' value='resetPasswordRequest' />
+    <lookup-method name='createCommandBean'
+      bean='registration.resetPasswordRequestCommand' />
+  </bean>
+
+  <bean name='/activateUser.do'
+    class='com.globant.katari.core.spring.controller.CommandController'>
+    <constructor-arg index='0' value='activateUser' />
+    <lookup-method name='createCommandBean'
+      bean='registration.activateUserCommand' />
+  </bean>
+
+  <bean id='registration.registerUserCommand'
+    class='com.globant.katari.registration.application.RegisterUserCommand'
+    scope='prototype'>
+    <constructor-arg index='0' ref='user.userRepository' />
+    <constructor-arg index='1' ref='registration.registrationRepository' />
+    <constructor-arg index='2' ref='katari.emailSender' />
+    <constructor-arg index='3' ref='registration.createUserEmailConfigurer' />
+  </bean>
+
+  <bean id='registration.activateUserCommand'
+    class='com.globant.katari.registration.application.ActivateUserCommand'
+    scope='prototype'>
+    <constructor-arg index='0' ref='user.userRepository' />
+    <constructor-arg index='1' ref='registration.registrationRepository' />
+    <constructor-arg index='2' ref='katari.emailSender' />
+    <constructor-arg index='3' ref='registration.resetPasswordEmailConfigurer' />
+  </bean>
+
+  <bean id='registration.requestForgotPasswordCommand'
+    class='com.globant.katari.registration.application.RequestForgotPasswordCommand'
+    scope='prototype'>
+    <constructor-arg index='0' ref='user.userRepository' />
+    <constructor-arg index='1' ref='registration.registrationRepository' />
+    <constructor-arg index='2' ref='katari.emailSender' />
+    <constructor-arg index='3' ref='registration.forgotPasswordEmailConfigurer' />
+  </bean>
+
+  <bean id='registration.resetPasswordRequestCommand'
+    class='com.globant.katari.registration.application.ResetPasswordCommand'
+    scope='prototype' >
+    <constructor-arg index='0' ref='registration.registrationRepository' />
+    <constructor-arg index='1' ref='user.userRepository' />
+    <constructor-arg index='2' ref='katari.emailSender' />
+    <constructor-arg index='3' ref='registration.resetPasswordEmailConfigurer' />
+  </bean>
+
+  <!-- Forgot password Email Configuration. -->
+
+  <bean name='registration.forgotPasswordEmailFrom' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="katari@globant.com"/>
+
+  <bean name='registration.forgotPasswordEmailSubject' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="Katari Registration Forgot Password"/>
+
+  <bean name='registration.forgotPasswordEmailTemplate' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="com/globant/katari/registration/view/registrationForgotPasswordEmailTemplate.ftl"/>
+
+  <bean name='registration.forgotPasswordEmailPlainText' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="Please copy and paste the follow link"/>
+
+  <bean name='registration.forgotPasswordEmailConfigurer'
+    class='com.globant.katari.registration.domain.EmailConfigurer'>
+    <constructor-arg index='0' ref='registration.forgotPasswordEmailFrom' />
+    <constructor-arg index='1' ref='registration.forgotPasswordEmailSubject' />
+    <constructor-arg index='2' ref='registration.forgotPasswordEmailTemplate' />
+    <constructor-arg index='3' ref='registration.forgotPasswordEmailPlainText' />
+  </bean>
+
+  <!-- Reset password Email Configuration. -->
+
+  <bean name='registration.resetPasswordEmailFrom' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="katari@globant.com"/>
+
+  <bean name='registration.resetPasswordEmailSubject' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="Katari Registration Forgot Password"/>
+
+  <bean name='registration.resetPasswordEmailTemplate' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="com/globant/katari/registration/view/registrationResetPasswordEmailTemplate.ftl"/>
+
+  <bean name='registration.resetPasswordEmailPlainText' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="Please copy and paste the follow link"/>
+
+  <bean name='registration.resetPasswordEmailConfigurer'
+    class='com.globant.katari.registration.domain.EmailConfigurer'>
+    <constructor-arg index='0' ref='registration.resetPasswordEmailFrom' />
+    <constructor-arg index='1' ref='registration.resetPasswordEmailSubject' />
+    <constructor-arg index='2' ref='registration.resetPasswordEmailTemplate' />
+    <constructor-arg index='3' ref='registration.resetPasswordEmailPlainText' />
+  </bean>
+
+  <!-- Reset create user Email Configuration. -->
+
+  <bean name='registration.createUserEmailFrom' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="katari@globant.com"/>
+
+  <bean name='registration.createUserEmailSubject' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="Katari Registration"/>
+
+  <bean name='registration.createUserEmailTemplate' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="com/globant/katari/registration/view/registrationCreateUserEmailTemplate.ftl"/>
+
+  <bean name='registration.createUserEmailPlainText' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="You have succesfully created a new user, please copy and paste the link bellow"/>
+
+  <bean name='registration.createUserEmailConfigurer'
+    class='com.globant.katari.registration.domain.EmailConfigurer'>
+    <constructor-arg index='0' ref='registration.createUserEmailFrom' />
+    <constructor-arg index='1' ref='registration.createUserEmailSubject' />
+    <constructor-arg index='2' ref='registration.createUserEmailTemplate' />
+    <constructor-arg index='3' ref='registration.createUserEmailPlainText' />
+  </bean>
+
+  <!-- Validator -->
+  <bean name="commandValidator"
+    class="com.globant.katari.core.application.CommandValidator" />
+
+  <bean id="messageCodesResolver"
+    class="org.springframework.validation.DefaultMessageCodesResolver">
+    <property name="prefix" value="validation." />
+  </bean>
+
+  <bean id="messageSource"
+      class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basenames">
+      <list>
+        <value>com.globant.yahoo.stats.messages</value>
+      </list>
+    </property>
+    <property name="useCodeAsDefaultMessage">
+      <value>true</value>
+    </property>
+  </bean>
+
+  <!-- Transaction definitions -->
+  <bean class="com.globant.katari.core.spring.ConstructorArgumentsBeanNameAutoProxyCreator">
+    <property name="proxyTargetClass" value="true" />
+    <property name="beanNames">
+      <list>
+        <value>*Command</value>
+      </list>
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>transactionInterceptor</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="transactionInterceptor"
+      class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    <property name="transactionManager" ref="katari.transactionManager" />
+    <property name="transactionAttributes">
+      <props>
+        <prop key="execute">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
+  </bean>
+
+  <!-- vim: set ts=2 et sw=2 ai : -->
+</beans>
+

@@ -84,6 +84,12 @@
   <!-- Provides task scheduling with quartz. -->
   <katari:import module="com.globant.katari.quartz" />
 
+  <!-- Provides email. -->
+  <katari:import module="com.globant.katari.email" />
+
+  <!-- Provides email. -->
+  <katari:import module="com.globant.katari.registration" />
+
   <!-- REMOVE THIS IN PRODUCTION. -->
 
   <bean name='sampleScheduledCommand1'
@@ -343,6 +349,12 @@
   <bean id="casServerUrl"
     class="com.globant.katari.core.spring.StringHolder"
     p:value='https://localhost:8443/cas-globant'/>
+
+  <bean name='email.smtpHostname' 
+    class='com.globant.katari.core.spring.StringHolder' p:value="localhost"/>
+
+  <bean name='email.smtpPort' 
+    class='com.globant.katari.core.spring.StringHolder' p:value="3525"/>
 
 </beans>
 

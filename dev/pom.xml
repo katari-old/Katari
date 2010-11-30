@@ -78,6 +78,7 @@
     <module>katari-jsmodule</module>
     <module>katari-quartz</module>
     <module>katari-email</module>
+    <module>katari-registration</module>
   </modules>
 
   <!-- List of dependencies for all modules in the application. This section
@@ -585,6 +586,12 @@
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-email</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-registration</artifactId>
         <version>${version}</version>
       </dependency>
 
