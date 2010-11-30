@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -36,9 +35,9 @@ public class ResetPasswordCommand implements Command<User> {
   private static final Logger LOG = getLogger(
       ResetPasswordCommand.class);
 
-  /** The token life. */
-  private static final long TIME_TO_LIVE = TimeUnit.HOURS.toMillis(12);
-
+  /** The token life, in ms (12 hours). */
+  private static final long TIME_TO_LIVE = 12 * 60 * 60 * 1000;
+  
   /** The registration repository. It's never null */
   private final RegistrationRepository registrationRepository;
 
