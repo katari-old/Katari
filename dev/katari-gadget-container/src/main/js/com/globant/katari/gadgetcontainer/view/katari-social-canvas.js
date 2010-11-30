@@ -520,9 +520,11 @@ katari.social.Container.prototype.setHeight = function(height) {
   //
   // The footer is not positioned correctly under ie6 without this. Seems to
   // have no visible effect on other browsers.
-  var content = document.getElementById('footer');
-  content.style.zoom = '1';
-  content.style.zoom = '';
+  var footer = document.getElementById('footer');
+  if (footer) {
+    footer.style.zoom = '1';
+    footer.style.zoom = '';
+  }
 };
 
 katari.social.Container.prototype.setTitle = function(title) {
