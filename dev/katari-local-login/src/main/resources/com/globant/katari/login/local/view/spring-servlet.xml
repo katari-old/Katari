@@ -30,11 +30,16 @@
 
   <!-- The spring mappings. -->
   <bean name='/login.do'
-    class='org.springframework.web.servlet.mvc.ParameterizableViewController'
-    p:viewName='localLoginView'/>
+    class='com.globant.katari.login.local.view.LoginWithCaptchaController'>
+    <constructor-arg index='0' value='false'/>
+    <constructor-arg index='1' ref='local-login.additionalLinks'/>
+  </bean>
 
   <bean name='/loginWithCaptcha.do'
-    class='com.globant.katari.login.local.view.LoginWithCaptchaController'/>
+    class='com.globant.katari.login.local.view.LoginWithCaptchaController'>
+    <constructor-arg index='0' value='true'/>
+    <constructor-arg index='1' ref='local-login.additionalLinks'/>
+  </bean>
 
   <bean name='/logout.do'
     class='com.globant.katari.login.local.view.LogoutAndRedirectController'/>

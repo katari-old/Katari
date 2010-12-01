@@ -74,5 +74,16 @@
     </constructor-arg>
   </bean>
 
+  <!-- Adds the forgot password link to the login page. -->
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='local-login.additionalLinks'/>
+    <constructor-arg value='true'/>
+    <constructor-arg>
+      <list>
+        <value>Forgot Password | /module/registration/forgotPassword.do</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
 </beans>
 <!-- vim: set ts=2 et sw=2 ai : -->

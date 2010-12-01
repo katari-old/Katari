@@ -59,7 +59,7 @@
           ='<@spring.message "screen.welcome.label.password.accesskey"/>'/>
       </span>
 
-      <#if showCaptcha??>
+      <#if showCaptcha!false>
         <span class="formfield">
           <label for="captcha">Security code</label>
           <input type="text" class="text" id="j_captcha_response"
@@ -77,6 +77,11 @@
           accesskey="l" value='Login' tabindex="5" />
         <input type="reset" class="btn" accesskey="c" value='Clear'
           tabindex="6" />
+        <#list additionalButtons as button>
+          <#assign buttonInfo = button?matches(" *(.*) *\\| *(.*) *")>
+          <input type="submit" class="btn" value='${buttonInfo?groups[1]}' 
+            onclick='window.location="${baseweb}${buttonInfo?groups[2]}";return false;'/>
+        </#list>
       </div>
 
     </form>

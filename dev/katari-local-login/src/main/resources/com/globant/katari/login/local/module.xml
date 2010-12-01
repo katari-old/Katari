@@ -275,6 +275,9 @@
     <constructor-arg index="2" type="int" value='0'/>
   </bean>
 
+  <!-- Additional buttons to show on the login page. -->
+  <util:list id='local-login.additionalLinks'/>
+
   <!-- vim: set ts=2 sw=2 et ai: -->
 </beans>
 

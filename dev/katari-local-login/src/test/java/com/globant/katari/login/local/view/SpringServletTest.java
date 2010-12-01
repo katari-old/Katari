@@ -40,7 +40,12 @@ public class SpringServletTest {
       + " </bean>\n"
       + " <bean id='local-login.captchaService'"
       + "  class='com.octo.captcha.service.image"
-      + ".DefaultManageableImageCaptchaService'/>"
+      + ".DefaultManageableImageCaptchaService'/>\n"
+      + " <bean id='local-login.additionalLinks'"
+      + "  class='org.springframework.beans.factory.config.ListFactoryBean'"
+      + " >\n"
+      + "  <property name='sourceList'><list/></property>\n"
+      + " </bean>\n"
       + "</beans>\n";
 
     parent = new AbstractXmlApplicationContext() {
