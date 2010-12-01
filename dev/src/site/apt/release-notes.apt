@@ -6,6 +6,10 @@ Release notes for version 0.25
 
  * New module katari-email.
 
+ * New module katari-registration.
+
+ * New module katari-cas-login.
+
  * Camel integration to decouple modules through events.
 
  * New simpler way to add a quartz job.
