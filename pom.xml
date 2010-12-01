@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.globant.katari</groupId>
   <artifactId>katari</artifactId>
-  <version>0.25</version>
+  <version>0.26-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Katari</name>
   <description>
@@ -89,11 +89,11 @@
 
   <!-- The scm information used by continuous integration and documentation. -->
   <scm>
-    <connection>scm:svn:https://projects.globant.com/svn/katari/release/katari-0.25</connection>
+    <connection>scm:svn:https://projects.globant.com/svn/katari/main</connection>
     <developerConnection>
-      scm:svn:https://projects.globant.com/svn/katari/release/katari-0.25
+      scm:svn:https://projects.globant.com/svn/katari/main
     </developerConnection>
-    <url>https://projects.globant.com/trac/katari/browser/release/katari-0.25</url>
+    <url>https://projects.globant.com/trac/katari/browser/main</url>
   </scm>
 
   <issueManagement>
