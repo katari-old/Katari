@@ -461,16 +461,8 @@
                       <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
                     </list>
                   </entry>
-                  <entry key="/*">
-                    <list>
-                      <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
-                    </list>
-                  </entry>
-                  <entry key="/**">
-                    <list>
-                      <value>IS_AUTHENTICATED_REMEMBERED</value>
-                    </list>
-                  </entry>
+                  <entry key="/*"><ref bean='katari.rootRoles'/></entry>
+                  <entry key="/**"><ref bean='katari.defaultRoles'/></entry>
                 </map>
               </property>
           </bean>
@@ -479,6 +471,18 @@
     </constructor-arg>
   </bean>
   <!-- End of security related beans. -->
+
+  <!-- The roles that users will need to access the root of the web
+       application. This includes the index.jsp file. -->
+  <util:list id='katari.rootRoles'>
+    <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+  </util:list>
+
+  <!-- The roles that users will need to access the pages other than the root
+       pages. It only applies to pages outside of modules. -->
+  <util:list id='katari.defaultRoles'>
+    <value>IS_AUTHENTICATED_REMEMBERED</value>
+  </util:list>
 
 </beans>
 
