@@ -9,3 +9,15 @@ Katari - build and test tools
 
  This module contains build and test tools not needed at runtime.
 
+ One notable feature is a mock smtp server. this is useful when your
+ application sends emails and you need a very simple smtp server. To start it
+ run:
+
+-----
+mvn exec:java -Dexec.mainClass=com.globant.katari.tools.MockSmtpServer
+-----
+
+ including this jar in the classpath.
+
+ This server simply dumps all email received to the console output.
+
