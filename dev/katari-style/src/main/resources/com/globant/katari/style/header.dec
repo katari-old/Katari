@@ -4,17 +4,18 @@
 <img src="${baseweb}/module/decorator/image/mainLogo.png" width="200"
   height="80" alt="Katari" title="Katari" />
 
-<div id="data">
+<div id="data" class='leftMargin'>
   <@katari.weblet "editable-pages" "previewButton"/>
   <@katari.weblet "search" "search"/>
-  <#if request.remoteUser??>    
-    <a class="leftMargin" href="${baseweb}/logout?service=${response.encodeRedirectURL(baseweb+'/module/editable-pages/page/about?selected-module-entry=/root/Institutional/About')}"
-      >Sign out</a>
-    <span>Logged in as ${request.remoteUser}</span>
-  <#else>    
-    <a class="leftMargin"
+  <#if request.remoteUser??>
+    Hi ${request.remoteUser}
+    (<a class="__leftMargin" href="${baseweb}/logout?service=${response.encodeRedirectURL(baseweb+'/module/editable-pages/page/about?selected-module-entry=/root/Institutional/About')}"
+      >Sign out</a>)
+  <#else>
+    <a class="__leftMargin"
       href="${baseweb}/module/institutional/dashboard.do?selected-module-entry=/root/Institutional/Dashboard">Sign in</a>
-    <span>Not logged in</span>
+    or <a class='__leftMargin' href='${baseweb}/module/registration/register.do'>
+      Register</a>
   </#if>
 </div>
 <#-- vim: set ts=2 et sw=2 filetype=html ai: -->

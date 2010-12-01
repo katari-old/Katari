@@ -41,24 +41,15 @@
       </bean>
     </property>
 
-    <!-- The menu bar. -->
-    <property name="menuBar">
-      <katari:menuBar>
-        <katari:menuNode name='Registration'>
-          <katari:menuItem name='Register' link='register.do' />
-        </katari:menuNode>
-      </katari:menuBar>
-    </property>
-
     <property name="urlToRoleMapper">
       <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper"
         id='registration.urlToRoleMapper'>
         <constructor-arg index="0">
           <map>
-            <entry key='/register.do' value='ROLE_ANONYMOUS' />
-            <entry key='/forgotPassword.do' value='ROLE_ANONYMOUS' />
-            <entry key='/resetPassword.do' value='ROLE_ANONYMOUS' />
-            <entry key='/activateUser.do' value='ROLE_ANONYMOUS' />
+            <entry key='/register.do' value='IS_AUTHENTICATED_ANONYMOUSLY' />
+            <entry key='/forgotPassword.do' value='IS_AUTHENTICATED_ANONYMOUSLY' />
+            <entry key='/resetPassword.do' value='IS_AUTHENTICATED_ANONYMOUSLY' />
+            <entry key='/activateUser.do' value='IS_AUTHENTICATED_ANONYMOUSLY' />
           </map>
         </constructor-arg>
       </bean>

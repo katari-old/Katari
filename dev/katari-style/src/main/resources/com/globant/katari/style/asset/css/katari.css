@@ -215,10 +215,6 @@ div.preview-button a span {
   display:none;
 }
 
-#header .weblet {
-  float:right;
-}
-
 div.weblet_editable-pages_previewButton {
   float:right;
   margin-left:8px;
@@ -532,7 +528,7 @@ body, td, th, div, table, p, span, li, textarea, pre, input {
   color:#838383;
   font-size:0.85em;
   right:19px;
-  text-align:right;
+  /* text-align:right; */
   top:17px;
   width:250px;
   width:280px\9;
@@ -551,9 +547,16 @@ form input, form select, form textarea, .loginContainer input {
   margin-bottom:0;
 }
 
-#header #data a { color:#838383; float:right; }
+#header #data a {
+  color:#838383;
+/*  float:right; */
+}
 
-#header #data span { float:right; }
+/*
+#header #data span {
+  float:right;
+}
+*/
 
 #version {
   background-image: url(../image/footer-bg.png);
