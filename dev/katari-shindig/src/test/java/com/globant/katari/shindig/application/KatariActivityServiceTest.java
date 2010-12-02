@@ -2,34 +2,39 @@
 
 package com.globant.katari.shindig.application;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.After;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shindig.auth.SecurityToken;
 import org.apache.shindig.common.testing.FakeGadgetToken;
+import org.apache.shindig.protocol.ProtocolException;
+import org.apache.shindig.protocol.RestfulCollection;
 import org.apache.shindig.protocol.model.SortOrder;
-import org.apache.shindig.social.opensocial.spi.CollectionOptions;
-import org.apache.shindig.social.opensocial.spi.UserId;
-import org.apache.shindig.social.opensocial.spi.GroupId;
-import org.apache.shindig.social.opensocial.model.Activity;
 import org.apache.shindig.social.core.model.ActivityImpl;
-
-import com.globant.katari.shindig.testsupport.SpringTestUtils;
+import org.apache.shindig.social.opensocial.model.Activity;
+import org.apache.shindig.social.opensocial.spi.CollectionOptions;
+import org.apache.shindig.social.opensocial.spi.GroupId;
+import org.apache.shindig.social.opensocial.spi.UserId;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.globant.katari.shindig.domain.Application;
 import com.globant.katari.shindig.domain.KatariActivity;
 import com.globant.katari.shindig.domain.SampleUser;
+import com.globant.katari.shindig.testsupport.SpringTestUtils;
 
 public class KatariActivityServiceTest {
 
@@ -37,6 +42,12 @@ public class KatariActivityServiceTest {
 
   private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
+
+  private String otheGadgetXmlUrl = "file:///" + new File(
+  "target/test-classes/OtherSampleGadget.xml").getAbsolutePath();
+
+  private String newsFeedGadgetXmlUrl = "file:///" + new File(
+  "target/test-classes/NewsFeedSampleGadget.xml").getAbsolutePath();
 
   // This is the same applicationId but in string format.
   private String appId;
@@ -60,6 +71,9 @@ public class KatariActivityServiceTest {
     session.saveOrUpdate(app);
     appId = gadgetXmlUrl;
 
+    session.saveOrUpdate(new Application(otheGadgetXmlUrl));
+    session.saveOrUpdate(new Application(newsFeedGadgetXmlUrl));
+
     session.createQuery("delete from CoreUser").executeUpdate();
     SampleUser user = new SampleUser("test1");
     session.saveOrUpdate(user);
@@ -75,13 +89,14 @@ public class KatariActivityServiceTest {
 
   @After
   public void tearDown() {
+    session.createQuery("delete from KatariActivity").executeUpdate();
     session.close();
   }
 
   @Test
   public void testGetActivities_singleActivity() throws Exception {
 
-    createSampleActivity(userId1, "title");
+    createSampleActivity(userId1, "title", appId);
     Set<UserId> userIds = new HashSet<UserId>();
     userIds.add(new UserId(UserId.Type.userId, userId1));
 
@@ -104,7 +119,7 @@ public class KatariActivityServiceTest {
   public void testGetActivities_paged() throws Exception {
     // Create 20 activities for the same user
     for (int i = 1; i <= 20; i ++) {
-      createSampleActivity(userId1, "title-" + i);
+      createSampleActivity(userId1, "title-" + i, appId);
     }
     Set<UserId> userIds = new HashSet<UserId>();
     userIds.add(new UserId(UserId.Type.userId, userId1));
@@ -139,8 +154,8 @@ public class KatariActivityServiceTest {
 
   @Test
   public void testGetActivities_sorted() throws Exception {
-    createSampleActivity(userId1, "title-1");
-    createSampleActivity(userId1, "title-2");
+    createSampleActivity(userId1, "title-1", appId);
+    createSampleActivity(userId1, "title-2", appId);
 
     Set<UserId> userIds = new HashSet<UserId>();
     userIds.add(new UserId(UserId.Type.userId, userId1));
@@ -180,17 +195,17 @@ public class KatariActivityServiceTest {
 
   @Test
   public void testGetActivities_withActivityId() throws Exception {
-    createSampleActivity(userId1, "title-1");
-    createSampleActivity(userId1, "title-2");
-    createSampleActivity(userId1, "title-3");
+    createSampleActivity(userId1, "title-1", appId);
+    createSampleActivity(userId1, "title-2", appId);
+    createSampleActivity(userId1, "title-3", appId);
 
     List<?> idList;
     idList = session.createQuery("select id from KatariActivity").list();
 
     // These are here to make sure that we do not match the wrong user or
     // app-id.
-    createSampleActivity(userId1, "title-3");
-    createSampleActivity(userId2, "title-3");
+    createSampleActivity(userId1, "title-3", appId);
+    createSampleActivity(userId2, "title-3", appId);
 
     UserId userId = new UserId(UserId.Type.userId, userId1);
     GroupId groupId = new GroupId(GroupId.Type.self, null);
@@ -213,7 +228,7 @@ public class KatariActivityServiceTest {
 
   @Test
   public void testGetActivity() throws Exception {
-    createSampleActivity(userId1, "title");
+    createSampleActivity(userId1, "title", appId);
     String id = session.createQuery("select id from KatariActivity")
       .uniqueResult().toString();
 
@@ -232,7 +247,7 @@ public class KatariActivityServiceTest {
 
   @Test
   public void testCreateActivity() {
-    createSampleActivity(userId1, "title");
+    createSampleActivity(userId1, "title", appId);
     KatariActivity activity = (KatariActivity) session.createQuery(
         "from KatariActivity where title = 'title'").uniqueResult();
     assertThat(activity.getAppId(), is(appId));
@@ -244,18 +259,92 @@ public class KatariActivityServiceTest {
   public void testDeleteActivities() {
   }
 
+  @Test
+  public void testGetActivities_news_feed() throws Exception {
+
+    service.setNewsFeedApplicationId(newsFeedGadgetXmlUrl);
+
+    createSampleActivity(userId1, "title-1", appId);
+    createSampleActivity(userId1, "title-2", otheGadgetXmlUrl);
+    createSampleActivity(userId1, "title-3", appId);
+    createSampleActivity(userId1, "title-4", otheGadgetXmlUrl);
+
+    Set<UserId> userIds = new HashSet<UserId>();
+    userIds.add(new UserId(UserId.Type.userId, userId1));
+    GroupId groupId = new GroupId(GroupId.Type.self, null);
+    // Looks like the default, by looking at shindig sources.
+    SecurityToken token = new FakeGadgetToken();
+    CollectionOptions options = new CollectionOptions();
+    options.setMax(20);
+    RestfulCollection<Activity> activitiesCollection;
+    activitiesCollection = service.getActivities(userIds, groupId,
+        newsFeedGadgetXmlUrl, null, options, token).get();
+
+    List<Activity> activities = activitiesCollection.getEntry();
+    assertThat(4, is(activities.size()));
+    for(int i=0; i<4; i++) {
+      assertThat(activities.get(i).getTitle(), equalTo("title-"+(i+1)));
+    }
+  }
+
+  @Test
+  public void testGetActivities_katariActivyFilter() throws Exception {
+
+    service.setNewsFeedApplicationId(newsFeedGadgetXmlUrl);
+    service.setKatariActivityFilter(new KatariActivyFilterTestImpl());
+
+    createSampleActivity(userId1, "title-1", appId);
+    createSampleActivity(userId1, "title-2", otheGadgetXmlUrl);
+    createSampleActivity(userId1, "title-3", appId);
+    createSampleActivity(userId1, "title-4", otheGadgetXmlUrl);
+
+    Set<UserId> userIds = new HashSet<UserId>();
+    userIds.add(new UserId(UserId.Type.userId, userId1));
+    GroupId groupId = new GroupId(GroupId.Type.self, null);
+    // Looks like the default, by looking at shindig sources.
+    SecurityToken token = new FakeGadgetToken();
+    CollectionOptions options = new CollectionOptions();
+    options.setMax(20);
+    RestfulCollection<Activity> activitiesCollection;
+    activitiesCollection = service.getActivities(userIds, groupId,
+        newsFeedGadgetXmlUrl, null, options, token).get();
+
+    List<Activity> activities = activitiesCollection.getEntry();
+    assertThat(0, is(activities.size()));
+
+  }
+
   /** Creates a sample activity for the provided user id.
    *
    * @param userId the userId of the sample activity. It cannot be null.
    *
    * @param title the activity title. It cannot be null.
    */
-  private void createSampleActivity(final String userId, final String title) {
+  private void createSampleActivity(final String userId, final String title,
+      final String appId) {
     Activity activity = new ActivityImpl();
     activity.setTitle(title);
 
     service.createActivity(new UserId(UserId.Type.userId, userId),
         new GroupId(GroupId.Type.self, "@self"), appId, null, activity, null);
+  }
+
+  class KatariActivyFilterTestImpl implements KatariActivityFilter {
+    public void resolveSocialGraph(final Criteria criteria,
+        final List<Long> userIds, final GroupId groupId) {
+      Long user = userIds.get(0);
+      if(user.toString().equals(userId1)) {
+        switch (groupId.getType()) {
+        case self:
+          criteria.createCriteria("user").add(Restrictions.ne("id", 
+              userIds.get(0)));
+          break;
+        default:
+          throw new ProtocolException(HttpServletResponse.SC_BAD_REQUEST,
+              "Group parameter not supported");
+        }
+      }
+    }
   }
 }
 

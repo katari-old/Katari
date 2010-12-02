@@ -58,7 +58,24 @@ public class KatariActivityService extends HibernateDaoSupport implements
    *
    * This is never null.
    */
-  private ApplicationRepository applicationRepository;
+  private final ApplicationRepository applicationRepository;
+
+  /** The news feed application.
+   *
+   * Gadget id of an application that can read all the activities no matter
+   * which application generated it. This is normally used to implement a news
+   * feed gadget.
+   *
+   * It's optional. If null, all applications will only be able to read their
+   * own activities.
+   */
+  private String newsFeedApplicationId;
+
+  /** The filter for the activities, mainly use to implement the Activity's
+   * social graph.
+   * It's optional. If null, will only show activities for group 'self'.
+   */
+  private KatariActivityFilter katariActivityFilter;
 
   /** Constructor, builds a KatariActivityService.
    *
@@ -228,7 +245,8 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
     Set<UserId> userIds = new HashSet<UserId>();
     userIds.add(userId);
-    addGroupFilterToCriteria(criteria, userIds, groupId, token);
+
+    addGroupFilterToCriteria(criteria, userIds, groupId, token, appId);
 
     Activity activity = (Activity) criteria.uniqueResult();
 
@@ -326,11 +344,13 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
     Criteria criteria = getSession().createCriteria(Activity.class);
 
-    addGroupFilterToCriteria(criteria, userIds, groupId, token);
+    addGroupFilterToCriteria(criteria, userIds, groupId, token, appId);
 
-    Application app;
-    app = applicationRepository.findApplicationByUrl(appId);
-    criteria.add(Restrictions.eq("application", app));
+    if(!appId.equals(newsFeedApplicationId)) {
+      Application app;
+      app = applicationRepository.findApplicationByUrl(appId);
+      criteria.add(Restrictions.eq("application", app));
+    }
 
     if (options.getFilter() != null) {
       if (options.getFilterOperation() == null) {
@@ -382,7 +402,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
    */
   private void addGroupFilterToCriteria(final Criteria criteria,
       final Set<UserId> userIds, final GroupId groupId,
-      final SecurityToken token) {
+      final SecurityToken token, final String appId) {
 
     log.trace("Entering addGroupFilterToCriteria");
 
@@ -390,20 +410,24 @@ public class KatariActivityService extends HibernateDaoSupport implements
     Validate.notNull(userIds, "The userIds cannot be null.");
     Validate.notNull(groupId, "The group id cannot be null.");
     Validate.notNull(token, "The token cannot be null.");
-
-    switch (groupId.getType()) {
-    case self:
-      List<Long> userIdList = getUserIdList(userIds, token);
-      if (userIdList.size() == 1) {
-        criteria.createCriteria("user")
-          .add(Restrictions.eq("id", userIdList.get(0)));
-      } else {
-        criteria.createCriteria("user").add(Restrictions.in("id", userIdList));
+    List<Long> userIdList = getUserIdList(userIds, token);
+    if(katariActivityFilter != null) {
+      katariActivityFilter.resolveSocialGraph(criteria, userIdList, groupId);
+    } else {
+      switch (groupId.getType()) {
+      case self:
+        if (userIdList.size() == 1) {
+          criteria.createCriteria("user")
+            .add(Restrictions.eq("id", userIdList.get(0)));
+        } else {
+          criteria.createCriteria("user").add(Restrictions.in("id", 
+              userIdList));
+        }
+        break;
+      default:
+        throw new ProtocolException(HttpServletResponse.SC_BAD_REQUEST,
+            "Group parameter not supported");
       }
-      break;
-    default:
-      throw new ProtocolException(HttpServletResponse.SC_BAD_REQUEST,
-          "Group parameter not supported");
     }
     log.trace("Leaving addGroupFilterToCriteria");
   }
@@ -450,14 +474,12 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
   /** Returns a list with the id (as long) of each user id.
   *
-  * @param userIds the set of group ids. It cannot be null.
+  * @param userIds the set of user ids. It cannot be null.
   *
   * @param token the security token of the currently logged on user or
   * application. It cannot be null.
   *
   * @return the list of user id, as a list of long. Never returns null.
-  *
-  * TODO This should probably be a list of long.
   */
  private List<Long> getUserIdList(final Set<UserId> userIds,
      final SecurityToken token) {
@@ -472,5 +494,23 @@ public class KatariActivityService extends HibernateDaoSupport implements
     }
     return result;
   }
+
+  /** Sets the news feed application id.
+   * @param theNewsFeedApplicationId the application id. Cannot be null.
+   */
+  public void setNewsFeedApplicationId(final String theNewsFeedApplicationId) {
+    Validate.notNull(theNewsFeedApplicationId, "The news feed application id "
+        + "cannot be null");
+    newsFeedApplicationId = theNewsFeedApplicationId;
+  }
+
+  /** Sets the Katari's activity filter.
+   * @param filter the activity filter. Cannot be null.
+   */
+  public void setKatariActivityFilter(final KatariActivityFilter filter) {
+    Validate.notNull(filter, "The KatariActivityFilter cannot be null");
+    katariActivityFilter = filter;
+  }
+
 }
 
