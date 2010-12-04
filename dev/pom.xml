@@ -49,9 +49,7 @@
     <module>katari-search</module>
     <!-- Katari common client side libraries (javascript)-->
     <module>katari-ajax</module>
-    <!-- Katari cas module for server and client  -->
-    <module>katari-cas</module>
-    <!-- Katari cas login module, deprecates the client part of katari-cas. -->
+    <!-- Katari cas login module -->
     <module>katari-cas-login</module>
     <!-- Katari local login module  -->
     <module>katari-local-login</module>
@@ -523,12 +521,6 @@
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-ajax</artifactId>
-        <version>${version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.globant.katari</groupId>
-        <artifactId>katari-cas</artifactId>
         <version>${version}</version>
       </dependency>
 
