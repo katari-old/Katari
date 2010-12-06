@@ -496,19 +496,16 @@ public class KatariActivityService extends HibernateDaoSupport implements
   }
 
   /** Sets the news feed application id.
-   * @param theNewsFeedApplicationId the application id. Cannot be null.
+   * @param theNewsFeedApplicationId the application id.
    */
   public void setNewsFeedApplicationId(final String theNewsFeedApplicationId) {
-    Validate.notNull(theNewsFeedApplicationId, "The news feed application id "
-        + "cannot be null");
     newsFeedApplicationId = theNewsFeedApplicationId;
   }
 
   /** Sets the Katari's activity filter.
-   * @param filter the activity filter. Cannot be null.
+   * @param filter the activity filter.
    */
   public void setKatariActivityFilter(final KatariActivityFilter filter) {
-    Validate.notNull(filter, "The KatariActivityFilter cannot be null");
     katariActivityFilter = filter;
   }
 
