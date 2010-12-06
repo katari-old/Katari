@@ -47,7 +47,8 @@
                 <phase>pre-integration-test</phase>
                 <configuration>
                   <tasks unless="skipTest">
-                    <delete dir="${project.build.directory}/it" includeemptydirs="true" />
+                    <delete dir="${project.build.directory}/it"
+                      includeemptydirs="true" />
                   </tasks>
                 </configuration>
                 <goals>
@@ -88,8 +89,16 @@
         <message />
       </properties>
     </profile>
-  </profiles>
 
+    <!-- This profile is a hack for sonar. Without this (or test-archetypes),
+         sonar fails trying to parse the CDATA content of the message. -->
+    <profile>
+      <id>skipt-test-archetypes-message</id>
+      <properties>
+        <message />
+      </properties>
+    </profile>
+  </profiles>
 
   <dependencies>
     <dependency>
