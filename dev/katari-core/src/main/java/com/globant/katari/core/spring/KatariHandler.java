@@ -20,9 +20,12 @@ public class KatariHandler extends NamespaceHandlerSupport {
     PropertiesParser propertiesParser = new PropertiesParser();
     ConditionalImportParser importParser;
     importParser = new ConditionalImportParser(propertiesParser);
+    NullPropertyParser nullParser;
+    nullParser = new NullPropertyParser();
     registerBeanDefinitionParser("menuBar", new MenuBarBeanDefinitionParser());
     registerBeanDefinitionParser("import", importParser);
     registerBeanDefinitionParser("properties", propertiesParser);
+    registerBeanDefinitionParser("null", nullParser);
   }
 }
 

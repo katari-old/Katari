@@ -85,6 +85,9 @@
       <xsd:attribute name="location" use="required"/>
     </xsd:complexType>
   </xsd:element>
+
+  <xsd:element name="null" />
+
   <!-- vim: set ts=2 et sw=2 : -->
 </xsd:schema>
 
