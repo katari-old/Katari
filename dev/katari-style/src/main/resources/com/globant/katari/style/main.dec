@@ -67,11 +67,15 @@
         <div id="section">
 
           <!-- the inner menu starts here -->
-          <@katari.weblet "classic-menu" "menu" "2"/>
+          <#if menuType == 'classic'>
+            <@katari.weblet "classic-menu" "menu" "2"/>
+          </#if>
           <!-- the inner menu ends here -->
 
           <!-- the button menu starts here -->
-          <@katari.weblet "classic-menu" "menu" "3"/>
+          <#if menuType == 'classic'>
+            <@katari.weblet "classic-menu" "menu" "3"/>
+          </#if>
           <!-- the button menu ends here -->
 
           <div id='content'>
