@@ -7,6 +7,25 @@
 
 Katari - dropdown menu
 
- This module contains a menu implemented as a weblet. This is a javascript
- based dropdown menu.
+ This is a javascript based drop down menu for Katari. This module provides a
+ weblet to render the menu.
+
+ There are two types of menu in this module: a menubar menu, that is a standard
+ horizontal bar with all the top level menu entries, and a popup, content-like
+ menu, that occupies much less space, a button that when clicked displays the
+ top level menu entries.
+
+ If you want to add a drop down menu to your application, use:
+
+-----
+  <@katari.weblet "dropdown-menu" "menu" "bar"/>
+-----
+
+ or
+
+-----
+  <@katari.weblet "dropdown-menu" "menu" "context"/>
+-----
+
+ to show the menu bar or context menu style respectively.
 
