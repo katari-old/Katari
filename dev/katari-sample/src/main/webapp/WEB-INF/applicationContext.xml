@@ -21,6 +21,9 @@
   <!-- The classic menu module. -->
   <katari:import module="com.globant.katari.menu.classic"/>
 
+  <!-- The classic menu module. -->
+  <katari:import module="com.globant.katari.menu.dropdown"/>
+
   <!--  The editable-pages module -->
   <katari:import module="com.globant.katari.editablepages"/>
 
@@ -264,7 +267,7 @@
 
   <!-- Here are some configuration examples for modules. -->
 
-  <!-- Enable captcha in the login page. The captcha stops robots from gessing
+  <!-- Enable captcha in the login page. The captcha stops robots from guessing
        passwords by brute force. -->
   <bean class='com.globant.katari.core.spring.StringHolder'
     name='local-login.enableCaptcha' p:value='true'/>

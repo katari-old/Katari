@@ -193,6 +193,11 @@
 
     <dependency>
       <groupId>com.globant.katari</groupId>
+      <artifactId>katari-dropdown-menu</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
       <artifactId>katari-report</artifactId>
     </dependency>
 

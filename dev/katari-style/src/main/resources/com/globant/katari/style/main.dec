@@ -31,7 +31,19 @@
       loader.require(["katari-style"]);
       loader.insert();
     </script>
+    <style type="text/css">
+      #dropdownMenu-context {
+        float: right;
+      }
+    </style>
   </head>
+
+  <#assign menuType = request.getParameter("menuType")!''/>
+  <#if menuType != ''>
+    <#assign mm = request.getSession().setAttribute("menuType", menuType)/>
+  <#else>
+    <#assign menuType = request.getSession().getAttribute("menuType")!'classic'/>
+  </#if>
 
   <body class='yui-skin-sam'>
     <div id='container'>
@@ -41,10 +53,17 @@
         <!-- Header ends here -->
       </div>
       <div id="frame">
-        <!-- the main menu starts here -->
-        <@katari.weblet "classic-menu" "menu" "1"/>
-
-        <!-- the main menu ends here -->
+        <#if menuType == 'classic'>
+          <!-- the main menu starts here -->
+          <@katari.weblet "classic-menu" "menu" "1"/>
+          <!-- the main menu ends here -->
+        <#elseif menuType == 'bar'>
+          <@katari.weblet "dropdown-menu" "menu" "bar"/>
+        <#else>
+          <div style='height:3px; background-color:#fff'>
+            <@katari.weblet "dropdown-menu" "menu" "context"/>
+          </div>
+        </#if>
         <div id="section">
 
           <!-- the inner menu starts here -->
