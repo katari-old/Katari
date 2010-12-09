@@ -130,7 +130,7 @@ public class CasProxyTicketValidator implements TicketValidator,
     try {
       pv.validate();
     } catch (Exception e) {
-      throw new AuthenticationServiceException(e.getMessage());
+      throw new AuthenticationServiceException(e.getMessage(), e);
     }
 
     if (!pv.isAuthenticationSuccesful()) {

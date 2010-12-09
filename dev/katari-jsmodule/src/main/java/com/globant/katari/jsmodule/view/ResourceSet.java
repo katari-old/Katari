@@ -25,6 +25,10 @@ class ResourceSet {
    */
   private static Logger log = LoggerFactory.getLogger(ResourceSet.class);
 
+  /** The length of the 'mimeType.' prefix.
+   */
+  private static final int MIMETYPE_LENGTH = 9;
+
   /** The base classpath for this resources, never null.
    */
   private String basePath;
@@ -42,10 +46,6 @@ class ResourceSet {
    * This is used in debug mode. It is never null.
    */
   private String debugPrefix = ".";
-
-  /** The length of the 'mimeType.' prefix.
-   */
-  private static int MIMETYPE_LENGTH = 9;
 
   /** Initializes a ResourceSet from the provided properties file.
    *

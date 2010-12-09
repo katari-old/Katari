@@ -134,7 +134,7 @@ public class AuthenticationWithCaptchaProcessingFilter extends
       // and trick the user into thinking that he misspelled the captcha.
       throw new AuthenticationServiceException(messages.getMessage(
             "AuthenticationWithCaptchaProcessingFilter.incorrectSecurityCode",
-            "Incorrect security code"));
+            "Incorrect security code"), e);
     }
   }
 

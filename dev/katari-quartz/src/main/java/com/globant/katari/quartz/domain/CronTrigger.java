@@ -12,8 +12,6 @@ import org.springframework.aop.target.LazyInitTargetSource;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.scheduling.quartz.CronTriggerBean;
 import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
 
@@ -26,7 +24,7 @@ import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
  * It uses the cron syntax to specify when the task should run.
  */
 public class CronTrigger extends CronTriggerBean implements BeanFactoryAware,
-    InitializingBean, BeanClassLoaderAware, BeanNameAware {
+    BeanClassLoaderAware {
 
   /** The serial version uid, used for serialization.
    */
@@ -103,6 +101,7 @@ public class CronTrigger extends CronTriggerBean implements BeanFactoryAware,
    *
    * {@inheritDoc}
    */
+  @Override
   public void setBeanName(final String name) {
     beanName = name;
     super.setBeanName(name);
@@ -119,6 +118,7 @@ public class CronTrigger extends CronTriggerBean implements BeanFactoryAware,
    * to throw more exceptions, because current implementation throws
    * RuntimeException on other problems.
    */
+  @Override
   public void afterPropertiesSet() throws ParseException {
 
     LazyInitTargetSource lazyInitScheduledCommand = new LazyInitTargetSource();

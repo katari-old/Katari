@@ -131,14 +131,19 @@ public class IpBlacklist {
    * otherwise.
    *
    * {@inheritDoc}
+   *
+   * Warning: we are not calling super.finalize() here, because we just inherit
+   * from Object.
+   *
+   * The original signature was protected void finalize() throws Throwable, but
+   * it makes findbugs complain.
    */
   @Override
-  protected void finalize() throws Throwable {
+  protected void finalize() {
     if (!destroyed) {
       System.out.println(
           "ERROR: IpBlacklist instance not correctly destroyed.");
     }
-    super.finalize();
   }
 
   /** Schedules a new task to remove the given IP address from the list of

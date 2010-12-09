@@ -32,8 +32,8 @@ public class ScriptExecutionController extends AbstractController {
    * can't be null.
    */
   public ScriptExecutionController(final ScriptingEngine theScriptingEngine) {
-    Validate.notNull(theScriptingEngine,"The the scripting engine cannot be"
-        + " null.");
+    Validate.notNull(theScriptingEngine,
+        "The the scripting engine cannot be null.");
     scriptingEngine = theScriptingEngine;
   }
 
