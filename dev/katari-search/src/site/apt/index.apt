@@ -202,11 +202,11 @@ Using this module
 
 Configuration
 
- The only configurable option provided by this module is the location of the
- lucene index. This is the default configuration:
+ The only configurable options provided by this module are the location of the
+ main and temporary lucene indexes. This is the default configuration:
 
 -----
-   <!-- Overridable bean to define the file system location to store the lucene
+  <!-- Overridable bean to define the file system location to store the lucene
        index. -->
   <bean id='search.compassEngineConnection'
     class='com.globant.katari.core.spring.StringHolder'
@@ -228,14 +228,6 @@ Configuration
   <bean id='indexLocation'
     class='com.globant.katari.core.spring.StringHolder'
     p:value='target/compass' />
------
-
- This creates a bean adequate to be configured by a spring
- PropertyOverrideConfigurer. So you can add to your property file an entry like
- this:
-
------
-indexLocation=/home/tomcat/target/index
 -----
 
  Compass can perform search and mirroring separately from batch indexing. The
@@ -260,6 +252,16 @@ indexLocation=/home/tomcat/target/index
   <bean id='indexTempLocation'
     class='com.globant.katari.core.spring.StringHolder'
     p:value='target/compass-temp' />
+-----
+
+ These bean definitions (compassEngineConnection and
+ compassIndexEngineConnection) are adequate to be configured by a spring
+ PropertyOverrideConfigurer. So you can add to your property file entries like
+ this:
+
+-----
+indexLocation.value=/home/tomcat/target/index
+indexTempLocation.value=/home/tomcat/target/index-temp
 -----
 
 The user interface
