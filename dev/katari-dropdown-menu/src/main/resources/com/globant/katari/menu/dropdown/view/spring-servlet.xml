@@ -31,13 +31,6 @@
   </bean>
   <!-- End Controllers  -->
 
-  <!-- Shows the current selected menu children as a normal page. -->
-  <bean name="/menu.do"
-      class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-    <property name='viewName' value='menuHome'/>
-  </bean>
-  <!-- End Controllers  -->
-
 </beans>
 
 <!-- vim: set ts=2 et sw=2 ai : -->
