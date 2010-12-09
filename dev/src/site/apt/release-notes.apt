@@ -1,5 +1,21 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.26
+
+* What's new since version 0.25
+
+ * New module katari-dropdown-menu.
+
+ * Removed the analytics features from katari-shinding. They were using external
+ scripts.
+
+ * New katari:null spring extension to define null beans.
+
+ * Removed katari-cas module. This was not maintainer for a long time.
+
+ * Added extension points to the katari Activity service, so that application
+ writers can influence what activities are returned to the gadgets.
+
 Release notes for version 0.25
 
 * What's new since version 0.24
@@ -35,6 +51,9 @@ Upgrading from 0.24
 ----
 
  to your applicationContext.xml file.
+
+ * You need to add a new column in the user table: is_active, a not null 1 bit
+ column.
 
 Release notes for version 0.24
 
