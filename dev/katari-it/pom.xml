@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.globant.katari</groupId>
     <artifactId>dev</artifactId>
-    <version>0.26-SNAPSHOT</version>
+    <version>0.26</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -47,8 +47,7 @@
                 <phase>pre-integration-test</phase>
                 <configuration>
                   <tasks unless="skipTest">
-                    <delete dir="${project.build.directory}/it"
-                      includeemptydirs="true" />
+                    <delete dir="${project.build.directory}/it" includeemptydirs="true" />
                   </tasks>
                 </configuration>
                 <goals>
