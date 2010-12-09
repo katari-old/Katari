@@ -7,19 +7,18 @@ import static org.easymock.classextension.EasyMock.verify;
 
 import java.util.List;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import org.easymock.classextension.EasyMock;
 
 import com.globant.katari.core.web.MenuNode;
 import com.globant.katari.tools.ListFactory;
 
-/**
- * This class is for testing the behavior of the MenuAccessFilterer.
- * @author ulises.bocchio
- *
- */
-public class MenuAccessFiltererTest extends TestCase {
+public class MenuAccessFiltererTest {
 
   private static final String DENIED_URL = "/module/mocked-module/denied.do";
   private static final String GRANTED_URL = "/module/mocked-module/granted.do";
@@ -35,13 +34,8 @@ public class MenuAccessFiltererTest extends TestCase {
    */
   private SecureUrlAccessHelper accessHelper;
 
-  /**
-   * The set up method for testing MenuAccessFilterer.
-   * @throws Exception
-   *           the exeption could be thrown by calling this method.
-   */
-  @Override
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     accessHelper = EasyMock.createMock(SecureUrlAccessHelper.class);
     EasyMock.expect(accessHelper.canAccessUrl(null, "/dummy-ctx" + GRANTED_URL))
         .andReturn(true).anyTimes();
@@ -53,6 +47,7 @@ public class MenuAccessFiltererTest extends TestCase {
   /**
    * It test the normal behavior of the MenuAccessFilterer.
    */
+  @Test
   public void testFilteredMenuNodes() {
     MenuNode node1 = createMock(MenuNode.class);
     MenuNode node2 = createMock(MenuNode.class);
@@ -60,13 +55,13 @@ public class MenuAccessFiltererTest extends TestCase {
     MenuNode node4 = createMock(MenuNode.class);
 
     expect(node1.getLinkPath()).andReturn(GRANTED_URL);
-    expect(node1.isLeaf()).andReturn(true);
+    expect(node1.isLeaf()).andReturn(true).anyTimes();
     expect(node2.getLinkPath()).andReturn(GRANTED_URL);
-    expect(node2.isLeaf()).andReturn(true);
+    expect(node2.isLeaf()).andReturn(true).anyTimes();
     expect(node3.getLinkPath()).andReturn(GRANTED_URL);
-    expect(node3.isLeaf()).andReturn(true);
+    expect(node3.isLeaf()).andReturn(true).anyTimes();
     expect(node4.getLinkPath()).andReturn(GRANTED_URL);
-    expect(node4.isLeaf()).andReturn(true);
+    expect(node4.isLeaf()).andReturn(true).anyTimes();
 
     replay(node1);
     replay(node2);
@@ -82,14 +77,14 @@ public class MenuAccessFiltererTest extends TestCase {
     verify(node3);
     verify(node4);
 
-    assertEquals(4, filteredNodes.size());
-    assertEquals(filteredNodes.get(0), node1);
-    assertEquals(filteredNodes.get(1), node2);
-    assertEquals(filteredNodes.get(2), node3);
-    assertEquals(filteredNodes.get(3), node4);
-
+    assertThat(filteredNodes.size(), is(4));
+    assertThat(filteredNodes.get(0), is(node1));
+    assertThat(filteredNodes.get(1), is(node2));
+    assertThat(filteredNodes.get(2), is(node3));
+    assertThat(filteredNodes.get(3), is(node4));
   }
 
+  @Test
   public void testFilteredMenuNodes_BranchWithDeniedChildren() {
     MenuNode deniedRootNode1 = createMock(MenuNode.class);
     MenuNode grantedRootNode2 = createMock(MenuNode.class);
@@ -100,18 +95,18 @@ public class MenuAccessFiltererTest extends TestCase {
     MenuNode deniedChildNode5_2 = createMock(MenuNode.class);
 
     expect(deniedRootNode1.getLinkPath()).andReturn(DENIED_URL);
-    expect(deniedRootNode1.isLeaf()).andReturn(true);
+    expect(deniedRootNode1.isLeaf()).andReturn(true).anyTimes();
     expect(grantedRootNode2.getLinkPath()).andReturn(GRANTED_URL);
-    expect(grantedRootNode2.isLeaf()).andReturn(true);
+    expect(grantedRootNode2.isLeaf()).andReturn(true).anyTimes();
     expect(grantedRootNode3.getLinkPath()).andReturn(GRANTED_URL);
-    expect(grantedRootNode3.isLeaf()).andReturn(true);
+    expect(grantedRootNode3.isLeaf()).andReturn(true).anyTimes();
     expect(grantedRootNode4.getLinkPath()).andReturn(GRANTED_URL);
-    expect(grantedRootNode4.isLeaf()).andReturn(true);
+    expect(grantedRootNode4.isLeaf()).andReturn(true).anyTimes();
     expect(deniedChildNode5_1.getLinkPath()).andReturn(DENIED_URL);
-    expect(deniedChildNode5_1.isLeaf()).andReturn(true);
+    expect(deniedChildNode5_1.isLeaf()).andReturn(true).anyTimes();
     expect(deniedChildNode5_2.getLinkPath()).andReturn(DENIED_URL);
-    expect(deniedChildNode5_2.isLeaf()).andReturn(true);
-    expect(emptyBranchNode5.isLeaf()).andReturn(false);
+    expect(deniedChildNode5_2.isLeaf()).andReturn(true).anyTimes();
+    expect(emptyBranchNode5.isLeaf()).andReturn(false).anyTimes();
     List<MenuNode> children = ListFactory.create(deniedChildNode5_1,
         deniedChildNode5_2);
     expect(emptyBranchNode5.getChildNodes()).andReturn(children);
@@ -137,12 +132,13 @@ public class MenuAccessFiltererTest extends TestCase {
     verify(deniedChildNode5_1);
     verify(deniedChildNode5_2);
 
-    assertEquals(3, filteredNodes.size());
-    assertEquals(filteredNodes.get(0), grantedRootNode2);
-    assertEquals(filteredNodes.get(1), grantedRootNode3);
-    assertEquals(filteredNodes.get(2), grantedRootNode4);
+    assertThat(filteredNodes.size(), is(3));
+    assertThat(filteredNodes.get(0), is(grantedRootNode2));
+    assertThat(filteredNodes.get(1), is(grantedRootNode3));
+    assertThat(filteredNodes.get(2), is(grantedRootNode4));
   }
 
+  @Test
   public void testFilteredMenuNodes_BranchWithGrantedAndDeniedChildren() {
     MenuNode deniedRootNode1 = createMock(MenuNode.class);
     MenuNode grantedRootNode2 = createMock(MenuNode.class);
@@ -154,13 +150,13 @@ public class MenuAccessFiltererTest extends TestCase {
     MenuNode grantedChildNode5_3 = createMock(MenuNode.class);
 
     expect(deniedRootNode1.getLinkPath()).andReturn(DENIED_URL);
-    expect(deniedRootNode1.isLeaf()).andReturn(true);
+    expect(deniedRootNode1.isLeaf()).andReturn(true).anyTimes();
     expect(grantedRootNode2.getLinkPath()).andReturn(GRANTED_URL);
-    expect(grantedRootNode2.isLeaf()).andReturn(true);
+    expect(grantedRootNode2.isLeaf()).andReturn(true).anyTimes();
     expect(grantedRootNode3.getLinkPath()).andReturn(GRANTED_URL);
-    expect(grantedRootNode3.isLeaf()).andReturn(true);
+    expect(grantedRootNode3.isLeaf()).andReturn(true).anyTimes();
     expect(grantedRootNode4.getLinkPath()).andReturn(GRANTED_URL);
-    expect(grantedRootNode4.isLeaf()).andReturn(true);
+    expect(grantedRootNode4.isLeaf()).andReturn(true).anyTimes();
     expect(deniedChildNode5_1.getLinkPath()).andReturn(DENIED_URL).anyTimes();
     expect(deniedChildNode5_1.isLeaf()).andReturn(true).anyTimes();
     expect(deniedChildNode5_2.getLinkPath()).andReturn(DENIED_URL).anyTimes();
@@ -188,17 +184,17 @@ public class MenuAccessFiltererTest extends TestCase {
     filterer = new MenuAccessFilterer(accessHelper);
     List<MenuNode> filteredNodes = filterer.filterMenuNodes(nodes);
 
-    assertEquals(4, filteredNodes.size());
-    assertEquals(filteredNodes.get(0), grantedRootNode2);
-    assertEquals(filteredNodes.get(1), grantedRootNode3);
-    assertEquals(filteredNodes.get(2), grantedRootNode4);
-    assertEquals(filteredNodes.get(3), grantedBranchNode5);
+    assertThat(filteredNodes.size(), is(4));
+    assertThat(filteredNodes.get(0), is(grantedRootNode2));
+    assertThat(filteredNodes.get(1), is(grantedRootNode3));
+    assertThat(filteredNodes.get(2), is(grantedRootNode4));
+    assertThat(filteredNodes.get(3), is(grantedBranchNode5));
 
     List<MenuNode> filteredChildNodes = filterer
         .filterMenuNodes(grantedBranchNode5.getChildNodes());
 
-    assertEquals(1, filteredChildNodes.size());
-    assertEquals(filteredChildNodes.get(0), grantedChildNode5_3);
+    assertThat(filteredChildNodes.size(), is(1));
+    assertThat(filteredChildNodes.get(0), is(grantedChildNode5_3));
 
     verify(deniedRootNode1);
     verify(grantedRootNode2);
@@ -210,6 +206,7 @@ public class MenuAccessFiltererTest extends TestCase {
     verify(grantedChildNode5_3);
   }
 
+  @Test
   public void testFilteredMenuNodes_DeniedLeaf() {
     MenuNode deniedRootNode1 = createMock(MenuNode.class);
     MenuNode grantedRootNode2 = createMock(MenuNode.class);
@@ -217,13 +214,13 @@ public class MenuAccessFiltererTest extends TestCase {
     MenuNode grantedRootNode4 = createMock(MenuNode.class);
 
     expect(deniedRootNode1.getLinkPath()).andReturn(DENIED_URL);
-    expect(deniedRootNode1.isLeaf()).andReturn(true);
+    expect(deniedRootNode1.isLeaf()).andReturn(true).anyTimes();
     expect(grantedRootNode2.getLinkPath()).andReturn(GRANTED_URL);
-    expect(grantedRootNode2.isLeaf()).andReturn(true);
+    expect(grantedRootNode2.isLeaf()).andReturn(true).anyTimes();
     expect(grantedRootNode3.getLinkPath()).andReturn(GRANTED_URL);
-    expect(grantedRootNode3.isLeaf()).andReturn(true);
+    expect(grantedRootNode3.isLeaf()).andReturn(true).anyTimes();
     expect(grantedRootNode4.getLinkPath()).andReturn(GRANTED_URL);
-    expect(grantedRootNode4.isLeaf()).andReturn(true);
+    expect(grantedRootNode4.isLeaf()).andReturn(true).anyTimes();
 
     replay(deniedRootNode1);
     replay(grantedRootNode2);
@@ -240,9 +237,9 @@ public class MenuAccessFiltererTest extends TestCase {
     verify(grantedRootNode3);
     verify(grantedRootNode4);
 
-    assertEquals(3, filteredNodes.size());
-    assertEquals(filteredNodes.get(0), grantedRootNode2);
-    assertEquals(filteredNodes.get(1), grantedRootNode3);
-    assertEquals(filteredNodes.get(2), grantedRootNode4);
+    assertThat(filteredNodes.size(), is(3));
+    assertThat(filteredNodes.get(0), is(grantedRootNode2));
+    assertThat(filteredNodes.get(1), is(grantedRootNode3));
+    assertThat(filteredNodes.get(2), is(grantedRootNode4));
   }
 }

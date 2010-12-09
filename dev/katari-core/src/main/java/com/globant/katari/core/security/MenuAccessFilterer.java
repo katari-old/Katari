@@ -51,7 +51,7 @@ public class MenuAccessFilterer {
    * To be added to the output list, the user must have access to the leaf
    * node, or must have access to at least one descendent of a non leaf node.
    *
-   * @param nodes A list of nodes to be filtered.It cannot be null.
+   * @param nodes A list of nodes to be filtered. It cannot be null.
    *
    * @return A filtered list of menu nodes. If the user cannot access any menu
    * node, it returns an empty list. It never returns null.
@@ -62,18 +62,9 @@ public class MenuAccessFilterer {
     List<MenuNode> result = new ArrayList<MenuNode>();
     for (MenuNode node : nodes) {
       if (node.isLeaf()) {
-
-        /* urlAccessHelper.canAccessUrl needs a url with a context path. But
-         * when the url is absolute, this operation ignores the context path, so
-         * we simply pass a dummy context path. This is a hack to avoid passing
-         * the request object from the view layer.
-         */
-        final String url = "/dummy-ctx" + node.getLinkPath();
-
-        if (urlAccessHelper.canAccessUrl(null, url)) {
+        if (isAccessible(node)) {
           result.add(node);
         }
-
       } else {
         List<MenuNode> childNodes = node.getChildNodes();
         List<MenuNode> filteredNodes = filterMenuNodes(childNodes);
@@ -84,6 +75,29 @@ public class MenuAccessFilterer {
     }
     log.trace("Leaving filterMenuNodes()");
     return Collections.unmodifiableList(result);
+  }
+
+  /** Returns true if the user has access to the leaf node.
+   *
+   * This operation is intended to be used as an optimization when the client
+   * is forced to walk the whole tree anyway. It only applies to leaf nodes.
+   *
+   * @param leafNode the leaf node to check if the user has access. It must be
+   * a non null leaf node.
+   *
+   * @return true if the leaf node is accessible by the user.
+   */
+  public boolean isAccessible(final MenuNode leafNode) {
+    Validate.notNull(leafNode, "The leaf node cannot be null.");
+    Validate.isTrue(leafNode.isLeaf(), "The node must be a leaf.");
+
+    /* urlAccessHelper.canAccessUrl needs a url with a context path. But when
+     * the url is absolute, this operation ignores the context path, so we
+     * simply pass a dummy context path. This is a hack to avoid passing the
+     * request object from the view layer.
+     */
+    final String url = "/dummy-ctx" + leafNode.getLinkPath();
+    return urlAccessHelper.canAccessUrl(null, url);
   }
 }
 
