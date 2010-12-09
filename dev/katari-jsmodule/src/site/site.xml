@@ -4,7 +4,7 @@
   <skin>
     <groupId>com.globant.katari</groupId>
     <artifactId>katari-siteskin</artifactId>
-    <version>0.23-SNAPSHOT</version>
+    <version>${version}</version>
   </skin>
 
   <bannerLeft>
