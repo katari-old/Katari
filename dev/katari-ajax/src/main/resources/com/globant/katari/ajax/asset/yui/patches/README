@@ -1,0 +1,39 @@
+This will include patches for yui.
+
+Menu patches:
+
+The ones aavailable are menu_patch.js and overlay_patch.js. See
+http://developer.yahoo.com/yui/menu/, the entry "Menu instances scroll
+unnecessarily" in "Known Issues"
+
+To use with the yui loader:
+
+    <script type='text/javascript'>
+      var loader = new YAHOO.util.YUILoader({
+        base: '${baseweb}/module/ajax/yui/',
+        // Configure loader to pull in optional dependencies.
+        loadOptional: true,
+        // Called when all script/css resources have been loaded.
+        onSuccess: function() {
+          var oMenu = new YAHOO.widget.MenuBar("dropdownMenu-${menuType}");
+          oMenu.render();
+          oMenu.show();
+        }
+      });
+      loader.addModule({
+          name: 'katari_yui_patchedoverlay',
+          type: 'js',
+          varName: "Prototype.getConstrainedY",
+          path: 'patches/overlay_patch.js',
+      });
+      loader.addModule({
+          name: 'katari_yui_patchedmenu',
+          type: 'js',
+          varName: "YAHOO.widget.Menu.prototype.getConstrainedY",
+          path: 'patches/menu_patch.js',
+          requires: ['menu','katari_yui_patchedoverlay']
+      });
+      loader.require("katari_yui_patchedmenu");
+      loader.insert();
+    </script>
+
