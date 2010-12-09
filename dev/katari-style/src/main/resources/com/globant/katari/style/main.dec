@@ -38,11 +38,6 @@
       loader.require(["katari-style"]);
       loader.insert();
     </script>
-    <style type="text/css">
-      #dropdownMenu-context {
-        float: right;
-      }
-    </style>
   </head>
 
   <#assign menuType = request.getParameter("menuType")!''/>

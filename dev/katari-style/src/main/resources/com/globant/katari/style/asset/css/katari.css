@@ -1138,4 +1138,21 @@ table.directory .info p{
 
 table.directory .author {
   font-size:11px;
-}
+}
+
+/* Style of the dropdown menu container, tha occupies the same space as the
+ * menu or menubar. This is used to stop the screen from resizing when the menu
+ * bar finally apperas.
+ */
+#dropdownMenu-context-container, #dropdownMenu-bar-container {
+  height:24px;
+  color:#fff;
+  background-color:#fff;
+}
+
+/** Applies to the context type js menu. Floats the menu to the left.
+ */
+#dropdownMenu-context {
+  float: right;
+}
+

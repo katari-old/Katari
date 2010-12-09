@@ -7,6 +7,8 @@
   <body>
     <!-- menuBar or contextMenu -->
     <#assign menuType = request.getAttribute('instance')/>
+    <#assign rootMenu = request.getAttribute(
+      'com.globant.katari.menu.dropdown.tree')/>
 
     <script type='text/javascript'>
       var loader = new YAHOO.util.YUILoader({
@@ -65,38 +67,37 @@
       </#if>
     </#macro>
 
-    <#if menuType == 'context'>
-      <div id="dropdownMenu-${menuType}" class="yuimenubar"
-        style='display:none'>
-        <div class="bd">
-          <!-- This comment is a hack to avoid the "WARNING: trimming empty
-               <div>" htmltidy error when there are no menus to display. -->
-          <ul>
-            <li class='yuimenubaritem'>
-              <a class="yuimenubaritemlabel" href='#'> Menu </a>
-              <div class='yuimenu'>
-                <div class="bd">
-                  <@displayChildNodes
-                  request.getAttribute("com.globant.katari.menu.dropdown.tree")
-                  'yuimenu'/>
+    <div id='dropdownMenu-${menuType}-container'>
+      <#if menuType == 'context'>
+        <div id="dropdownMenu-${menuType}" class="yuimenubar"
+          style='visibility:hidden'>
+          <div class="bd">
+            <!-- This comment is a hack to avoid the "WARNING: trimming empty
+                 <div>" htmltidy error when there are no menus to display. -->
+            <ul>
+              <li class='yuimenubaritem'>
+                <a class="yuimenubaritemlabel" href='#'> Menu </a>
+                <div class='yuimenu'>
+                  <div class="bd">
+                    <@displayChildNodes rootMenu 'yuimenu'/>
+                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    <#elseif menuType == 'bar'>
-      <div id="dropdownMenu-${menuType}" class="yuimenubar yuimenubarnav"
-        style='display:none'>
-        <div class="bd">
-          <@displayChildNodes
-            request.getAttribute("com.globant.katari.menu.dropdown.tree")/>
+      <#elseif menuType == 'bar'>
+        <div id="dropdownMenu-${menuType}" class="yuimenubar yuimenubarnav"
+          style='display:none'>
+          <div class="bd">
+            <@displayChildNodes rootMenu />
+          </div>
         </div>
-      </div>
-    <#else>
-      <!-- Hack to throw an error if the menu type is unknown. -->
-      ${nonexistingMenuType}
-    </#if>
+      <#else>
+        <!-- Hack to throw an error if the menu type is unknown. -->
+        ${nonexistingMenuType}
+      </#if>
+    </div>
 
   </body>
 
