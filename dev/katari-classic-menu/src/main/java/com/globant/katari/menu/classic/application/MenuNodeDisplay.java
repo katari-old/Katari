@@ -41,18 +41,18 @@ public class MenuNodeDisplay {
   /** True if the menu node is selected, otherwise false.
    *
    * Being a selected node means that the node path is base part of the curremt
-   * selection path or the selection path itself. It the node is selected,
+   * selection path or the selection path itself. If the node is selected,
    * cannot be disabled.
    */
   private boolean selected = false;
 
   /** Create a display for the menu node.
    *
-   * It the node is selected, cannot be disabled.
+   * If the node is selected, cannot be disabled.
    *
    * @param theMenuNode The menu node. It cannot be null.
    *
-   * @param thePath The path of thi menu node. It cannot be null.
+   * @param thePath The path of the menu node. It cannot be null.
    *
    * @param theLinkPath The url that this menu node points to. It cannot be
    * null.

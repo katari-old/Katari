@@ -18,10 +18,10 @@
 
   <dependencies>
     <!-- Test only dependencies -->
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  	</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.easymock</groupId>

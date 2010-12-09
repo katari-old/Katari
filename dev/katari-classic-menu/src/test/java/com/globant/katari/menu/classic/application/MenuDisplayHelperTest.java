@@ -110,7 +110,7 @@ public class MenuDisplayHelperTest extends TestCase {
   /* Tests what happens if the first child node is not accessible. The link of
    * the parent node should not point to the non accesible url.
    */
-  public void testListPath_fistWithoutPermission() {
+  public void testListPath_firstWithoutPermission() {
 
     // Simulates that the node /b/a is not accessible.
     SecureUrlAccessHelper accessHelper;
