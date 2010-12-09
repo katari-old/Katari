@@ -333,7 +333,7 @@
     class='com.globant.katari.core.spring.StringHolder'
     p:value='target/compass' />
 
-    <!-- Externalizes the location of the compass files for indexing. -->
+  <!-- Externalizes the location of the compass files for indexing. -->
   <bean id='search.compassIndexEngineConnection'
     class='com.globant.katari.core.spring.StringHolder'
     p:value-ref='indexTempLocation' />
