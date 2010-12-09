@@ -246,5 +246,14 @@ resources, then define MAVEN_OPTS as:
 
 MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128"
 
+Memory usage
+------------
+
+Building the full maven project, including site and deployment under maven 2.2.1
+consumes a lot of memory. Under linux, use this to make sure that java memory is
+enough:
+
+MAVEN_OPTS="-XX:MaxPermSize=384m -Xmx1512m"
+
 -- vim: set ts=2 et sw=2 tw=80:
 
