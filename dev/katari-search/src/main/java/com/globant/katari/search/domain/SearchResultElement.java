@@ -67,8 +67,8 @@ public class SearchResultElement {
    * @param theActions additional actions related to this object. It cannot be
    * null.
    *
-   * @param score a number stating how exact was the match of the seach query
-   * for the object.
+   * @param theScore a number stating how exact was the match of the seach
+   * query for the object.
    */
   public SearchResultElement(final String theAlias, final String theTitle,
       final String theDescription, final String url, final List<Action>

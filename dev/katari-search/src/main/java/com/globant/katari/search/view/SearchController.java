@@ -54,7 +54,7 @@ public abstract class SearchController extends AbstractCommandController {
     log.trace("Entering handleRequestInternal");
 
     SearchCommand searchCommand = (SearchCommand) command;
-    Collection <SearchResultElement> results = searchCommand.execute();
+    Collection<SearchResultElement> results = searchCommand.execute();
     ModelAndView mav = new ModelAndView("search");
     mav.addObject("searchResults", results);
     mav.addObject("command", searchCommand);

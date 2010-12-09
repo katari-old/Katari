@@ -30,6 +30,16 @@ public class Action {
    */
   private String url;
 
+  /** Creates a new action.
+   *
+   * @param theName the name or title of the action. It cannot be null.
+   *
+   * @param theIcon the icon to display as a link to the action. It cannot be
+   * null.
+   *
+   * @param theUrl the action url, a link to show to the user to perform the
+   * action. It cannot be null.
+   */
   public Action(final String theName, final String theIcon, final
       String theUrl) {
     Validate.notNull(theName, "The name cannot be null.");

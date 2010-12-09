@@ -48,12 +48,12 @@ public class SearchCommand implements Command<List<SearchResultElement>> {
 
   /** Constructor, builds a search command.
    *
-   * @param theIndexRepository the index repository where this command
-   * delegates the searches to. It cannot be null.
+   * @param repository the index repository where this command delegates the
+   * searches to. It cannot be null.
    */
-  public SearchCommand(final IndexRepository theIndexRepository) {
-    Validate.notNull(theIndexRepository, "The index repository cannot be null.");
-    indexRepository = theIndexRepository;
+  public SearchCommand(final IndexRepository repository) {
+    Validate.notNull(repository, "The index repository cannot be null.");
+    indexRepository = repository;
   }
 
   /** Perform the search.

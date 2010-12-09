@@ -145,7 +145,7 @@ public class IndexRepository {
         }
         viewUrls.append("(alias:");
 
-        String alias = ((InternalCompass)compass).getMapping()
+        String alias = ((InternalCompass) compass).getMapping()
           .findRootMappingByClass(adapter.getAdaptedClass()).getAlias();
 
         viewUrls.append(alias);

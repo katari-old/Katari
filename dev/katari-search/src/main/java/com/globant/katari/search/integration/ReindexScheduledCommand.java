@@ -17,8 +17,12 @@ public class ReindexScheduledCommand implements ScheduledCommand {
    *
    * This is never null.
    */
-  IndexRepository indexRepository;
+  private IndexRepository indexRepository;
 
+  /** Creates a command to schedule a reindex.
+   *
+   * @param repository the index repository. It cannot be null.
+   */
   public ReindexScheduledCommand(final IndexRepository repository) {
     Validate.notNull(repository, "The index repository cannot be null.");
     indexRepository = repository;

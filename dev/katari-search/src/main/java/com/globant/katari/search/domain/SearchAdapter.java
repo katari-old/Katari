@@ -10,8 +10,6 @@ package com.globant.katari.search.domain;
  * Modules implement this interface and registers it in the search module,
  * appending it to the list named 'search.converters' in spring.
  *
- * TODO Find a more representative name.
- *
  * @author nira.amit@globant.com
  */
 public interface SearchAdapter {
