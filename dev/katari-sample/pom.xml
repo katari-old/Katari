@@ -559,42 +559,55 @@
         </configuration>
       </plugin>
 
-      <!-- Generates the ddl file. -->
-      <!-- Tried using maven groovy plugin, but it threw an error with mvn
-      jetty:run. -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals><goal>java</goal></goals>
-          </execution>
-        </executions>
-
-        <configuration>
-          <classpathScope>test</classpathScope>
-          <cleanupDaemonThreads>false</cleanupDaemonThreads>
-
-          <mainClass>com.globant.katari.tools.HibernateUtils</mainClass>
-          <arguments>
-            <!-- the three / are for compatibility with windows: file:///c:/..
-            -->
-            <argument>
-              file:///${project.basedir}/src/main/webapp/WEB-INF/applicationContext.xml,
-              classpath:/com/globant/katari/tools/dummyDataSourceContext.xml
-            </argument>
-            <argument>${project.basedir}/target/katari-sample.ddl</argument>
-          </arguments>
-
-        </configuration>
-      </plugin>
-
     </plugins>
   </build>
 
   <profiles>
+
+    <!-- We skip the ddl generation if we also skip the tests -->
+    <profile>
+      <id>run-tests</id>
+      <activation>
+        <property>
+          <name>!skipTests</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <!-- Generates the ddl file. -->
+          <!-- Tried using maven groovy plugin, but it threw an error with mvn
+          jetty:run. -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+
+            <executions>
+              <execution>
+                <phase>compile</phase>
+                <goals><goal>java</goal></goals>
+              </execution>
+            </executions>
+
+            <configuration>
+              <classpathScope>test</classpathScope>
+              <cleanupDaemonThreads>false</cleanupDaemonThreads>
+
+              <mainClass>com.globant.katari.tools.HibernateUtils</mainClass>
+              <arguments>
+                <!-- the three / are for compatibility with windows:
+                     file:///c:/..  -->
+                <argument>
+                  file:///${project.basedir}/src/main/webapp/WEB-INF/applicationContext.xml,
+                  classpath:/com/globant/katari/tools/dummyDataSourceContext.xml
+                </argument>
+                <argument>${project.basedir}/target/katari-sample.ddl</argument>
+              </arguments>
+
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
     <!-- With this profile active, cargo:start starts tomcat and deploys the
     expanded web application in it, listening at port 8098. You must first run
