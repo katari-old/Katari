@@ -39,6 +39,8 @@
     <module>katari-style</module>
     <!-- The classic menu support module -->
     <module>katari-classic-menu</module>
+    <!-- The dropdown menu support module -->
+    <module>katari-dropdown-menu</module>
     <!-- Katari test and build support tools. -->
     <module>katari-tools</module>
     <!-- Katari report management module -->
@@ -497,6 +499,12 @@
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-classic-menu</artifactId>
+        <version>${version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-dropdown-menu</artifactId>
         <version>${version}</version>
       </dependency>
 

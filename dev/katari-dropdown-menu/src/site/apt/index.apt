@@ -1,0 +1,12 @@
+~~~ vim: set sw=1 et ts=1 ai:
+ -----
+ The Site
+ -----
+ Pablo Gra\~na
+ -----
+
+Katari - dropdown menu
+
+ This module contains a menu implemented as a weblet. This is a javascript
+ based dropdown menu.
+
