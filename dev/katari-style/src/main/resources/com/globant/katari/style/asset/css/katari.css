@@ -1132,7 +1132,7 @@ table.directory .info h5 {
   margin:0 0 8px 0;
 }
 
-table.directory .info p{
+table.directory .info p {
   line-height:18px;
 }
 
@@ -1142,7 +1142,7 @@ table.directory .author {
 
 /* Style of the dropdown menu container, tha occupies the same space as the
  * menu or menubar. This is used to stop the screen from resizing when the menu
- * bar finally apperas.
+ * bar finally appears.
  */
 #dropdownMenu-context-container, #dropdownMenu-bar-container {
   height:24px;
