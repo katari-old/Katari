@@ -48,7 +48,9 @@
 
     <h3>Personalize your dashboard</h3>
 
-    <span class="genLink right"><a href='${baseweb}${command.returnUrl}'>Back to Dashboard</a></span>
+    <span class="genLink right">
+      <a href='${baseweb}${command.returnUrl}'>Back</a>
+    </span>
 
     <table width='100%' class='directory' border='0' cellpadding='0'
         cellspacing='0'>
