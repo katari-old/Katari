@@ -56,6 +56,8 @@ public class SocialPageDoTest {
     session.createQuery("delete from GadgetInstance").executeUpdate();
     session.createQuery("delete from GadgetGroup").executeUpdate();
     session.createQuery("delete from CoreUser").executeUpdate();
+    session.createQuery("delete from CoreUser").executeUpdate();
+    session.createSQLQuery("delete from supported_views").executeUpdate();
     session.createQuery("delete from Application").executeUpdate();
   }
 
