@@ -150,6 +150,10 @@ public class Application {
     XPathExpression expr = xpath.compile(expression);
 
     Object result = expr.evaluate(document, XPathConstants.STRING);
+    // Tracing through java's code, it appears that result should never be
+    // null: if the evaluated xpath expression did not match a node, evaluate
+    // returns an empty string instead of null. But this is not documented in
+    // the api.
     if (result != null) {
       return result.toString();
     } else {
@@ -185,7 +189,7 @@ public class Application {
    *
    * @return The description of the gadget, usually obtained from the gadget
    * xml specification. It returns null if the description cannot be
-   * determined.
+   * determined. It can also be an empty string.
    */
   public String getDescription() {
     return description;

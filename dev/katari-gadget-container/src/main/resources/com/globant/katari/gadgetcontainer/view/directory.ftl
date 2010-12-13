@@ -82,7 +82,8 @@
             </td>
             <td class='info'>
               <h5>${application.title}</h5>
-              <#if application.description??>
+              <#if application.description?? 
+                  && application.description?trim?length != 0>
                 <p>${application.description}</p>
               </#if>
             </td>
