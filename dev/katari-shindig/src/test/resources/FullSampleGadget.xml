@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <!-- vim: set ts=2 et sw=2 ai: -->
+
+  <ModulePrefs
+    title="Test title"
+    icon="http://localhost:8098/katari-sample/module/gadgets/activities.png"
+    description='Test description'/>
+
+  <Content type="text" view="default">
+    Sample default
+  </Content>
+
+  <Content type="text" view="canvas">
+    Sample canvas
+  </Content>
+
+</Module>
+

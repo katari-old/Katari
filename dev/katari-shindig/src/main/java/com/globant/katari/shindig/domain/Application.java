@@ -2,9 +2,14 @@
 
 package com.globant.katari.shindig.domain;
 
+import java.util.List;
+import java.util.LinkedList;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+import org.apache.commons.lang.Validate;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -12,6 +17,10 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ElementCollection;
+import javax.persistence.CollectionTable;
+import javax.persistence.JoinColumn;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -20,8 +29,8 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.apache.commons.lang.Validate;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 /** A social application, mainly represented by the gadget xml url.
  *
@@ -87,6 +96,23 @@ public class Application {
   @Column(nullable = false)
   private String url;
 
+  /** The list of views that the gadget supports.
+   *
+   * If the gadget supports the view named 'default', the gadget can be shown
+   * on every gadget group. Otherwise, the gadget must support the same view as
+   * the group. In other words, if the gadget does not support the view of the
+   * group, it cannot be added to that group. A gadget with an empty
+   * supportedViews list cannot be used anywhere.
+   *
+   * It is never null. 
+   */
+  @ElementCollection
+  @CollectionTable(name = "supported_views",
+      joinColumns = @JoinColumn(name = "application_id")
+  )
+  @Column(name = "view_name", nullable = false)
+  public List<String> supportedViews = new LinkedList<String>();
+
   /** Hibernate constructor.
    */
   Application() {
@@ -108,6 +134,7 @@ public class Application {
     url = gadgetUrl;
 
     InputStream gadgetSpecStream = null;
+    String message = "Error obtaining gadget information.";
     try {
       // This should probably go to some utility.
       gadgetSpecStream = new URL(url).openStream();
@@ -117,18 +144,37 @@ public class Application {
       DocumentBuilder builder = domFactory.newDocumentBuilder();
       Document document = builder.parse(gadgetSpecStream);
 
+      message = "Error obtaining gadget title";
       title = getXpathValue(document, "/Module/ModulePrefs/@title");
       if (title == null) {
         title = gadgetUrl;
       }
+      message = "Error obtaining gadget icon";
       icon = getXpathValue(document, "/Module/ModulePrefs/icon/text()");
+      message = "Error obtaining gadget description";
       description = getXpathValue(document,
           "/Module/ModulePrefs/@description");
+      message = "Error obtaining gadget author";
       author = getXpathValue(document, "/Module/ModulePrefs/@author");
+      message = "Error obtaining gadget thumbnail";
       thumbnail = getXpathValue(document, "/Module/ModulePrefs/@thumbnail");
 
+      message = "Error obtaining gadget views";
+      List<String> viewAttributes;
+      viewAttributes = getXpathValues(document, "/Module/Content/@view");
+      // The view attribute is a comma separated list of views.
+      for (String viewAttribute : viewAttributes) {
+        for (String view : viewAttribute.split(" *, *")) {
+          supportedViews.add(view);
+        }
+      }
+      // Checks for a content with no view.
+      if (xpathMatches(document, "/Module/Content[not(@view)]")) {
+        supportedViews.add("default");
+      }
+
     } catch (Exception e) {
-      throw new RuntimeException("Error obtaining gadget title", e);
+      throw new RuntimeException(message, e);
     } finally {
       if (gadgetSpecStream != null) {
         try {
@@ -141,6 +187,13 @@ public class Application {
   }
 
   /** Retuns the result of evaluating an xpath expression.
+   * 
+   * @param document the document to evaluate the expression against.
+   * 
+   * @param expression the xpath expression to evaluate.
+   * 
+   * @return returns a string with the result of evaluationg the xpath
+   * expression. It never returns null, even if the element is not found.
    */
   private String getXpathValue(final Document document,
       final String expression) throws XPathExpressionException {
@@ -154,11 +207,59 @@ public class Application {
     // null: if the evaluated xpath expression did not match a node, evaluate
     // returns an empty string instead of null. But this is not documented in
     // the api.
-    if (result != null) {
-      return result.toString();
-    } else {
-      return null;
+    Validate.notNull(result, "Should never be null.");
+    return result.toString();
+  }
+
+  /** Retuns the result of evaluating an xpath expression that could result in
+   * many elements.
+   * 
+   * @param document the document to evaluate the expression against. It cannot
+   * be null.
+   * 
+   * @param expression the xpath expression to evaluate. It cannot be null.
+   * 
+   * @return returns a list of strings with the result of evaluationg the xpath
+   * expression. It never returns null.
+   */
+  private List<String> getXpathValues(final Document document,
+      final String expression) throws XPathExpressionException {
+
+    XPathFactory factory = XPathFactory.newInstance();
+    XPath xpath = factory.newXPath();
+    XPathExpression expr = xpath.compile(expression);
+
+    Object values = expr.evaluate(document, XPathConstants.NODESET);
+    NodeList list = (NodeList) values;
+    List<String> result = new LinkedList<String>();
+    for (int i = 0; i < list.getLength(); i++) {
+      String nodeValue = list.item(i).getNodeValue();
+      if (nodeValue != null) {
+        result.add(nodeValue);
+      }
     }
+    return result;
+  }
+
+  /** Checks if an xpath expresion finds a node.
+   *
+   * @param document the document to evaluate the expression against. It cannot
+   * be null.
+   * 
+   * @param expression the xpath expression to evaluate. It cannot be null.
+   * 
+   * @return true if the expression finds a node, false otherwise.
+   */
+  private boolean xpathMatches(final Document document,
+      final String expression) throws XPathExpressionException {
+
+    XPathFactory factory = XPathFactory.newInstance();
+    XPath xpath = factory.newXPath();
+    XPathExpression expr = xpath.compile(expression);
+
+    Object values = expr.evaluate(document, XPathConstants.NODESET);
+    NodeList list = (NodeList) values;
+    return list.getLength() != 0;
   }
 
   /** @return long the id of the gadget instance.
@@ -213,10 +314,27 @@ public class Application {
     return thumbnail;
   }
 
-  /** @return {@link String} location of the gadget xml spec.
+  /** The url of the gadget xml spec.
+   *
+   * @return a string with the location of the gadget xml spec, never null.
    */
   public String getUrl() {
     return url;
+  }
+
+  /** Verifies if the gadget supports the provided view.
+   *
+   * If the gadget has a default view, it means that it supports all views.
+   *
+   * @param view the view to check. It cannot be null.
+   * 
+   * @return true if the gadget support the view.
+   */
+  public boolean isViewSupported(final String view) {
+    if (supportedViews.contains(view)) {
+      return true;
+    }
+    return supportedViews.contains("default");
   }
 }
 

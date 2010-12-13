@@ -26,7 +26,7 @@ public class ApplicationRepositoryTest {
   private long appId;
 
   private String gadgetXmlUrl = "file:///" + new File(
-      "target/test-classes/SampleGadget.xml").getAbsolutePath();
+      "src/test/resources/FullSampleGadget.xml").getAbsolutePath();
 
   @Before
   public void setUp() throws Exception {

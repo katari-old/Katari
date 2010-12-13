@@ -8,4 +8,8 @@
 
  </ModulePrefs>
 
+  <Content type="text" view="profile, canvas">
+    Sample canvas
+  </Content>
+
 </Module>

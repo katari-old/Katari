@@ -41,13 +41,13 @@ public class KatariActivityServiceTest {
   private KatariActivityService service;
 
   private String gadgetXmlUrl = "file:///" + new File(
-      "target/test-classes/SampleGadget.xml").getAbsolutePath();
+      "src/test/resources/FullSampleGadget.xml").getAbsolutePath();
 
   private String otheGadgetXmlUrl = "file:///" + new File(
-  "target/test-classes/OtherSampleGadget.xml").getAbsolutePath();
+      "src/test/resources/OtherSampleGadget.xml").getAbsolutePath();
 
   private String newsFeedGadgetXmlUrl = "file:///" + new File(
-  "target/test-classes/NewsFeedSampleGadget.xml").getAbsolutePath();
+      "src/test/resources/NewsFeedSampleGadget.xml").getAbsolutePath();
 
   // This is the same applicationId but in string format.
   private String appId;
