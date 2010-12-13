@@ -34,15 +34,25 @@ public class ListApplicationsCommandTest {
   private String gadgetXmlUrl2 = "file:///" + new File(
       "target/test-classes/SampleGadget2.xml").getAbsolutePath();
 
+  private String gadgetXmlUrlProfile = "file:///" + new File(
+      "target/test-classes/SampleProfileGadget.xml").getAbsolutePath();
+
   @Test
   public void testExecute() throws Exception {
 
     List<Application> applications = new LinkedList<Application>();
+
+    // We add 3 applications: 2 supports the default view, the other does not.
     Application application1 = new Application(gadgetXmlUrl1);
-    Application application2 = new Application(gadgetXmlUrl2);
     applications.add(application1);
+
+    Application application2 = new Application(gadgetXmlUrl2);
     applications.add(application2);
 
+    Application application3 = new Application(gadgetXmlUrlProfile);
+    applications.add(application3);
+
+    // Add 1 application to the gadget group that supports the default view.
     CoreUser user = new SampleUser("me");
     GadgetGroup group = new GadgetGroup(user, "gadget group", "default", 2);
     group.add(new GadgetInstance(application1, 0, 0));
@@ -66,6 +76,9 @@ public class ListApplicationsCommandTest {
         groupRepository, userService);
     command.setGadgetGroupName("gadget group");
 
+    // This should return just one application. Of the original 3, one is
+    // already included and the other does not support the gadget container
+    // view.
     List<Application> result = command.execute();
     assertThat(result.size(), is(1));
     assertThat(result.get(0).getTitle(), is("Test title 2"));

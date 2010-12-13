@@ -88,6 +88,9 @@ public class ListApplicationsCommand implements Command<List<Application>> {
   public List<Application> execute() {
     log.trace("Entering execute");
     Validate.notNull(gadgetGroupName, "Set the gadget group name.");
+
+    // TODO: this could be optimized obtaining only the applications that
+    // supports the gadget group view. 
     List<Application> applications = applicationRepository.findAll();
     List<Application> result = new LinkedList<Application>();
     long uid = userService.getCurrentUserId();
@@ -101,7 +104,8 @@ public class ListApplicationsCommand implements Command<List<Application>> {
     }
 
     for (Application application: applications) {
-      if (!group.contains(application)) {
+      if (!group.contains(application)
+          && application.isViewSupported(group.getView())) {
         result.add(application);
       }
     }
