@@ -187,6 +187,7 @@ public class GadgetGroupCommandTest {
       groupJson.put("name", "theGroup");
       groupJson.put("ownerId", 0);
       groupJson.put("viewerId", 0);
+      groupJson.put("view", "default");
       groupJson.put("numberOfColumns", 3);
       groupJson.put("customizable", isCustomizable);
       groupJson.put("gadgets", new JSONArray());

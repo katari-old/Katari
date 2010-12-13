@@ -104,6 +104,7 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
    *   "name":"&lt;string&gt;"
    *   "ownerId":&lt;long&gt;,
    *   "viewerId":&lt;long&gt;,
+   *   "view":"&lt;string&gt;",
    *   "numberOfColumns":&lt;int&gt;,
    *   "customizable":&lt;true|false&gt;,
    *   "gadgets":[
@@ -186,6 +187,7 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
       groupJson.put("name", group.getName());
       groupJson.put("ownerId", owner);
       groupJson.put("viewerId", uid);
+      groupJson.put("view", group.getView());
       groupJson.put("numberOfColumns", group.getNumberOfColumns());
       groupJson.put("customizable", group.isCustomizable());
 

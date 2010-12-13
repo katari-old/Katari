@@ -99,12 +99,14 @@ katari.console = {
  *
  * @param sOwner The id of the owner of the gadget instance.
  *
+ * @param view The view to use to render the gadget.
+ *
  * @param sColumn The column where the gadget will be displayed.
  *
  * @param sOrder The position of the gadget in the column.
  */
 katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
-    sSecurityToken, sViewer, sOwner, sColumn, sOrder) {
+    sSecurityToken, sViewer, sOwner, view, sColumn, sOrder) {
 
   /** The id of the gadget instance, usually as retrieved from the backend.
    */
@@ -130,7 +132,7 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
     } else {
       url.push("?");
     }
-    url.push("view=", katari.social.canvasConfig.defaultView);
+    url.push("view=", view);
     url.push("&url=", sUrl);
     url.push("#rpctoken=", applicationId);
     url.push("&st=", sSecurityToken);
@@ -355,7 +357,7 @@ katari.social.GadgetGroup = function(sContainer) {
       that.addGadget(new katari.social.GadgetInstance(gadgetSpec.id,
           gadgetSpec.url, gadgetSpec.title, gadgetSpec.icon,
           gadgetSpec.securityToken, groupSpec.viewerId, groupSpec.ownerId,
-          gadgetSpec.column, gadgetSpec.order));
+          groupSpec.view, gadgetSpec.column, gadgetSpec.order));
     });
     return this;
   };
