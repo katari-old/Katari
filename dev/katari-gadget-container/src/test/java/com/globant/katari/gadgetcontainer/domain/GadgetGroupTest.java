@@ -27,9 +27,13 @@ public class GadgetGroupTest {
   private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
+  private String gadgetProfileXmlUrl = "file:///" + new File(
+      "target/test-classes/SampleProfileGadget.xml").getAbsolutePath();
+
   private CoreUser user;
 
   private Application application;
+  private Application applicationProfile;
 
   @Before
   public void setUp() {
@@ -38,20 +42,22 @@ public class GadgetGroupTest {
     replay(user);
 
     application = new Application(gadgetXmlUrl);
+    applicationProfile = new Application(gadgetProfileXmlUrl);
   }
 
   @Test
   public void testConstructorOk() {
-    GadgetGroup cp = new GadgetGroup(user, "groupName", 1);
-    assertThat(cp.getOwner(), is(user));
-    assertTrue(cp.getId() == 0);
-    assertTrue(cp.getName().equals("groupName"));
+    GadgetGroup group = new GadgetGroup(user, "groupName", "default", 1);
+    assertThat(group.getOwner(), is(user));
+    assertTrue(group.getId() == 0);
+    assertTrue(group.getName().equals("groupName"));
+    assertThat(group.getView(), is("default"));
   }
 
   @Test
   public void testConstructorWithNullPageName() {
     try {
-      new GadgetGroup(user, null, 1);
+      new GadgetGroup(user, null, "default", 1);
       fail("Should be an illegal argument exception because pagename is null");
     } catch (IllegalArgumentException e) {
     }
@@ -60,15 +66,20 @@ public class GadgetGroupTest {
   @Test
   public void testConstructorWithEmptyPageName() {
     try {
-      new GadgetGroup(user, "", 1);
+      new GadgetGroup(user, "", "default", 1);
       fail("Should be an illegal argument exception because pagename is empty");
     } catch (IllegalArgumentException e) {
     }
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testConstructor_emptyView() {
+    new GadgetGroup(user, "something", "", 1);
+  }
+
   @Test
   public void testAddGadget() {
-    GadgetGroup group = new GadgetGroup(user, "1", 1);
+    GadgetGroup group = new GadgetGroup(user, "1", "default", 1);
     GadgetInstance instance = new GadgetInstance(application, 0, 0);
     group.add(instance);
     assertTrue(group.getGadgets().contains(instance));
@@ -76,14 +87,29 @@ public class GadgetGroupTest {
 
   @Test(expected = RuntimeException.class)
   public void testAddGadget_columnTooLarge() {
-    GadgetGroup group = new GadgetGroup(user, "1", 1);
+    GadgetGroup group = new GadgetGroup(user, "1", "default", 1);
     GadgetInstance instance = new GadgetInstance(application, 1, 0);
     group.add(instance);
   }
 
+  @Test(expected = RuntimeException.class)
+  public void testAddGadget_viewNotSupported() {
+    GadgetGroup group = new GadgetGroup(user, "1", "canvas", 1);
+    GadgetInstance instance = new GadgetInstance(applicationProfile, 0, 0);
+    group.add(instance);
+  }
+
+  @Test
+  public void testAddGadget_defaultGadgetView() {
+    GadgetGroup group = new GadgetGroup(user, "1", "canvas", 1);
+    GadgetInstance instance = new GadgetInstance(application, 0, 0);
+    group.add(instance);
+    assertTrue(group.getGadgets().contains(instance));
+  }
+
   @Test
   public void move_pastLastColumn() {
-    GadgetGroup group = new GadgetGroup(user, "name", 1);
+    GadgetGroup group = new GadgetGroup(user, "name", "default", 1);
     GadgetInstance instance;
 
     instance = new GadgetInstance(application, 0, 0);
@@ -104,7 +130,7 @@ public class GadgetGroupTest {
 
   @Test
   public void move_wrongGadget() {
-    GadgetGroup group = new GadgetGroup(user, "name", 1);
+    GadgetGroup group = new GadgetGroup(user, "name", "default", 1);
     GadgetInstance instance;
 
     instance = new GadgetInstance(application, 0, 0);
@@ -125,7 +151,7 @@ public class GadgetGroupTest {
 
   @Test
   public void move_sameColumn() {
-    GadgetGroup group = new GadgetGroup(user, "name", 1);
+    GadgetGroup group = new GadgetGroup(user, "name", "default", 1);
 
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
     new DirectFieldAccessor(col0Order0).setPropertyValue("id", 1);
@@ -145,7 +171,7 @@ public class GadgetGroupTest {
 
   @Test
   public void move_toEmptyColumn() {
-    GadgetGroup group = new GadgetGroup(user, "name", 2);
+    GadgetGroup group = new GadgetGroup(user, "name", "default", 2);
 
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
     new DirectFieldAccessor(col0Order0).setPropertyValue("id", 1);
@@ -165,7 +191,7 @@ public class GadgetGroupTest {
 
   @Test
   public void move_toLargeColumn() {
-    GadgetGroup group = new GadgetGroup(user, "name", 2);
+    GadgetGroup group = new GadgetGroup(user, "name", "default", 2);
 
     GadgetInstance col0Order0 = new GadgetInstance(application, 0, 0);
     new DirectFieldAccessor(col0Order0).setPropertyValue("id", 1);
@@ -203,7 +229,7 @@ public class GadgetGroupTest {
 
   @Test
   public void testCreateFromTemplate_nonTemplateGroup() {
-    GadgetGroup group = new GadgetGroup(null, "shared group", 3);
+    GadgetGroup group = new GadgetGroup(null, "shared group", "default", 3);
     try {
       group.createFromTemplate(user);
       fail("Trying to create a group from a non template.");
@@ -214,7 +240,7 @@ public class GadgetGroupTest {
   @Test
   public void testCreateFromTemplate() {
     // Create a group with tree gadget instances.
-    GadgetGroup group = new GadgetGroup("main group", 3);
+    GadgetGroup group = new GadgetGroup("main group", "default", 3);
     // The template group must not have an owner.
     assertThat(group.getOwner(), nullValue());
     group.add(new GadgetInstance(application, 0, 0));
@@ -225,6 +251,7 @@ public class GadgetGroupTest {
 
     assertThat(newGroup.getOwner(), is(user));
     assertThat(newGroup.getName(), is("main group"));
+    assertThat(newGroup.getView(), is("default"));
     assertThat(newGroup.getNumberOfColumns(), is(3));
 
     Set<GadgetInstance> instances = newGroup.getGadgets();
@@ -238,14 +265,14 @@ public class GadgetGroupTest {
   @Test
   public void testContains_false() {
     // Create a group with one gadget instance.
-    GadgetGroup group = new GadgetGroup("main group", 3);
+    GadgetGroup group = new GadgetGroup("main group", "default", 3);
     assertThat(group.contains(application), is(false));
   }
 
   @Test
   public void testContains_true() {
     // Create a group with one gadget instance.
-    GadgetGroup group = new GadgetGroup("main group", 3);
+    GadgetGroup group = new GadgetGroup("main group", "default", 3);
     group.add(new GadgetInstance(application, 0, 0));
     assertThat(group.contains(application), is(true));
   }
@@ -253,7 +280,7 @@ public class GadgetGroupTest {
   @Test
   public void testRemove() {
     // Create a group with one gadget instance.
-    GadgetGroup group = new GadgetGroup("main group", 3);
+    GadgetGroup group = new GadgetGroup("main group", "default", 3);
     group.add(new GadgetInstance(application, 0, 0));
     assertThat(group.getGadgets().size(), is(1));
     group.remove(0);

@@ -9,20 +9,21 @@ import static org.easymock.classextension.EasyMock.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.After;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.io.File;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.globant.katari.gadgetcontainer.SpringTestUtils;
@@ -31,6 +32,7 @@ import org.springframework.context.ApplicationContext;
 import com.globant.katari.shindig.domain.Application;
 
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 import com.globant.katari.gadgetcontainer.domain.SampleUser;
 
 import com.globant.katari.gadgetcontainer.application.ListApplicationsCommand;
@@ -42,20 +44,27 @@ public class DirectoryDoTest {
 
   private ApplicationContext appContext;
 
-  private Session session;
+  private GadgetGroupRepository repository;
 
   @Before
   public void setUp() throws Exception {
 
     appContext = SpringTestUtils.getContext();
 
-    session = ((SessionFactory) appContext.getBean("katari.sessionFactory"))
-      .openSession();
+    repository = ((GadgetGroupRepository) appContext.getBean(
+          "gadgetcontainer.gadgetGroupRepository"));
 
-    session.createQuery("delete from GadgetInstance").executeUpdate();
-    session.createQuery("delete from GadgetGroup").executeUpdate();
-    session.createQuery("delete from CoreUser").executeUpdate();
-    session.createQuery("delete from Application").executeUpdate();
+    repository.getHibernateTemplate().bulkUpdate("delete from GadgetInstance");
+    repository.getHibernateTemplate().bulkUpdate("delete from GadgetGroup");
+    repository.getHibernateTemplate().bulkUpdate("delete from CoreUser");
+    repository.getHibernateTemplate().execute(new HibernateCallback() {
+      public Object doInHibernate(Session session) throws HibernateException,
+          SQLException {
+        session.createSQLQuery("delete from supported_views").executeUpdate();
+        return null;
+      }
+    });
+    repository.getHibernateTemplate().bulkUpdate("delete from Application");
   }
 
   @SuppressWarnings("unchecked")
@@ -63,21 +72,21 @@ public class DirectoryDoTest {
   public void test() throws Exception {
 
     CoreUser user = new SampleUser("me");
-    session.saveOrUpdate(user);
-    user = (CoreUser) session.createQuery("from CoreUser").uniqueResult();
+    repository.getHibernateTemplate().saveOrUpdate(user);
+    user = (CoreUser) repository.getHibernateTemplate().find("from CoreUser")
+      .get(0);
 
-    GadgetGroup group = new GadgetGroup(user, "gadget group", 2);
-    session.saveOrUpdate(group);
+    GadgetGroup group = new GadgetGroup(user, "gadget group", "default", 2);
+    repository.getHibernateTemplate().saveOrUpdate(group);
 
     Application app = new Application(gadgetXmlUrl);
-    session.saveOrUpdate(app);
+    repository.getHibernateTemplate().saveOrUpdate(app);
 
     // Sets the currently logged on user
     SpringTestUtils.setLoggedInUser(user);
 
     ViewCommandController controller;
-    controller = (ViewCommandController) appContext.getBean(
-        "/directory.do");
+    controller = (ViewCommandController) appContext.getBean("/directory.do");
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     PrintWriter writer = new PrintWriter(os);
@@ -100,11 +109,6 @@ public class DirectoryDoTest {
     List<Application> applications;
     applications = (List<Application>) mv.getModel().get("result");
     assertThat(applications.get(0).getTitle(), is("Test title"));
-  }
-
-  @After
-  public void tearDown() {
-    session.close();
   }
 }
 

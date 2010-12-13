@@ -56,6 +56,7 @@ public class DeleteUserListenerTest {
     session.createQuery("delete from GadgetInstance").executeUpdate();
     session.createQuery("delete from GadgetGroup").executeUpdate();
     session.createQuery("delete from CoreUser").executeUpdate();
+    session.createSQLQuery("delete from supported_views").executeUpdate();
     session.createQuery("delete from Application").executeUpdate();
 
     user = new SampleUser("me");
@@ -74,7 +75,7 @@ public class DeleteUserListenerTest {
     Application application2 = new Application(gadgetXmlUrl2);
     repository.getHibernateTemplate().saveOrUpdate(application2);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", 2);
+    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(application1, 0, 0));
     GadgetInstance instanceToRemove = new GadgetInstance(application2, 0, 0);
     group.add(instanceToRemove);

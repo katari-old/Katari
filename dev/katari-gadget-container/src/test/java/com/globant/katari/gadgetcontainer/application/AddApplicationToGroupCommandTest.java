@@ -52,6 +52,7 @@ public class AddApplicationToGroupCommandTest {
     session.createQuery("delete from GadgetInstance").executeUpdate();
     session.createQuery("delete from GadgetGroup").executeUpdate();
     session.createQuery("delete from CoreUser").executeUpdate();
+    session.createSQLQuery("delete from supported_views").executeUpdate();
     session.createQuery("delete from Application").executeUpdate();
 
     user = new SampleUser("me");
@@ -71,7 +72,7 @@ public class AddApplicationToGroupCommandTest {
     Application application2 = new Application(gadgetXmlUrl2);
     repository.getHibernateTemplate().saveOrUpdate(application2);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", 2);
+    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(application1, 0, 0));
     repository.save(group);
 

@@ -6,8 +6,8 @@
     title="Test title"
     icon="http://localhost:8098/katari-sample/module/gadgets/activities.png"/>
 
-  <Content type="text">
-    Sample canvas
+  <Content type="text" view='profile'>
+    Sample profile view
   </Content>
 
 </Module>

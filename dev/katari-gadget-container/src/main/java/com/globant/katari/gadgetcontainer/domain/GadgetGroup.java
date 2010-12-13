@@ -99,12 +99,20 @@ public class GadgetGroup {
   @Column(nullable = false)
   private String name;
 
-  /** {@link String} the owner of this gadget group.
+  /** The owner of this gadget group.
    *
    * If null, this is a static group.
    */
   @ManyToOne(optional = true, fetch = FetchType.EAGER)
   private CoreUser owner = null;
+
+  /** The view of this gadget group.
+   *
+   * This will only hold gadgtes that support this view or the default view. It
+   * is never null.
+   */
+  @Column(name = "view_name", nullable = false)
+  private String view;
 
   /** The gadgets in this group.
    *
@@ -131,12 +139,16 @@ public class GadgetGroup {
    *
    * @param groupName name of the group. It cannot be null
    *
+   * @param viewName name of the view. This gadget will only contain gadgets
+   * that support this view or the default view. It cannot be null
+   *
    * @param columns the number of columns in the group. It must be 1 or
    * greater.
    */
   public GadgetGroup(final CoreUser user, final String groupName,
-      final int columns) {
-    Validate.notEmpty(groupName, "group name can not be null nor empty");
+      final String viewName, final int columns) {
+    Validate.notEmpty(groupName, "Group name can not be null nor empty.");
+    Validate.notEmpty(viewName, "View name can not be null nor empty.");
     Validate.isTrue(columns >= 1, "Number of columns must be 1 or greater.");
 
     if (user != null) {
@@ -146,6 +158,7 @@ public class GadgetGroup {
     }
 
     name = groupName;
+    view = viewName;
     owner = user;
     numberOfColumns = columns;
   }
@@ -154,13 +167,19 @@ public class GadgetGroup {
    *
    * @param groupName name of the group. It cannot be null
    *
+   * @param viewName name of the view. This gadget will only contain gadgets
+   * that support this view or the default view. It cannot be null
+   *
    * @param columns the number of columns in the group. It must be 1 or
    * greater.
    */
-  public GadgetGroup(final String groupName, final int columns) {
-    Validate.notEmpty(groupName, "group name can not be null nor empty");
+  public GadgetGroup(final String groupName, final String viewName,
+      final int columns) {
+    Validate.notEmpty(groupName, "Group name can not be null nor empty.");
+    Validate.notEmpty(viewName, "View name can not be null nor empty.");
     Validate.isTrue(columns >= 1, "Number of columns must be 1 or greater.");
     name = groupName;
+    view = viewName;
     numberOfColumns = columns;
 
     type = Type.TEMPLATE;
@@ -180,6 +199,17 @@ public class GadgetGroup {
    */
   public String getName() {
     return name;
+  }
+
+  /** Returns the name of the view.
+   * 
+   * This gadget will only contain gadgets that support this view or the
+   * default view.
+   *
+   * @return the view name, never null.
+   */
+  public String getView() {
+    return view;
   }
 
   /** Returns the owner of a customizable group, or null if this is as static
@@ -204,7 +234,7 @@ public class GadgetGroup {
   /** Adds a gadget to the group.
    *
    * The gadget's column must be between 0 and the number of columns in this
-   * group.
+   * group. The gadget must support this column's view.
    *
    * @param instance the gadget to add to this group. It cannot be null.
    */
@@ -212,6 +242,8 @@ public class GadgetGroup {
     Validate.notNull(instance, "The gadget instance cannot be null.");
     Validate.isTrue(instance.getColumn() < numberOfColumns,
         "You cannot add a gadget for column greater than the gadget group's.");
+    Validate.isTrue(instance.getApplication().isViewSupported(view),
+        "The gadget does not support this group's view.");
     for (GadgetInstance gadget: gadgets) {
       if (gadget.getColumn() == instance.getColumn()
           && gadget.getOrder() >= instance.getOrder()) {
@@ -335,7 +367,7 @@ public class GadgetGroup {
   public GadgetGroup createFromTemplate(final CoreUser user) {
     Validate.notNull(user, "The user cannot be null.");
     Validate.isTrue(type == Type.TEMPLATE, "The group is not a template");
-    GadgetGroup group = new GadgetGroup(user, name, numberOfColumns);
+    GadgetGroup group = new GadgetGroup(user, name, view, numberOfColumns);
 
     // Adds all the gadgetInstances.
     for (GadgetInstance gadget: gadgets) {

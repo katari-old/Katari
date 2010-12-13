@@ -59,6 +59,7 @@ public class RemoveApplicationFromGroupDoTest {
     session.createQuery("delete from GadgetInstance").executeUpdate();
     session.createQuery("delete from GadgetGroup").executeUpdate();
     session.createQuery("delete from CoreUser").executeUpdate();
+    session.createSQLQuery("delete from supported_views").executeUpdate();
     session.createQuery("delete from Application").executeUpdate();
   }
 
@@ -77,7 +78,7 @@ public class RemoveApplicationFromGroupDoTest {
     Application app2 = new Application(gadgetXmlUrl2);
     session.saveOrUpdate(app2);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", 2);
+    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(app1, 0, 0));
     GadgetInstance instanceToRemove = new GadgetInstance(app1, 0, 0);
     group.add(instanceToRemove);

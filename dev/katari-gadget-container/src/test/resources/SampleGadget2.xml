@@ -4,9 +4,11 @@
 
   <ModulePrefs
     title="Test title 2"
-    icon="http://localhost:8098/katari-sample/module/gadgets/activities.png">
+    icon="http://localhost:8098/katari-sample/module/gadgets/activities.png"/>
 
- </ModulePrefs>
+  <Content type="text" view='default'>
+    Sample canvas
+  </Content>
 
 </Module>
 

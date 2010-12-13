@@ -47,6 +47,7 @@ public class ApplicationRepositoryTest {
     session.createQuery("delete from GadgetInstance").executeUpdate();
     session.createQuery("delete from GadgetGroup").executeUpdate();
     session.createQuery("delete from CoreUser").executeUpdate();
+    session.createSQLQuery("delete from supported_views").executeUpdate();
     session.createQuery("delete from Application").executeUpdate();
 
     Application app1 = new Application(gadgetUrl1);

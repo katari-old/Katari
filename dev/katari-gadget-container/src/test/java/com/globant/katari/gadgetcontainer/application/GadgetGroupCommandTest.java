@@ -63,7 +63,7 @@ public class GadgetGroupCommandTest {
 
     String groupName = "theGroup";
 
-    GadgetGroup gadgetGroup = new GadgetGroup(user, groupName, 3);
+    GadgetGroup gadgetGroup = new GadgetGroup(user, groupName, "default", 3);
     Application application = new Application(gadgetXmlUrl);
     GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
     gadgetGroup.add(gadgetInstance);
@@ -91,7 +91,7 @@ public class GadgetGroupCommandTest {
   public void testExecute_staticGroup() throws Exception {
     String groupName = "theGroup";
 
-    GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, 3);
+    GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, "default", 3);
     Application application = new Application(gadgetXmlUrl);
     GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
     gadgetGroup.add(gadgetInstance);
@@ -120,7 +120,7 @@ public class GadgetGroupCommandTest {
     String groupName = "theGroup";
 
     // A group template
-    GadgetGroup gadgetGroup = new GadgetGroup(groupName, 3);
+    GadgetGroup gadgetGroup = new GadgetGroup(groupName, "default", 3);
     Application application = new Application(gadgetXmlUrl);
     GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
     gadgetGroup.add(gadgetInstance);
@@ -151,7 +151,7 @@ public class GadgetGroupCommandTest {
   public void testExecute_noGadgets() throws Exception {
     String groupName = "theGroup";
 
-    GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, 3);
+    GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, "default", 3);
 
     GadgetGroupRepository repository = createMock(GadgetGroupRepository.class);
     expect(repository.findGadgetGroup(0, groupName)).andReturn(gadgetGroup);

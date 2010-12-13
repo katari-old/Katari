@@ -56,6 +56,7 @@ public class MoveGadgetDoTest {
     session.createQuery("delete from GadgetInstance").executeUpdate();
     session.createQuery("delete from GadgetGroup").executeUpdate();
     session.createQuery("delete from CoreUser").executeUpdate();
+    session.createSQLQuery("delete from supported_views").executeUpdate();
     session.createQuery("delete from Application").executeUpdate();
   }
 
@@ -73,7 +74,7 @@ public class MoveGadgetDoTest {
     // Test friendly hack: never use the repository like this.
     repository.getHibernateTemplate().saveOrUpdate(app);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", 2);
+    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(app, 0, 0));
     group.add(new GadgetInstance(app, 1, 0));
     group.add(new GadgetInstance(app, 1, 1));

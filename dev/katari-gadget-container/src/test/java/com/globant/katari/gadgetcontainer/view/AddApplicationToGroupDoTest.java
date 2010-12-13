@@ -39,10 +39,10 @@ import com.globant.katari.gadgetcontainer.domain.SampleUser;
 public class AddApplicationToGroupDoTest {
 
   private String gadgetXmlUrl1 = "file:///" + new File(
-      "target/test-classes/SampleGadget.xml").getAbsolutePath();
+      "src/test/resources/SampleGadget.xml").getAbsolutePath();
 
   private String gadgetXmlUrl2 = "file:///" + new File(
-      "target/test-classes/SampleGadget2.xml").getAbsolutePath();
+      "src/test/resources/SampleGadget2.xml").getAbsolutePath();
 
   private ApplicationContext appContext;
 
@@ -59,6 +59,7 @@ public class AddApplicationToGroupDoTest {
     session.createQuery("delete from GadgetInstance").executeUpdate();
     session.createQuery("delete from GadgetGroup").executeUpdate();
     session.createQuery("delete from CoreUser").executeUpdate();
+    session.createSQLQuery("delete from supported_views").executeUpdate();
     session.createQuery("delete from Application").executeUpdate();
   }
 
@@ -73,11 +74,11 @@ public class AddApplicationToGroupDoTest {
       appContext.getBean("gadgetcontainer.gadgetGroupRepository");
 
     Application app1 = new Application(gadgetXmlUrl1);
-    session.saveOrUpdate(app1);
+    repository.getHibernateTemplate().saveOrUpdate(app1);
     Application app2 = new Application(gadgetXmlUrl2);
-    session.saveOrUpdate(app2);
+    repository.getHibernateTemplate().saveOrUpdate(app2);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", 2);
+    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(app1, 0, 0));
     repository.save(group);
 
@@ -100,10 +101,8 @@ public class AddApplicationToGroupDoTest {
     expect(response.getWriter()).andReturn(writer);
     replay(response);
 
-    ModelAndView mv;
-    mv = controller.handleRequest(request, response);
-
-    assertThat(mv, nullValue());
+    ModelAndView modelAndView = controller.handleRequest(request, response);
+    assertThat(modelAndView, nullValue());
 
     writer.flush();
     assertThat(os.toString(), is("{}"));

@@ -44,7 +44,7 @@ public class ListApplicationsCommandTest {
     applications.add(application2);
 
     CoreUser user = new SampleUser("me");
-    GadgetGroup group = new GadgetGroup(user, "gadget group", 2);
+    GadgetGroup group = new GadgetGroup(user, "gadget group", "default", 2);
     group.add(new GadgetInstance(application1, 0, 0));
 
     ApplicationRepository applicationRepository;
