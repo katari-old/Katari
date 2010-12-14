@@ -30,7 +30,7 @@
     class='com.globant.katari.core.spring.controller.JsonCommandController'>
     <lookup-method name="createCommandBean" bean="gadgetGroupCommand" />
   </bean>
- 
+
   <bean name='/moveGadget.do'
     class='com.globant.katari.core.spring.controller.JsonCommandController'>
     <lookup-method name="createCommandBean" bean="moveGadgetCommand" />
@@ -66,9 +66,11 @@
   <!-- Command definitions -->
   <bean name="gadgetGroupCommand" scope="prototype"
     class="com.globant.katari.gadgetcontainer.application.GadgetGroupCommand">
-    <constructor-arg index="0" ref="gadgetGroupRepository" />
-    <constructor-arg index="1" ref="userService" />
-    <constructor-arg index='2' ref="tokenService" />
+    <constructor-arg index="0" ref="coreuser.userRepository" />
+    <constructor-arg index="1" ref="gadgetGroupRepository" />
+    <constructor-arg index="2" ref="userService" />
+    <constructor-arg index='3' ref="tokenService" />
+    <constructor-arg index='4' ref='gadgetcontainer.viewGroupDecider'/>
   </bean>
 
   <bean name="moveGadgetCommand" scope="prototype"

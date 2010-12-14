@@ -334,7 +334,8 @@ public class ConstructorArgumentsBeanNameAutoProxyCreator extends
           log.debug("Obtained value holder for argument: " + argValue);
         }
         Object actualValue = getActualValue(argValue);
-        if (!parameterTypes[i].isInstance(actualValue)) {
+        if (actualValue != null
+            && !parameterTypes[i].isInstance(actualValue)) {
           log.warn("The actual value of the parameter does not match "
               + "the expected argument type. Got " + actualValue.getClass()
               + " but expected " + parameterTypes[i]);

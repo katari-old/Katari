@@ -142,6 +142,10 @@
     <constructor-arg ref='gadgetcontainer.gadgetGroupRepository'/>
   </bean>
 
+  <!-- Hook to allow module writers to configure who can see other's gadgets.
+       -->
+  <katari:null id='gadgetcontainer.viewGroupDecider'/>
+
   <!-- vim: set ts=2 sw=2 et ai: -->
 </beans>
 

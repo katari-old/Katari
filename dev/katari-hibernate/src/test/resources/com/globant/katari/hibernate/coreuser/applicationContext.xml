@@ -139,6 +139,16 @@
   <bean id='moduleContainer'
     class='com.globant.katari.core.web.ModuleContainerServlet'/>
 
+  <!-- Adds a sample user entity to hibernate. -->
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.persistentClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.hibernate.coreuser.domain.SampleUser</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
 </beans>
 
 <!-- vim: set ts=2 et sw=2 ai: -->

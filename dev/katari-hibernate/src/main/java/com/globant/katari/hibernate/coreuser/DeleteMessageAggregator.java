@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.apache.camel.Exchange;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
 
-import com.globant.katari.hibernate.coreuser.DeleteMessage;
-
 /** Aggregates the result of two endpoints.
  *
  * This aggregator works only for messages of type DeleteMessage.
