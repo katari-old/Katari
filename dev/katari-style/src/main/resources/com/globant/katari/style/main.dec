@@ -40,6 +40,8 @@
     </script>
   </head>
 
+  <!-- This is just a sample to showcase the tree types of menus. Pick the one
+  you like and remove the menu selection logic. -->
   <#assign menuType = request.getParameter("menuType")!''/>
   <#if menuType != ''>
     <#assign mm = request.getSession().setAttribute("menuType", menuType)/>
@@ -68,17 +70,17 @@
         </#if>
         <div id="section">
 
-          <!-- the inner menu starts here -->
           <#if menuType == 'classic'>
+            <!-- the inner menu starts here -->
             <@katari.weblet "classic-menu" "menu" "2"/>
+            <!-- the inner menu ends here -->
           </#if>
-          <!-- the inner menu ends here -->
 
-          <!-- the button menu starts here -->
           <#if menuType == 'classic'>
+            <!-- the button menu starts here -->
             <@katari.weblet "classic-menu" "menu" "3"/>
+            <!-- the button menu ends here -->
           </#if>
-          <!-- the button menu ends here -->
 
           <div id='content'>
             <!-- Body begins here -->

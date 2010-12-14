@@ -54,6 +54,16 @@
     </dependency>
 
     <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
     </dependency>
@@ -74,16 +84,6 @@
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
     </dependency>
 
     <dependency>
@@ -130,12 +130,12 @@
 
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
+      <artifactId>spring-webmvc</artifactId>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
+      <artifactId>spring-context</artifactId>
     </dependency>
 
     <dependency>
@@ -151,11 +151,6 @@
     <dependency>
       <groupId>org.acegisecurity</groupId>
       <artifactId>acegi-security</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.freemarker</groupId>
-      <artifactId>freemarker</artifactId>
     </dependency>
 
     <!-- Provided by the container. -->
@@ -188,6 +183,11 @@
 
     <dependency>
       <groupId>com.globant.katari</groupId>
+      <artifactId>katari-dropdown-menu</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
       <artifactId>katari-report</artifactId>
     </dependency>
 
@@ -201,16 +201,18 @@
       <artifactId>katari-ajax</artifactId>
     </dependency>
 
-    <!-- We use the local login, not cas. -->
-    <!-- dependency>
-      <groupId>com.globant.katari</groupId>
-      <artifactId>katari-cas</artifactId>
-    </dependency -->
-
     <dependency>
       <groupId>com.globant.katari</groupId>
       <artifactId>katari-local-login</artifactId>
     </dependency>
+
+    <!-- We use the local login, not cas. -->
+    <!--
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-cas-login</artifactId>
+    </dependency>
+    -->
 
     <dependency>
       <groupId>com.globant.katari</groupId>
@@ -229,17 +231,17 @@
 
     <dependency>
       <groupId>com.globant.katari</groupId>
-      <artifactId>katari-user</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.globant.katari</groupId>
       <artifactId>katari-gadget-container</artifactId>
     </dependency>
 
     <dependency>
       <groupId>com.globant.katari</groupId>
       <artifactId>katari-shindig</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
+      <artifactId>katari-user</artifactId>
     </dependency>
 
     <dependency>
