@@ -33,6 +33,15 @@
     </script>
   </head>
 
+  <!-- This is just a sample to showcase the tree types of menus. Pick the one
+  you like and remove the menu selection logic. -->
+  <#assign menuType = request.getParameter("menuType")!''/>
+  <#if menuType != ''>
+    <#assign mm = request.getSession().setAttribute("menuType", menuType)/>
+  <#else>
+    <#assign menuType = request.getSession().getAttribute("menuType")!'classic'/>
+  </#if>
+
   <body class='yui-skin-sam'>
     <div id='container'>
       <div id="header">
@@ -41,19 +50,30 @@
         <!-- Header ends here -->
       </div>
       <div id="frame">
-        <!-- the main menu starts here -->
-        <@katari.weblet "classic-menu" "menu" "1"/>
-
-        <!-- the main menu ends here -->
+        <#if menuType == 'classic'>
+          <!-- the main menu starts here -->
+          <@katari.weblet "classic-menu" "menu" "1"/>
+          <!-- the main menu ends here -->
+        <#elseif menuType == 'bar'>
+          <@katari.weblet "dropdown-menu" "menu" "bar"/>
+        <#else>
+          <div style='height:3px; background-color:#fff'>
+            <@katari.weblet "dropdown-menu" "menu" "context"/>
+          </div>
+        </#if>
         <div id="section">
 
-          <!-- the inner menu starts here -->
-          <@katari.weblet "classic-menu" "menu" "2"/>
-          <!-- the inner menu ends here -->
+          <#if menuType == 'classic'>
+            <!-- the inner menu starts here -->
+            <@katari.weblet "classic-menu" "menu" "2"/>
+            <!-- the inner menu ends here -->
+          </#if>
 
-          <!-- the button menu starts here -->
-          <@katari.weblet "classic-menu" "menu" "3"/>
-          <!-- the button menu ends here -->
+          <#if menuType == 'classic'>
+            <!-- the button menu starts here -->
+            <@katari.weblet "classic-menu" "menu" "3"/>
+            <!-- the button menu ends here -->
+          </#if>
 
           <div id='content'>
             <!-- Body begins here -->

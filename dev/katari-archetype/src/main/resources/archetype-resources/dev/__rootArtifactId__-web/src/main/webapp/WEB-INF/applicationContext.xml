@@ -24,17 +24,22 @@
   <!-- The classic menu module. -->
   <katari:import module="com.globant.katari.menu.classic"/>
 
+  <!-- The dropdown menu module. -->
+  <katari:import module="com.globant.katari.menu.dropdown"/>
+
   <!--  The editable-pages module -->
   <katari:import module="com.globant.katari.editablepages"/>
 
   <!-- LOGIN. -->
   <!--
   To have cas login support you have to enable the cas module.
-  for most of the scenarios the local one should be enough
+  For most of the scenarios the local one should be enough.
   -->
-  <!-- The cas module.
+  <!-- The cas module. -->
+  <!--
   <katari:import module="com.globant.katari.cas"/>
   -->
+
   <!-- The local login module (recomended) -->
   <katari:import module="com.globant.katari.login.local"/>
 
