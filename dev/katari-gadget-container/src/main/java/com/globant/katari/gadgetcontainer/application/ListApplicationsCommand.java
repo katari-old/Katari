@@ -90,7 +90,7 @@ public class ListApplicationsCommand implements Command<List<Application>> {
     Validate.notNull(gadgetGroupName, "Set the gadget group name.");
 
     // TODO: this could be optimized obtaining only the applications that
-    // supports the gadget group view. 
+    // supports the gadget group view.
     List<Application> applications = applicationRepository.findAll();
     List<Application> result = new LinkedList<Application>();
     long uid = userService.getCurrentUserId();

@@ -202,7 +202,7 @@ public class GadgetGroup {
   }
 
   /** Returns the name of the view.
-   * 
+   *
    * This gadget will only contain gadgets that support this view or the
    * default view.
    *
