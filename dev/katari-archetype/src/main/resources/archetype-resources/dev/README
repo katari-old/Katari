@@ -9,6 +9,13 @@ full access to it.
 
 3- maven-2.2.
 
+Katari based applications needs at least 512Mb of memory to run, depending on
+platform. To be on the safe side you could set an environment variable:
+
+MAVEN_OPTS="-XX:MaxPermSize=192m -Xmx768m"
+
+before running any maven command.
+
 4- A properly configured maven repository proxy or access to the public maven
 repositories.
 
@@ -246,6 +253,15 @@ If you are behind a proxy and the server needs to make http requests to external
 resources, then define MAVEN_OPTS as:
 
 MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128"
+
+Memory usage
+------------
+
+Building the full maven project, including site and deployment under maven 2.2.1
+consumes a lot of memory. Under linux, use this to make sure that java memory is
+enough:
+
+MAVEN_OPTS="-XX:MaxPermSize=384m -Xmx1512m"
 
 -- vim: set ts=2 et sw=2 tw=80:
 

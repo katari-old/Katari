@@ -11,6 +11,11 @@ full access to it.
 
 3- maven-2.2.
 
+Katari needs at least 512Mb of memory to run, depending on platform. To be on
+the safe side you could set an environment variable:
+
+MAVEN_OPTS="-XX:MaxPermSize=192m -Xmx768m"
+
 4- A properly configured maven repository proxy or access to the public maven
 repositories.
 
