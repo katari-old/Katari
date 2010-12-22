@@ -16,6 +16,8 @@ the safe side you could set an environment variable:
 
 MAVEN_OPTS="-XX:MaxPermSize=192m -Xmx768m"
 
+before running any maven command.
+
 4- A properly configured maven repository proxy or access to the public maven
 repositories.
 
