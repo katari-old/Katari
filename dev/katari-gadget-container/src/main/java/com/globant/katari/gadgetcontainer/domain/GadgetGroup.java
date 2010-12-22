@@ -241,9 +241,13 @@ public class GadgetGroup {
   public void add(final GadgetInstance instance) {
     Validate.notNull(instance, "The gadget instance cannot be null.");
     Validate.isTrue(instance.getColumn() < numberOfColumns,
-        "You cannot add a gadget for column greater than the gadget group's.");
+        "The gadget group " + name + " has " + numberOfColumns
+        + " columns, and you are trying to add gadget "
+        + instance.getApplication().getUrl() + " at column "
+        + instance.getColumn());
     Validate.isTrue(instance.getApplication().isViewSupported(view),
-        "The gadget does not support this group's view.");
+        "The gadget " + instance.getApplication().getUrl()
+        + " does not support group " + name + "'s view.");
     for (GadgetInstance gadget: gadgets) {
       if (gadget.getColumn() == instance.getColumn()
           && gadget.getOrder() >= instance.getOrder()) {
