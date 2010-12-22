@@ -58,4 +58,12 @@ git branch -r
 # Create a local branch to track a remote branch.
 git checkout -b <local-branch> <remote-branch>
 
+# If git svn commit dies, and it looks like you loose your commits:
+Open .git/logs/HEAD
+Look for your most recent commit (note that these commits are sorted by “unix
+time”, although you can also find the latest one by reading the shortlog there
+Confirm that the commit you found is the right one: git show
+git reset --hard hash from log
+git svn rebase
+git svn dcommit
 
