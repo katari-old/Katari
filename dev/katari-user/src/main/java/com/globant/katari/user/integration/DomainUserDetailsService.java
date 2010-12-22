@@ -23,7 +23,7 @@ public class DomainUserDetailsService implements UserDetailsService {
    */
   private static Log log = LogFactory.getLog(DomainUserDetailsService.class);
 
-  /** The user facade used to get the domain user.
+  /** The user service used to get the domain user.
    *
    * It is never null.
    */

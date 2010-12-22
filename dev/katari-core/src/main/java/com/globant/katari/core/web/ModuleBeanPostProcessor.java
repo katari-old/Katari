@@ -2,7 +2,7 @@
 
 package com.globant.katari.core.web;
 
-import static com.globant.katari.core.web.ModuleUtils.getModuleNameFromBeanName;
+import com.globant.katari.core.web.ModuleUtils;
 
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ public class ModuleBeanPostProcessor implements BeanFactoryPostProcessor {
     String[] beanNames = beanFactory.getBeanNamesForType(Module.class);
 
     for (String beanName : beanNames) {
-      String name = getModuleNameFromBeanName(beanName);
+      String name = ModuleUtils.getModuleNameFromBeanName(beanName);
       contextRegistrar.addModuleName(beanName, "module/" + name);
     }
     log.trace("Leaving postProcessBeanFactory");
