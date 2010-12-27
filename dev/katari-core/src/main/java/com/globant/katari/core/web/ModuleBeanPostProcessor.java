@@ -2,8 +2,6 @@
 
 package com.globant.katari.core.web;
 
-import com.globant.katari.core.web.ModuleUtils;
-
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
