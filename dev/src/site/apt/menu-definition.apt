@@ -2,6 +2,8 @@
 
 Menu support
 
+* Introduction
+
  Katari has support for declarative menus. Modules declare menu entries that
  Katari merges together. The menus can be defined using a special syntax in
  spring.
@@ -50,4 +52,76 @@ Menu support
 
  Each menu entry is only shown only if the user has access to the corresponding
  link.
+
+* Menus in modules
+
+ As said in the previous section, modules can add menu items to the global menu
+ bar. This global menu bar is simply a katari menu bar declared in spring
+ application context under the name 'katari.menuBar'.
+
+ By default, katari provides an empty menu bar. You can also define your own.
+ Each module can add additional entries by setting the menuBar property in it's
+ module definition:
+
+--------------------
+  <bean id="user.module" class="com.globant.katari.core.web.ConfigurableModule">
+    ...
+    <property name='menuBar'>
+      <!-- The menu bar. -->
+      <katari:menuBar>
+        <katari:menuNode name='Administration'>
+          <katari:menuNode name='Users'>
+            <katari:menuItem name='List' link='users.do' />
+            <katari:menuItem name='New' link='createUser.do' />
+          </katari:menuNode>
+        </katari:menuNode>
+      </katari:menuBar>
+    </property>
+    ...
+  </bean>
+--------------------
+
+ When you include this module in your application context, katari merges the
+ module's menu bar with the 'katari.menuBar' bean.
+
+* Configuration
+
+ Katari menus can be configured by deciding what modules can add menu entries to
+ the global menu bar. To this end, add:
+
+--------------------
+  <util:list id='katari.moduleMenusToIgnore'>
+    <value>user</value>
+  </util:list>
+--------------------
+
+ Each entry in the list is a regular expression that, if matches a module name,
+ makes the menu bar for that module ignored by katari. You can exclude the menu
+ bars from all modules with:
+
+--------------------
+  <util:list id='katari.moduleMenusToIgnore'>
+    <value>.*</value>
+  </util:list>
+--------------------
+
+ This makes katari ignore all menu bars from the modules, and gives you total
+ control on the content of your menu bar:
+ 
+--------------------
+ <katari:menuBar name='katari.menuBar'>
+
+   <katari:menuNode name='menu-name' display='display text'
+     tooltip='tooltip text'>
+
+     <katari:menuItem name='menu-name-1' display='display text'
+       tooltip='tooltip text' link='entry-1.do'/>
+
+     <katari:menuItem name='menu-name-2' display='display text'
+       tooltip='tooltip text' link='entry-2.do'/>
+
+   </katari:menuNode>
+
+ </katari:menuBar>
+--------------------
 

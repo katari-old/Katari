@@ -152,7 +152,8 @@
 
   <!-- ModuleContextRegistrar manages the module contexts. -->
   <bean id="katari.contextRegistrar" lazy-init="true"
-    class="com.globant.katari.core.web.ModuleContextRegistrar">
+    class="com.globant.katari.core.web.ModuleContextRegistrar"
+    p:moduleMenusToIgnore-ref='katari.moduleMenusToIgnore'>
 
     <constructor-arg ref='katari.moduleListenerProxy'/>
     <constructor-arg ref='katari.moduleFilterProxy'/>
@@ -162,6 +163,10 @@
     <constructor-arg ref='katari.menuBar'/>
     <constructor-arg ref='katari.loginConfigurer' />
   </bean>
+
+  <!-- Override this bean to ignore the menu of a list of modules.
+       -->
+  <util:list id='katari.moduleMenusToIgnore'/>
 
   <!-- Maintains a list of web listeners, and forwards each listener in the list
   the corresponding event. -->

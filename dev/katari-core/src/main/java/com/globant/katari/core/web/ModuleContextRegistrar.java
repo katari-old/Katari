@@ -5,6 +5,8 @@ package com.globant.katari.core.web;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
+import java.util.LinkedList;
 
 import org.apache.commons.lang.Validate;
 
@@ -53,6 +55,15 @@ public class ModuleContextRegistrar {
    */
   private MenuBar menuBar = new MenuBar("root", "root");
 
+  /** The list of regular expressions that matches module names whose menu bars
+   * will be ignored.
+   *
+   * This is an optional list of strings. If a module name matches a regular
+   * expression in this list, all the menu entries for that module are skipped.
+   * It is never null.
+   */
+  private List<String> moduleMenusToIgnore = new LinkedList<String>();
+
   /** The login provider. */
   private LoginConfigurationSetter loginConfiguration;
 
@@ -66,40 +77,6 @@ public class ModuleContextRegistrar {
    * modules.
    */
   private boolean isInitialized = false;
-
-  /** Builds a new <code>ModuleContextRegistrar</code>.
-   *
-   * @param theModuleContainerServlet The module container servlet. It cannot
-   * be null.
-   *
-   * @deprecated
-   */
-  public ModuleContextRegistrar(final ModuleContainerServlet
-      theModuleContainerServlet) {
-    Validate.notNull(theModuleContainerServlet, "The module container servlet"
-        + " cannot be null");
-    moduleContainerServlet = theModuleContainerServlet;
-  }
-
-  /** Builds a new <code>ModuleContextRegistrar</code>.
-   *
-   * @param theModuleContainerServlet The module container servlet. It cannot
-   * be null.
-   *
-   * @param theMenuBar The initial menu bar that will be merged with the
-   * modules. This can be used to set the order of the menu containers. It
-   * cannot be null.
-   *
-   * @deprecated
-   */
-  public ModuleContextRegistrar(final ModuleContainerServlet
-      theModuleContainerServlet, final MenuBar theMenuBar) {
-    Validate.notNull(theModuleContainerServlet, "The module container servlet"
-        + " cannot be null");
-    Validate.notNull(theMenuBar, "The menu bar cannot be null");
-    moduleContainerServlet = theModuleContainerServlet;
-    menuBar = theMenuBar;
-  }
 
   /** Builds a new <code>ModuleContextRegistrar</code>.
    *
@@ -139,6 +116,19 @@ public class ModuleContextRegistrar {
     loginConfiguration = theLoginConfiguration;
   }
 
+  /** Sets the list of regular expressions that matches module names whose menu
+   * bars will be ignored.
+   *
+   * This is an optional list of strings. If a module name matches a regular
+   * expression in this list, all the menu entries for that module are skipped.
+   *
+   * @param moduleNames a list of regular expresions. It cannot be null.
+   */
+  public void setModuleMenusToIgnore(final List<String> moduleNames) {
+    Validate.notNull(moduleNames, "The module names cannot be null");
+    moduleMenusToIgnore = moduleNames;
+  }
+
   /** Builds a new <code>ModuleContext</code>.
    *
    * @param moduleName The name of the module to build the context for. It
@@ -150,9 +140,24 @@ public class ModuleContextRegistrar {
   public ModuleContext getNewModuleContext(final String moduleName) {
     Validate.notNull(moduleName, "The module name cannot be null");
     ModuleContext context;
-    context = new ModuleContext(moduleName, moduleListenerProxy,
+
+    boolean skipModule = false;
+    for (String ignored : moduleMenusToIgnore) {
+      if (moduleName.matches("^" + ignored + "$")) {
+        skipModule = true;
+        break;
+      }
+    }
+
+    if (skipModule) {
+      context = new ModuleContext(moduleName, moduleListenerProxy,
+        moduleFilterProxy, moduleContainerServlet, null, beanToModuleName,
+        loginConfiguration);
+    } else {
+      context = new ModuleContext(moduleName, moduleListenerProxy,
         moduleFilterProxy, moduleContainerServlet, menuBar, beanToModuleName,
         loginConfiguration);
+    }
     registry.put(moduleName, context);
     return context;
   }

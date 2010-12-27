@@ -109,6 +109,7 @@ public class ModuleContext {
    * null.
    *
    * @param theMenuBar The menu bar where the module merges its own menu bar.
+   * If null, the menu bar from the module is ignored.
    *
    * @param theBeanToModuleNames Maps a spring bean name to the url fragment
    * that the module is mapped to. It cannot be null.
@@ -132,7 +133,6 @@ public class ModuleContext {
         + " be null");
     Validate.notNull(theContainerServlet, "The module contair servlet cannot"
         + " be null");
-    Validate.notNull(theMenuBar, "The menu bar cannot be null");
     Validate.notNull(theBeanToModuleNames, "The bean to module names map"
         + " cannot be null");
     Validate.notNull(theLoginConfigurer, "The login"
@@ -170,16 +170,21 @@ public class ModuleContext {
 
   /** Registers the module menus in the module container servlet.
    *
-   * The module menu will be added into the context root menu. The context
-   * root menu represents the application root menu so each module needs to
-   * register each one of his menus on it and then all module cotext root will
-   * be merged in the registrar.
+   * The module menu will be added into the context root menu. The context root
+   * menu represents the application root menu so each module needs to register
+   * each one of his menus on it and then all module cotext root will be merged
+   * in the registrar.
+   *
+   * This process is skipped if the top level menu bar (the menu bar passed to
+   * the constructor) is null, effectively ignoring the menu from this module.
    *
    * @param theMenuBar the menu bar to be registered. It cannot be null.
    */
   public void registerMenu(final MenuBar theMenuBar) {
-    Validate.notNull(theMenuBar, "The root menu cannot be null");
-    menuBar.merge(theMenuBar, beanToModuleNames, "module/" + name);
+    if (menuBar != null) {
+      Validate.notNull(theMenuBar, "The root menu cannot be null");
+      menuBar.merge(theMenuBar, beanToModuleNames, "module/" + name);
+    }
   }
 
   /** Registers the weblets exposed by the module.
