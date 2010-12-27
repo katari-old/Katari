@@ -22,6 +22,7 @@ public class Utf8EncodingFilterTest extends TestCase {
 
     // Mocks the servlet response.
     HttpServletResponse response = createMock(HttpServletResponse.class);
+    // response.setCharacterEncoding("UTF-8");
     replay(response);
 
     // Mocks the servlet request.
@@ -57,6 +58,7 @@ public class Utf8EncodingFilterTest extends TestCase {
     filter.doFilter(request, response, chain);
     filter.destroy();
     verify(request);
+    verify(response);
   }
 }
 

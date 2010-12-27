@@ -35,7 +35,7 @@ public abstract class JsonCommandController extends AbstractCommandController {
 
     Command<JsonRepresentation> jsonCommand;
     jsonCommand = (Command<JsonRepresentation>) command;
-    response.addHeader("Content-type", "application/json");
+    response.addHeader("Content-type", "application/json; charset=UTF-8");
     jsonCommand.execute().write(response.getWriter());
 
     return null;

@@ -46,17 +46,10 @@ public final class Utf8EncodingFilter implements Filter {
 
     log.trace("Entering doFilter.");
 
-    if (!(request instanceof HttpServletRequest)) {
-      throw new ServletException("This filter can only be applied to http"
-          + " requests.");
-    }
-
-    HttpServletRequest servletRequest = (HttpServletRequest) request;
-
     // TODO This is forcing UTF-8 encoding, we've got to see what happens if
     // the browser sends a different encoding.
     //if (servletRequest.getCharacterEncoding() == null) {
-    servletRequest.setCharacterEncoding("UTF-8");
+    request.setCharacterEncoding("UTF-8");
     //}
 
     chain.doFilter(request, response);

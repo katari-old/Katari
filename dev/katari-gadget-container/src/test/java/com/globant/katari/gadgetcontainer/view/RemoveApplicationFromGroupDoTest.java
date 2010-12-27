@@ -99,7 +99,7 @@ public class RemoveApplicationFromGroupDoTest {
     request.setParameter("gadgetId", Long.toString(instanceToRemove.getId()));
 
     HttpServletResponse response = createMock(HttpServletResponse.class);
-    response.addHeader("Content-type", "application/json");
+    response.addHeader("Content-type", "application/json; charset=UTF-8");
     expect(response.getWriter()).andReturn(writer);
     replay(response);
 

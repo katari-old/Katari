@@ -53,7 +53,7 @@ public class JsonCommandControllerTest {
     PrintWriter writer = new PrintWriter(os);
 
     HttpServletResponse response = createMock(HttpServletResponse.class);
-    response.addHeader("Content-type", "application/json");
+    response.addHeader("Content-type", "application/json; charset=UTF-8");
     expect(response.getWriter()).andReturn(writer);
     replay(response);
 

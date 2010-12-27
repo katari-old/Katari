@@ -97,7 +97,7 @@ public class AddApplicationToGroupDoTest {
     request.setParameter("applicationId", Long.toString(app2.getId()));
 
     HttpServletResponse response = createMock(HttpServletResponse.class);
-    response.addHeader("Content-type", "application/json");
+    response.addHeader("Content-type", "application/json; charset=UTF-8");
     expect(response.getWriter()).andReturn(writer);
     replay(response);
 
