@@ -14,7 +14,7 @@ import com.globant.katari.core.application.Command;
 import com.globant.katari.core.application.JsonRepresentation;
 
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
 /** Removes a gadget instance from a gadget group.
@@ -122,7 +122,8 @@ public class RemoveApplicationFromGroupCommand
     }
     long uid = userService.getCurrentUserId();
     log.debug("searching group name = " + groupName + " for the user:" + uid);
-    GadgetGroup group = gadgetGroupRepository.findGadgetGroup(uid, groupName);
+    CustomizableGadgetGroup group;
+    group = gadgetGroupRepository.findCustomizableGadgetGroup(uid, groupName);
     if (group == null) {
       throw new RuntimeException("Group not found");
     } else if (!group.isCustomizable()) {

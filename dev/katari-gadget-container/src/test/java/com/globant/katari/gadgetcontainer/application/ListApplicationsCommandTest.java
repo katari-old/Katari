@@ -21,7 +21,7 @@ import com.globant.katari.gadgetcontainer.domain.SampleUser;
 import com.globant.katari.gadgetcontainer.domain.ApplicationRepository;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 
 import com.globant.katari.gadgetcontainer.application.ListApplicationsCommand;
@@ -54,7 +54,8 @@ public class ListApplicationsCommandTest {
 
     // Add 1 application to the gadget group that supports the default view.
     CoreUser user = new SampleUser("me");
-    GadgetGroup group = new GadgetGroup(user, "gadget group", "default", 2);
+    CustomizableGadgetGroup group;
+    group = new CustomizableGadgetGroup(user, "gadget group", "default", 2);
     group.add(new GadgetInstance(application1, 0, 0));
 
     ApplicationRepository applicationRepository;

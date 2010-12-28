@@ -30,7 +30,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.globant.katari.shindig.domain.Application;
 
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
@@ -78,7 +78,8 @@ public class RemoveApplicationFromGroupDoTest {
     Application app2 = new Application(gadgetXmlUrl2);
     session.saveOrUpdate(app2);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
+    CustomizableGadgetGroup group;
+    group = new CustomizableGadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(app1, 0, 0));
     GadgetInstance instanceToRemove = new GadgetInstance(app1, 0, 0);
     group.add(instanceToRemove);
@@ -112,7 +113,7 @@ public class RemoveApplicationFromGroupDoTest {
     assertThat(os.toString(), is("{}"));
 
     // Now we verify. There should be two gadgets in the first column.
-    group = repository.findGadgetGroup(user.getId(), "sample");
+    group = repository.findCustomizableGadgetGroup(user.getId(), "sample");
     assertThat(group.getGadgets().size(), is(1));
   }
 

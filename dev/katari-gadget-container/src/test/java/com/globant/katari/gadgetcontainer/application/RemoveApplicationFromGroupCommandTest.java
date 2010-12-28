@@ -21,7 +21,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.globant.katari.shindig.domain.Application;
 
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
@@ -71,7 +71,8 @@ public class RemoveApplicationFromGroupCommandTest {
     Application application2 = new Application(gadgetXmlUrl2);
     repository.getHibernateTemplate().saveOrUpdate(application2);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
+    CustomizableGadgetGroup group;
+    group = new CustomizableGadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(application1, 0, 0));
     GadgetInstance instanceToRemove = new GadgetInstance(application2, 0, 0);
     group.add(instanceToRemove);
@@ -89,7 +90,7 @@ public class RemoveApplicationFromGroupCommandTest {
     command.execute();
 
     // Now we verify. There should be one gadget only.
-    group = repository.findGadgetGroup(user.getId(), "sample");
+    group = repository.findCustomizableGadgetGroup(user.getId(), "sample");
     assertThat(group.getGadgets().size(), is(1));
     for (GadgetInstance gadget: group.getGadgets()) {
       assertThat(gadget.getColumn(), is(0));

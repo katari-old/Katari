@@ -30,7 +30,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.globant.katari.shindig.domain.Application;
 
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
@@ -75,7 +75,8 @@ public class SocialPageDoTest {
     // Test friendly hack: never use the repository like this.
     repository.getHibernateTemplate().saveOrUpdate(app);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
+    CustomizableGadgetGroup group;
+    group = new CustomizableGadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(app, 0, 0));
     group.add(new GadgetInstance(app, 1, 0));
     group.add(new GadgetInstance(app, 1, 1));

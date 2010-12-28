@@ -6,12 +6,14 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
 import java.io.File;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.context.ApplicationContext;
 
 import com.globant.katari.gadgetcontainer.SpringTestUtils;
@@ -19,8 +21,6 @@ import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 import com.globant.katari.shindig.domain.Application;
 
 /** Test for the repository {@link GadgetGroupRepository}
- *
- * @author waabox(emiliano[dot]arango[at]globant[dot]com)
  */
 public class GadgetGroupRepositoryTest {
 
@@ -115,21 +115,27 @@ public class GadgetGroupRepositoryTest {
    * everybody (named 'for everybody') and a gadget group template (named 'for
    * user').
    */
+  @SuppressWarnings("unchecked")
   private void createGadgetGroups(final String gadgetUrl) {
-    GadgetGroup group = new GadgetGroup(user, "for me", "default", 2);
+    CustomizableGadgetGroup group;
+    group = new CustomizableGadgetGroup(user, "for me", "default", 2);
     Application app = new Application(gadgetUrl);
     // Test friendly hack: never use the repository like this.
     repository.getHibernateTemplate().saveOrUpdate(app);
     group.add(new GadgetInstance(app, 1, 2));
     repository.save(group);
 
-    group = new GadgetGroup(null, "for everybody", "default", 2);
-    group.add(new GadgetInstance(app, 1, 2));
-    repository.save(group);
+    SharedGadgetGroup shared;
+    shared = new SharedGadgetGroup("for everybody", "default", 2);
+    ((Set<GadgetInstance>) new DirectFieldAccessor(shared)
+      .getPropertyValue("gadgets")).add(new GadgetInstance(app, 1, 2));
+    repository.save(shared);
 
-    group = new GadgetGroup("for user", "default", 2);
-    group.add(new GadgetInstance(app, 1, 2));
-    repository.save(group);
+    GadgetGroupTemplate templ;
+    templ = new GadgetGroupTemplate("for user", "default", 2);
+    ((Set<GadgetInstance>) new DirectFieldAccessor(templ)
+      .getPropertyValue("gadgets")).add(new GadgetInstance(app, 1, 2));
+    repository.save(templ);
   }
 }
 

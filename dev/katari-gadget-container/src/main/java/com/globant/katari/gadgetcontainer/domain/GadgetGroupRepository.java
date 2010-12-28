@@ -23,6 +23,9 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
 
   /** Find the requested gadget group by name and user.
    *
+   * This operation only returns gadget groups that can be shown to the user,
+   * that is, customizable and static gadget groups.
+   *
    * If the name of the group corresponds to a 'static' group, then the userId
    * is ignored, and returns that group. The userId must still not be null.
    *
@@ -40,10 +43,11 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
     log.trace("Entering findGadgetGroup('{}', '{}')", userId, name);
 
     List<GadgetGroup> groups = getHibernateTemplate().find("from"
-        + " GadgetGroup where name = ?"
-        + " and (type = ? or (type = ? and owner.id = ?))",
-        new Object[]{name, GadgetGroup.Type.SHARED,
-            GadgetGroup.Type.CUSTOMIZABLE, userId});
+        + " GadgetGroup gadgetGroup where gadgetGroup.name = ?"
+        + " and (gadgetGroup.class = SharedGadgetGroup or"
+        + " (gadgetGroup.class = CustomizableGadgetGroup and"
+        + " gadgetGroup.owner.id = ?))",
+        new Object[]{name, userId});
 
     if(groups.isEmpty()) {
       log.trace("Leaving findGadgetGroup, no group found");
@@ -56,6 +60,37 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
     return group;
   }
 
+  /** Find the requested customizable gadget group by name and user.
+   *
+   * @param userId the user that owns the group. It can not be null.
+   *
+   * @param name the gadget group name. It can not be empty.
+   *
+   * @return the gadget group found or null.
+   */
+  @SuppressWarnings("unchecked")
+  public CustomizableGadgetGroup findCustomizableGadgetGroup(final long userId,
+      final String name) {
+    Validate.notEmpty(name, "the gadget group cannot be empty");
+    Validate.notNull(userId, "the user cannot be null");
+
+    log.trace("Entering findCustomizableGadgetGroup('{}', '{}')", userId, name);
+
+    List<CustomizableGadgetGroup> groups = getHibernateTemplate().find("from"
+        + " CustomizableGadgetGroup where name = ? and owner.id = ?",
+        new Object[]{name, userId});
+
+    if(groups.isEmpty()) {
+      log.trace("Leaving findGadgetGroup, no group found");
+      return null;
+    }
+
+    CustomizableGadgetGroup group = groups.get(0);
+
+    log.trace("Leaving findGadgetGroup with a group");
+    return group;
+  }
+
   /** Find the requested gadget group template by name.
    *
    * @param name the gadget group name. It can not be empty.
@@ -63,21 +98,20 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
    * @return the gadget group template or null if not found.
    */
   @SuppressWarnings("unchecked")
-  public GadgetGroup findGadgetGroupTemplate(final String name) {
+  public GadgetGroupTemplate findGadgetGroupTemplate(final String name) {
     Validate.notEmpty(name, "the gadget group cannot be empty");
 
     log.trace("Entering findGadgetGroupTemplate('{}')", name);
 
-    List<GadgetGroup> groups = getHibernateTemplate().find("from"
-        + " GadgetGroup where name = ? and type = ?",
-        new Object[]{name, GadgetGroup.Type.TEMPLATE});
+    List<GadgetGroupTemplate> groups = getHibernateTemplate().find("from"
+        + " GadgetGroupTemplate where name = ?", new Object[]{name});
 
     if(groups.isEmpty()) {
       log.trace("Leaving findGadgetGroupTemplate, no group found");
       return null;
     }
 
-    GadgetGroup group = groups.get(0);
+    GadgetGroupTemplate group = groups.get(0);
 
     log.trace("Leaving findGadgetGroupTemplate with a group");
     return group;

@@ -21,7 +21,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.globant.katari.shindig.domain.Application;
 
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
@@ -60,7 +60,7 @@ public class AddApplicationToGroupCommandTest {
     user = (CoreUser) session.createQuery("from CoreUser").uniqueResult();
   }
 
-  // An end-to-end test (bah, from the command) to move a gadget instance.
+  // An end-to-end test (bah, from the command) to add a gadget instance.
   @Test
   public void testExecute_endToEnd() throws Exception {
 
@@ -72,7 +72,8 @@ public class AddApplicationToGroupCommandTest {
     Application application2 = new Application(gadgetXmlUrl2);
     repository.getHibernateTemplate().saveOrUpdate(application2);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
+    CustomizableGadgetGroup group;
+    group = new CustomizableGadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(application1, 0, 0));
     repository.save(group);
 
@@ -88,7 +89,7 @@ public class AddApplicationToGroupCommandTest {
     command.execute();
 
     // Now we verify. There should be two gadgets in one column.
-    group = repository.findGadgetGroup(user.getId(), "sample");
+    group = repository.findCustomizableGadgetGroup(user.getId(), "sample");
     for (GadgetInstance gadget: group.getGadgets()) {
       assertThat(gadget.getColumn(), is(0));
       if (gadget.getOrder() == 0) {

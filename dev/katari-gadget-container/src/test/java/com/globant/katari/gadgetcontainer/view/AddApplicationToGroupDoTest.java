@@ -30,7 +30,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.globant.katari.shindig.domain.Application;
 
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
@@ -78,7 +78,8 @@ public class AddApplicationToGroupDoTest {
     Application app2 = new Application(gadgetXmlUrl2);
     repository.getHibernateTemplate().saveOrUpdate(app2);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
+    CustomizableGadgetGroup group;
+    group = new CustomizableGadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(app1, 0, 0));
     repository.save(group);
 
@@ -108,7 +109,7 @@ public class AddApplicationToGroupDoTest {
     assertThat(os.toString(), is("{}"));
 
     // Now we verify. There should be two gadgets in the first column.
-    group = repository.findGadgetGroup(user.getId(), "sample");
+    group = repository.findCustomizableGadgetGroup(user.getId(), "sample");
     int col0 = 0;
     int col1 = 0;
     for (GadgetInstance gadget: group.getGadgets()) {

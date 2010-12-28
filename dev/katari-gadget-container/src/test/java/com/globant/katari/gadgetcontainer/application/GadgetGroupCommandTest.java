@@ -13,6 +13,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.StringWriter;
 
+import java.util.Set;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -27,6 +29,9 @@ import com.globant.katari.shindig.domain.Application;
 import com.globant.katari.gadgetcontainer.application.TokenService;
 import com.globant.katari.gadgetcontainer.domain.SampleUser;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.SharedGadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.GadgetGroupTemplate;
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
@@ -46,12 +51,13 @@ public class GadgetGroupCommandTest {
 
   private String groupName = "theGroup";
 
-  private GadgetGroup customizableGroup;
+  private CustomizableGadgetGroup customizableGroup;
 
-  private GadgetGroup sharedGroup;
+  private SharedGadgetGroup sharedGroup;
 
-  private GadgetGroup templateGroup;
+  private GadgetGroupTemplate templateGroup;
 
+  @SuppressWarnings("unchecked")
   @Before
   public void setUp() throws Exception {
     new DirectFieldAccessor(viewer).setPropertyValue("id", 1);
@@ -69,17 +75,19 @@ public class GadgetGroupCommandTest {
 
     Application application = new Application(gadgetXmlUrl);
 
-    customizableGroup = new GadgetGroup(owner, groupName, "default", 3);
+    customizableGroup = new CustomizableGadgetGroup(owner, groupName, "default", 3);
     GadgetInstance gadgetInstance = new GadgetInstance(application, 1, 2);
     customizableGroup.add(gadgetInstance);
 
-    sharedGroup = new GadgetGroup(null, groupName, "default", 3);
+    sharedGroup = new SharedGadgetGroup(groupName, "default", 3);
     gadgetInstance = new GadgetInstance(application, 1, 2);
-    sharedGroup.add(gadgetInstance);
+    ((Set<GadgetInstance>) new DirectFieldAccessor(sharedGroup)
+      .getPropertyValue("gadgets")).add(gadgetInstance);
 
-    templateGroup = new GadgetGroup(groupName, "default", 3);
+    templateGroup = new GadgetGroupTemplate(groupName, "default", 3);
     gadgetInstance = new GadgetInstance(application, 1, 2);
-    templateGroup.add(gadgetInstance);
+    ((Set<GadgetInstance>) new DirectFieldAccessor(templateGroup)
+      .getPropertyValue("gadgets")).add(gadgetInstance);
   }
 
   @Test
@@ -320,7 +328,8 @@ public class GadgetGroupCommandTest {
   public void testExecute_noGadgets() throws Exception {
     String groupName = "theGroup";
 
-    GadgetGroup gadgetGroup = new GadgetGroup(null, groupName, "default", 3);
+    SharedGadgetGroup gadgetGroup;
+    gadgetGroup = new SharedGadgetGroup(groupName, "default", 3);
 
     CoreUserRepository userRepository = createMock(CoreUserRepository.class);
     replay(userRepository);

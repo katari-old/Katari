@@ -15,6 +15,7 @@ import com.globant.katari.core.application.JsonRepresentation;
 
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.GadgetGroupTemplate;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
@@ -193,7 +194,7 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
         owner = viewer;
       }
 
-      GadgetGroup templ;
+      GadgetGroupTemplate templ;
       templ = gadgetGroupRepository.findGadgetGroupTemplate(groupName);
       if (templ == null) {
         throw new RuntimeException("Group not found " + groupName);

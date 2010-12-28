@@ -24,7 +24,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.globant.katari.shindig.domain.Application;
 
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.ContextUserService;
 import com.globant.katari.gadgetcontainer.domain.GadgetInstance;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
@@ -42,7 +42,7 @@ public class MoveGadgetCommandTest {
 
   private ContextUserService userService;
 
-  private GadgetGroup gadgetGroup;
+  private CustomizableGadgetGroup gadgetGroup;
 
   private GadgetGroupRepository repository;
 
@@ -53,7 +53,7 @@ public class MoveGadgetCommandTest {
   @Before
   public void setUp() throws Exception {
 
-    gadgetGroup = createMock(GadgetGroup.class);
+    gadgetGroup = createMock(CustomizableGadgetGroup.class);
 
     appContext = SpringTestUtils.getContext();
 
@@ -75,7 +75,7 @@ public class MoveGadgetCommandTest {
     replay(userService);
 
     repository = createMock(GadgetGroupRepository.class);
-    expect(repository.findGadgetGroup(user.getId(), groupName))
+    expect(repository.findCustomizableGadgetGroup(user.getId(), groupName))
       .andReturn(gadgetGroup);
     repository.save(gadgetGroup);
     replay(repository);
@@ -94,32 +94,8 @@ public class MoveGadgetCommandTest {
   }
 
   @Test
-  public void testExecute_notCustomizable() {
-
-    expect(gadgetGroup.isCustomizable()).andReturn(false);
-    replay(gadgetGroup);
-
-    MoveGadgetCommand command;
-    command = new MoveGadgetCommand(repository, userService);
-    command.setGroupName(groupName);
-    command.setGadgetInstanceId(0);
-    command.setColumn(3);
-    command.setOrder(4);
-
-    try {
-      command.execute();
-      fail("should fail because the group is not customizable.");
-    } catch (Exception e) {
-    }
-
-    verify(gadgetGroup);
-    verify(userService);
-  }
-
-  @Test
   public void testExecute_customizable() {
 
-    expect(gadgetGroup.isCustomizable()).andReturn(true);
     expect(gadgetGroup.getNumberOfColumns()).andReturn(4);
     gadgetGroup.move(0, 3, 4);
     replay(gadgetGroup);
@@ -141,7 +117,6 @@ public class MoveGadgetCommandTest {
   @Test
   public void testExecute_customizableCol0() {
 
-    expect(gadgetGroup.isCustomizable()).andReturn(true);
     expect(gadgetGroup.getNumberOfColumns()).andReturn(4);
     gadgetGroup.move(0, 0, 4);
     replay(gadgetGroup);
@@ -171,7 +146,8 @@ public class MoveGadgetCommandTest {
     // Test friendly hack: never use the repository like this.
     repository.getHibernateTemplate().saveOrUpdate(app);
 
-    GadgetGroup group = new GadgetGroup(user, "sample", "default", 2);
+    CustomizableGadgetGroup group;
+    group = new CustomizableGadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(app, 0, 0));
     group.add(new GadgetInstance(app, 1, 0));
     group.add(new GadgetInstance(app, 1, 1));
@@ -200,7 +176,7 @@ public class MoveGadgetCommandTest {
         is("{}"));
 
     // Now we verify. There should be two gadgets per column.
-    group = repository.findGadgetGroup(user.getId(), "sample");
+    group = repository.findCustomizableGadgetGroup(user.getId(), "sample");
     int col0 = 0;
     int col1 = 0;
     for (GadgetInstance gadget: group.getGadgets()) {

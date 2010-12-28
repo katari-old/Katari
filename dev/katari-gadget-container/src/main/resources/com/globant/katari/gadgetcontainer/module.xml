@@ -88,6 +88,15 @@
     <constructor-arg>
       <list>
         <value>com.globant.katari.gadgetcontainer.domain.GadgetGroup</value>
+        <value>
+          com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup
+        </value>
+        <value>
+          com.globant.katari.gadgetcontainer.domain.SharedGadgetGroup
+        </value>
+        <value>
+          com.globant.katari.gadgetcontainer.domain.GadgetGroupTemplate
+        </value>
         <value>com.globant.katari.gadgetcontainer.domain.GadgetInstance</value>
       </list>
     </constructor-arg>

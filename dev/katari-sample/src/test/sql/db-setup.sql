@@ -57,15 +57,15 @@ insert into supported_views(application_id, view_name) values (5, 'about');
 insert into supported_views(application_id, view_name) values (5, 'ning.main');
 
 -- Creates two gadget groups.
-insert into gadget_groups (name, view_name, type, number_of_columns)
- values ('top', 'dashboard', 0, 2);
+insert into gadget_groups (name, view_name, group_type, number_of_columns)
+ values ('top', 'dashboard', 'shared', 2);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
  group_order) values (2, 1, 0, 0);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
  group_order) values (4, 1, 1, 0);
 
-insert into gadget_groups (name, view_name, type, number_of_columns)
- values ('main', 'dashboard', 2, 3);
+insert into gadget_groups (name, view_name, group_type, number_of_columns)
+ values ('main', 'dashboard', 'template', 3);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
  group_order) values (1, 2, 0, 1);
 insert into gadget_instances (application_id, gadget_group_id, group_column,

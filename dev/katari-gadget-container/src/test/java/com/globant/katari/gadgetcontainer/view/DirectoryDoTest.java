@@ -31,7 +31,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.globant.katari.shindig.domain.Application;
 
-import com.globant.katari.gadgetcontainer.domain.GadgetGroup;
+import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 import com.globant.katari.gadgetcontainer.domain.SampleUser;
 
@@ -76,7 +76,8 @@ public class DirectoryDoTest {
     user = (CoreUser) repository.getHibernateTemplate().find("from CoreUser")
       .get(0);
 
-    GadgetGroup group = new GadgetGroup(user, "gadget group", "default", 2);
+    CustomizableGadgetGroup group;
+    group = new CustomizableGadgetGroup(user, "gadget group", "default", 2);
     repository.getHibernateTemplate().saveOrUpdate(group);
 
     Application app = new Application(gadgetXmlUrl);

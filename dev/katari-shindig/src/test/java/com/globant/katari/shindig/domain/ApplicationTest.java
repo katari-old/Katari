@@ -3,7 +3,6 @@
 package com.globant.katari.shindig.domain;
 
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 
