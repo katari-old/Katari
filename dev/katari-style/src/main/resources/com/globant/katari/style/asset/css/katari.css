@@ -1033,7 +1033,7 @@ form span.buttons, form ul.glasslist .buttonBarClass {
 .ui-sortable-placeholder {
   border: 1px dotted black;
   visibility: visible !important;
-  height: 50px !important;
+  margin-bottom:52px;
 }
 
 .ui-sortable-placeholder * {

@@ -443,6 +443,13 @@ katari.social.GadgetGroup = function(sContainer) {
       var containers = jQuery(".canvasColumn", gadgetGroupElement);
       containers.sortable({
         handle: 'h2',
+        placeholder: 'ui-sortable-placeholder',
+        forcePlaceholderSize: true,
+        start: function(event, ui) {
+          katari.console.log(event);
+          katari.console.log(ui);
+          ui.placeholder.height(ui.item.height());
+        },
         connectWith: '#' + gadgetGroupElementId + ' .canvasColumn',
         update: function(event, ui) {
           if (ui.sender === null) {
