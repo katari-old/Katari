@@ -75,9 +75,12 @@ insert into applications (id, title, url) values (2, 'Activities',
 
 Design
 
+* Domain model
+
  The gadget container organizes gadgets in 'gadget groups', that contains a
  collection of 'gadget instances'. Each gadget instance has a reference to an
- application, basically the url for the gadget xml specification.
+ application, basically the url for the gadget xml specification, and the views
+ the application supports.
 
  You can display gadget groups in a page.
  
@@ -91,6 +94,27 @@ Design
  Non-shared gadget groups can be created on demand: if a user tries to access a
  non existing non-shared gadget group, then katari creates one for him, from a
  gadget group template with the same name.
+
+ Each gadget group has a view. A gadget group can contain only applications
+ with the default view, or applications that support the gadget group's view.
+
+[images/gadget-container-domain.png]
+
+* Entities responsibilities
+
+ [Application] This comes form the shindig module. It knows everything that is
+ needed to render a gadget in the browser. An application has a list of
+ supported views.
+
+ [GadgetGroup] The central concept in the gadget container, a gadget group is a
+ collection of applications positioned on the page. It defines a view, and can
+ only contain applications that support the gadget group's view, or the default
+ view.
+
+ [GadgetInstance] An element that holds the position of a gadget in the gadget
+ group.
+
+ [GadgetGroupRepository] The entry point to find gadget groups.
 
 Configuration
 

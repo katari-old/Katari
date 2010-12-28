@@ -775,6 +775,10 @@
 
                 search = project.basedir.canonicalPath + "/katari-search/src/site/uxf"
                 new java.io.File(search).eachFileRecurse(uxf2png)
+
+                search = project.basedir.canonicalPath +
+                  "/katari-gadget-container/src/site/uxf"
+                new java.io.File(search).eachFileRecurse(uxf2png)
                 ]]>
               </source>
             </configuration>

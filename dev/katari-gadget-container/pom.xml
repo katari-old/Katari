@@ -131,6 +131,44 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>groovy-maven-plugin</artifactId>
+        <!-- extensions>true</extensions -->
+        <executions>
+          <execution>
+            <id>uxf2png</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>
+                <![CDATA[
+                srcdir = project.basedir.canonicalPath + "/src/site/uxf"
+                targetdir = project.build.directory + "/site/images/"
+                new File(targetdir).mkdirs()
+                dir = new File(srcdir)
+                log.info("Converting uml diagrams ...")
+
+                new java.io.File(srcdir).eachFileRecurse({
+                  file ->
+                    if(file.name.matches("^.*\\.uxf\$")) {
+                      target = targetdir + file.name.replace('.uxf','.png')
+                      handler = new com.umlet.control.diagram.DiagramHandler(file);
+                      handler.getFileHandler().doExportAs("png", target);
+                    }})
+                ]]>
+              </source>
+            </configuration>
+          </execution>
+        </executions>
+        <inherited>false</inherited>
+      </plugin>
+    </plugins>
+
   </build>
 
   <reporting>
