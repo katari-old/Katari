@@ -63,7 +63,7 @@ Open .git/logs/HEAD
 Look for your most recent commit (note that these commits are sorted by “unix
 time”, although you can also find the latest one by reading the shortlog there
 Confirm that the commit you found is the right one: git show
-git reset --hard hash from log
+git reset --hard <hash-from-log>
 git svn rebase
 git svn dcommit
 
