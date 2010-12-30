@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.globant.katari</groupId>
     <artifactId>dev</artifactId>
-    <version>0.29</version>
+    <version>0.30-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
