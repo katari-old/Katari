@@ -295,6 +295,10 @@ katari.social.GadgetInstance = function(sId, sUrl, sTitle, sIcon,
 
 /** Create a new gadget group.
  *
+ * You need to get the gadget group (use
+ * ${baseweb}/module/gadgetcontainer/getGadgetGroup.do?groupName=main for that)
+ * and call addGadgetsFromJson. Call render to generate the html content.
+ *
  * @param {String} sContainer id of the container, usually a div, that will
  * contain all the gadgets in the group.
  */
@@ -363,9 +367,6 @@ katari.social.GadgetGroup = function(sContainer) {
   };
 
   /** Removes the gadget instance from the group.
-   *
-   * @param groupName The name of the group that this gadget instance belongs
-   * to.
    */
   this.remove = function(instanceId, callback) {
     var parameters = 'groupName=' + this.name + '&gadgetId=' + instanceId;
@@ -612,27 +613,29 @@ jQuery(document).ready(function() {
   gadgets.container = new katari.social.Container();
 });
 
-/*
-jQuery.extend({
-  getUrlVars: function(){
-    var vars = [];
-    var hash = [];
-    var hashes = window.location.href.slice(
-        window.location.href.indexOf('?') + 1).split('&');
-
-    for (var i = 0; i < hashes.length; i++) {
-      hash = hashes[i].split('=');
-      vars.push(hash[0]);
-      vars[hash[0]] = hash[1];
-    }
-    return vars;
-  },
-  getUrlVar: function(name){
-    return jQuery.getUrlVars()[name];
-  },
-  getWindowLocation : function() {
-   return window.location.href;
+/** Renders a gadget group obtained from the server.
+ *
+ * @param {String} container the id of the html element that will contain all
+ * the html elements of the gadget group. It must be specified.
+ *
+ * @param {String} groupName the name of the group to obtain from the server.
+ * It must be specified.
+ *
+ * @param {String} ownerId the id of the owner of the gadget group to render.
+ * Optional. If not specified, it uses the viewer.
+ */
+katari.social.renderGadgetGroup = function(container, groupName, ownerId) {
+  var gadgets = new katari.social.GadgetGroup(container);
+  var parameters = 'groupName=' + groupName;
+  if (ownerId !== undefined) {
+    parameters += '&ownerId=' + ownerId;
   }
-});
-*/
+  jQuery.getJSON(
+    katari.social.canvasConfig.host +
+      '${baseweb}/module/gadgetcontainer/getGadgetGroup.do?' + parameters,
+    function(data) {
+      gadgets.addGadgetsFromJson(data);
+      gadgets.render();
+    });
+}
 

@@ -36,7 +36,7 @@ import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 
 import com.globant.katari.gadgetcontainer.domain.SampleUser;
 
-public class SocialPageDoTest {
+public class GetGadgetGroupDoTest {
 
   private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
@@ -86,14 +86,14 @@ public class SocialPageDoTest {
     // Sets the currently logged on user
     SpringTestUtils.setLoggedInUser(user);
 
-    JsonCommandController controller;
-    controller = (JsonCommandController) appContext.getBean("/socialPage.do");
+    JsonCommandController controller = (JsonCommandController)
+      appContext.getBean("/getGadgetGroup.do");
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     PrintWriter writer = new PrintWriter(os);
 
     MockHttpServletRequest request;
-    request = new MockHttpServletRequest("GET", "socialPage.do");
+    request = new MockHttpServletRequest("GET", "getGadgetGroup.do");
     request.setParameter("groupName", "sample");
 
     HttpServletResponse response = createMock(HttpServletResponse.class);

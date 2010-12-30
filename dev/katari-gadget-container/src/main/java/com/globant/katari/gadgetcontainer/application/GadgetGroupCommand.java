@@ -188,7 +188,7 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
       if (requestedOwnerId != 0) {
         owner = userRepository.findUser(requestedOwnerId);
         if (owner == null) {
-          throw new RuntimeException("Owner id not found " + requestedOwnerId);
+          throw new RuntimeException("Owner not found: " + requestedOwnerId);
         }
       } else {
         owner = viewer;

@@ -53,22 +53,25 @@ insert into applications (id, title, url) values (2, 'Activities',
    <!-- will hold open social gadgets. -->
  </div>
  <script type='text/javascript'>
+
    $(document).ready(function() {
-     var mainGadgets = new katari.social.GadgetGroup('custom-gadgets');
-     $.getJSON(
-       katari.social.canvasConfig.host +
-         '${baseweb}/module/gadgetcontainer/socialPage.do?groupName=main', 
-       function(data) {
-         mainGadgets.addGadgetsFromJson(data);
-         mainGadgets.render();
-       });
+     katari.social.renderGadgetGroup('custom-gadgets', 'main');
    });
  </script>
 -----
 
  As you can see, you need to create an html container (custom-gadgets in this
  case) to hold the gadgets. Then you initialize a GadgetGroup object with data
- coming from gadgetcontainer/socialPage.do.
+ coming from gadgetcontainer/getGadgetGroup.do.
+
+ The full signature of the renderGadgetGroup function is:
+
+-----
+ katari.social.renderGadgetGroup = function(container, groupName, ownerId);
+-----
+
+ The ownerId is the owner of the gadget group you want to render. If not
+ specified, it uses the gadget group owner by the viewer.
 
  This example also adds a button to the gadget directory
  (gadgetcontainer/directory.do) to add new elements to the page.
@@ -120,5 +123,14 @@ Configuration
 
  If debugMode.value is set to true in the configuration property file, then the
  container does not cache the gadget xml spec and does not compress the social
- javascript files.
+ javascript files. This makes it easier to debug the javascript files and
+ hot redeploy the gadgets.
+
+ You can also allow users to see other people's gadgets. You must implement the
+ interface ViewerOwnerRestriction and declare it in you application context as:
+
+-----
+  <bean id="gadgetcontainer.viewOwnerRestriction"
+    class="com.globant.gadgets.MyViewerOwnerRestriction" />
+-----
 
