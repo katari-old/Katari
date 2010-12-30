@@ -86,11 +86,11 @@ Design
  the application supports.
 
  You can display gadget groups in a page.
- 
+
  There are three types of gadget groups:  shared (the same
  gadget group is seen by all users), non shared (each user has his own group)
  or template.
- 
+
  Non shared gadget groups can be configured by the user, adding, moving or
  removing gadgets from the group.
 
