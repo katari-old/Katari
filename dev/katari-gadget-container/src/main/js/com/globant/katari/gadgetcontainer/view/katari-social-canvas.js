@@ -431,6 +431,22 @@ katari.social.GadgetGroup = function(sContainer) {
     this.makeSortable(containerDiv, container);
   };
 
+  /** Find the height of the taller html element in a collection of jQuery
+   * wrapped elements.
+   *
+   * @param elements a collection of jQuery wrapped elements.
+   */
+  var findMaxHeight = function(elements) {
+    var maxHeight = 0;
+    elements.each(function(index) {
+      var height = jQuery(elements[index]).height();
+      if (height > maxHeight) {
+        maxHeight = height;
+      }
+    });
+    return maxHeight;
+  }
+
   /** Configure the jquery sortables in portlet mode.
    *
    * @param gadgetGroupElement The html element that contains the gadget group.
@@ -442,16 +458,28 @@ katari.social.GadgetGroup = function(sContainer) {
     if (this.isCustomizable) {
       var that = this;
       var containers = jQuery(".canvasColumn", gadgetGroupElement);
+
+      // Sets the height of each column. Hack to avoid strange redrawing
+      // behaviour while dragging.
+      var handlers = jQuery("h2", containers);
+      handlers.mousedown(function() {
+        containers.height(findMaxHeight(containers));
+      });
+      handlers.mouseup(function() {
+        containers.css("height", "auto");
+      });
+
       containers.sortable({
         handle: 'h2',
+        connectWith: '#' + gadgetGroupElementId + ' .canvasColumn',
         placeholder: 'ui-sortable-placeholder',
-        forcePlaceholderSize: true,
         start: function(event, ui) {
-          katari.console.log(event);
-          katari.console.log(ui);
           ui.placeholder.height(ui.item.height());
         },
-        connectWith: '#' + gadgetGroupElementId + ' .canvasColumn',
+        over: function(event, ui) {
+          containers.css("height", "100%");
+          containers.height(findMaxHeight(containers));
+        },
         update: function(event, ui) {
           if (ui.sender === null) {
             var newColumn = ui.item.parent().data().columnNumber;
@@ -459,6 +487,7 @@ katari.social.GadgetGroup = function(sContainer) {
                 ui.item.parent().sortable('toArray'));
             that.move(ui.item.data().gadgetInstance, newColumn, newPosition);
           }
+          containers.css("height", "auto");
         }
       });
       containers.disableSelection();
