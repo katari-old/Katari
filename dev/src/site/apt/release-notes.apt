@@ -1,5 +1,23 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.29
+
+* What's new since version 0.28
+
+ * Make menus more customizable.
+
+ * Refactored the gadget container.
+
+Upgrading from 0.28
+
+* If you are using the gadget container:
+
+ * Change the endpoint to obtain the gadget group from socialPage.do to
+ getGadgetGroup.do.
+
+ * Change the overriden bean named gadgetcontainer.viewGroupDecider to
+ gadgetcontainer.viewOwnerRestriction.
+
 Release notes for version 0.28
 
 * What's new since version 0.27
