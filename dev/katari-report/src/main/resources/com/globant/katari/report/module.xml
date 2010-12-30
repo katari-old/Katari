@@ -47,11 +47,8 @@
     <property name="menuBar">
       <katari:menuBar>
         <katari:menuNode name='Reports'>
-          <katari:menuNode name='Custom_Reports' display='Custom Reports'
-              position='10'>
-            <katari:menuItem name='List' link='reports.do'/>
-            <katari:menuItem name='New' link='editReport.do'/>
-          </katari:menuNode>
+          <katari:menuItem name='Custom_Reports' display='Custom Reports'
+            position='10' link='reports.do'/>
         </katari:menuNode>
       </katari:menuBar>
     </property>

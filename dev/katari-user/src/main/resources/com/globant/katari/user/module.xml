@@ -52,10 +52,7 @@
       <!-- The menu bar. -->
       <katari:menuBar>
         <katari:menuNode name='Administration'>
-          <katari:menuNode name='Users'>
-            <katari:menuItem name='List' link='users.do' />
-            <katari:menuItem name='New' link='createUser.do' />
-          </katari:menuNode>
+          <katari:menuItem name='Users' link='users.do' />
         </katari:menuNode>
       </katari:menuBar>
     </property>

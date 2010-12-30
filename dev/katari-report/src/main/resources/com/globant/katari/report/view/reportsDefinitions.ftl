@@ -18,6 +18,8 @@
   <body>
     <h3>Report Definitions</h3>
 	
+    <a class='btn' href='editReport.do'>New</a>
+
 	<table width='100%' border='0' class='results' id='reportList' cellpadding='0' cellspacing='0'>
 	  <col width='20%'/>
 	  <col width='20%'/>

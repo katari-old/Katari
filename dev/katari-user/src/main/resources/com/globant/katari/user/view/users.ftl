@@ -32,6 +32,8 @@
 
     </form>
 
+    <a class='btn' href='${request.contextPath}/createUser.do'>New</a>
+
     <#-- Table of users -->
     <table width='100%' border='0' class='results bottomMargin' id='userList'
       cellpadding='0' cellspacing='0'>

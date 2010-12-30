@@ -30,6 +30,8 @@
           </span>
         
           <input class="btn" type="submit" value="Save Report"/>
+          <input class="btn" type="submit" value="Cancel" onclick=
+            "window.location='reports.do';return false;"/>
         
         </div>
       
