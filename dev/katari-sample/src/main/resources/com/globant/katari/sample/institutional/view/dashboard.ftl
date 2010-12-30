@@ -36,8 +36,8 @@
 
     <script type='text/javascript'>
       $(document).ready(function() {
-        var topGadgets = new katari.social.GadgetGroup('top-gadgets');
 
+        var topGadgets = new katari.social.GadgetGroup('top-gadgets');
         $.getJSON(
           katari.social.canvasConfig.host +
             '${baseweb}/module/gadgetcontainer/getGadgetGroup.do?groupName=top',
@@ -46,6 +46,7 @@
             topGadgets.render();
           });
 
+        // Simpler way of doing the same.
         katari.social.renderGadgetGroup('custom-gadgets', 'main');
       });
     </script>

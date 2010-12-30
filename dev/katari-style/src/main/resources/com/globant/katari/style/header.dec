@@ -9,12 +9,11 @@
   <@katari.weblet "search" "search"/>
   <#if request.remoteUser??>
     Hi ${request.remoteUser}
-    (<a class="__leftMargin" href="${baseweb}/logout?service=${response.encodeRedirectURL(baseweb+'/module/editable-pages/page/about?selected-module-entry=/root/Institutional/About')}"
+    (<a href="${baseweb}/logout?service=${response.encodeRedirectURL(baseweb+'/module/editable-pages/page/about?selected-module-entry=/root/Institutional/About')}"
       >Sign out</a>)
   <#else>
-    <a class="__leftMargin"
-      href="${baseweb}/module/institutional/dashboard.do?selected-module-entry=/root/Institutional/Dashboard">Sign in</a>
-    or <a class='__leftMargin' href='${baseweb}/module/registration/register.do'>
+    <a href="${baseweb}/module/institutional/dashboard.do?selected-module-entry=/root/Institutional/Dashboard">Sign in</a>
+    or <a href='${baseweb}/module/registration/register.do'>
       Register</a>
   </#if>
 </div>

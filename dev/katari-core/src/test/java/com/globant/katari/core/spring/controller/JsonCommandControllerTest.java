@@ -33,7 +33,7 @@ public class JsonCommandControllerTest {
 
   @Before
   public void setUp() throws Exception {
-    request = new MockHttpServletRequest("GET", "socialPage.do");
+    request = new MockHttpServletRequest("GET", "getGadgetGroup.do");
   }
 
   @Test

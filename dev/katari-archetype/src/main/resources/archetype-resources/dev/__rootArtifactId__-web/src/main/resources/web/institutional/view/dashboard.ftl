@@ -36,24 +36,18 @@
 
     <script type='text/javascript'>
       $(document).ready(function() {
-        var topGadgets = new katari.social.GadgetGroup('top-gadgets');
 
+        var topGadgets = new katari.social.GadgetGroup('top-gadgets');
         $.getJSON(
           katari.social.canvasConfig.host +
-            '${baseweb}/module/gadgetcontainer/socialPage.do?groupName=top', 
+            '${baseweb}/module/gadgetcontainer/getGadgetGroup.do?groupName=top',
           function(data) {
             topGadgets.addGadgetsFromJson(data);
             topGadgets.render();
           });
 
-        var mainGadgets = new katari.social.GadgetGroup('custom-gadgets');
-        $.getJSON(
-          katari.social.canvasConfig.host +
-            '${baseweb}/module/gadgetcontainer/socialPage.do?groupName=main', 
-          function(data) {
-            mainGadgets.addGadgetsFromJson(data);
-            mainGadgets.render();
-          });
+        // Simpler way of doing the same.
+        katari.social.renderGadgetGroup('custom-gadgets', 'main');
       });
     </script>
 

@@ -215,10 +215,6 @@ div.preview-button a span {
   display:none;
 }
 
-#header .weblet {
-  float:right;
-}
-
 div.weblet_editable-pages_previewButton {
   float:right;
   margin-left:8px;
@@ -532,7 +528,7 @@ body, td, th, div, table, p, span, li, textarea, pre, input {
   color:#838383;
   font-size:0.85em;
   right:19px;
-  text-align:right;
+  /* text-align:right; */
   top:17px;
   width:250px;
   width:280px\9;
@@ -551,9 +547,16 @@ form input, form select, form textarea, .loginContainer input {
   margin-bottom:0;
 }
 
-#header #data a { color:#838383; float:right; }
+#header #data a {
+  color:#838383;
+/*  float:right; */
+}
 
-#header #data span { float:right; }
+/*
+#header #data span {
+  float:right;
+}
+*/
 
 #version {
   background-image: url(../image/footer-bg.png);
@@ -1030,13 +1033,18 @@ form span.buttons, form ul.glasslist .buttonBarClass {
 .ui-sortable-placeholder {
   border: 1px dotted black;
   visibility: visible !important;
-  height: 50px !important;
+  margin-bottom:52px;
 }
 
 .ui-sortable-placeholder * {
   visibility: hidden;
 }
+
+.customizable .titleBar h2:hover {
+  cursor: move;
+}
 /* End For Drag & Drop */
+
 .titleBar {
   background:url(../image/bg_titleBar.png) 0 0 repeat-x;
   border-bottom:1px solid #c9dda5;
@@ -1124,10 +1132,27 @@ table.directory .info h5 {
   margin:0 0 8px 0;
 }
 
-table.directory .info p{
+table.directory .info p {
   line-height:18px;
 }
 
 table.directory .author {
   font-size:11px;
-}
+}
+
+/* Style of the dropdown menu container, tha occupies the same space as the
+ * menu or menubar. This is used to stop the screen from resizing when the menu
+ * bar finally appears.
+ */
+#dropdownMenu-context-container, #dropdownMenu-bar-container {
+  height:24px;
+  color:#fff;
+  background-color:#fff;
+}
+
+/** Applies to the context type js menu. Floats the menu to the left.
+ */
+#dropdownMenu-context {
+  float: right;
+}
+
