@@ -6,6 +6,17 @@ Release notes for version 0.30
 
  * New module katari-monitoring.
 
+Upgrading from 0.29
+
+ * The development database checker should no longer be overriden to configure
+ the marker table. Replace the katari.developmentDataBaseChecker bean in your
+ applicationContext with:
+
+-----
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name = 'katari.markerTable' p:value = 'katari_marker_666' />
+-----
+
 Release notes for version 0.29
 
 * What's new since version 0.28

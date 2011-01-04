@@ -330,9 +330,8 @@
     class='com.globant.katari.editablepages.view.FckEditorConfiguration'
     p:height='400'/>
 
-  <!-- Externalizes the location of the compass files for mirroring and
-       indexing.  -->
-  <bean id='search.dataLocation'
+  <!-- Externalizes the location of katari data directory. -->
+  <bean id='katari.dataLocation'
     class='com.globant.katari.core.spring.StringHolder'
     p:value-ref='dataLocation' />
 

@@ -218,6 +218,15 @@
   <!-- We use the userDetailsService from the user module. -->
   <alias name="user.userDetailsService" alias="katari.userDetailsService"/>
 
+  <!-- Defines the list of modules to exclude from the menu. Each entry is a
+       regular expression, so you can eliminate all menu items with:
+       -->
+  <!--
+  <util:list id='katari.moduleMenusToIgnore'>
+    <value>.*</value>
+  </util:list>
+  -->
+
   <!-- Port mappings for HTTP/HTTPS access. -->
   <bean id='katari.httpsPortMapper'
       class='org.acegisecurity.util.PortMapperImpl'>
@@ -301,28 +310,15 @@
       <property name="value" value="/${artifactId}" />
   </bean>
 
-  <!-- Externalizes the location of the compass files for mirroring and
+  <!-- Externalizes the location of katari data directory.
        indexing.  -->
-  <bean id='search.compassEngineConnection'
+  <bean id='katari.dataLocation'
     class='com.globant.katari.core.spring.StringHolder'
-    p:value-ref='indexLocation' />
+    p:value-ref='dataLocation' />
 
-  <!-- The value of this bean is intended to be overridden in the properties
-       file. -->
-  <bean id='indexLocation'
+  <bean id='dataLocation'
     class='com.globant.katari.core.spring.StringHolder'
-    p:value='target/compass' />
-
-  <!-- Externalizes the location of the compass files for indexing. -->
-  <bean id='search.compassIndexEngineConnection'
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value-ref='indexTempLocation' />
-
-  <!-- The value of this bean is intended to be overridden in the properties
-       file. -->
-  <bean id='indexTempLocation'
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value='target/compass-temp' />
+    p:value='target/data' />
 
 </beans>
 
