@@ -4,9 +4,6 @@ package com.globant.katari.menu.dropdown.application;
 
 import static org.easymock.classextension.EasyMock.createNiceMock;
 
-import java.util.List;
-import java.util.LinkedList;
-
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 

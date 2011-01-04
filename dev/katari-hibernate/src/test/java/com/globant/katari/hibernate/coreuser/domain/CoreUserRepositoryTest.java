@@ -2,9 +2,6 @@
 
 package com.globant.katari.hibernate.coreuser.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 public class CoreUserRepositoryTest extends

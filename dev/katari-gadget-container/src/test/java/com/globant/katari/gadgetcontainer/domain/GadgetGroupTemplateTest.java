@@ -24,13 +24,9 @@ public class GadgetGroupTemplateTest {
   private String gadgetXmlUrl = "file:///" + new File(
       "target/test-classes/SampleGadget.xml").getAbsolutePath();
 
-  private String gadgetProfileXmlUrl = "file:///" + new File(
-      "target/test-classes/SampleProfileGadget.xml").getAbsolutePath();
-
   private CoreUser user;
 
   private Application application;
-  private Application applicationProfile;
 
   @Before
   public void setUp() {
@@ -39,7 +35,6 @@ public class GadgetGroupTemplateTest {
     replay(user);
 
     application = new Application(gadgetXmlUrl);
-    applicationProfile = new Application(gadgetProfileXmlUrl);
   }
 
   @Test

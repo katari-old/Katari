@@ -3,7 +3,6 @@
 package com.globant.katari.menu.dropdown.application;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -12,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.Validate;
 
@@ -20,7 +18,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.globant.katari.core.security.MenuAccessFilterer;
-import com.globant.katari.core.web.MenuNode;
 import com.globant.katari.core.web.ModuleContextRegistrar;
 
 /** This filter makes available a UserMenuNode in the user request.

@@ -189,7 +189,6 @@
     <dependency>
       <groupId>com.globant.katari</groupId>
       <artifactId>katari-monitoring</artifactId>
-      <version>0.29-SNAPSHOT</version>
     </dependency>
 
     <dependency>
