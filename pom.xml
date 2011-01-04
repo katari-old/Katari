@@ -107,18 +107,27 @@
       <name>globant-public-releases</name>
       <!-- If I use ${repositoryRoot}, maven does not find the parent pom. -->
       <url>https://projects.globant.com/nexus/content/repositories/globant</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
+      <snapshots><enabled>false</enabled></snapshots>
     </repository>
     <!-- The jboss repository, mainly for hibernate -->
     <repository>
       <id>jboss-releases</id>
       <name>Jboss Releases</name>
       <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+    <!-- for javamelody -->
+    <repository>
+      <id>glassfish-public</id>
+      <url>http://maven.glassfish.org/content/groups/public/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+    <!-- for jrobin -->
+    <repository>
+      <id>opennms-repo</id>
+      <name>OpenNMS Repository</name>
+      <url>http://repo.opennms.org/maven2</url>
+      <snapshots><enabled>false</enabled></snapshots>
     </repository>
   </repositories>
 

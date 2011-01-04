@@ -19,7 +19,7 @@ import org.apache.commons.lang.Validate;
 
 /** A servlet context that wraps the web container servlet context.
  *
- * This wrapper is compatible with the 2.4 servlet spec.
+ * This wrapper is compatible with the 2.5 servlet spec.
  */
 @SuppressWarnings(value = { "deprecation" })
 public class ServletContextWrapper implements ServletContext {
@@ -84,6 +84,12 @@ public class ServletContextWrapper implements ServletContext {
    */
   public ServletContext getContext(final String uripath) {
     return delegate.getContext(uripath);
+  }
+
+  /** {@inheritDoc}
+   */
+  public String getContextPath() {
+    return delegate.getContextPath();
   }
 
   /** {@inheritDoc}

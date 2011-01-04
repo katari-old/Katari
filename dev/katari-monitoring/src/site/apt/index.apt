@@ -1,0 +1,16 @@
+~~~ vim: set sw=1 et ts=1 ai:
+
+Introduction
+
+ This module provides monitoring with the help of JavaMelody.
+
+Using this module
+
+ To include this module in a Katari based application, put in your application
+ context file (usually src/main/webapp/WEB-INF/applicationContext.xml), a line
+ of the form:
+
+-----
+<katari:import module="com.globant.katari.monitoring"/>
+-----
+

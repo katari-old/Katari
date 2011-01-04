@@ -355,6 +355,7 @@ div#section div#content { padding:0 10px; }
 form {
   padding:10px;
   width:30em;
+  font-size:8pt;
 }
 
 form.innerform {

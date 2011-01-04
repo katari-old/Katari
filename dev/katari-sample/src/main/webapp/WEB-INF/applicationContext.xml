@@ -18,6 +18,8 @@
   <!-- The katari global beans. -->
   <import resource="classpath:/com/globant/katari/core/applicationContext.xml"/>
 
+  <katari:import module="com.globant.katari.monitoring"/>
+
   <!-- The home module. -->
   <katari:import module="com.globant.katari.sample.home"/>
 
