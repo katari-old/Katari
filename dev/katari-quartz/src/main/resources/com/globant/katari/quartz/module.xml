@@ -69,10 +69,12 @@
        to Add tasks here. -->
   <util:list id='quartz.schedulerTasks'/>
 
+  <!-- exposeSchedulerInRepository is used to let katari-monitoring monitor
+       quartz jobs. -->
   <bean id='quartz.schedulerFactory'
-    class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-    <property name='triggers' ref='quartz.schedulerTasks' />
-  </bean>
+    class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+    p:triggers-ref='quartz.schedulerTasks' p:exposeSchedulerInRepository="true"
+    />
 
   <!-- Basic quartz schedules. -->
   <!-- Run monthly, at 2 AM, on every 1st of the month. The 2 AM time is to
