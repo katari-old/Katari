@@ -5,40 +5,53 @@ package com.globant.katari.report.domain;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.After;
+import static org.junit.Assert.*;
+
 import org.apache.commons.collections.MapUtils;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.katari.report.ReportsTestSupport;
 
-/**
- * Test class for reports.
+/** Test class for reports.
  * @author andres.ventura
  */
-public class ReportRepositoryTest
-  extends AbstractTransactionalDataSourceSpringContextTests {
+public class ReportRepositoryTest {
 
   private JasperReportRepository reportRepository;
 
   private RoleRepository roleRepository;
 
-  /** Setups Testing roles.
-   */
-  @Override
-  public final void onSetUpInTransaction() throws Exception {
-    deleteFromTables(new String[] {
-        "report_required_roles", "report_definitions", "roles"}
-    );
+  private Session session;
+
+  @Before
+  public void setUp() throws Exception {
+    reportRepository = ReportsTestSupport.getRepository();
+    roleRepository = (RoleRepository) ReportsTestSupport
+      .getApplicationContext().getBean("coreuser.roleRepository");
+
+    session = ((SessionFactory) ReportsTestSupport.getApplicationContext()
+        .getBean("katari.sessionFactory")).openSession();
+
+    session.createSQLQuery("delete from report_required_roles")
+      .executeUpdate();
+    session.createQuery("delete ReportDefinition").executeUpdate();
+    session.createQuery("delete Role").executeUpdate();
+
     roleRepository.save(new Role("ADMINISTRATOR"));
     roleRepository.save(new Role("REPORT_ADMIN"));
     roleRepository.save(new Role("GUEST"));
+
     createSampleReport();
   }
 
-  /**
-   * Tests the creation of a report.
+  /** Creates a sample report called test.
    */
   private void createSampleReport() throws Exception {
     ReportDefinition definition = new ReportDefinition("test", "description",
@@ -48,10 +61,8 @@ public class ReportRepositoryTest
     reportRepository.save(definition);
   }
 
-  /**
-   * Tests find by roles.
-   */
-  public void testFindByRoles() throws Exception {
+  @Test
+  public void testFindReportsByRole() throws Exception {
     final List<Role> roles = roleRepository.getRoles();
     List<ReportDefinition> reports;
 
@@ -64,10 +75,8 @@ public class ReportRepositoryTest
     assertEquals(0, reports.size());
   }
 
-  /**
-   * Test get drop down options.
-   */
   @SuppressWarnings("unchecked")
+  @Test
   public void testGetDropdownOptions() throws Exception {
     ParameterDefinition parameterDefinition =
       new ParameterDefinition("test_param",String.class.getName(), true,
@@ -78,40 +87,15 @@ public class ReportRepositoryTest
     assertEquals(3, options.size());
   }
 
-  /** Tests find by Name.
-   * @throws Exception
-   */
-  public void testFindByName() throws Exception {
+  @Test
+  public void testFindReportDefinition() throws Exception {
     ReportDefinition testReport = reportRepository.findReportDefinition("test");
     assertNotNull(testReport);
   }
 
-  //***********SPRING ACCESSORS*****************
-  public JasperReportRepository getReportRepository() {
-    return reportRepository;
-  }
-
-  public void setReportRepository(final JasperReportRepository reportRepository) {
-    this.reportRepository = reportRepository;
-  }
-
-  public RoleRepository getRoleRepository() {
-    return roleRepository;
-  }
-
-  public void setRoleRepository(final RoleRepository roleRepository) {
-    this.roleRepository = roleRepository;
-  }
-
-  @Override
-  protected ConfigurableApplicationContext loadContext(final Object key) throws
-      Exception {
-    return ReportsTestSupport.getApplicationContext();
-  }
-
-  @Override
-  protected Object contextKey() {
-    return "notnull";
+  @After
+  public void tearDown() {
+    session.close();
   }
 }
 

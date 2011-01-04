@@ -6,8 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.After;
+import static org.junit.Assert.*;
+
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
@@ -16,10 +19,9 @@ import com.globant.katari.report.ReportsTestSupport;
 import com.globant.katari.report.domain.JasperReportRepository;
 import com.globant.katari.report.domain.ReportDefinition;
 
-/** Tests Report Commands.  @author gerardo.bercovich
+/** Tests Report Commands.
  */
-public class ReportCommandTest extends
-    AbstractTransactionalDataSourceSpringContextTests {
+public class ReportCommandTest {
 
   /** The Report repository. */
   private JasperReportRepository reportRepository;
@@ -27,14 +29,19 @@ public class ReportCommandTest extends
   /** The Role repository. */
   private RoleRepository roleRepository;
 
-  @Override
-  protected void onSetUp() throws Exception {
+  @Before
+  public void onSetUp() throws Exception {
+    reportRepository = ReportsTestSupport.getRepository();
+    roleRepository = (RoleRepository) ReportsTestSupport
+      .getApplicationContext().getBean("coreuser.roleRepository");
+
     ReportsTestSupport.initTestReportSecurityContext("ADMINISTRATOR");
   }
 
   /**
    * Tests the deletion of a report.
    */
+  @Test
   public void testReportDeletion() throws Exception {
     int reportsCount = reportRepository.getReportList().size();
 
@@ -42,28 +49,30 @@ public class ReportCommandTest extends
 
     ReportDefinition rd = reportRepository
         .findReportDefinition("test_ReportTest");
-    DeleteReportCommand deleteReportCmd = (DeleteReportCommand) this
-        .getApplicationContext().getBean("deleteReportCommand");
+    DeleteReportCommand deleteReportCmd = (DeleteReportCommand)
+      ReportsTestSupport.getApplicationContext().getBean("deleteReportCommand");
     deleteReportCmd.setReportId(rd.getId());
     deleteReportCmd.execute();
 
     assertEquals(reportsCount, reportRepository.getReportList().size());
   }
 
+  @Test
   public void testReportsCommand() throws Exception {
     int reportsCount = reportRepository.getReportList().size();
     saveTestReportForAdmin("Test report 1", "Report Description");
     saveTestReportForAdmin("Test report 2", "Report Description");
-    ReportsCommand command = (ReportsCommand) this
-    .getApplicationContext().getBean("reportsCommand");
+    ReportsCommand command = (ReportsCommand) ReportsTestSupport
+      .getApplicationContext().getBean("reportsCommand");
     final List<ReportDefinition> reports = command.execute();
     assertEquals(reportsCount + 2, reports.size());
   }
 
+  @Test
   public void testSaveReportCommand() throws Exception {
     saveTestReportForAdmin("Test report 7", "Report Description 7");
     SaveReportCommand command = (SaveReportCommand)
-    getApplicationContext().getBean("saveReportCommand");
+    ReportsTestSupport.getApplicationContext().getBean("saveReportCommand");
     long reportId = reportRepository.findReportDefinition("Test report 7")
         .getId();
     command.setReportId(reportId);
@@ -77,8 +86,8 @@ public class ReportCommandTest extends
    */
   private void saveTestReportForAdmin(final String reportName,
       final String description) throws Exception {
-    SaveReportCommand command = (SaveReportCommand) this
-        .getApplicationContext().getBean("saveReportCommand");
+    SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
+      .getApplicationContext().getBean("saveReportCommand");
     command.init();
     command.setName(reportName);
     command.setDescription(description);
@@ -91,9 +100,10 @@ public class ReportCommandTest extends
     command.execute();
   }
 
+  @Test
   public void testInit_inexistentReport() throws Exception {
-    SaveReportCommand command = (SaveReportCommand) this
-        .getApplicationContext().getBean("saveReportCommand");
+    SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
+      .getApplicationContext().getBean("saveReportCommand");
     // Inexistent ID
     command.setReportId(Long.MAX_VALUE);
     try {
@@ -104,9 +114,10 @@ public class ReportCommandTest extends
     }
   }
 
+  @Test
   public void testValidate_valid() throws Exception {
-    SaveReportCommand command = (SaveReportCommand)
-      getApplicationContext().getBean("saveReportCommand");
+    SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
+      .getApplicationContext().getBean("saveReportCommand");
 
     command.setName("a name");
     command.setDescription("a description");
@@ -118,9 +129,10 @@ public class ReportCommandTest extends
 
   /* Creates a new report and uploads an empty file.
    */
+  @Test
   public void testValidate_emptyContent() throws Exception {
-    SaveReportCommand command = (SaveReportCommand)
-      getApplicationContext().getBean("saveReportCommand");
+    SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
+      .getApplicationContext().getBean("saveReportCommand");
 
     command.setName("a name");
     command.setDescription("a description");
@@ -130,9 +142,10 @@ public class ReportCommandTest extends
     assertTrue(errors.hasErrors());
   }
 
+  @Test
   public void testValidate_invalidContent() throws Exception {
-    SaveReportCommand command = (SaveReportCommand)
-      getApplicationContext().getBean("saveReportCommand");
+    SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
+      .getApplicationContext().getBean("saveReportCommand");
     command.setName("a name");
     command.setDescription("a description");
     command.setReportContent(new byte[]{'a', 'b'});
@@ -141,13 +154,14 @@ public class ReportCommandTest extends
     assertTrue(errors.hasErrors());
   }
 
+  @Test
   public void testValidateModify_emptyContent() throws Exception {
 
     saveTestReportForAdmin("Test report 3", "Report Description");
     long reportId = reportRepository.findIdForName("Test report 3");
 
-    SaveReportCommand command = (SaveReportCommand)
-      getApplicationContext().getBean("saveReportCommand");
+    SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
+      .getApplicationContext().getBean("saveReportCommand");
 
     command.setReportId(reportId);
     command.setName("a name");
@@ -155,35 +169,6 @@ public class ReportCommandTest extends
     Errors errors = new BindException(command, "command");
     command.validate(errors);
     assertTrue(!errors.hasErrors());
-  }
-
-  // ***********SPRING ACCESSORS*****************
-
-  public JasperReportRepository getReportRepository() {
-    return reportRepository;
-  }
-
-  public void setReportRepository(final JasperReportRepository reportRepository) {
-    this.reportRepository = reportRepository;
-  }
-
-  public RoleRepository getRoleRepository() {
-    return roleRepository;
-  }
-
-  public void setRoleRepository(final RoleRepository roleRepository) {
-    this.roleRepository = roleRepository;
-  }
-
-  @Override
-  protected ConfigurableApplicationContext loadContext(final Object key) throws
-      Exception {
-    return ReportsTestSupport.getApplicationContext();
-  }
-
-  @Override
-  protected Object contextKey() {
-    return "notnull";
   }
 }
 

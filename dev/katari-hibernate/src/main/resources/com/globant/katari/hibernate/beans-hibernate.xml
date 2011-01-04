@@ -20,11 +20,9 @@
   <bean id="katari.sessionFactory"
     class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
     lazy-init="true">
-    <property name="dataSource" ref="katari.dataSource" />
+    <property name="dataSource" ref="katari.lazyDataSource" />
     <property name="hibernateProperties" ref='katari.hibernateProperties'/>
-    <property name="annotatedClasses">
-      <ref bean='katari.persistentClasses' />
-    </property>
+    <property name="annotatedClasses" ref='katari.persistentClasses' />
   </bean>
 
   <util:list id='katari.persistentClasses'/>
@@ -46,7 +44,7 @@
       <list>
         <!-- The database ping -->
         <bean class="com.globant.katari.hibernate.PingDatabase">
-          <constructor-arg ref="katari.dataSource"/>
+          <constructor-arg ref="katari.lazyDataSource"/>
           <constructor-arg ref='katari.pingDatabaseQuery'/>
           <constructor-arg ref="katari.developmentDataBaseChecker"/>
         </bean>
@@ -64,14 +62,29 @@
     name = 'katari.pingDatabaseQuery'
     p:value = 'select * from users where id = 1' />
 
+  <!-- A bean to override the marker table. -->
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name = 'katari.markerTable' p:value = 'katari_marker_666' />
+
   <!-- A utility bean that checks if the application is running against a
   development database. -->
   <bean id="katari.developmentDataBaseChecker"
     class="com.globant.katari.hibernate.DevelopmentDataBaseChecker">
-    <constructor-arg ref="katari.dataSource"/>
-    <constructor-arg>
-      <value>katari_marker_666</value>
-    </constructor-arg>
+    <constructor-arg ref="katari.lazyDataSource"/>
+    <constructor-arg ref='katari.markerTable'/>
+  </bean>
+
+  <!-- Data source to use on beans that may be used in post processors.
+       
+  This was motivated by the katari-monitoring module that needs to post-process
+  the data source to monitor jdbc connections. -->
+  <bean id='katari.lazyDataSource'
+    class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="targetSource">
+      <bean class="org.springframework.aop.target.LazyInitTargetSource">
+        <property name="targetBeanName" value="katari.dataSource"/>
+      </bean>
+    </property>
   </bean>
 
   <!-- Puts the helper for the katari free marker url macros in the request

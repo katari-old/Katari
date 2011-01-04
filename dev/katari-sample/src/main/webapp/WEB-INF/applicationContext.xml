@@ -247,15 +247,9 @@
     <katari:menuNode position='11000' name='Institutional'/>
   </katari:menuBar>
 
-  <!-- A utility bean that checks if the application is running against a
-  development database. -->
-  <bean id="katari.developmentDataBaseChecker"
-    class="com.globant.katari.hibernate.DevelopmentDataBaseChecker">
-    <constructor-arg ref="katari.dataSource"/>
-    <constructor-arg>
-      <value>katari_marker_666</value>
-    </constructor-arg>
-  </bean>
+  <!-- Overrides the name of the marker table. -->
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name = 'katari.markerTable' p:value = 'katari_marker_666' />
 
   <!-- We use the userRepository from the user module. -->
   <alias name="user.userDetailsService" alias="katari.userDetailsService"/>

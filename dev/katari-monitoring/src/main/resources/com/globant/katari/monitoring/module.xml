@@ -11,6 +11,8 @@
       http://www.springframework.org/schema/util
       http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
+  <import resource='classpath:net/bull/javamelody/monitoring-spring.xml'/>
+
   <bean id='monitoring.module'
       class='com.globant.katari.core.web.ConfigurableModule'>
 
@@ -40,7 +42,6 @@
                   </constructor-arg>
                 </bean>
               </constructor-arg>
-              <!-- constructor-arg><value>-1000000</value></constructor-arg -->
             </bean>
           </list>
         </property>
