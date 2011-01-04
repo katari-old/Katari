@@ -45,6 +45,8 @@
                   </constructor-arg>
                 </bean>
               </constructor-arg>
+              <!-- We want this filter to executer after the decorators. -->
+              <constructor-arg><value>10</value></constructor-arg>
             </bean>
           </list>
         </property>
