@@ -249,7 +249,7 @@
 
   <!-- Overrides the name of the marker table. -->
   <bean class='com.globant.katari.core.spring.StringHolder'
-    name = 'katari.markerTable' p:value = 'katari_marker_666' />
+    name='katari.markerTable' p:value='katari_marker_666' />
 
   <!-- We use the userRepository from the user module. -->
   <alias name="user.userDetailsService" alias="katari.userDetailsService"/>
