@@ -33,10 +33,10 @@ git commit --amend
 #
 # master is the branch you are working on.
 
-git checkout bad
+git checkout <bad>
 # make changes here and update the index
 git commit --amend
-git rebase --onto HEAD bad master
+git rebase --onto HEAD <bad> master
 
 # If there where conflicts, resolv and:
 git rebase --continue
@@ -66,4 +66,7 @@ Confirm that the commit you found is the right one: git show
 git reset --hard <hash-from-log>
 git svn rebase
 git svn dcommit
+
+# Rollback last commit:
+git reset --soft HEAD~1
 
