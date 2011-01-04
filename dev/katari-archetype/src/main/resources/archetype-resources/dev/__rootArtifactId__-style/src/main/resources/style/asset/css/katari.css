@@ -355,6 +355,7 @@ div#section div#content { padding:0 10px; }
 form {
   padding:10px;
   width:30em;
+  font-size:8pt;
 }
 
 form.innerform {
@@ -818,6 +819,20 @@ input.btn {
   padding:2px 10px\9;
   *padding:1px 3px;
   text-transform:lowercase;
+}
+
+a.btn {
+  background:#899A1B none repeat scroll 0 0;
+  border:1px solid #6C7B0B;
+  color:#FFFFFF;
+  cursor:pointer;
+  font-size:0.95em;
+  font-weight:bold;
+  padding:1px 8px;
+  padding:2px 10px\9;
+  *padding:1px 3px;
+  text-transform:lowercase;
+  text-decoration:none;
 }
 
 input.btn:hover {

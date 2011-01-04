@@ -178,6 +178,11 @@
 
     <dependency>
       <groupId>com.globant.katari</groupId>
+      <artifactId>katari-monitoring</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
       <artifactId>katari-classic-menu</artifactId>
     </dependency>
 
