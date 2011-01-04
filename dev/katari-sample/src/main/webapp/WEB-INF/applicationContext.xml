@@ -332,26 +332,13 @@
 
   <!-- Externalizes the location of the compass files for mirroring and
        indexing.  -->
-  <bean id='search.compassEngineConnection'
+  <bean id='search.dataLocation'
     class='com.globant.katari.core.spring.StringHolder'
-    p:value-ref='indexLocation' />
+    p:value-ref='dataLocation' />
 
-  <!-- The value of this bean is intended to be overridden in the properties
-       file. -->
-  <bean id='indexLocation'
+  <bean id='dataLocation'
     class='com.globant.katari.core.spring.StringHolder'
-    p:value='target/compass' />
-
-  <!-- Externalizes the location of the compass files for indexing. -->
-  <bean id='search.compassIndexEngineConnection'
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value-ref='indexTempLocation' />
-
-  <!-- The value of this bean is intended to be overridden in the properties
-       file. -->
-  <bean id='indexTempLocation'
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value='target/compass-temp' />
+    p:value='target/data' />
 
   <!-- The url of the CAS server sso implementation. -->
   <bean id="cas-login.casServerUrl"

@@ -38,6 +38,9 @@
                     <util:map>
                       <entry key="monitoring-path"
                         value="/module/monitoring/m"/>
+                      <entry key='storage-directory'>
+                        <ref bean='monitoring.dataLocation'/>
+                      </entry>
                     </util:map>
                   </constructor-arg>
                 </bean>
@@ -78,6 +81,18 @@
         <value>.*monitoring/.*</value>
       </list>
     </constructor-arg>
+  </bean>
+
+  <!-- Overridable bean to define the file system location to store the jrobin
+       data files. -->
+  <bean id='monitoring.dataLocation'
+    class='com.globant.katari.core.spring.JoinedStrings'>
+    <property name="values">
+      <list>
+        <ref bean='katari.dataLocation'/>
+        <value>/monitoning</value>
+      </list>
+    </property>
   </bean>
 
 </beans>

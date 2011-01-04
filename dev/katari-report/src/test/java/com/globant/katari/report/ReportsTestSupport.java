@@ -184,6 +184,7 @@ public class ReportsTestSupport {
     return (DataSource) getApplicationContext().getBean(
         "dataSource");
   }
+
   /** Obtains the jasper repository.
    *
    * @return Returns the jasper repository, never null.

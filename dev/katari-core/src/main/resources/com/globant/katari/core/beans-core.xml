@@ -150,6 +150,10 @@
   <bean class='com.globant.katari.core.spring.StringHolder'
     name='debugMode' p:value='false'/>
 
+  <!-- The file system location where modules will store their fs data. -->
+  <bean class='com.globant.katari.core.spring.StringHolder'
+    name='katari.dataLocation' p:value='target/data'/>
+
   <!-- ModuleContextRegistrar manages the module contexts. -->
   <bean id="katari.contextRegistrar" lazy-init="true"
     class="com.globant.katari.core.web.ModuleContextRegistrar"
