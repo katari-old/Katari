@@ -755,6 +755,13 @@
             </dependency>
           </dependencies>
         </plugin>
+
+        <plugin>
+          <groupId>gr.abiss.mvn.plugins</groupId>
+          <artifactId>maven-jstools-plugin</artifactId>
+          <version>0.7</version>
+        </plugin>
+
       </plugins>
     </pluginManagement>
 
