@@ -19,7 +19,7 @@ public class PingTest {
     HttpMethod method = null;
     try {
       HttpClient client = new HttpClient();
-      method = new GetMethod("http://localhost:8099/katari-sample/ping");
+      method = new GetMethod(SimplePageVerifier.getBaseUrl() + "/ping");
 
       client.executeMethod(method);
       String responseBody = method.getResponseBodyAsString();

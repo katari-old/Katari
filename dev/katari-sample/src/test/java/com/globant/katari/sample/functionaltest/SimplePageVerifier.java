@@ -2,7 +2,9 @@
 
 package com.globant.katari.sample.functionaltest;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 import junit.framework.TestCase;
 
@@ -28,11 +30,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
  * @author nicolas.frontini
  */
 public final class SimplePageVerifier extends TestCase {
-
-  /** The base url where the application is deployed.
-   */
-  private static final String BASE_URL =
-      "http://localhost:8099/katari-sample";
 
   /** The form submition name.
    */
@@ -92,7 +89,7 @@ public final class SimplePageVerifier extends TestCase {
     Validate.notNull(url, "The relative url cannot be null.");
     log.trace("Entering login");
 
-    URL fullUrl = new URL(BASE_URL + url);
+    URL fullUrl = new URL(getBaseUrl() + url);
     WebClient webClient = new WebClient();
     HtmlPage loginPage = (HtmlPage) webClient.getPage(fullUrl);
 
@@ -168,7 +165,7 @@ public final class SimplePageVerifier extends TestCase {
 
     log.trace("Entering verifyPage");
 
-    String location = BASE_URL + url + requestParameters;
+    String location = getBaseUrl() + url + requestParameters;
     WebRequestSettings webRequestSettings;
     webRequestSettings = new WebRequestSettings(new URL(location), httpMethod);
 
@@ -225,7 +222,7 @@ public final class SimplePageVerifier extends TestCase {
 
     log.trace("Entering verifyPage");
 
-    String location = BASE_URL + url + requestParameters;
+    String location = getBaseUrl() + url + requestParameters;
     WebRequestSettings webRequestSettings;
     webRequestSettings = new WebRequestSettings(new URL(location), httpMethod);
 
@@ -235,6 +232,23 @@ public final class SimplePageVerifier extends TestCase {
     assertNotNull(page);
     assertEquals(title, page.getTitleText());
     log.trace("Leaving verifyPage");
+  }
+
+  /** Obtains the base url of the application.
+   *
+   * @return the base url, never null.
+   */
+  public static String getBaseUrl() {
+    Properties properties = new Properties();
+    try {
+    properties.load(SimplePageVerifier.class.getResourceAsStream(
+      "/com/globant/katari/sample/functionaltest/test.properties"));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    String servletPort = properties.getProperty("servletPort");
+
+    return "http://localhost:" + servletPort + "/katari-sample";
   }
 }
 

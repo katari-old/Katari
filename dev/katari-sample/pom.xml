@@ -298,6 +298,9 @@
         <includes>
           <include>katari.properties</include>
           <include>log4j.properties</include>
+          <include>
+            com/globant/katari/sample/functionaltest/test.properties
+          </include>
         </includes>
       </testResource>
       <testResource>
@@ -305,6 +308,9 @@
         <excludes>
           <exclude>katari.properties</exclude>
           <exclude>log4j.properties</exclude>
+          <exclude>
+            com/globant/katari/sample/functionaltest/test.properties
+          </exclude>
         </excludes>
       </testResource>
     </testResources>
@@ -312,7 +318,7 @@
     <plugins>
 
       <!-- Starts tomcat and deploys the web application in it, listening at
-      port 8099.  The plugin is also bounded to the pre-integration-test and
+      port 8099. The plugin is also bounded to the pre-integration-test and
       post-integration-test phase to start and stop the deployed application to
       run the integration tests. -->
       <plugin>
@@ -334,9 +340,11 @@
                 <home>${project.build.directory}/tmp/cargo</home>
                 <properties>
                   <reloadable>true</reloadable>
-                  <cargo.servlet.port>8099</cargo.servlet.port>
-                  <cargo.rmi.port>8091</cargo.rmi.port>
-                  <cargo.tomcat.ajp.port>8092</cargo.tomcat.ajp.port>
+                  <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                  <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
+                  <cargo.tomcat.ajp.port>
+                    ${cargo.tomcat.ajp.port}
+                  </cargo.tomcat.ajp.port>
                   <cargo.jvmargs>${katari.cargo.jvmargs}</cargo.jvmargs>
                 </properties>
                 <deployables>
@@ -362,9 +370,11 @@
               <configuration>
                 <home>${project.build.directory}/tmp/cargo</home>
                 <properties>
-                  <cargo.servlet.port>8099</cargo.servlet.port>
-                  <cargo.rmi.port>8091</cargo.rmi.port>
-                  <cargo.tomcat.ajp.port>8092</cargo.tomcat.ajp.port>
+                  <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                  <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
+                  <cargo.tomcat.ajp.port>
+                    ${cargo.tomcat.ajp.port}
+                  </cargo.tomcat.ajp.port>
                 </properties>
               </configuration>
             </configuration>
@@ -394,9 +404,11 @@
           </container>
           <configuration>
             <properties>
-              <cargo.servlet.port>8099</cargo.servlet.port>
-              <cargo.rmi.port>8091</cargo.rmi.port>
-              <cargo.tomcat.ajp.port>8092</cargo.tomcat.ajp.port>
+              <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+              <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
+              <cargo.tomcat.ajp.port>
+                ${cargo.tomcat.ajp.port}
+              </cargo.tomcat.ajp.port>
             </properties>
           </configuration>
 
@@ -621,7 +633,7 @@
           <plugin>
             <groupId>org.codehaus.cargo</groupId>
             <artifactId>cargo-maven2-plugin</artifactId>
-            <version>0.3.1</version>
+            <version>1.0</version>
             <configuration>
               <container>
                 <containerId>tomcat5x</containerId>
@@ -673,6 +685,9 @@
     <cargo.tomcatLocation>
       http://katari.globant.com/nexus/content/repositories/tools/com/globant/tools/apache-tomcat/5.5.28/apache-tomcat-5.5.28.zip
     </cargo.tomcatLocation>
+    <cargo.servlet.port>8099</cargo.servlet.port>
+    <cargo.rmi.port>8091</cargo.rmi.port>
+    <cargo.tomcat.ajp.port>8092</cargo.tomcat.ajp.port>
   </properties>
 
 </project>
