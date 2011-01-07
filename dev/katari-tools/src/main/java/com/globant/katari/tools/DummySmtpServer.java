@@ -39,7 +39,27 @@ public final class DummySmtpServer implements Iterable<SmtpMessage> {
    * @return the created dummy server, never null.
    */
   public static DummySmtpServer start(final int port) {
-    return new DummySmtpServer(SimpleSmtpServer.start(port));
+
+    // This was copied from SimpleSmtpServer start operation, which has a race
+    // condition: t.start calls notifyAll(), that is intended to wake this
+    // thread that is waiting in server.
+    //
+    // The race happens because t.start may call notifyAll before this method
+    // calls server.wait. We just moved t.start to the synchronized block. This
+    // forces the new thread to wait until we this method calls server.wait().
+    SimpleSmtpServer server = new SimpleSmtpServer(port);
+    Thread t = new Thread(server);
+
+    // Block until the server socket is created
+    synchronized (server) {
+      t.start();
+      try {
+        server.wait();
+      } catch (InterruptedException e) {
+        // Ignore don't care.
+      }
+    }
+    return new DummySmtpServer(server);
   }
 
   /** Stops the server.
