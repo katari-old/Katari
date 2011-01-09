@@ -10,3 +10,6 @@ Katari - sample application without a database
  This is a copy of the sample web application with all the database related
  functionality removed.
 
+ This module will eventually be a stand alone web app to be used to run modules
+ without a custom web module. 
+
