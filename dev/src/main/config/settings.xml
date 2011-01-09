@@ -20,13 +20,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <!-- Uncomment to use cargo.tomcatLocation when working inside globant
-        network -->
-        <!--
-        <cargo.tomcatLocation>
-          http://maven.corp.globant.com/tools/containers/apache-tomcat-5.5.17.zip
-        </cargo.tomcatLocation>
-        -->
         <katari.datasource.url>
           jdbc:mysql://localhost/katari
         </katari.datasource.url>
