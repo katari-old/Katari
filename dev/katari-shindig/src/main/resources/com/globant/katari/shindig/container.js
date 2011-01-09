@@ -39,7 +39,7 @@
 
   "gadgets.uri.js.host" : "http://www.example.com/",
   "gadgets.uri.js.path" : "/",
-	
+
   // Callback URL.  Scheme relative URL for easy switch between https/http.
   "gadgets.oauthGadgetCallbackTemplate":
     "//%host%%context%/module/shindig/gadgets/oauthcallback",

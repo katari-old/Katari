@@ -1,3 +1,5 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.core.web;
 
 import java.util.Enumeration;
@@ -27,7 +29,8 @@ import org.springframework.web.context.WebApplicationContext;
  */
 public class KatariWrapperServletTest {
 
-  private static final String MOCK_CONTEXT = "classpath:/com/globant/katari/core/spring/module.xml";
+  private static final String MOCK_CONTEXT
+    = "classpath:/com/globant/katari/core/spring/module.xml";
 
   /**
    * Tests the basic lifecycle of the servlet.
@@ -60,7 +63,8 @@ public class KatariWrapperServletTest {
     KatariWrapperServlet wrapper = new KatariWrapperServlet(delegate);
     wrapper.setInitParameterOverrides(overrides);
     wrapper.init(config);
-    wrapper.service(new MockHttpServletRequest(), new MockHttpServletResponse());
+    wrapper.service(new MockHttpServletRequest(), new
+        MockHttpServletResponse());
     wrapper.destroy();
 
     EasyMock.verify(mockContext, delegate);
@@ -84,7 +88,8 @@ public class KatariWrapperServletTest {
         Assert.assertTrue(parameters.hasMoreElements());
         String nextElement = parameters.nextElement();
         Assert.assertEquals("contextConfigLocation", nextElement);
-        Assert.assertEquals(MOCK_CONTEXT, config.getInitParameter(nextElement));
+        Assert.assertEquals(MOCK_CONTEXT,
+          config.getInitParameter(nextElement));
         Assert.assertFalse(parameters.hasMoreElements());
         ServletContext sc = config.getServletContext();
         if (!(sc instanceof ScopedServletContext)) {
@@ -98,9 +103,10 @@ public class KatariWrapperServletTest {
 
       public void appendTo(StringBuffer buffer) {
         buffer.append("Matching with a delegating servlet " +
-        		"config and a ScopedServletContext");
+            "config and a ScopedServletContext");
       }
     });
     return null;
   }
 }
+

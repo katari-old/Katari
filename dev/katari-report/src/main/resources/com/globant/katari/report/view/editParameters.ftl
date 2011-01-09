@@ -75,10 +75,11 @@
       <@spring.showErrors "<br/>" />
     </span>
     <#-- Table of clients -->
-    <table width='100%' border='0' class='results' id='parametersList' cellpadding='0' cellspacing='0'>
-	  <col width='20%'/>
-	  <col width='20%'/>
-	  <col width='60%'/>
+    <table width='100%' border='0' class='results' id='parametersList'
+      cellpadding='0' cellspacing='0'>
+    <col width='20%'/>
+    <col width='20%'/>
+    <col width='60%'/>
       <thead>
         <tr>
           <th>Name</th>
@@ -87,30 +88,33 @@
         </tr>
       </thead>
       <tbody>
-      	<#assign rowCounter = 0 />
-      	<#list command.parameters as parameter>
+        <#assign rowCounter = 0 />
+        <#list command.parameters as parameter>
         <tr>
           <td>${parameter.name}</td>
           <#switch parameter.type>
             <#case "java.util.Date">
               <td>
                 <@spring.bind "command.values[${parameter.name}]"/>
-                <input id="calText_${rowCounter}" type="text" name="${spring.status.expression}" readonly="1"
-                   value="${command.values[parameter.name]!''}"/>
+                <input id="calText_${rowCounter}" type="text"
+                  name="${spring.status.expression}" readonly="1"
+                  value="${command.values[parameter.name]!''}"/>
               </td>
               <td>
-                <image src="${baseweb}/module/decorator/image/calendar.gif" id="f_trigger_c${rowCounter}"
-                   title="Date selector"
-                   onclick="javascript:getCalendarStartDate('calText_${rowCounter}', 'calContainer_${rowCounter}','f_trigger_c${rowCounter}');"/>
+                <image src="${baseweb}/module/decorator/image/calendar.gif"
+                  id="f_trigger_c${rowCounter}"
+                  title="Date selector"
+                  onclick="javascript:getCalendarStartDate('calText_${rowCounter}', 'calContainer_${rowCounter}','f_trigger_c${rowCounter}');"/>
                 <span class="yui-skin-sam">
                    <div id="calContainer_${rowCounter}" style="z-index:99; position:absolute"></div>
-				        </span>
+                </span>
               </td>
               <#break>
             <#case "java.lang.Boolean">
               <td>
                 <@spring.bind "command.values[${parameter.name}]"/>
-                <input type="checkbox" name="${spring.status.expression}" value="true"/>
+                <input type="checkbox" name="${spring.status.expression}"
+                  value="true"/>
               </td>
               <td>&nbsp;</td>
               <#break>
@@ -143,7 +147,7 @@
             <label for="${spring.status.expression}">Select the report output type:</label>
           </td>
           <td>
-          	<select name="${spring.status.expression}">
+            <select name="${spring.status.expression}">
               <#list reportTypes as reportType>
                 <option value="${reportType}" <#if reportType == "PDF">selected</#if>>
                   ${reportType}

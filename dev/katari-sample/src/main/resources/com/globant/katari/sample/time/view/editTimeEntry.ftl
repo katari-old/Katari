@@ -9,41 +9,44 @@
 
     <h3>Edit Time Entry</h3>
 
-    <form class="clearfix" id="editTimeEntry" action="editTimeEntry.do" method="POST">
-    
+    <form class="clearfix" id="editTimeEntry" action="editTimeEntry.do"
+      method="POST">
+
     <span class="error" id="message">
       <@spring.bind "command.*"/>
       <@spring.showErrors  "<br/>" />
     </span>
 
-    <div class="clearfix column left">   
-    
-      <div class="column left">   
+    <div class="clearfix column left">
 
-	    <span class="formfield">
-	      <label for="projects">Project</label>
-	      <@spring.formSingleSelect "command.projectId", projects, "class='largeInput'" />
-	    </span>
+      <div class="column left">
+
+        <span class="formfield">
+          <label for="projects">Project</label>
+          <@spring.formSingleSelect "command.projectId", projects,
+            "class='largeInput'" />
+        </span>
 
         <span class="formfield">
           <label for="activities">Activity</label>
-          <@spring.formSingleSelect "command.activityId", activities, "class='largeInput'" />
+          <@spring.formSingleSelect "command.activityId", activities,
+            "class='largeInput'" />
         </span>
-      
+
       </div>
-      	
-	  <div class="column right">
+
+    <div class="column right">
 
         <span class="formfield">
           <label for="start">Start <span>(hh:mm)</span></label>
           <@spring.formInput "command.start", "size='2'" />
-        </span>      
+        </span>
 
         <span class="formfield">
           <label for="duration">Duration <span>(minutes)</span></label>
           <@spring.formInput "command.duration", "size='2'" />
         </span>
-      
+
       </div>
 
       <span class="formfield">
@@ -56,7 +59,7 @@
       <input class="btn rightMargin" type="submit" value="save"/>
       <input class="btn" type="submit" value="cancel" onclick="window.location=
           '${request.contextPath}/myTime.do?date=${command.date?date}';return false;"/>
-      
+
     </div>
 
   </form>

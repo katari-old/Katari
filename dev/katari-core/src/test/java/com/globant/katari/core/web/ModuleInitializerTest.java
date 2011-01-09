@@ -1,3 +1,4 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
 package com.globant.katari.core.web;
 
 import java.util.Arrays;
@@ -65,7 +66,7 @@ public class ModuleInitializerTest extends TestCase {
     EasyMock.expect(parent.getBean("user.module")).andReturn(userModule);
     EasyMock.expect(parent.getBean("time.module")).andReturn(timeModule);
     EasyMock.expect(parent.containsBean("katari.sessionFactory"))
-	    .andReturn(true);
+      .andReturn(true);
     EasyMock.expect(parent.getBean("&katari.sessionFactory")).andReturn(
         factoryBean);
     EasyMock.replay(parent);

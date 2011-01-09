@@ -343,12 +343,12 @@ public class HelloController extends AbstractController {
    *
    * {@inheritDoc}
    */
-	@Override
+  @Override
   protected ModelAndView handleRequestInternal(final HttpServletRequest
       request, final HttpServletResponse response) throws Exception {
-		ModelAndView mav = new ModelAndView("hello");
-		return mav;
-	}
+    ModelAndView mav = new ModelAndView("hello");
+    return mav;
+  }
 }
 ----
 

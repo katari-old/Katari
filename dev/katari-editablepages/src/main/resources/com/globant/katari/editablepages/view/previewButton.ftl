@@ -60,21 +60,21 @@
         // Hides all the published contents and shows all the unpublished
         // contents.
         function preview() {
-        	changecss('.pending-publication', 'display', 'block');
-        	changecss('.published', 'display', 'none');
+          changecss('.pending-publication', 'display', 'block');
+          changecss('.published', 'display', 'none');
 
-        	changecss('div.preview-button a.pending-publication', 'display', 'block');
-        	changecss('div.preview-button a.published', 'display', 'none');
+          changecss('div.preview-button a.pending-publication', 'display', 'block');
+          changecss('div.preview-button a.published', 'display', 'none');
         }
 
         // Hides all the unpublished contents and shows all the published
         // contents.
         function back() {
-        	changecss('.pending-publication', 'display', 'none');
-        	changecss('.published', 'display', 'block');
+          changecss('.pending-publication', 'display', 'none');
+          changecss('.published', 'display', 'block');
 
-        	changecss('div.preview-button a.pending-publication', 'display', 'none');
-        	changecss('div.preview-button a.published', 'display', 'block');
+          changecss('div.preview-button a.pending-publication', 'display', 'none');
+          changecss('div.preview-button a.published', 'display', 'block');
         }
 
       </script>

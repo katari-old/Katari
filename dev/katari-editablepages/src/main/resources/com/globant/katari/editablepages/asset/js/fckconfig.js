@@ -9,7 +9,7 @@ FCKConfig.ToolbarSets["EditablePagesMain"] = [
   '/',
   ['Style','FontFormat','FontName','FontSize'],
   ['TextColor','BGColor'],
-  ['Table','FitWindow','-','About']		// No comma for the last row.
+  ['Table','FitWindow','-','About']    // No comma for the last row.
 ] ;
 
 FCKConfig.ImageUploadAllowedExtensions = ".(jpg|gif|jpeg|png)$";

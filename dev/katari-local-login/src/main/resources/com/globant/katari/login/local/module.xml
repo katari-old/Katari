@@ -41,7 +41,7 @@
               <bean class="com.globant.katari.core.web.ServletAndParameters">
                 <constructor-arg index="0">
                   <bean class=
-                  	"com.globant.katari.core.web.EventFilterDispatcherServlet"/>
+                    "com.globant.katari.core.web.EventFilterDispatcherServlet"/>
                 </constructor-arg>
                 <constructor-arg index="1">
                   <map>
@@ -95,14 +95,14 @@
     name='local-login.loginFormUrl' p:value="/module/local-login/login.do"/>
 
   <bean id="local-login.authenticationProvider" class=
-  	"org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+    "org.acegisecurity.providers.dao.DaoAuthenticationProvider">
     <property name="userDetailsService">
       <ref local="katari.userDetailsService" />
     </property>
   </bean>
 
   <bean id="local-login.authenticationManager" class=
-  	"org.acegisecurity.providers.ProviderManager"
+    "org.acegisecurity.providers.ProviderManager"
     p:providers-ref='local-login.authenticationProviders'/>
 
   <!-- Intended to be overriden by other modules with ListFactoryAppender. -->

@@ -37,10 +37,10 @@
     <#-- Table of users -->
     <table width='100%' border='0' class='results bottomMargin' id='userList'
       cellpadding='0' cellspacing='0'>
-	  <col width='20%'/>
-	  <col width='30%'/>
-	  <col width='30%'/>
-	  <col width='20%'/>
+    <col width='20%'/>
+    <col width='30%'/>
+    <col width='30%'/>
+    <col width='20%'/>
       <thead>
         <tr>
           <th>Id</th>

@@ -55,14 +55,17 @@
         <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
         <prop key="hibernate.hbm2ddl.auto">create</prop>
         <!-- WARNING: When this is set to 'auto', which is the default option
-	for Hibernate, it's not possible to change the isolation level of any
-	transaction. Spring sets it to 'on_close' , but in this way, the
-	tests never return the connections, thus emptying the connection pool.
-	
-	To avoid this, we set it to 'after_transaction', but there may be
-	unexpected side effect we don't know of yet -->
-	<!-- This does not work with hsql. -->
-        <!-- prop key="hibernate.connection.release_mode">after_transaction</prop -->
+             for Hibernate, it's not possible to change the isolation level of
+             any transaction. Spring sets it to 'on_close' , but in this way,
+             the tests never return the connections, thus emptying the
+             connection pool.
+
+             To avoid this, we set it to 'after_transaction', but there may be
+             unexpected side effect we don't know of yet -->
+        <!-- This does not work with hsql. -->
+        <!-- prop key="hibernate.connection.release_mode">
+             after_transaction
+             </prop -->
       </props>
     </property>
   </bean>

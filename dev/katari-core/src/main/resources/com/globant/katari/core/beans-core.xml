@@ -400,9 +400,9 @@
   services to the acegi filter chain. -->
   <bean id="katari.loginConfigurer"
       class="com.globant.katari.core.login.LoginConfigurationSetter">
-  	<constructor-arg index="0" ref="katari.delegatingEntryPoint" />
-  	<constructor-arg index="1" ref="katari.delegatingLogoutFilter" />
-  	<constructor-arg index="2" ref="katari.delegatingProcessingFilter" />
+    <constructor-arg index="0" ref="katari.delegatingEntryPoint" />
+    <constructor-arg index="1" ref="katari.delegatingLogoutFilter" />
+    <constructor-arg index="2" ref="katari.delegatingProcessingFilter" />
   </bean>
 
   <!-- Listens for a logout request and delegates the logout-->

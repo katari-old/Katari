@@ -14,7 +14,7 @@
    in the application context to use this module. -->
 
   <bean id="institutional.module"
-  	class="com.globant.katari.core.web.ConfigurableModule">
+    class="com.globant.katari.core.web.ConfigurableModule">
     <property name='entryPoints'>
       <!-- The servlet mappings. It maps the spring
            EventFilterDispatcherServlet to *.do. -->

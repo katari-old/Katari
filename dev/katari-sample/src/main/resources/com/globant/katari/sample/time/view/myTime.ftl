@@ -72,7 +72,7 @@
       
         <span class="formfield">
           <label for="name">User: <span>${user.name}</span></label>
-        </span>	
+        </span>
         
         <div class="column left">      
           
@@ -115,7 +115,7 @@
           onclick="window.location='${request.contextPath}/myTime.do';return false;" />
         
       </div>
-		  
+  
       <div class="clearfix column right">
         <div id="calendar-container" class="yui-skin-sam"></div>
       </div>     
@@ -130,7 +130,7 @@
 
     <#-- Table of time entries -->
   
-  	<h3>Activity List</h3>
+    <h3>Activity List</h3>
     <table width='100%' border='0' class='results' id='timeEntryList'
       cellpadding='0' cellspacing='0'>
       <col width='5%'/>

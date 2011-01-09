@@ -6,7 +6,7 @@ saveOnRestart must be false because otherwise the context will not be loaded
 untill the session expires (or so it looks like ...)
 -->
 <Context docBase="/home/gpablo/projects/globant/${rootArtifactId}/main/${parentArtifactId}/${artifactId}/src/main/webapp"
-	path="${rootArtifactId}-i" reloadable="true" override='true' saveOnRestart='false'>
+  path="${rootArtifactId}-i" reloadable="true" override='true' saveOnRestart='false'>
   <WatchedResource>*</WatchedResource>
 </Context>
 

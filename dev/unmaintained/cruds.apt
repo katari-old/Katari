@@ -135,19 +135,19 @@ Drop down filters
  }
 +-----------
 
-	In the OGNL expression:
-	
+ In the OGNL expression:
+
 ------------
  client.projects
 ------------
 
-	client : evaluates to the property getter invocation getClient() in root
-	object. In the example, the root object is the Activity instance.
-	
-	.projects : evaluates to the property getter invocation getPropjects() in
-	client object.
-	
-	See {{http://www.ognl.org/2.6.9/Documentation/html/LanguageGuide/index.html}}
+ client : evaluates to the property getter invocation getClient() in root
+ object. In the example, the root object is the Activity instance.
+
+ .projects : evaluates to the property getter invocation getPropjects() in
+ client object.
+
+ See {{http://www.ognl.org/2.6.9/Documentation/html/LanguageGuide/index.html}}
 
 * Accessing Spring beans inside the ONGL expression
 

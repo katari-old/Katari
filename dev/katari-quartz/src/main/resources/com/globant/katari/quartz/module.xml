@@ -98,7 +98,7 @@
   <!-- Run every 5 minutes. -->
   <bean id='quartz.everyFiveMinutes'
     class='com.globant.katari.core.spring.StringHolder'
-    p:value='0 0/5 * * * ?	'/>
+    p:value='0 0/5 * * * ?'/>
 
 </beans>
 <!-- vim: set ts=2 et sw=2 ai : -->
