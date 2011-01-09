@@ -193,6 +193,7 @@
             <configuration>
               <wait>true</wait>
               <configuration>
+                <home>${project.build.directory}/tmp/cargo</home>
                 <properties>
                   <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
                   <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
