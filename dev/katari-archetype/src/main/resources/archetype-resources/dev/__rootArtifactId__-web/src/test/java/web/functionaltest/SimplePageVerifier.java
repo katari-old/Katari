@@ -1,9 +1,13 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package ${package}.web.functionaltest;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 import junit.framework.TestCase;
 
@@ -26,11 +30,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
  * @author nicolas.frontini
  */
 public final class SimplePageVerifier extends TestCase {
-
-  /** The base url where the application is deployed.
-   */
-  private static final String BASE_URL =
-      "http://localhost:8089/${artifactId}";
 
   /** The form submition name.
    */
@@ -84,7 +83,7 @@ public final class SimplePageVerifier extends TestCase {
   public static WebClient login(final String url) throws Exception {
     Validate.notNull(url, "The relative url cannot be null.");
 
-    URL fullUrl = new URL(BASE_URL + url);
+    URL fullUrl = new URL(getBaseUrl() + url);
     WebClient webClient = new WebClient();
     HtmlPage loginPage = (HtmlPage) webClient.getPage(fullUrl);
 
@@ -155,27 +154,29 @@ public final class SimplePageVerifier extends TestCase {
     Validate.notNull(notMatchRegExp, "The regular expression cannot be null.");
 
     WebRequestSettings webRequestSettings = new WebRequestSettings(
-        new URL(BASE_URL + url + requestParameters), httpMethod);
+        new URL(getBaseUrl() + url + requestParameters), httpMethod);
 
     // Verify the title page.
     HtmlPage page = (HtmlPage) webClient.getPage(webRequestSettings);
     assertNotNull(page);
     assertTrue("The regular expression '" + titleRegExp
-        + "' does not matches the page title: ${symbol_escape}n" + page.getTitleText(), page
-        .getTitleText().matches(titleRegExp));
+        + "' does not matches the page title: ${symbol_escape}n"
+        + page.getTitleText(), page.getTitleText().matches(titleRegExp));
 
     String pageText = page.asXml();
 
     // Verify that the regular expression match with the content.
     for (String regExp : matchRegExp) {
       assertTrue("The regular expression '" + regExp
-          + "' is not in the page: ${symbol_escape}n" + pageText, pageText.matches(regExp));
+          + "' is not in the page: ${symbol_escape}n" + pageText,
+          pageText.matches(regExp));
     }
 
     // Verify that the regular expression not match with the content.
     for (String regExp : notMatchRegExp) {
       assertFalse("The regular expression '" + regExp
-          + "' is in the page: ${symbol_escape}n" + pageText, pageText.matches(regExp));
+          + "' is in the page: ${symbol_escape}n" + pageText,
+          pageText.matches(regExp));
     }
   }
 
@@ -207,12 +208,29 @@ public final class SimplePageVerifier extends TestCase {
     Validate.notNull(title, "The title cannot be null.");
 
     WebRequestSettings webRequestSettings = new WebRequestSettings(
-        new URL(BASE_URL + url + requestParameters), httpMethod);
+        new URL(getBaseUrl() + url + requestParameters), httpMethod);
 
     // Verify the title page.
     HtmlPage page = (HtmlPage) webClient.getPage(webRequestSettings);
     assertNotNull(page);
     assertEquals(title, page.getTitleText());
+  }
+
+  /** Obtains the base url of the application.
+   *
+   * @return the base url, never null.
+   */
+  public static String getBaseUrl() {
+    Properties properties = new Properties();
+    try {
+      properties.load(SimplePageVerifier.class.getResourceAsStream(
+            "/${packageInPathFormat}/web/functionaltest/test.properties"));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    String servletPort = properties.getProperty("servletPort");
+
+    return "http://localhost:" + servletPort + "/${artifactId}";
   }
 }
 

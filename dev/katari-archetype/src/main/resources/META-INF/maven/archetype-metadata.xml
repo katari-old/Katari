@@ -90,12 +90,13 @@
               <directory>src/test/resources</directory>
               <includes>
                 <include>**/*.xml</include>
+                <include>web/**/*.properties</include>
               </includes>
             </fileSet>
             <fileSet filtered="true" encoding="UTF-8">
               <directory>src/test/resources</directory>
               <includes>
-                <include>**/*.properties</include>
+                <include>*.properties</include>
               </includes>
             </fileSet>
             <fileSet encoding="UTF-8">

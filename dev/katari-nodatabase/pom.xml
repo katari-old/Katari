@@ -128,6 +128,9 @@
         <filtering>true</filtering>
         <includes>
           <include>katari.properties</include>
+          <include>
+            com/globant/katari/sample/functionaltest/test.properties
+          </include>
         </includes>
       </testResource>
       <testResource>
@@ -147,7 +150,7 @@
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-maven2-plugin</artifactId>
-        <version>0.3.1</version>
+        <version>1.0</version>
 
         <executions>
 
@@ -163,7 +166,11 @@
                 <home>${project.build.directory}/tmp/cargo</home>
                 <properties>
                   <reloadable>true</reloadable>
-                  <cargo.servlet.port>8100</cargo.servlet.port>
+                  <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                  <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
+                  <cargo.tomcat.ajp.port>
+                    ${cargo.tomcat.ajp.port}
+                  </cargo.tomcat.ajp.port>
                 </properties>
                 <deployables>
                   <deployable>
@@ -187,7 +194,11 @@
               <wait>true</wait>
               <configuration>
                 <properties>
-                  <cargo.servlet.port>8100</cargo.servlet.port>
+                  <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                  <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
+                  <cargo.tomcat.ajp.port>
+                    ${cargo.tomcat.ajp.port}
+                  </cargo.tomcat.ajp.port>
                 </properties>
               </configuration>
             </configuration>
@@ -210,7 +221,11 @@
           </container>
           <configuration>
             <properties>
-              <cargo.servlet.port>8100</cargo.servlet.port>
+              <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+              <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
+              <cargo.tomcat.ajp.port>
+                ${cargo.tomcat.ajp.port}
+              </cargo.tomcat.ajp.port>
             </properties>
           </configuration>
 
@@ -353,6 +368,13 @@
     <cargo.tomcatLocation>
       http://apache.xmundo.com.ar/tomcat/tomcat-5/v5.5.28/bin/apache-tomcat-5.5.28.zip
     </cargo.tomcatLocation>
+
+    <!-- Ports used during testing, intended to be overriden from the command
+         line by a CI server like hudson. -->
+    <cargo.servlet.port>8099</cargo.servlet.port>
+    <cargo.rmi.port>8091</cargo.rmi.port>
+    <cargo.tomcat.ajp.port>8092</cargo.tomcat.ajp.port>
   </properties>
+
 </project>
 

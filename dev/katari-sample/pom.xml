@@ -685,6 +685,9 @@
     <cargo.tomcatLocation>
       http://katari.globant.com/nexus/content/repositories/tools/com/globant/tools/apache-tomcat/5.5.28/apache-tomcat-5.5.28.zip
     </cargo.tomcatLocation>
+
+    <!-- Ports used during testing, intended to be overriden from the command
+         line by a CI server like hudson. -->
     <cargo.servlet.port>8099</cargo.servlet.port>
     <cargo.rmi.port>8091</cargo.rmi.port>
     <cargo.tomcat.ajp.port>8092</cargo.tomcat.ajp.port>

@@ -2,7 +2,9 @@
 
 package com.globant.katari.sample.functionaltest;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 import junit.framework.TestCase;
 
@@ -25,11 +27,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
  * @author nicolas.frontini
  */
 public final class SimplePageVerifier extends TestCase {
-
-  /** The base url where the application is deployed.
-   */
-  private static final String BASE_URL =
-      "http://localhost:8100/katari-nodatabase";
 
   /** The form submition name.
    */
@@ -83,7 +80,7 @@ public final class SimplePageVerifier extends TestCase {
   public static WebClient login(final String url) throws Exception {
     Validate.notNull(url, "The relative url cannot be null.");
 
-    URL fullUrl = new URL(BASE_URL + url);
+    URL fullUrl = new URL(getBaseUrl() + url);
     WebClient webClient = new WebClient();
     HtmlPage loginPage = (HtmlPage) webClient.getPage(fullUrl);
 
@@ -154,7 +151,7 @@ public final class SimplePageVerifier extends TestCase {
     Validate.notNull(notMatchRegExp, "The regular expression cannot be null.");
 
     WebRequestSettings webRequestSettings = new WebRequestSettings(
-        new URL(BASE_URL + url + requestParameters), httpMethod);
+        new URL(getBaseUrl() + url + requestParameters), httpMethod);
 
     // Verify the title page.
     HtmlPage page = (HtmlPage) webClient.getPage(webRequestSettings);
@@ -206,12 +203,29 @@ public final class SimplePageVerifier extends TestCase {
     Validate.notNull(title, "The title cannot be null.");
 
     WebRequestSettings webRequestSettings = new WebRequestSettings(
-        new URL(BASE_URL + url + requestParameters), httpMethod);
+        new URL(getBaseUrl() + url + requestParameters), httpMethod);
 
     // Verify the title page.
     HtmlPage page = (HtmlPage) webClient.getPage(webRequestSettings);
     assertNotNull(page);
     assertEquals(title, page.getTitleText());
+  }
+
+  /** Obtains the base url of the application.
+   *
+   * @return the base url, never null.
+   */
+  public static String getBaseUrl() {
+    Properties properties = new Properties();
+    try {
+    properties.load(SimplePageVerifier.class.getResourceAsStream(
+      "/com/globant/katari/sample/functionaltest/test.properties"));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    String servletPort = properties.getProperty("servletPort");
+
+    return "http://localhost:" + servletPort + "/katari-nodatabase";
   }
 }
 

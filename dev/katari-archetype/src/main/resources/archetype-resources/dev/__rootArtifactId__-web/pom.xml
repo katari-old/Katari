@@ -283,6 +283,9 @@
         <includes>
           <include>\${rootArtifactId}.properties</include>
           <include>log4j.properties</include>
+          <include>
+            \${packageInPathFormat}/web/functionaltest/test.properties
+          </include>
         </includes>
       </testResource>
       <testResource>
@@ -319,7 +322,15 @@
                 <home>${symbol_dollar}{project.build.directory}/tmp/cargo</home>
                 <properties>
                   <reloadable>true</reloadable>
-                  <cargo.servlet.port>8089</cargo.servlet.port>
+                  <cargo.servlet.port>
+                    \${symbol_dollar}{cargo.servlet.port}
+                  </cargo.servlet.port>
+                  <cargo.rmi.port>
+                    \${symbol_dollar}{cargo.rmi.port}
+                  </cargo.rmi.port>
+                  <cargo.tomcat.ajp.port>
+                    \${symbol_dollar}{cargo.tomcat.ajp.port}
+                  </cargo.tomcat.ajp.port>
                 </properties>
                 <deployables>
                   <deployable>
@@ -344,7 +355,15 @@
               <configuration>
                 <home>${symbol_dollar}{project.build.directory}/tmp/cargo</home>
                 <properties>
-                  <cargo.servlet.port>8089</cargo.servlet.port>
+                  <cargo.servlet.port>
+                    \${symbol_dollar}{cargo.servlet.port}
+                  </cargo.servlet.port>
+                  <cargo.rmi.port>
+                    \${symbol_dollar}{cargo.rmi.port}
+                  </cargo.rmi.port>
+                  <cargo.tomcat.ajp.port>
+                    \${symbol_dollar}{cargo.tomcat.ajp.port}
+                  </cargo.tomcat.ajp.port>
                 </properties>
               </configuration>
             </configuration>
@@ -374,7 +393,15 @@
           </container>
           <configuration>
             <properties>
-              <cargo.servlet.port>8089</cargo.servlet.port>
+              <cargo.servlet.port>
+                \${symbol_dollar}{cargo.servlet.port}
+              </cargo.servlet.port>
+              <cargo.rmi.port>
+                \${symbol_dollar}{cargo.rmi.port}
+              </cargo.rmi.port>
+              <cargo.tomcat.ajp.port>
+                \${symbol_dollar}{cargo.tomcat.ajp.port}
+              </cargo.tomcat.ajp.port>
             </properties>
           </configuration>
 
@@ -602,6 +629,12 @@
     <cargo.tomcatLocation>
       http://katari.globant.com/nexus/content/repositories/tools/com/globant/tools/apache-tomcat/5.5.28/apache-tomcat-5.5.28.zip
     </cargo.tomcatLocation>
+
+    <!-- Ports used during testing, intended to be overriden from the command
+         line by a CI server like hudson. -->
+    <cargo.servlet.port>8089</cargo.servlet.port>
+    <cargo.rmi.port>8091</cargo.rmi.port>
+    <cargo.tomcat.ajp.port>8092</cargo.tomcat.ajp.port>
   </properties>
 
   <!-- vim: set ts=2 et sw=2 ai: -->
