@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xmlns:camel="http://camel.apache.org/schema/spring"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd
+      http://camel.apache.org/schema/spring
+      http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <import resource="classpath:/com/globant/katari/core/beans-core.xml"/>
+
+  <bean id='x'
+    class="com.globant.katari.core.spring.CamelModuleRoutesTest$Listener1"/>
+
+  <bean class='com.globant.katari.core.spring.CamelModuleRoutes'>
+    <constructor-arg>
+      <camel:routeContext>
+        <camel:route>
+          <camel:from uri="direct:toListener"/>
+          <camel:to uri="bean:x"/>
+          <!-- camel:inOnly uri="seda:asyncEmail"/ -->
+        </camel:route>
+        <!-- A sample route to send an email
+        <camel:route>
+          <camel:from uri="seda:asyncEmail"/>
+          <camel:to uri="smtp://localhost:3525?to=pablo.grana&amp;subject=banana"/>
+        </camel:route>
+        -->
+      </camel:routeContext>
+    </constructor-arg>
+  </bean>
+
+  <!--
+  <bean class='com.globant.katari.core.spring.CamelModuleRoutes'>
+    <constructor-arg>
+      <camel:routeContext>
+        <camel:route>
+          <camel:from uri="direct:toListener"/>
+          <camel:to uri="log:loggingCategory"/>
+        </camel:route>
+      </camel:routeContext>
+    </constructor-arg>
+  </bean>
+  -->
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai : -->
+
