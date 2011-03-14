@@ -25,7 +25,7 @@ public class JoinedStrings extends AbstractFactoryBean {
   /** {@inheritDoc}
    */
   @Override
-  public Class getObjectType() {
+  public Class<String> getObjectType() {
     return String.class;
   }
 
