@@ -2,18 +2,21 @@
 
 package com.globant.katari.core;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.junit.After;
 
-public class ApplicationContextTest extends TestCase {
+public class ApplicationContextTest {
 
-  /* Tests if the katari application context can be loaded.
+  FileSystemXmlApplicationContext beanFactory;
+
+  /* Tests if the katari application context can be loaded. Fails with a
+   * runtime exception if not.
   */
+  @Test
   public void testLoad() {
-    ApplicationContext beanFactory = new FileSystemXmlApplicationContext(
-        new String[] {
+    beanFactory = new FileSystemXmlApplicationContext(new String[] {
           "src/main/resources/com/globant/katari/core/beans-core.xml",
           "src/test/resources/com/globant/katari/core/userApplicationContext.xml"
         });
@@ -21,6 +24,12 @@ public class ApplicationContextTest extends TestCase {
     for (int i = 0; i < beanNames.length; ++i) {
       beanFactory.getBean(beanNames[i]);
     }
+  }
+
+  @After
+  public void tearDown() {
+    beanFactory.close();
+    beanFactory = null;
   }
 }
 
