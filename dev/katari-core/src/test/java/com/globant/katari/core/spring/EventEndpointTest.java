@@ -25,7 +25,7 @@ public class EventEndpointTest {
   @Before
   public void setUp() throws Exception {
     beanFactory = new ClassPathXmlApplicationContext(
-        "com/globant/katari/core/spring/EventEndpointContext.xml");
+        "com/globant/katari/core/spring/eventEndpointContext.xml");
     context = (SpringCamelContext) beanFactory.getBean("katari.eventBus");
   }
 
