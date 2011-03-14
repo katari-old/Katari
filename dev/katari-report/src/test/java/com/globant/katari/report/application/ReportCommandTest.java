@@ -8,13 +8,11 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.After;
 import static org.junit.Assert.*;
 
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
-import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.katari.report.ReportsTestSupport;
 import com.globant.katari.report.domain.JasperReportRepository;
 import com.globant.katari.report.domain.ReportDefinition;
@@ -26,15 +24,9 @@ public class ReportCommandTest {
   /** The Report repository. */
   private JasperReportRepository reportRepository;
 
-  /** The Role repository. */
-  private RoleRepository roleRepository;
-
   @Before
   public void onSetUp() throws Exception {
     reportRepository = ReportsTestSupport.getRepository();
-    roleRepository = (RoleRepository) ReportsTestSupport
-      .getApplicationContext().getBean("coreuser.roleRepository");
-
     ReportsTestSupport.initTestReportSecurityContext("ADMINISTRATOR");
   }
 
