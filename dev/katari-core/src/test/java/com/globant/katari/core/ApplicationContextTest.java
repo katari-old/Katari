@@ -16,14 +16,31 @@ public class ApplicationContextTest {
   */
   @Test
   public void testLoad() {
-    beanFactory = new FileSystemXmlApplicationContext(new String[] {
-          "src/main/resources/com/globant/katari/core/beans-core.xml",
-          "src/test/resources/com/globant/katari/core/userApplicationContext.xml"
-        });
+    loadAppContext();
     String[] beanNames = beanFactory.getBeanDefinitionNames();
     for (int i = 0; i < beanNames.length; ++i) {
       beanFactory.getBean(beanNames[i]);
     }
+  }
+
+  public void loadAppContext() {
+    beanFactory = new FileSystemXmlApplicationContext(new String[] {
+          "src/main/resources/com/globant/katari/core/beans-core.xml",
+          "src/test/resources/com/globant/katari/core/userApplicationContext.xml"
+        });
+    beanFactory.refresh();
+  }
+
+  /* Tests if the app context can be loaded twice. This originated on camel
+   * using jmx. We disabled it to make it possible t oload two camel contexts
+   * in the same VM.
+   */
+  @Test
+  public void testLoadTwice() {
+    loadAppContext();
+    FileSystemXmlApplicationContext oldBeanFactory = beanFactory;
+    loadAppContext();
+    oldBeanFactory.close();
   }
 
   @After

@@ -337,6 +337,7 @@
 
   <!-- The katari event bus. -->
   <camel:camelContext id="katari.eventBus">
+    <camel:jmxAgent id="agent" disabled="true"/>
   </camel:camelContext>
 
   <!-- Null, copy endpoint, to add to an empty list of event listeners. -->
