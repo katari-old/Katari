@@ -88,5 +88,23 @@ public final class MockSmtpServer {
       server = null;
     }
   }
+
+  /** Obtains the port number where the server bound to.
+   *
+   * This operation is specially useful when the server is asked to start in
+   * port 0, where the operating system selects the port number.
+   *
+   * If you call this operation before main, it returns 0.
+   *
+   * @return an integer with the port number, or 0 if the mailer has not been
+   * started.
+   */
+  public static int getPortNumber() {
+    if (server == null) {
+      return 0;
+    } else {
+      return server.getPortNumber();
+    }
+  }
 }
 

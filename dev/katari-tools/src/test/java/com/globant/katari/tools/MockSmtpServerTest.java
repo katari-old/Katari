@@ -16,12 +16,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.matchers.JUnitMatchers.*;
 
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-
 
 public class MockSmtpServerTest {
 
@@ -37,10 +37,6 @@ public class MockSmtpServerTest {
     dataSent = new ByteArrayOutputStream();
     PrintStream ps = new PrintStream(dataSent);
     System.setOut(ps);
-    ServerSocket serverSocket = new ServerSocket(0);
-    port = serverSocket.getLocalPort();
-    serverSocket.setReuseAddress(true);
-    serverSocket.close();
   }
 
   @After
@@ -55,7 +51,7 @@ public class MockSmtpServerTest {
     Thread smtpThread = new Thread(new Runnable() {
       public void run() {
         try {
-          MockSmtpServer.main(new String[]{String.valueOf(port), "1"});
+          MockSmtpServer.main(new String[]{"0", "1"});
         } catch (Exception e) {
         }
         return;
@@ -64,10 +60,16 @@ public class MockSmtpServerTest {
     smtpThread.start();
 
     int count = 5;
-    while( ! isOpened(port) && count > 0) {
+    port = MockSmtpServer.getPortNumber();
+    while( ! isOpen(port) && count > 0 && port == 0) {
       count --;
       Thread.sleep(10);
+      port = MockSmtpServer.getPortNumber();
     }
+
+    // A correct initialization should leave a valid port.
+    assertThat(count, is(not(0)));
+    assertThat(port, is(not(0)));
 
     // send a mail and verify that it is received.
     Properties props = new Properties();
@@ -88,7 +90,7 @@ public class MockSmtpServerTest {
     assertThat(dataSent.toString(), containsString("the body"));
   }
 
-  public static boolean isOpened(int port) throws IOException {
+  public static boolean isOpen(int port) throws IOException {
     ServerSocket ssocket = null;
     try {
       ssocket = new ServerSocket(port);
