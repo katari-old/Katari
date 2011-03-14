@@ -34,8 +34,16 @@ import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
 @SuppressWarnings("deprecation")
 public class ListTasksCommandTest {
 
-  private Date last = new Date(110, 9, 20, 13, 30, 0);
-  private Date next = new Date(110, 9, 20, 15, 30, 0);
+  // This was created as new Date(110, 9, 20, 13, 30, 0), but we need to
+  // guarantee a specific timezone, because the test expects a specific date.
+  //
+  // The other form failed in CI during a mvn site run. It looks like something
+  // in maven is fiddling with the timezones.
+  private Date last = new Date(1287592200000L);
+
+  // This was created as new Date(110, 9, 20, 15, 30, 0), but we need to
+  // guarantee a specific timezone, because the test expects a specific date.
+  private Date next = new Date(1287599400000L);
 
   /** Creates a scheduler that contains the provided command, and a null
    * previous fire time if nullPreviousTime is null.
