@@ -12,7 +12,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 /**
  * This class is responsible for managing the persistence of roles.
  */
-public final class RoleRepository extends HibernateDaoSupport {
+public class RoleRepository extends HibernateDaoSupport {
 
   /**
    * Removes the specified role from the database.
