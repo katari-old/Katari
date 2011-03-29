@@ -24,7 +24,7 @@
          jdbc:mysql://localhost/${rootArtifactId.replace('-', '_')}
         </${rootArtifactId.replace('-', '_')}.datasource.url>
         <${rootArtifactId.replace('-', '_')}.datasource.username>
-          ${rootArtifactId.replace('-', '_')}
+          ${rootArtifactId.replace('-', '_').replaceFirst('(.{0,14}).*', '$1')}
         </${rootArtifactId.replace('-', '_')}.datasource.username>
         <${rootArtifactId.replace('-', '_')}.datasource.password>
           ${rootArtifactId.replace('-', '_')}

@@ -29,7 +29,7 @@ settings.xml in the src/main/config directory.
 These are the commands to run from the mysql console:
 
   create database ${rootArtifactId.replace('-', '_')};
-  grant all privileges on ${rootArtifactId.replace('-', '_')}.* to ${rootArtifactId.replace('-', '_')}@localhost identified by '${rootArtifactId.replace('-', '_')}';
+  grant all privileges on ${rootArtifactId.replace('-', '_')}.* to ${rootArtifactId.replace('-', '_').replaceFirst('(.{0,14}).*', '$1')}@localhost identified by '${rootArtifactId.replace('-', '_')}';
   use ${rootArtifactId.replace('-', '_')};
 
   create table ${rootArtifactId.replace('-', '_')}_marker_666(drop_database varchar (50));
