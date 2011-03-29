@@ -10,9 +10,9 @@
         <@spring.bind "command.*"/>
         <@spring.showErrors "<br/>" />
       </span>
-      
+
       <div class="clearfix column left">
-      
+
         <div class="column left">
           <span class="formfield">
             <label for="name">Report Name</label>
@@ -28,13 +28,13 @@
             <label for="reportContent">Select File Location</label>
             <input type="file" name="reportContent" />
           </span>
-        
+
           <input class="btn" type="submit" value="Save Report"/>
           <input class="btn" type="submit" value="Cancel" onclick=
             "window.location='reports.do';return false;"/>
-        
+
         </div>
-      
+
         <div class="column left">
           <div class="formfield">
             <label for="roles">Roles:</label>
@@ -43,10 +43,10 @@
                 "class='check left rightMargin'"/>
             </div>
           </div>
-        </div>     
-      
+        </div>
+
       </div>
-      
+
     </form>
   </body>
 </html>
