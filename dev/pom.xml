@@ -204,13 +204,13 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>1.5.8</version>
+        <version>${dependency.slf4j.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
-        <version>1.5.8</version>
+        <version>${dependency.slf4j.version}</version>
       </dependency>
 
       <dependency>
@@ -219,10 +219,26 @@
         <version>1.2.14</version>
       </dependency>
 
+      <!-- Exclude commons logging from the final war. -->
       <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
+        <version>1.1.1</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging-api</artifactId>
         <version>1.1</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <!-- Use slfj4 commons logging implementation. -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${dependency.slf4j.version}</version>
       </dependency>
 
       <dependency>
@@ -1115,6 +1131,7 @@ try {
     <dependency.jetty-plugin.version>
       6.1.21
     </dependency.jetty-plugin.version>
+    <dependency.slf4j.version>1.6.1</dependency.slf4j.version>
   </properties>
 
 <!-- vim: set ts=2 et sw=2 ai tw=80: -->
