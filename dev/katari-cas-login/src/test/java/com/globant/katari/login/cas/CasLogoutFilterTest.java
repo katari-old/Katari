@@ -40,7 +40,7 @@ public class CasLogoutFilterTest {
 
     CasLogoutFilter filter = new CasLogoutFilter(casTicketRegistry, builder);
     filter.doFilter(request, response, chain);
-    
+
     assertThat(response.getRedirectedUrl(),
         is("http://casurl/logout?service=serviceUrl"));
   }
