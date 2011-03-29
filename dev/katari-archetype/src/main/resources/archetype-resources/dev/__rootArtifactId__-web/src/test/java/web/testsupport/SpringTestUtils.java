@@ -41,10 +41,6 @@ public final class SpringTestUtils {
    */
   private static ApplicationContext userModuleBeanFactory;
 
-  /** Time entry module Bean factory.
-   */
-  private static ApplicationContext timeModuleBeanFactory;
-
   /** A private constructor so no instances are created.
    */
   private SpringTestUtils() {
