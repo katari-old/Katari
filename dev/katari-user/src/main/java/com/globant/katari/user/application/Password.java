@@ -3,8 +3,8 @@
 package com.globant.katari.user.application;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -21,7 +21,7 @@ public class Password {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(Password.class);
+  private static Logger log = LoggerFactory.getLogger(Password.class);
 
   /** The new value for the password.
    *

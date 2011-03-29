@@ -5,8 +5,8 @@ package com.globant.katari.sample.home.view;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -20,7 +20,7 @@ public class HomeController extends AbstractController {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(HomeController.class);
+  private static Logger log = LoggerFactory.getLogger(HomeController.class);
 
   /** Process the request and return a <code>ModelAndView</code> instance
    * describing where and how control should be forwarded.

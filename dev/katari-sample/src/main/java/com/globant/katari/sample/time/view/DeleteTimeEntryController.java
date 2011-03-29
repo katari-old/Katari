@@ -3,8 +3,8 @@ package com.globant.katari.sample.time.view;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
@@ -24,7 +24,7 @@ public abstract class DeleteTimeEntryController extends SimpleFormController {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(MyTimeController.class);
+  private static Logger log = LoggerFactory.getLogger(MyTimeController.class);
 
   /** Receives the request to delete a time entry.
    *

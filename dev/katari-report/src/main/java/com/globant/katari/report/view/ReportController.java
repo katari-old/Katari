@@ -5,8 +5,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.mvc.SimpleFormController;
@@ -26,7 +26,7 @@ public abstract class ReportController extends SimpleFormController {
   /**
    * The class logger.
    */
-  private static Log log = LogFactory.getLog(ReportController.class);
+  private static Logger log = LoggerFactory.getLogger(ReportController.class);
 
   /**
    * Creates a default ReportController.

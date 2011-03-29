@@ -9,8 +9,8 @@ import java.sql.Statement;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.core.ping.PingService;
 import com.globant.katari.core.ping.PingResult;
@@ -35,7 +35,7 @@ public class PingDatabase implements PingService {
   /**
    * The class logger.
    */
-  private static Log log = LogFactory.getLog(PingDatabase.class);
+  private static Logger log = LoggerFactory.getLogger(PingDatabase.class);
 
   /**
    * The data source.

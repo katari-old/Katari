@@ -3,8 +3,8 @@ package com.globant.katari.hibernate.coreuser.domain;
 import java.util.Set;
 
 import org.acegisecurity.context.SecurityContextHolder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Role Security related utilities.
  *
@@ -24,7 +24,7 @@ public final class RoleSecurityUtils {
   /**
    * The class logger.
    */
-  private static Log log = LogFactory.getLog(RoleSecurityUtils.class);
+  private static Logger log = LoggerFactory.getLogger(RoleSecurityUtils.class);
 
   /**
    * Obtains the roles of the currently logged on user.

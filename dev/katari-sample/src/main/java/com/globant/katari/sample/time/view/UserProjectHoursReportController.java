@@ -10,8 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
@@ -29,7 +29,7 @@ public abstract class UserProjectHoursReportController
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(
+  private static Logger log = LoggerFactory.getLogger(
       UserProjectHoursReportController.class);
 
   /** Receives the request to show the report.

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
@@ -23,7 +23,7 @@ public class Profile {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(Profile.class);
+  private static Logger log = LoggerFactory.getLogger(Profile.class);
 
   /** The name of the user.
    */

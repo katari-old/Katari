@@ -12,8 +12,8 @@ import static org.junit.matchers.JUnitMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
 import static com.globant.katari.user.OrderedUsers.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
@@ -28,7 +28,7 @@ public class UserRepositoryTest {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(UserRepositoryTest.class);
+  private static Logger log = LoggerFactory.getLogger(UserRepositoryTest.class);
 
   /** This is the implementation of the repository of the user.
    */

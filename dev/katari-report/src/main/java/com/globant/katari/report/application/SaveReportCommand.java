@@ -15,8 +15,8 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
@@ -34,7 +34,7 @@ public class SaveReportCommand implements ValidatableCommand<Void> {
   /**
    * The class logger.
    */
-  private static Log log = LogFactory.getLog(SaveReportCommand.class);
+  private static Logger log = LoggerFactory.getLogger(SaveReportCommand.class);
 
   /** The Report Definition repository. It is never null. */
   private JasperReportRepository jasperReportRepository;

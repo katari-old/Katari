@@ -4,8 +4,8 @@ package com.globant.katari.shindig.testsupport;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.mock.web.MockServletContext;
@@ -17,7 +17,7 @@ public final class SpringTestUtils {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(SpringTestUtils.class);
+  private static Logger log = LoggerFactory.getLogger(SpringTestUtils.class);
 
   /** a data source.
    */

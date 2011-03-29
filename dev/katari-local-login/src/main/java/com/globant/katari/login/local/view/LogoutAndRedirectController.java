@@ -5,8 +5,8 @@ package com.globant.katari.login.local.view;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -23,8 +23,8 @@ public class LogoutAndRedirectController extends AbstractController {
 
   /** The class logger.
    */
-  private static Log log =
-    LogFactory.getLog(LogoutAndRedirectController.class);
+  private static Logger log =
+    LoggerFactory.getLogger(LogoutAndRedirectController.class);
 
   /** Process the request and return a <code>ModelAndView</code> instance
    * describing where and how control should be forwarded after logout.

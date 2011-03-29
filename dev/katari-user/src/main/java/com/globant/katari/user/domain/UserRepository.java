@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -24,7 +24,7 @@ public class UserRepository extends HibernateDaoSupport {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(UserRepository.class);
+  private static Logger log = LoggerFactory.getLogger(UserRepository.class);
 
   /** Removes the specified user from the database.
    *

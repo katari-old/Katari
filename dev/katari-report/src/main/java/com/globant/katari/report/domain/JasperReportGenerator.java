@@ -22,8 +22,8 @@ import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Service class that generates jasper reports.
@@ -34,7 +34,7 @@ import org.apache.commons.logging.LogFactory;
 public final class JasperReportGenerator {
 
   /** The class logger. */
-  private static Log log = LogFactory.getLog(JasperReportGenerator.class);
+  private static Logger log = LoggerFactory.getLogger(JasperReportGenerator.class);
 
   /** The report repository. It cannot be null. */
   private JasperReportRepository repository;

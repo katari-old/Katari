@@ -229,7 +229,7 @@ public class HtmlValidationFilter implements Filter {
         tidy.parse(inputStream, new ByteArrayOutputStream());
 
         if (errors.hasErrors()) {
-          // jtidy found an error. Log it with the page to make it easier to
+          // jtidy found an error. Logger it with the page to make it easier to
           // trace.
           //
           // TODO This is using a non localized string conversion.

@@ -4,8 +4,8 @@ package com.globant.katari.sample.testsupport.database;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 import com.globant.katari.sample.testsupport.SpringTestUtils;
@@ -20,7 +20,7 @@ public class TestDbSupport extends TestCase {
 
   /** A logger.
    */
-  private static Log log = LogFactory.getLog(TestDbSupport.class);
+  private static Logger log = LoggerFactory.getLogger(TestDbSupport.class);
 
   /** This test marker, is the marker of the db of permision.
    */

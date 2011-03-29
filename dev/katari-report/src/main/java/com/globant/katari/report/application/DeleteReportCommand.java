@@ -1,8 +1,8 @@
 package com.globant.katari.report.application;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.core.application.Command;
 import com.globant.katari.report.domain.JasperReportRepository;
@@ -16,7 +16,7 @@ import com.globant.katari.report.domain.ReportDefinition;
 public class DeleteReportCommand implements Command<Void> {
 
   /** The class logger. */
-  private static Log log = LogFactory.getLog(DeleteReportCommand.class);
+  private static Logger log = LoggerFactory.getLogger(DeleteReportCommand.class);
 
   /** The report repository. It is never null. */
   private JasperReportRepository reportRepository;

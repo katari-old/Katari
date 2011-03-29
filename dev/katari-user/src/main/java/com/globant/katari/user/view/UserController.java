@@ -8,8 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
@@ -43,7 +43,7 @@ public abstract class UserController extends SimpleFormController {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(UserController.class);
+  private static Logger log = LoggerFactory.getLogger(UserController.class);
 
   /** Default initialization for the controller.
    *

@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -35,7 +35,7 @@ public abstract class BaseTimeController extends SimpleFormController {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(BaseTimeController.class);
+  private static Logger log = LoggerFactory.getLogger(BaseTimeController.class);
 
   /** The simple date format.
    */

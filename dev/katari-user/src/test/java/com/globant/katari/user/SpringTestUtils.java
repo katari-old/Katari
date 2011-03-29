@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.FileSystemResourceLoader;
@@ -25,7 +25,7 @@ public final class SpringTestUtils {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(SpringTestUtils.class);
+  private static Logger log = LoggerFactory.getLogger(SpringTestUtils.class);
 
   /** a data source.
    */

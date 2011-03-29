@@ -10,8 +10,8 @@ import java.sql.Statement;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Checks if the application is using a development database.
@@ -25,7 +25,7 @@ public class DevelopmentDataBaseChecker {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(DevelopmentDataBaseChecker.class);
+  private static Logger log = LoggerFactory.getLogger(DevelopmentDataBaseChecker.class);
 
   /**
    * The data source.

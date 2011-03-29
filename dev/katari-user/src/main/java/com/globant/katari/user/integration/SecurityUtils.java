@@ -5,8 +5,8 @@ package com.globant.katari.user.integration;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.Authentication;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.user.domain.User;
 
@@ -24,7 +24,7 @@ public final class SecurityUtils {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(SecurityUtils.class);
+  private static Logger log = LoggerFactory.getLogger(SecurityUtils.class);
 
   /** A private constructor, so nobody can create instances.
    */

@@ -4,8 +4,8 @@ package com.globant.katari.user.application;
 
 import org.apache.commons.lang.Validate;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.hibernate.coreuser.SecurityUtils;
 
@@ -25,7 +25,7 @@ public class DeleteUserCommand implements Command<Void> {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(DeleteUserCommand.class);
+  private static Logger log = LoggerFactory.getLogger(DeleteUserCommand.class);
 
   /** The katari event bus, never null.
    */

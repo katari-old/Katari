@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 
 import com.globant.katari.core.application.Command;
@@ -32,7 +32,7 @@ public class SaveUserCommand implements Command<Void>, Validatable,
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(SaveUserCommand.class);
+  private static Logger log = LoggerFactory.getLogger(SaveUserCommand.class);
 
   /** The user repository.
    */

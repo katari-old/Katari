@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.Validate;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.core.security.MenuAccessFilterer;
 import com.globant.katari.core.web.ModuleContextRegistrar;
@@ -29,7 +29,7 @@ public final class MenuSupportFilter implements Filter {
 
   /** The class logger.
   */
-  private static Log log = LogFactory.getLog(MenuSupportFilter.class);
+  private static Logger log = LoggerFactory.getLogger(MenuSupportFilter.class);
 
   /** The application module context registrar.
    *

@@ -9,8 +9,8 @@ import java.util.LinkedList;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.core.security.MenuAccessFilterer;
 import com.globant.katari.core.web.MenuBar;
@@ -22,7 +22,7 @@ import com.globant.katari.core.security.SecureUrlAccessHelper;
  */
 public class MenuDisplayHelperTest extends TestCase {
 
-  private static Log log = LogFactory.getLog(MenuDisplayHelperTest.class);
+  private static Logger log = LoggerFactory.getLogger(MenuDisplayHelperTest.class);
 
   private MenuBar menuBar;
   private MenuAccessFilterer filterer;

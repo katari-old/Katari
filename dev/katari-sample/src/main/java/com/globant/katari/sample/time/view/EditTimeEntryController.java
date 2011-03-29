@@ -2,8 +2,8 @@ package com.globant.katari.sample.time.view;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.sample.time.application.SaveTimeEntryCommand;
 import com.globant.katari.sample.time.domain.TimeEntry;
@@ -22,7 +22,7 @@ public abstract class EditTimeEntryController extends BaseTimeController {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(EditTimeEntryController.class);
+  private static Logger log = LoggerFactory.getLogger(EditTimeEntryController.class);
 
   /** Default initialization for the controller.
    *

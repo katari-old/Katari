@@ -15,8 +15,8 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 
 import com.globant.katari.core.application.Initializable;
@@ -40,7 +40,7 @@ public class GenerateReportCommand implements ValidatableCommand<Void>,
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(GenerateReportCommand.class);
+  private static Logger log = LoggerFactory.getLogger(GenerateReportCommand.class);
 
   /** Map of the posted values, it is never null. */
   private Map<String, String> values = new HashMap<String, String>();

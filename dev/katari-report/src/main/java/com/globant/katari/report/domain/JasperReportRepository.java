@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.transform.AliasToBeanConstructorResultTransformer;
@@ -24,7 +24,7 @@ import com.globant.katari.hibernate.coreuser.domain.Role;
 public class JasperReportRepository extends HibernateDaoSupport {
 
   /** The class logger. */
-  private static Log log = LogFactory.getLog(JasperReportRepository.class);
+  private static Logger log = LoggerFactory.getLogger(JasperReportRepository.class);
 
   /** The entity class name. */
   private static final String CLASS_NAME = ReportDefinition.class.getName();

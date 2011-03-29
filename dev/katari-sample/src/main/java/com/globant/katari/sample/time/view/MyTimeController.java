@@ -5,8 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.sample.integration.SecurityUtils;
 import com.globant.katari.sample.time.application.ViewTimeEntriesCommand;
@@ -25,7 +25,7 @@ public abstract class MyTimeController extends BaseTimeController {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(MyTimeController.class);
+  private static Logger log = LoggerFactory.getLogger(MyTimeController.class);
 
   /** Default initialization for the controller.
    *

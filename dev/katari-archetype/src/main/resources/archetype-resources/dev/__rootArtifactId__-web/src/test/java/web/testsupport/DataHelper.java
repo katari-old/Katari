@@ -6,8 +6,8 @@
 package ${package}.web.testsupport;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
@@ -22,7 +22,7 @@ public final class DataHelper {
 
   /** A logger.
    */
-  private static Log log = LogFactory.getLog(DataHelper.class);
+  private static Logger log = LoggerFactory.getLogger(DataHelper.class);
 
   /** A private constructor so no instances are created.
    */

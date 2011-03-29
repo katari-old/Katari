@@ -2,8 +2,8 @@
 
 package com.globant.katari.search.view;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
@@ -26,7 +26,7 @@ public abstract class SearchController extends AbstractCommandController {
 
   /** The class logger.
   */
-  private static Log log = LogFactory.getLog(SearchController.class);
+  private static Logger log = LoggerFactory.getLogger(SearchController.class);
 
   /** Executes a full text search.
    *

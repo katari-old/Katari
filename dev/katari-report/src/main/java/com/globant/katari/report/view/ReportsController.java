@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
@@ -23,7 +23,7 @@ import com.globant.katari.report.domain.ReportDefinition;
 public abstract class ReportsController extends AbstractCommandController {
 
   /** The class logger. */
-  private static Log logger = LogFactory.getLog(ReportsController.class);
+  private static Logger logger = LoggerFactory.getLogger(ReportsController.class);
 
   /**
    * It handles the view of the form.

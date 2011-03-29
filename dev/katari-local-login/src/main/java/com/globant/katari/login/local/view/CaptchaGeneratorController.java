@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletOutputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.commons.lang.Validate;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -26,7 +26,7 @@ public class CaptchaGeneratorController extends AbstractController {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(CaptchaGeneratorController.class);
+  private static Logger log = LoggerFactory.getLogger(CaptchaGeneratorController.class);
 
   /** Service used to create and validate captcha images.
    *

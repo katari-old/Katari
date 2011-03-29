@@ -3,8 +3,8 @@ package com.globant.katari.report.application;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.globant.katari.core.application.Command;
 import com.globant.katari.report.domain.JasperReportRepository;
@@ -19,7 +19,7 @@ public class ReportsCommand implements Command<List<ReportDefinition>> {
 
   /** The class logger.
    */
-  private static Log log = LogFactory.getLog(ReportsCommand.class);
+  private static Logger log = LoggerFactory.getLogger(ReportsCommand.class);
 
   /** The report repository.
    *
