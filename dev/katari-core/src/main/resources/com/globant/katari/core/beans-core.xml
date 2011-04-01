@@ -368,9 +368,13 @@
 
   <!-- Copies the relevant data in the http session to the
   SecurityContextHolder at the begining of the request, and the other way round
-  at the end of the web request. -->
+  at the end of the web request.
+  This filter is configured to support concurrent threads using the http
+  session object. -->
   <bean id="katari.contextHolderIntegrationFilter"
-      class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
+    class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"
+    p:cloneFromHttpSession='true'
+    p:context='com.globant.katari.core.security.CloneableSecurityContext'/>
 
   <!-- Wraps the servlet request so that calls to isUserInRole and
   getRemoteUser returns information based on acegi Authentication. -->
