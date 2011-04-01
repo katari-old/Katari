@@ -1,3 +1,4 @@
+#set($symbol_dollar = '$')
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -16,7 +17,7 @@
   <packaging>pom</packaging>
   <name>\${friendlyName} - dev</name>
   <url>
-    http://maven.corp.globant.com/repositories/site/\${groupId}/\${rootArtifactId}/\${version}
+    http://maven.corp.globant.com/nexus/content/repositories/${rootArtifactId}-site/\${groupId}/\${rootArtifactId}/${symbol_dollar}{version}
   </url>
 
   <!-- List of dependencies for all modules in the application. This section
@@ -75,11 +76,11 @@
   <distributionManagement>
     <repository>
       <id>\${rootArtifactId}-artifacts-repository</id>
-      <url>dav:http://maven.corp.globant.com/nexus/content/repositories/globant</url>
+      <url>dav:http://maven.corp.globant.com/nexus/content/repositories/${rootArtifactId}</url>
     </repository>
     <site>
       <id>\${rootArtifactId}-artifacts-repository</id>
-      <url>dav:http://maven.corp.globant.com/nexus/content/repositories/site/\${groupId}/\${rootArtifactId}/\${version}</url>
+      <url>dav:http://maven.corp.globant.com/nexus/content/repositories/${rootArtifactId}-site/\${groupId}/\${rootArtifactId}/${symbol_dollar}{version}</url>
     </site>
   </distributionManagement>
 

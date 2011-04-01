@@ -1,6 +1,6 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
+#set($symbol_pound = '#')
+#set($symbol_dollar = '$')
+#set($symbol_escape = '\')
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="\${friendlyName}">
 
@@ -16,10 +16,6 @@
   </bannerLeft>
 
   <body>
-
-    <links>
-      <item name="Nexus" href="https://projects.globant.com/nexus/" />
-    </links>
 
     <menu name="\${friendlyName}">
       <item name="Introduction" href="index.html" />
