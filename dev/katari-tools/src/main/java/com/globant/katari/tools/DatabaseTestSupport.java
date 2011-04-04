@@ -149,25 +149,16 @@ public abstract class DatabaseTestSupport {
     Validate.notNull(fileName, "The file name cannot be null.");
 
     Connection connection = null;
-    StringBuffer sentence = new StringBuffer();
+    String sentence = null;
     try {
       connection = dataSource.getConnection();
       Statement statement = connection.createStatement();
+      SqlSentencesParser parser = new SqlSentencesParser(fileName);
 
-      BufferedReader in = new BufferedReader(new FileReader(fileName));
-      String line = null;
-      while (null != (line = in.readLine())) {
-        if (line.endsWith(";")) {
-          sentence.append(line.substring(0, line.length() - 1));
-          log.debug("Executing: {}", sentence.toString());
-          statement.execute(StringEscapeUtils.unescapeJava(
-              sentence.toString()));
-          sentence = new StringBuffer();
-        } else {
-          sentence.append(line);
-          sentence.append("\n");
-        }
+      while (null != (sentence = parser.readSentence())) {
+        statement.execute(StringEscapeUtils.unescapeJava(sentence));
       }
+
     } catch (Exception e) {
       System.out.println("Error executing " + sentence);
       e.printStackTrace();
