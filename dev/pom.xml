@@ -843,9 +843,9 @@
                 search = project.basedir.canonicalPath + "/katari-search/src/site/uxf"
                 new java.io.File(search).eachFileRecurse(uxf2png)
 
-                search = project.basedir.canonicalPath +
+                gadgetContainer = project.basedir.canonicalPath +
                   "/katari-gadget-container/src/site/uxf"
-                new java.io.File(search).eachFileRecurse(uxf2png)
+                new java.io.File(gadgetContainer).eachFileRecurse(uxf2png)
                 ]]>
               </source>
             </configuration>
