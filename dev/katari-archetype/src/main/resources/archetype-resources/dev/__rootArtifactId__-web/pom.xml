@@ -323,13 +323,13 @@
                 <properties>
                   <reloadable>true</reloadable>
                   <cargo.servlet.port>
-                    \${symbol_dollar}{CARGO.SERVLET.PORT}
+                    \${symbol_dollar}{cargo.servlet.port}
                   </cargo.servlet.port>
                   <cargo.rmi.port>
-                    \${symbol_dollar}{CARGO.RMI.PORT}
+                    \${symbol_dollar}{cargo.rmi.port}
                   </cargo.rmi.port>
                   <cargo.tomcat.ajp.port>
-                    \${symbol_dollar}{CARGO.TOMCAT.AJP.PORT}
+                    \${symbol_dollar}{cargo.tomcat.ajp.port}
                   </cargo.tomcat.ajp.port>
                 </properties>
                 <deployables>
@@ -356,13 +356,13 @@
                 <home>${symbol_dollar}{project.build.directory}/tmp/cargo</home>
                 <properties>
                   <cargo.servlet.port>
-                    \${symbol_dollar}{CARGO.SERVLET.PORT}
+                    \${symbol_dollar}{cargo.servlet.port}
                   </cargo.servlet.port>
                   <cargo.rmi.port>
-                    \${symbol_dollar}{CARGO.RMI.PORT}
+                    \${symbol_dollar}{cargo.rmi.port}
                   </cargo.rmi.port>
                   <cargo.tomcat.ajp.port>
-                    \${symbol_dollar}{CARGO.TOMCAT.AJP.PORT}
+                    \${symbol_dollar}{cargo.tomcat.ajp.port}
                   </cargo.tomcat.ajp.port>
                 </properties>
               </configuration>
@@ -394,13 +394,13 @@
           <configuration>
             <properties>
               <cargo.servlet.port>
-                \${symbol_dollar}{CARGO.SERVLET.PORT}
+                \${symbol_dollar}{cargo.servlet.port}
               </cargo.servlet.port>
               <cargo.rmi.port>
-                \${symbol_dollar}{CARGO.RMI.PORT}
+                \${symbol_dollar}{cargo.rmi.port}
               </cargo.rmi.port>
               <cargo.tomcat.ajp.port>
-                \${symbol_dollar}{CARGO.TOMCAT.AJP.PORT}
+                \${symbol_dollar}{cargo.tomcat.ajp.port}
               </cargo.tomcat.ajp.port>
             </properties>
           </configuration>
@@ -632,9 +632,9 @@
 
     <!-- Ports used during testing, intended to be overriden from the command
          line by a CI server like hudson. -->
-    <CARGO.SERVLET.PORT>8089</CARGO.SERVLET.PORT>
-    <CARGO.RMI.PORT>8091</CARGO.RMI.PORT>
-    <CARGO.TOMCAT.AJP.PORT>8092</CARGO.TOMCAT.AJP.PORT>
+    <cargo.servlet.port>8089</cargo.servlet.port>
+    <cargo.rmi.port>8091</cargo.rmi.port>
+    <cargo.tomcat.ajp.port>8092</cargo.tomcat.ajp.port>
   </properties>
 
   <!-- vim: set ts=2 et sw=2 ai: -->
