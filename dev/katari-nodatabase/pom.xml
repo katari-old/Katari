@@ -166,10 +166,10 @@
                 <home>${project.build.directory}/tmp/cargo</home>
                 <properties>
                   <reloadable>true</reloadable>
-                  <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
-                  <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
+                  <cargo.servlet.port>${CARGO.SERVLET.PORT}</cargo.servlet.port>
+                  <cargo.rmi.port>${CARGO.RMI.PORT}</cargo.rmi.port>
                   <cargo.tomcat.ajp.port>
-                    ${cargo.tomcat.ajp.port}
+                    ${CARGO.TOMCAT.AJP.PORT}
                   </cargo.tomcat.ajp.port>
                 </properties>
                 <deployables>
@@ -195,10 +195,10 @@
               <configuration>
                 <home>${project.build.directory}/tmp/cargo</home>
                 <properties>
-                  <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
-                  <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
+                  <cargo.servlet.port>${CARGO.SERVLET.PORT}</cargo.servlet.port>
+                  <cargo.rmi.port>${CARGO.RMI.PORT}</cargo.rmi.port>
                   <cargo.tomcat.ajp.port>
-                    ${cargo.tomcat.ajp.port}
+                    ${CARGO.TOMCAT.AJP.PORT}
                   </cargo.tomcat.ajp.port>
                 </properties>
               </configuration>
@@ -222,10 +222,10 @@
           </container>
           <configuration>
             <properties>
-              <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
-              <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
+              <cargo.servlet.port>${CARGO.SERVLET.PORT}</cargo.servlet.port>
+              <cargo.rmi.port>${CARGO.RMI.PORT}</cargo.rmi.port>
               <cargo.tomcat.ajp.port>
-                ${cargo.tomcat.ajp.port}
+                ${CARGO.TOMCAT.AJP.PORT}
               </cargo.tomcat.ajp.port>
             </properties>
           </configuration>
@@ -372,9 +372,9 @@
 
     <!-- Ports used during testing, intended to be overriden from the command
          line by a CI server like hudson. -->
-    <cargo.servlet.port>8099</cargo.servlet.port>
-    <cargo.rmi.port>8091</cargo.rmi.port>
-    <cargo.tomcat.ajp.port>8092</cargo.tomcat.ajp.port>
+    <CARGO.SERVLET.PORT>8099</CARGO.SERVLET.PORT>
+    <CARGO.RMI.PORT>8091</CARGO.RMI.PORT>
+    <CARGO.TOMCAT.AJP.PORT>8092</CARGO.TOMCAT.AJP.PORT>
   </properties>
 
 </project>
