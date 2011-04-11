@@ -92,7 +92,7 @@
     <!-- This profile is a hack for sonar. Without this (or test-archetypes),
          sonar fails trying to parse the CDATA content of the message. -->
     <profile>
-      <id>skipt-test-archetypes-message</id>
+      <id>skip-test-archetypes-message</id>
       <properties>
         <message />
       </properties>
