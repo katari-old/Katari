@@ -155,7 +155,7 @@ public class MoveGadgetCommand implements Command<JsonRepresentation> {
 
     log.trace("Entering execute");
 
-    if(isBlank(groupName)) {
+    if (isBlank(groupName)) {
       throw new IllegalArgumentException("groupName can not be blank");
     }
     long uid = userService.getCurrentUserId();

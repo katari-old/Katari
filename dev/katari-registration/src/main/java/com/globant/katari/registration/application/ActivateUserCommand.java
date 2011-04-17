@@ -23,9 +23,11 @@ import com.globant.katari.user.domain.UserRepository;
 import com.globant.katari.user.integration.DomainUserDetails;
 
 /**
- * Activate the given user. This belongs to the registration workflow,
- * the user recives an email with a token. This object takes that token
- * and if it's match with the given userId will activate the given user.
+ * Activate the given user.
+ *
+ * This belongs to the registration workflow, the user receives an email with a
+ * token. This object takes that token and if it matches with the given userId,
+ * it will activate the given user.
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
@@ -81,12 +83,12 @@ public class ActivateUserCommand implements Command<User> {
    * @see com.globant.katari.core.application.Command#execute()
    */
   public User execute() {
-    if(StringUtils.isBlank(token) || userId == null) {
+    if (StringUtils.isBlank(token) || userId == null) {
       return null;
     }
     RecoverPasswordRequest request;
     request = registrationRepository.findRecoverPasswordRequest(userId, token);
-    if(request != null) {
+    if (request != null) {
       long id = request.getUserId();
       User user = userRepository.findUser(id);
       user.activate();

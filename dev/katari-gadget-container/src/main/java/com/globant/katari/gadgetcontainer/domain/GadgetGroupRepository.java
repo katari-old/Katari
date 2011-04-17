@@ -49,7 +49,7 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
         + " gadgetGroup.owner.id = ?))",
         new Object[]{name, userId});
 
-    if(groups.isEmpty()) {
+    if (groups.isEmpty()) {
       log.trace("Leaving findGadgetGroup, no group found");
       return null;
     }
@@ -80,7 +80,7 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
         + " CustomizableGadgetGroup where name = ? and owner.id = ?",
         new Object[]{name, userId});
 
-    if(groups.isEmpty()) {
+    if (groups.isEmpty()) {
       log.trace("Leaving findGadgetGroup, no group found");
       return null;
     }
@@ -106,7 +106,7 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
     List<GadgetGroupTemplate> groups = getHibernateTemplate().find("from"
         + " GadgetGroupTemplate where name = ?", new Object[]{name});
 
-    if(groups.isEmpty()) {
+    if (groups.isEmpty()) {
       log.trace("Leaving findGadgetGroupTemplate, no group found");
       return null;
     }

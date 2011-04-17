@@ -346,7 +346,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
 
     addGroupFilterToCriteria(criteria, userIds, groupId, token, appId);
 
-    if(!appId.equals(newsFeedApplicationId)) {
+    if (!appId.equals(newsFeedApplicationId)) {
       Application app;
       app = applicationRepository.findApplicationByUrl(appId);
       criteria.add(Restrictions.eq("application", app));
@@ -411,7 +411,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
     Validate.notNull(groupId, "The group id cannot be null.");
     Validate.notNull(token, "The token cannot be null.");
     List<Long> userIdList = getUserIdList(userIds, token);
-    if(katariActivityFilter != null) {
+    if (katariActivityFilter != null) {
       katariActivityFilter.resolveSocialGraph(criteria, userIdList, groupId);
     } else {
       switch (groupId.getType()) {

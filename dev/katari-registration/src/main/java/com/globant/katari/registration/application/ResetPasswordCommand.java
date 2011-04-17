@@ -99,14 +99,14 @@ public class ResetPasswordCommand implements Command<User> {
     RecoverPasswordRequest request;
     request = registrationRepository.findRecoverPasswordRequest(userId, token);
 
-    if(request == null) {
+    if (request == null) {
       return null;
     }
 
     Date creationDate = request.getCreationDate();
     Date expiration = new Date(System.currentTimeMillis() - TIME_TO_LIVE);
 
-    if(expiration.after(creationDate)) {
+    if (expiration.after(creationDate)) {
       return null;
     }
 

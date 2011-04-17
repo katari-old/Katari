@@ -241,8 +241,8 @@ public final class SimplePageVerifier extends TestCase {
   public static String getBaseUrl() {
     Properties properties = new Properties();
     try {
-    properties.load(SimplePageVerifier.class.getResourceAsStream(
-      "/com/globant/katari/sample/functionaltest/test.properties"));
+      properties.load(SimplePageVerifier.class.getResourceAsStream(
+            "/com/globant/katari/sample/functionaltest/test.properties"));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

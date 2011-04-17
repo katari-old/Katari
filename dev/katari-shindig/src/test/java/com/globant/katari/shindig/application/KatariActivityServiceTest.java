@@ -282,8 +282,8 @@ public class KatariActivityServiceTest {
 
     List<Activity> activities = activitiesCollection.getEntry();
     assertThat(4, is(activities.size()));
-    for(int i=0; i<4; i++) {
-      assertThat(activities.get(i).getTitle(), equalTo("title-"+(i+1)));
+    for (int i = 0; i < 4; i ++) {
+      assertThat(activities.get(i).getTitle(), equalTo("title-" + (i + 1)));
     }
   }
 
@@ -333,7 +333,7 @@ public class KatariActivityServiceTest {
     public void resolveSocialGraph(final Criteria criteria,
         final List<Long> userIds, final GroupId groupId) {
       Long user = userIds.get(0);
-      if(user.toString().equals(userId1)) {
+      if (user.toString().equals(userId1)) {
         switch (groupId.getType()) {
         case self:
           criteria.createCriteria("user").add(Restrictions.ne("id", 

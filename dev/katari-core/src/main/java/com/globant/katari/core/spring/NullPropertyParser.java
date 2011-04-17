@@ -26,7 +26,7 @@ public class NullPropertyParser implements BeanDefinitionParser, FactoryBean {
    */
   public BeanDefinition parse(final Element element,
       final ParserContext parserContext) {
-    if(DomUtils.nodeNameEquals(element, NULL)) {
+    if (DomUtils.nodeNameEquals(element, NULL)) {
       String id = element.getAttribute("id");
       RootBeanDefinition beanDef = new RootBeanDefinition();
       beanDef.setBeanClass(NullPropertyParser.class);
@@ -59,5 +59,5 @@ public class NullPropertyParser implements BeanDefinitionParser, FactoryBean {
   public boolean isSingleton() {
     return true;
   }
-
 }
+

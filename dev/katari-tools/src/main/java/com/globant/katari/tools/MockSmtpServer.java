@@ -52,10 +52,10 @@ public final class MockSmtpServer {
     int port = DEFAULT_PORT;
     int dumpInterval = MAIL_DUMP_INTERVAL;
 
-    if(args.length > 0) {
+    if (args.length > 0) {
       port = Integer.valueOf(args[0]);
     }
-    if(args.length > 1) {
+    if (args.length > 1) {
       dumpInterval = Integer.valueOf(args[1]);
     }
 
@@ -64,7 +64,7 @@ public final class MockSmtpServer {
         + server.getPortNumber());
     int lastSize = 0;
     while(true) {
-      if(server.getReceivedEmailSize() > lastSize) {
+      if (server.getReceivedEmailSize() > lastSize) {
         Iterator<SmtpMessage> it = server.iterator();
         while (it.hasNext()) {
           SmtpMessage smtpMessage = (SmtpMessage) it.next();

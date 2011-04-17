@@ -89,7 +89,7 @@ public class EmailSender {
       email.setSmtpPort(smtpPort);
       email.setAuthenticator(new DefaultAuthenticator(username, password));
       email.setTLS(secure);
-      for(String recipment : emailModel.getRecipments()) {
+      for (String recipment : emailModel.getRecipments()) {
         email.addTo(recipment);
       }
       email.setSubject(emailModel.getSubject());

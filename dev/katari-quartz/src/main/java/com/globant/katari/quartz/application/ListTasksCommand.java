@@ -112,7 +112,7 @@ public class ListTasksCommand implements Command<JsonRepresentation> {
    * given date is null.
    */
   private String formatDate(final Date date) {
-    if(date == null) {
+    if (date == null) {
       return null;
     } else {
       return dateFormatter.format(date);
@@ -131,23 +131,23 @@ public class ListTasksCommand implements Command<JsonRepresentation> {
       runningJobs = scheduler.getCurrentlyExecutingJobs();
       String[] groupNames = scheduler.getJobGroupNames();
       // Iterate over all group names.
-      for(String groupName : groupNames) {
+      for (String groupName : groupNames) {
         String[] triggers = scheduler.getTriggerNames(groupName);
         String[] jobNames = scheduler.getJobNames(groupName);
         // Iterate over all job names.
-        for(String jobName : jobNames) {
+        for (String jobName : jobNames) {
           JobDetail detail = scheduler.getJobDetail(jobName, groupName);
           JobDataMap dataMap =  detail.getJobDataMap();
           Object mi = dataMap.get("methodInvoker");
-          if(mi instanceof MethodInvokingJobDetailFactoryBean) {
+          if (mi instanceof MethodInvokingJobDetailFactoryBean) {
             MethodInvokingJobDetailFactoryBean jobDetailFactoryBean;
             jobDetailFactoryBean = (MethodInvokingJobDetailFactoryBean) mi;
             Object targetObject = jobDetailFactoryBean.getTargetObject();
-            if(targetObject instanceof ScheduledCommand) {
-              for(String theTrigger : triggers) {
+            if (targetObject instanceof ScheduledCommand) {
+              for (String theTrigger : triggers) {
                 Trigger trigger = scheduler.getTrigger(theTrigger, groupName);
                 // What if one job has many triggers?
-                if(trigger.getJobName().equals(detail.getName())) {
+                if (trigger.getJobName().equals(detail.getName())) {
                   Date nextExecutionTime = trigger.getNextFireTime();
                   Date lastExecutionTime = trigger.getPreviousFireTime();
                   boolean isJobRunning;

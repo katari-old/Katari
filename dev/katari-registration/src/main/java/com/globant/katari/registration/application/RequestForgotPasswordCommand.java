@@ -72,7 +72,7 @@ public class RequestForgotPasswordCommand implements Command<Void>,
    * @return null
    */
   public Void execute() {
-    if(user == null) {
+    if (user == null) {
       throw new RuntimeException(
          "The user should be here, please validate before execute the command");
     }
@@ -95,12 +95,12 @@ public class RequestForgotPasswordCommand implements Command<Void>,
    * {@inheritDoc}
    */
   public void validate(final Errors errors) {
-    if(StringUtils.isBlank(email)) {
+    if (StringUtils.isBlank(email)) {
       errors.rejectValue("email", "forgotpassword.email.null",
           "The email cannot be null");
     } else {
       user = userRepository.findUserByEmail(email);
-      if(user == null) {
+      if (user == null) {
         errors.rejectValue("email", "forgotpassword.email.notExist",
           "The email does not exist");
       }

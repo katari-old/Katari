@@ -101,7 +101,7 @@ public class MenuEntriesTest extends ParentRunner<MenuNode> {
   protected void runChild(final MenuNode child, final RunNotifier notifier){
     notifier.fireTestStarted(describeChild(child));
     try {
-      if(webClient == null){
+      if (webClient == null){
         webClient = SimplePageVerifier.login(LOGIN_URL);
         webClient.setJavaScriptEnabled(false);
       }

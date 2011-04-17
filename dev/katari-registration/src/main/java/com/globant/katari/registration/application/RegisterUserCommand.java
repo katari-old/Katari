@@ -104,18 +104,18 @@ public class RegisterUserCommand implements Command<User>, Validatable {
    * @param errors the spring errors.
    */
   public void validate(final Errors errors) {
-    if(isBlank(email)) {
+    if (isBlank(email)) {
       errors.rejectValue("email", "email.notNull", "the email cannot be null");
     }
-    if(isBlank(name)) {
+    if (isBlank(name)) {
       errors.rejectValue("name", "name.notNull", "the name cannot be null");
     }
     User user = userRepository.findUserByEmail(email);
-    if(user != null) {
+    if (user != null) {
       errors.reject("existing.email", "A user with that email alredy exists");
     }
     user = userRepository.findUserByName(name);
-    if(user != null) {
+    if (user != null) {
       errors.reject("existing.name", "A user with that namd alredy exists");
     }
   }
