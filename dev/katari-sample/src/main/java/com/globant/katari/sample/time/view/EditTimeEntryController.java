@@ -22,7 +22,8 @@ public abstract class EditTimeEntryController extends BaseTimeController {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(EditTimeEntryController.class);
+  private static Logger log =
+    LoggerFactory.getLogger(EditTimeEntryController.class);
 
   /** Default initialization for the controller.
    *
