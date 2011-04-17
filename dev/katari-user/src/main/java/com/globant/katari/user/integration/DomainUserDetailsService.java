@@ -21,7 +21,8 @@ public class DomainUserDetailsService implements UserDetailsService {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(DomainUserDetailsService.class);
+  private static Logger log =
+    LoggerFactory.getLogger(DomainUserDetailsService.class);
 
   /** The user service used to get the domain user.
    *

@@ -32,7 +32,8 @@ import com.globant.katari.report.domain.ReportType;
 public abstract class ParameterController extends SimpleFormController {
 
   /** The class logger. */
-  private static Logger log = LoggerFactory.getLogger(ParameterController.class);
+  private static Logger log =
+    LoggerFactory.getLogger(ParameterController.class);
 
   /**
    * Constructor.

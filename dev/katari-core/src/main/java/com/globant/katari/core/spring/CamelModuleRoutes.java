@@ -14,25 +14,19 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 /** Defines routes to add to the camel context.
  * 
  * This class registers routes in the camel context named katari.eventBus. The
- * routes are specified as routeContext elements.
+ * routes are specified as RouteDefinition elements.
  */
 public class CamelModuleRoutes implements BeanPostProcessor {
 
-  List<RouteDefinition> routeDefinitions;
+  /** The definitions of the routes to add to camel.
+   *
+   * This is never null.
+   */
+  private List<RouteDefinition> routeDefinitions;
 
   /** Creates a new event endpoint.
    *
-   * @param theAggregationStrategy aggregates the response of each listener.
-   * It cannot be null.
-   *
-   * @param theNullUri an endpoint where the event goes when there are no
-   * listeners. This is necessary when the output and the input of the event
-   * are of different types. It cannot be null.
-   *
-   * @param sourceUri the source endpoint name. It cannot be null.
-   *
-   * @param listeners the list of listeners of the events raised in the
-   * provided source endpoint.
+   * @param routes The routes to add to cammel. It cannot be null.
    */
   public CamelModuleRoutes(final List<RouteDefinition> routes) {
     Validate.notNull(routes, "The routes cannot be null.");

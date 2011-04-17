@@ -159,8 +159,7 @@ public class UserRepository extends HibernateDaoSupport {
    * exists.
    */
   public User findUser(final long id) {
-    User user = (User) getHibernateTemplate().get(User.class, id);
-    return user;
+    return (User) getHibernateTemplate().get(User.class, id);
   }
 }
 

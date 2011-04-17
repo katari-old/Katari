@@ -40,7 +40,8 @@ public class GenerateReportCommand implements ValidatableCommand<Void>,
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(GenerateReportCommand.class);
+  private static Logger log =
+    LoggerFactory.getLogger(GenerateReportCommand.class);
 
   /** Map of the posted values, it is never null. */
   private Map<String, String> values = new HashMap<String, String>();

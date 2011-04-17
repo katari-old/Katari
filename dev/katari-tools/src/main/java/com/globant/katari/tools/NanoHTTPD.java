@@ -371,18 +371,18 @@ public abstract class NanoHTTPD {
               log.error("Ignoring content-length header.", ex);
             }
           }
-          String postLine = "";
+          StringBuilder postLine = new StringBuilder();
           char[] buf = new char[BUFFER_SIZE];
           int read = in.read(buf);
-          while (read >= 0 && contentLength > 0 && !postLine.endsWith(EOL)) {
+          while (read >= 0 && contentLength > 0
+              && !postLine.toString().endsWith(EOL)) {
             contentLength -= read;
-            postLine += String.valueOf(buf, 0, read);
+            postLine.append(buf, 0, read);
             if (contentLength > 0) {
               read = in.read(buf);
             }
           }
-          postLine = postLine.trim();
-          decodeParms(postLine, parms);
+          decodeParms(postLine.toString().trim(), parms);
         }
 
         // Ok, now do the serve()

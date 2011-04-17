@@ -39,7 +39,7 @@ public class KatariMediaItem implements MediaItem {
    */
   @Version
   @Column(name = "version")
-  protected long version;
+  private long version;
 
   /** The list of activities which this media item is reference in, this
    * relationship is specified by the java property mediaItems in the class
@@ -48,7 +48,7 @@ public class KatariMediaItem implements MediaItem {
    * @see ActivityDb for more information on this mapping.
    */
   @ManyToMany(targetEntity = KatariActivity.class, mappedBy = "mediaItems")
-  protected List<Activity> activities;
+  private List<Activity> activities;
 
   /**
    * model field.

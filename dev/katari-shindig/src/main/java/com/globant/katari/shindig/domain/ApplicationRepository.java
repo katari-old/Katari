@@ -28,7 +28,7 @@ public class ApplicationRepository extends HibernateDaoSupport {
    * @return the application found or null.
    */
   public Application findApplication(final long id) {
-    log.trace("Entering findApplication with id = {}", new Long(id));
+    log.trace("Entering findApplication with id = {}", Long.valueOf(id));
 
     Application app;
     app = (Application) getHibernateTemplate().get(Application.class, id);

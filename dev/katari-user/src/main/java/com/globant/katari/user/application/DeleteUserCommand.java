@@ -98,9 +98,8 @@ public class DeleteUserCommand implements Command<Void> {
       throw new RuntimeException(
           "We cannot delete the user: " + response.getMessage("", "\n"));
     }
-    response = (DeleteMessage) producer.requestBody(
-        "direct:katari.user.deleteUser", new DeleteMessage(userId));
-    // Response is ignored here.
+    producer.requestBody("direct:katari.user.deleteUser",
+        new DeleteMessage(userId));
 
     userRepository.remove(user);
     log.trace("Leaving execute");

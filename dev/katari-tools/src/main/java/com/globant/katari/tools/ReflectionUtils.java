@@ -78,8 +78,7 @@ public final class ReflectionUtils {
   private static Field getField(final Class<?> theClass, final String
       attributeName) throws NoSuchFieldException {
     try {
-      Field field = theClass.getDeclaredField(attributeName);
-      return field;
+      return theClass.getDeclaredField(attributeName);
     } catch (NoSuchFieldException e) {
       Class superclass = theClass.getSuperclass();
       if (superclass != null) {

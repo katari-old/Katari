@@ -23,7 +23,7 @@ import com.globant.katari.report.domain.ReportDefinition;
 public abstract class ReportsController extends AbstractCommandController {
 
   /** The class logger. */
-  private static Logger logger = LoggerFactory.getLogger(ReportsController.class);
+  private static Logger log = LoggerFactory.getLogger(ReportsController.class);
 
   /**
    * It handles the view of the form.
@@ -39,7 +39,7 @@ public abstract class ReportsController extends AbstractCommandController {
   protected final ModelAndView handle(final HttpServletRequest request,
       final HttpServletResponse response, final Object command,
       final BindException errors) throws Exception {
-    logger.trace("entering handle");
+    log.trace("entering handle");
 
     ReportsCommand reportCommand = (ReportsCommand) command;
     List<ReportDefinition> results = reportCommand.execute();
@@ -47,7 +47,7 @@ public abstract class ReportsController extends AbstractCommandController {
     ModelAndView mav = new ModelAndView("reportsDefinitions");
     mav.addObject("reportsDefinitions", results);
 
-    logger.trace("leaving handle");
+    log.trace("leaving handle");
     return mav;
   }
 

@@ -111,7 +111,7 @@ public class Application {
       joinColumns = @JoinColumn(name = "application_id")
   )
   @Column(name = "view_name", nullable = false)
-  public List<String> supportedViews = new LinkedList<String>();
+  private List<String> supportedViews = new LinkedList<String>();
 
   /** Hibernate constructor.
    */
@@ -146,7 +146,7 @@ public class Application {
 
       message = "Error obtaining gadget title";
       title = getXpathValue(document, "/Module/ModulePrefs/@title");
-      if (title == null) {
+      if (title.isEmpty()) {
         title = gadgetUrl;
       }
       message = "Error obtaining gadget icon";

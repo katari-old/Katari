@@ -245,14 +245,12 @@ public class GadgetGroupCommand implements Command<JsonRepresentation> {
       final GadgetGroup group) throws JSONException {
     Validate.notNull(group, "The gadget group cannot be null.");
 
-    JSONObject groupJson = new JSONObject();
-
     boolean isCustomizable = group.isCustomizable();
     if (viewerId != ownerId || viewerId == 0) {
       isCustomizable = false;
     }
 
-    groupJson = new JSONObject();
+    JSONObject groupJson = new JSONObject();
     groupJson.put("id", group.getId());
     groupJson.put("name", group.getName());
     groupJson.put("ownerId", ownerId);

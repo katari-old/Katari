@@ -43,8 +43,7 @@ public class RoleRepository extends HibernateDaoSupport {
    * exists.
    */
   public Role findRole(final long id) {
-    Role role = (Role) getHibernateTemplate().get(Role.class, id);
-    return role;
+    return (Role) getHibernateTemplate().get(Role.class, id);
   }
 
   /**

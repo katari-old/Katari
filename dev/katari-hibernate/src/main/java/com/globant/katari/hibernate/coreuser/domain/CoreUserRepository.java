@@ -23,8 +23,7 @@ public class CoreUserRepository extends HibernateDaoSupport {
    * exists.
    */
   public CoreUser findUser(final long id) {
-    CoreUser user = (CoreUser) getHibernateTemplate().get(CoreUser.class, id);
-    return user;
+    return (CoreUser) getHibernateTemplate().get(CoreUser.class, id);
   }
 
   /** Finds the user with the specified name.

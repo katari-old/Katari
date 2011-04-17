@@ -24,7 +24,8 @@ import com.globant.katari.hibernate.coreuser.domain.Role;
 public class JasperReportRepository extends HibernateDaoSupport {
 
   /** The class logger. */
-  private static Logger log = LoggerFactory.getLogger(JasperReportRepository.class);
+  private static Logger log =
+      LoggerFactory.getLogger(JasperReportRepository.class);
 
   /** The entity class name. */
   private static final String CLASS_NAME = ReportDefinition.class.getName();
@@ -194,7 +195,6 @@ public class JasperReportRepository extends HibernateDaoSupport {
       query.setParameter(name, value);
     }
 
-    List<DropdownOptions> list = query.list();
-    return list;
+    return query.list();
   }
 }

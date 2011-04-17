@@ -64,8 +64,7 @@ public class PageRepository extends HibernateDaoSupport {
    * exists.
    */
   public Page findPage(final long id) {
-    Page page = (Page) getHibernateTemplate().get(Page.class, id);
-    return page;
+    return (Page) getHibernateTemplate().get(Page.class, id);
   }
 }
 

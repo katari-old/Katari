@@ -119,22 +119,8 @@ public class FreeMarkerConfigurer extends
       }
       // Adds the default classpathLoader
       loaders.add(classpathLoader);
-      loader = new MultiTemplateLoader(loaders.toArray(new TemplateLoader[0]));
-
-      /*
-        try {
-          loaders[0] = new FileTemplateLoader(new File(fileTemplatePath));
-          loaders[1] = classpathLoader;
-          loader = new MultiTemplateLoader(loaders);
-        } catch (IOException e) {
-          // We fall back to the standard loader.
-          log.debug("Could not find {}. Using normal classpath loader.",
-              fileTemplatePath);
-          loader = classpathLoader;
-        }
-      }
-      */
-
+      loader = new MultiTemplateLoader(loaders.toArray(
+            new TemplateLoader[loaders.size()]));
     } else {
       log.debug("Debug mode not enabled, using SpringTemplateLoader");
       loader = classpathLoader;

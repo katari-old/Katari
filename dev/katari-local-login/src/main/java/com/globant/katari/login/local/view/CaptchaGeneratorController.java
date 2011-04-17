@@ -26,7 +26,8 @@ public class CaptchaGeneratorController extends AbstractController {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(CaptchaGeneratorController.class);
+  private static Logger log =
+    LoggerFactory.getLogger(CaptchaGeneratorController.class);
 
   /** Service used to create and validate captcha images.
    *

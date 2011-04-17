@@ -25,7 +25,8 @@ public class DevelopmentDataBaseChecker {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(DevelopmentDataBaseChecker.class);
+  private static Logger log =
+    LoggerFactory.getLogger(DevelopmentDataBaseChecker.class);
 
   /**
    * The data source.
