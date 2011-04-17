@@ -34,7 +34,7 @@ public class JoinedStrings extends AbstractFactoryBean {
    * @param theValues the values to concatenate, never null. The values are
    * concatenated in the provided order.
    */
-  public void setValues(String[] theValues) {
+  public void setValues(final String[] theValues) {
     Validate.notNull(theValues, "The values cannot be null.");
     values = theValues;
   }

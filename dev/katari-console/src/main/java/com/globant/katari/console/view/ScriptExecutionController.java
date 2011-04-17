@@ -1,3 +1,5 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.console.view;
 
 import java.io.ByteArrayOutputStream;
@@ -19,10 +21,10 @@ import com.globant.katari.console.application.ScriptingEngine;
 public class ScriptExecutionController extends AbstractController {
 
   /** Request parameter key for the code to be executed. */
-  private final static String SCRIPT_CODE_REQ_PARAM = "script";
+  private static final String SCRIPT_CODE_REQ_PARAM = "script";
 
   /** Content type to be used in the response. */
-  private final static String JSON_CONTENT_TYPE = "application/json";
+  private static final String JSON_CONTENT_TYPE = "application/json";
 
   /** Scripting engine used to execute the code. */
   private ScriptingEngine scriptingEngine;
@@ -37,6 +39,8 @@ public class ScriptExecutionController extends AbstractController {
     scriptingEngine = theScriptingEngine;
   }
 
+  /** {@inheritDoc}
+   */
   @Override
   protected ModelAndView handleRequestInternal(final HttpServletRequest
       request, final HttpServletResponse response) throws IOException {
@@ -48,8 +52,8 @@ public class ScriptExecutionController extends AbstractController {
 
     scriptingEngine.execute(code, output, error);
 
-    String result = "{\"output\":\"" + escapeForJson(output.toString()) +
-        "\",\"error\":\"" + escapeForJson(error.toString()) + "\"}";
+    String result = "{\"output\":\"" + escapeForJson(output.toString())
+        + "\",\"error\":\"" + escapeForJson(error.toString()) + "\"}";
 
     response.setContentType(JSON_CONTENT_TYPE);
     response.getWriter().print(result);
@@ -59,7 +63,9 @@ public class ScriptExecutionController extends AbstractController {
     return null;
   }
 
-  /** Escapes non-JSON characters. Inspired by <a
+  /** Escapes non-JSON characters.
+   *
+   * Inspired by <a
    * href="http://code.google.com/p/json-simple/">JSON-Simple</a>.
    * @param input The text to be escaped. It can be null or empty, in
    * both cases the result will be an empty string.
