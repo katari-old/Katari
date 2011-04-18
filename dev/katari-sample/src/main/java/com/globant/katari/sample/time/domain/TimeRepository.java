@@ -8,7 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.globant.katari.user.domain.User;
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 /** This class is responsible for managing the persistence of time entries.
  *
@@ -66,7 +66,7 @@ public class TimeRepository extends HibernateDaoSupport {
    * entries, it returns the empty list. Never returns null.
    */
   @SuppressWarnings("unchecked")
-  public List<TimeEntry> getTimeEntries(final User user, final Date date) {
+  public List<TimeEntry> getTimeEntries(final CoreUser user, final Date date) {
     Validate.notNull(user, "The user cannot be null");
     Validate.notNull(date, "The date cannot be null");
 

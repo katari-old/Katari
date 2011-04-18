@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.Validate;
 
-import com.globant.katari.user.domain.User;
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
 /** A time entry stores the amount of work performed by a user on a given
  * project.
@@ -51,9 +51,9 @@ public class TimeEntry {
    *
    * This is never null.
    */
-  @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+  @ManyToOne(targetEntity = CoreUser.class, fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+  private CoreUser user;
 
   /** Project to be charged the time entry.
    *
@@ -98,7 +98,7 @@ public class TimeEntry {
    * @param theComment A comment describing briefly what was done during the
    * entry. Cannot be null.
    */
-  public TimeEntry(final Activity theActivity, final User theUser,
+  public TimeEntry(final Activity theActivity, final CoreUser theUser,
       final Project theProject, final Date theEntryDate,
       final TimePeriod thePeriod, final String theComment) {
     Validate.notNull(theActivity, "the activity cannot be null");
@@ -143,7 +143,7 @@ public class TimeEntry {
    *
    * @return the user. Never returns null.
    */
-  public User getUser() {
+  public CoreUser getUser() {
     return user;
   }
 

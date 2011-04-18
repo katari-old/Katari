@@ -9,7 +9,7 @@ import org.apache.commons.lang.Validate;
 
 import org.springframework.validation.Errors;
 
-import com.globant.katari.sample.integration.SecurityUtils;
+import com.globant.katari.hibernate.coreuser.SecurityUtils;
 
 import com.globant.katari.core.application.ValidatableCommand;
 

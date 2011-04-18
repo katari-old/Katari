@@ -2,8 +2,6 @@
 
 package com.globant.katari.tools;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Statement;

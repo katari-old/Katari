@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.globant.katari.sample.integration.SecurityUtils;
+import com.globant.katari.hibernate.coreuser.SecurityUtils;
 import com.globant.katari.sample.time.application.ViewTimeEntriesCommand;
 import com.globant.katari.sample.time.domain.TimeEntry;
 import com.globant.katari.sample.time.domain.TimeRepository;

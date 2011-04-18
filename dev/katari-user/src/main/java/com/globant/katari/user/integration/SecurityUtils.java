@@ -15,9 +15,11 @@ import com.globant.katari.user.domain.User;
  * This class provides operations to obtain information about the currently
  * logged on user.
  *
- * TODO There is a class named SecurityUtils in katari-core, check if it is ok.
+ * There is a class named SecurityUtils in katari-core. This is a similar
+ * implementation, but it is aware of the User entity. The katari-core class
+ * knows about CoreUser only.
  *
- * @author nicolas.frontini
+ * This module needs an instance of User so it can call isAdministrator on it.
  */
 @Deprecated
 public final class SecurityUtils {

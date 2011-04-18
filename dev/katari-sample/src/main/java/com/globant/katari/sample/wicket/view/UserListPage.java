@@ -16,7 +16,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.globant.katari.sample.integration.SecurityUtils;
+import com.globant.katari.hibernate.coreuser.SecurityUtils;
+
 import com.globant.katari.user.application.DeleteUserCommand;
 import com.globant.katari.user.application.UserFilterCommand;
 import com.globant.katari.user.domain.User;
