@@ -146,7 +146,7 @@ public class Application {
 
       message = "Error obtaining gadget title";
       title = getXpathValue(document, "/Module/ModulePrefs/@title");
-      if (title.isEmpty()) {
+      if (title.length() == 0) {
         title = gadgetUrl;
       }
       message = "Error obtaining gadget icon";
