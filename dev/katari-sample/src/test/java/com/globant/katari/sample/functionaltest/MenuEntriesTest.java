@@ -96,7 +96,7 @@ public class MenuEntriesTest extends ParentRunner<MenuNode> {
    * @param child the menu node to navigate.
    * @param notifier the junit run notifier.
    */
-  protected void runChild(final MenuNode child, final RunNotifier notifier){
+  protected void runChild(final MenuNode child, final RunNotifier notifier) {
     notifier.fireTestStarted(describeChild(child));
     try {
       if (webClient == null){

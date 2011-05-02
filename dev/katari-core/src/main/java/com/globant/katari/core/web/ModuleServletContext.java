@@ -111,9 +111,8 @@ public final class ModuleServletContext extends ServletContextWrapper {
    * @throws MalformedURLException if the resource path is not properly formed.
    */
   public URL getResource(final String path) throws MalformedURLException {
-    if (log.isTraceEnabled()) {
-      log.trace("Entering getResource('" + path + "')");
-    }
+
+    log.trace("Entering getResource('{}')", path);
 
     URL url = null;
     try {
@@ -125,14 +124,14 @@ public final class ModuleServletContext extends ServletContextWrapper {
       try {
         url = getClass().getResource(path);
       } catch (Exception e) {
-        log.error("Not ound in class loader", e);
+        log.error("Not found in class loader", e);
       }
     }
     if (url == null) {
       try {
         url = getClass().getResource("/" + path);
       } catch (Exception e) {
-        log.error("Not ound in class loader with /", e);
+        log.error("Not found in class loader with /", e);
       }
     }
 
