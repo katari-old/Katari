@@ -13,6 +13,9 @@ import freemarker.template.TemplateModelException;
 
 /** A Freemarker JsonRepresentation wrapper to access the Json objects from
  * freemarker.
+ *
+ * TODO: See if we should call setSimpleMapWrapper(true) to support non-string
+ * keys in freemarker.
  */
 public final class JsonRepresentationWrapper extends DefaultObjectWrapper {
 
