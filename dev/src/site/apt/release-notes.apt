@@ -6,6 +6,26 @@ Release notes for version 0.30
 
  * New module katari-monitoring.
 
+ * Make tomcat ports externally configurable, to run multiple builds in
+ parallel.
+
+ * It is now possible to have multiple instances of a katari based application
+ running in the same tomcat.
+
+ * Make the sql parser more robust.
+
+ * Removed the dependency on apache commons logging.
+
+* Resolved issues since version 0.29
+
+ * The generated arquetype now truncates the database owner to 14 chars.
+ Previous versions generated database usernames that where too long if the
+ project name was long enough.
+
+ * Fix the random resource loading error in the browser.
+
+ * Make sql parser more robust.
+
 Upgrading from 0.29
 
  * The development database checker should no longer be overriden to configure
