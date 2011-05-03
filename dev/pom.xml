@@ -1064,8 +1064,12 @@ try {
            NOTE: in a snapshot release, project.version is, eg, 0.22-SNAPSHOT.
            This version never matches a ticket, so the trac report shows an
            error.
+
+           WARN: this has been disabled because agilo 0.9.3 made incompatible
+           changes to the ticketing system and now xmlrpc plugin is not working
+           in trac.
       -->
-      <plugin>
+      <!-- plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
         <version>2.3</version>
@@ -1076,7 +1080,7 @@ try {
             milestone=${project.version}
           </query>
         </configuration>
-      </plugin>
+      </plugin -->
       <!-- Generates used declared, used undeclared, unused declared dependency
            report. -->
       <plugin>
