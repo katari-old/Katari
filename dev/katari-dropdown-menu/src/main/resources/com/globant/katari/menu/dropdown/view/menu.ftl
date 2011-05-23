@@ -44,7 +44,8 @@
         <ul>
           <#list parentNode.children as item>
             <#if item.menuNode.isLeaf()>
-              <li class='${classprefix}item'>
+              <li class='${classprefix}item
+                  menuitem-${menuitem.menuNode.name?lower_case}'>
                 <a class="${classprefix}itemlabel"
                     href='${baseweb}${item.menuNode.linkPath}'>
                   ${item.menuNode.displayName}

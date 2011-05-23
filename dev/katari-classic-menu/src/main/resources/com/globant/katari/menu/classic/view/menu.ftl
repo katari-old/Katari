@@ -14,7 +14,8 @@
       <#if menuitem_index == 0>
         <ul id="menu_level_${menu.level()}" class="clearfix">
       </#if>
-        <li class="${menu.selected(menuitem.menuNode.path)}">
+        <li class="${menu.selected(menuitem.menuNode.path)}
+            menuitem-${menuitem.menuNode.name?lower_case}">
           <a href="${menu.buildPath(menuitem)}">
             ${menuitem.menuNode.displayName}</a>
         </li>
