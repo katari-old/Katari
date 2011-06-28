@@ -4,6 +4,33 @@ Email sender
 
  This is the Katari email implementation based on Apache Commons-Email.
 
+How to use
+
+ To include this module in a Katari based application, put in your application
+ context file (usually src/main/webapp/WEB-INF/applicationContext.xml), a line
+ of the form:
+
+-----
+<katari:import module="com.globant.katari.email"/>
+-----
+
+ To use this module, you need to get the 'katari.emailSender' bean from spring,
+ usually by dependency injection.
+
+ To create the mail body, you must create a freemarker template, and make it
+ available in the classpath.
+
+ Then prepare an EmailModel instance, and call send:
+
+---
+ Map<String, Object> values = new HashMap<String, Object>();
+ values.put("oneKey", "a value");
+ EmailModel model = new EmailModel("from@gmail.com",
+   "to@gmail.com", values, "plain text body", "the subject");
+ emailSender.send(model,
+   "com/globant/katari/email/view/templateTestEmail.ftl");
+---
+
 Configuration
 
  To use this module you have to override a couple of beans:
