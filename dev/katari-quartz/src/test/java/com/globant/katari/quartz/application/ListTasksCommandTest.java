@@ -31,7 +31,6 @@ import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
 
 /** @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
-@SuppressWarnings("deprecation")
 public class ListTasksCommandTest {
 
   // This was created as new Date(110, 9, 20, 13, 30, 0), but we need to

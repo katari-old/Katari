@@ -2,20 +2,9 @@
 
 package com.globant.katari.tools;
 
-import java.sql.Connection;
-import java.util.Properties;
-
-import org.springframework.beans.DirectFieldAccessor;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-import org.hibernate.cfg.Configuration;
-
-import static org.easymock.classextension.EasyMock.*;
-
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-
-import com.globant.katari.tools.database.MySqlDropAllObjects;
 
 public class SqlSentencesParserTest {
 

@@ -16,7 +16,11 @@ import org.acegisecurity.context.SecurityContextImpl;
 public class CloneableSecurityContext extends SecurityContextImpl
   implements Cloneable {
 
-  /** {@inheritDoc}
+  /** The serial version id.
+   */
+  private static final long serialVersionUID = 1L;
+
+/** {@inheritDoc}
    */
   @Override
   public CloneableSecurityContext clone()
