@@ -25,11 +25,11 @@ import com.globant.katari.email.model.EmailModel;
  */
 public class EmailSenderTest {
 
-  private static final String TEMPLATE = 
+  private static final String TEMPLATE =
       "com/globant/katari/email/view/templateTestEmail.ftl";
 
   private DummySmtpServer smtpServer;
- 
+
   private EmailSender emailSender;
 
   @Before
@@ -49,7 +49,7 @@ public class EmailSenderTest {
   public void testSend_success() throws Exception {
     Map<String, Object> values = new HashMap<String, Object>();
     values.put("oneKey", "a value");
-    EmailModel model = new EmailModel("emiliano.arango@gmail.com", 
+    EmailModel model = new EmailModel("emiliano.arango@gmail.com",
         "waabox@gmail.com", values, "plain text body", "the subject");
     emailSender.send(model, TEMPLATE);
 
@@ -67,19 +67,19 @@ public class EmailSenderTest {
   public void testGenerateEmail_fail() throws Exception {
     Map<String, Object> values = new HashMap<String, Object>();
     values.put("oneKey", "a value");
-    EmailModel model = new EmailModel("emiliano.arango@gmail.com", 
+    EmailModel model = new EmailModel("emiliano.arango@gmail.com",
         "waabox@gmail.com", values, "test the empty message", "just a test");
     try {
       emailSender.send(model, null);
       fail("should fail because the view is null");
     } catch (IllegalArgumentException e) {
-      
+
     }
     try {
       emailSender.send(null, "");
       fail("should fail because the model is null");
     } catch (IllegalArgumentException e) {
-      
+
     }
   }
 }
