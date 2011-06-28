@@ -25,8 +25,10 @@ How to use
 ---
  Map<String, Object> values = new HashMap<String, Object>();
  values.put("oneKey", "a value");
+
  EmailModel model = new EmailModel("from@gmail.com",
    "to@gmail.com", values, "plain text body", "the subject");
+
  emailSender.send(model,
    "com/globant/katari/email/view/templateTestEmail.ftl");
 ---
@@ -34,9 +36,12 @@ How to use
 Configuration
 
  To use this module you have to override a couple of beans:
+
+---
  email.smtpHostname : String, The smtp hostname.
  email.smtpPort : Integer, The smtp port.
  email.smtpUsername : String, The smtp username.
  email.smtpPassword : String, The smtp password.
  email.smtpIsSsl : Boolean, True if the server connection rides on SSL or not.
+---
 
