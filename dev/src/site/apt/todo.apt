@@ -18,14 +18,13 @@
 
 ----
 <bean id="freemarkerViewResolver"
-  class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-  <property name="prefix" value="/"/>
-  <property name="suffix" value=".ftl"/>
-  <property name="order" value="1" />
-  <property name="exposeSpringMacroHelpers" value="true"/>
-  <property name="exposeRequestAttributes" value="true" />
-  <property name="contentType" value="text/html; charset=utf-8" />
- </bean>
+  class="com.globant.katari.core.web.FreeMarkerViewResolver"
+  p:prefix="/"
+  p:suffix=".ftl"
+  p:order="1" 
+  p:exposeSpringMacroHelpers="true"
+  p:exposeRequestAttributes="true" 
+  p:contentType="text/html; charset=utf-8" />
 ----
 
  Additionally, it will be nice to have a global configuration that overrides all

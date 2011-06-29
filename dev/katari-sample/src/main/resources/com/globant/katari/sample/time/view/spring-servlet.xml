@@ -16,14 +16,14 @@
     p:debug-ref='debugMode'/>
 
   <bean id="freemarkerViewResolver"
-    class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+    class="com.globant.katari.core.web.FreeMarkerViewResolver"
     p:prefix="/" p:suffix=".ftl" p:order='1'
     p:exposeSpringMacroHelpers='true'/>
 
   <!-- ViewResolvers that inherit from UrlBasedViewResolver, such as
   JasperReportsViewResolver and FreeMarkerViewResolver must be last in the resolvers
   list. As both resolvers can't be the last, a ResourceBundleViewResolver is used to
-  resolve for JasperReports, so the chain defaults to FreemarkerViewResolver if the
+  resolve for JasperReports, so the chain defaults to FreeMarkerViewResolver if the
   view is not a report. -->
 
   <bean id="bundleViewResolver"

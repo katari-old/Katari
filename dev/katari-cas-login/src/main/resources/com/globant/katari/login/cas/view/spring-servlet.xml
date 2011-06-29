@@ -16,7 +16,7 @@
     p:debug-ref='debugMode'/>
 
   <bean id="freemarkerViewResolver"
-    class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+    class="com.globant.katari.core.web.FreeMarkerViewResolver"
     p:prefix="/" p:suffix=".ftl"
     p:exposeSessionAttributes='true'/>
 
