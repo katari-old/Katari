@@ -92,7 +92,7 @@ public class UserListPageTest {
     replay(saveUser);
 
     ApplicationContextMock applicationContext = new ApplicationContextMock();
-    applicationContext.putBean("filterCommand", emptyFilter);
+    applicationContext.putBean("userFilterCommand", emptyFilter);
     applicationContext.putBean("deleteUserCommand", deleteUser);
     applicationContext.putBean("saveUserCommand", saveUser);
 
