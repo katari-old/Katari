@@ -37,7 +37,7 @@ public class UserListPage extends WebPage {
    *
    * Injected by spring, never null.
    */
-  @SpringBean
+  @SpringBean(name = "filterCommand")
   private UserFilterCommand filterCommand;
 
   /** The command that deletes a user.

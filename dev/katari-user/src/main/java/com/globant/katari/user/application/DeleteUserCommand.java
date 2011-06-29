@@ -2,6 +2,8 @@
 
 package com.globant.katari.user.application;
 
+import java.util.List;
+
 import org.apache.commons.lang.Validate;
 
 import org.slf4j.Logger;
@@ -10,6 +12,10 @@ import org.slf4j.LoggerFactory;
 import com.globant.katari.hibernate.coreuser.SecurityUtils;
 
 import com.globant.katari.core.application.Command;
+import com.globant.katari.core.application.Validatable;
+import com.globant.katari.core.application.Initializable;
+
+import org.springframework.validation.Errors;
 
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.CamelContext;
@@ -20,8 +26,14 @@ import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserRepository;
 
 /** Command to delete a user.
+ *
+ * This command extends UserFilterCommand. That is a hack to return to the user
+ * list keeping the filtering conditions.
+ *
+ * This hack should be unnecessary when katari implements a crud controller.
  */
-public class DeleteUserCommand implements Command<Void> {
+public class DeleteUserCommand extends UserFilterCommand
+  implements Command<List<User>>, Validatable, Initializable {
 
   /** The class logger.
    */
@@ -39,6 +51,12 @@ public class DeleteUserCommand implements Command<Void> {
    */
   private long userId;
 
+  /** The list of users matching the search criteria.
+   *
+   * This not null after init.
+   */
+  private List<User> users;
+
   /** Constructor to dynamically proxy this type of command (mainly used by
    * wicket).
   */
@@ -54,6 +72,7 @@ public class DeleteUserCommand implements Command<Void> {
    */
   public DeleteUserCommand(final CamelContext theEventBus,
       final UserRepository theUserRepository) {
+    super(theUserRepository);
     Validate.notNull(theEventBus, "The event bus cannot be null");
     Validate.notNull(theUserRepository, "The user repository cannot be null");
     eventBus = theEventBus;
@@ -76,6 +95,29 @@ public class DeleteUserCommand implements Command<Void> {
     userId = theUserId;
   }
 
+  /** Validates that the user can be deleted.
+   *
+   * This operation also considers the veto of the delete event.
+   *
+   * @param errors Contextual state about the validation process. It can not be
+   * null.
+   */
+  public void validate(final Errors errors) {
+    log.trace("Entering validate");
+    User user = userRepository.findUser(Long.valueOf(getUserId()));
+    ProducerTemplate producer = eventBus.createProducerTemplate();
+    DeleteMessage response = (DeleteMessage) producer.requestBody(
+        "direct:katari.user.vetoDeleteUser", new DeleteMessage(userId));
+    if (!response.canDelete()) {
+      errors.rejectValue("", "unknownError", response.getMessage("", "\n"));
+    }
+    log.trace("Leaving validate");
+  }
+
+  public void init() {
+    users = super.execute();
+  }
+
   /** Removes the user with the id passed in setUserId.
    *
    * This operation will fail if the user being deleted is the same as the
@@ -83,7 +125,7 @@ public class DeleteUserCommand implements Command<Void> {
    *
    * @return Always return null.
    */
-  public Void execute() {
+  public List<User> execute() {
     log.trace("Entering execute");
     if (SecurityUtils.getCurrentUser().getId() == Long.valueOf(getUserId())) {
       throw new RuntimeException("You cannot delete yourself.");
@@ -92,18 +134,22 @@ public class DeleteUserCommand implements Command<Void> {
 
     // Notify all interested parties that this user is being deleted.
     ProducerTemplate producer = eventBus.createProducerTemplate();
-    DeleteMessage response = (DeleteMessage) producer.requestBody(
-        "direct:katari.user.vetoDeleteUser", new DeleteMessage(userId));
-    if (!response.canDelete()) {
-      throw new RuntimeException(
-          "We cannot delete the user: " + response.getMessage("", "\n"));
-    }
     producer.requestBody("direct:katari.user.deleteUser",
         new DeleteMessage(userId));
 
     userRepository.remove(user);
     log.trace("Leaving execute");
-    return null;
+    users = super.execute();
+
+    return users;
+  }
+
+  /** Gets the list of users matching the search criteria.
+   *
+   * @return the list of users, never null after calling init.
+   */
+  public List<User> getUsers() {
+    return users;
   }
 }
 

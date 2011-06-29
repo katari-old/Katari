@@ -105,6 +105,15 @@ public class UserFilterCommand implements Command<List<User>> {
     containsFilter = theContainsFilter;
   }
 
+  /** Returns the url to obtain the user list with the current filter, sorting
+   * and paging parameters.
+   *
+   * @return Returns the url, never null.
+   */
+  public String getUrl() {
+    return getUrlPaging(paging.getPageNumber());
+  }
+
   /** Returns the url with the corresponing parameters for paging.
    *
    * @param pageNumber The page number.
@@ -118,7 +127,7 @@ public class UserFilterCommand implements Command<List<User>> {
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException("UTF-8 Not supported.", e);
     }
-    String url = "/users.do?paging.pageNumber=" + pageNumber
+    String url = "paging.pageNumber=" + pageNumber
         + "&amp;containsFilter.value="
         + encodedValue
         + "&amp;containsFilter.columnName="
@@ -146,7 +155,7 @@ public class UserFilterCommand implements Command<List<User>> {
     return getUrlPaging(paging.getPageNumber() - 1);
   }
 
-  /** Returns the url with the corresponing parameters for ordering.
+  /** Returns the url to toggle sort order.
    *
    * @return Returns the url <code>String</code>.
    */
@@ -157,13 +166,8 @@ public class UserFilterCommand implements Command<List<User>> {
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException("UTF-8 Not supported.", e);
     }
-    if (getSorting().isAscendingOrder()) {
-      getSorting().setAscendingOrder(false);
-    } else {
-      getSorting().setAscendingOrder(true);
-    }
-    String url = "/users.do?sorting.ascendingOrder="
-        + getSorting().isAscendingOrder()
+    String url = "sorting.ascendingOrder="
+        + !getSorting().isAscendingOrder()
         + "&amp;containsFilter.value="
         + encodedValue
         + "&amp;containsFilter.columnName="

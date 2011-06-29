@@ -65,7 +65,10 @@
   and make confirmDelete.ftl post to this controller.
   -->
   <bean name="/userDelete.do"
-      class="com.globant.katari.user.view.UserController">
+      class="com.globant.katari.user.view.UserController"
+      p:successView="users"
+      p:formView="users"
+      p:validator-ref="commandValidator">
     <lookup-method name="createCommandBean" bean="deleteUserCommand" />
   </bean>
 

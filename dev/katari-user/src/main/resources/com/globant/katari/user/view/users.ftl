@@ -9,21 +9,29 @@
 
   <body>
 
-    <#-- Message -->
-    <!-- div align="center">
-      ${message}
-    </div -->
-
     <h3>List User</h3>
     <form class="bottomMargin" action="users.do" method="GET">
 
+      <!-- TODO: put this in katari.ftl -->
+      <#macro showErrors separator >
+        <#list spring.status.errorMessages as error >
+          ${error?html}
+          <#if error_has_next>${separator}</#if>
+        </#list>
+      </#macro>
+
+      <span class="error" id="message">
+        <@spring.bind "command.*"/>
+        <@showErrors "<br/>" />
+      </span>
+
       <#-- Searching -->
       <div class="clearfix">
-        <@spring.bind "userFilter.containsFilter.value" />
+        <@spring.bind "command.containsFilter.value" />
         <input class="left rightMargin" type="text"
             name="${spring.status.expression}"
             value="${spring.status.value?default("")}" />
-        <@spring.bind "userFilter.containsFilter.columnName" />
+        <@spring.bind "command.containsFilter.columnName" />
         <input type="hidden" name="${spring.status.expression}" value="name"/>
         <span class="btnContainer left">
           <input class="btn" type="submit" value="search"/>
@@ -46,7 +54,7 @@
           <th>Id</th>
           <th>Name
             <#-- Sorting -->
-            <a href='${request.contextPath}${order}&amp;sorting.columnName=name'>
+            <a href='${request.contextPath}/users.do?${command.urlOrder}&amp;sorting.columnName=name'>
               Az
             </a>
           </th>
@@ -60,7 +68,7 @@
           <tr>
             <td>
               <a href='${request.contextPath}/userView.do?userId=${user.id?c}'>
-                  ${user_index + 1}
+                ${user.id?c}
               </a>
             </td>
           <td>${user.name}</td>
@@ -69,7 +77,8 @@
             <td>
               <@katari.secureUrlArea url="userDelete.do"; url>
                 <#if currentUserId != user.id>
-                  <form method="POST" action="userDelete.do" class='innerform'>
+                <form method="POST" action="userDelete.do?${command.url}"
+                    class='innerform'>
                     <input type="hidden"  name="userId" value="${user.id}"
                         class="text" />
                     <span class="btnContainer"><input class="btn" type="submit"
@@ -87,11 +96,11 @@
 
     <#-- Paging -->
     <div class="paginator">
-      <#if 0 < userFilter.paging.pageNumber>
-        <a href='${request.contextPath}${previousPage}'><< Prev</a>
+      <#if 0 < command.paging.pageNumber>
+        <a href='${request.contextPath}/users.do?${command.urlPrevPage}'><< Prev</a>
       <#else><< Prev </#if>|
-      <#if userFilter.paging.pageNumber < totalPageNumber - 1>
-        <a href='${request.contextPath}${nextPage}'>Next >></a>
+      <#if command.paging.pageNumber < command.paging.totalPageNumber - 1>
+        <a href='${request.contextPath}/users.do?${command.urlNextPage}'>Next >></a>
       <#else> Next >></#if>
     </div>
 

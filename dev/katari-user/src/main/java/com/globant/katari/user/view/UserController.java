@@ -10,11 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.validation.Errors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+
+import com.globant.katari.hibernate.coreuser.SecurityUtils;
 
 import com.globant.katari.core.application.Command;
 import com.globant.katari.core.application.Initializable;
+
+import com.globant.katari.user.application.DeleteUserCommand;
 
 /** Spring MVC Controller to handle operations on a single user.
  *
@@ -92,6 +102,11 @@ public abstract class UserController extends SimpleFormController {
 
     Map<String, Object> data = new  LinkedHashMap<String, Object>();
     data.put("request", request);
+    data.put("command", command);
+    data.put("currentUserId", SecurityUtils.getCurrentUser().getId());
+    if (command instanceof DeleteUserCommand) {
+      data.put("users", ((DeleteUserCommand) command).getUsers());
+    }
 
     log.trace("Leaving referenceData");
     return data;
@@ -100,16 +115,26 @@ public abstract class UserController extends SimpleFormController {
   /** Performs the action (delete, save, etc depending on command instance) on
    * the user.
    *
-   * @param command Form object with request parameters bound onto it.
-   *
-   * @exception Exception if the application logic throws an exception.
+   * {@inheritDoc}
    */
-  protected void doSubmitAction(final Object command) throws Exception {
-    log.trace("Entering doSubmitAction");
+  protected ModelAndView onSubmit(final HttpServletRequest request,
+      final HttpServletResponse response, final Object command,
+      final BindException errors)
+    throws Exception {
 
-    ((Command<?>) command).execute();
+    log.trace("Entering onSubmit");
 
-    log.trace("Leaving doSubmitAction");
+    Command<?> cmd = (Command<?>) command;
+    Object result = cmd.execute();
+    ModelAndView mav = super.onSubmit(cmd, errors);
+    mav.addObject("users", result);
+    mav.addObject("command", cmd);
+    mav.addObject("currentUserId", SecurityUtils.getCurrentUser().getId());
+    mav.addObject("request", request);
+
+    log.trace("Leaving onSubmit");
+
+    return mav;
   }
 
   /** Retrieve a backing object for the current form from the given request.

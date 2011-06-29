@@ -108,7 +108,8 @@ public class Password {
   }
 
   /** Validate the password and confirmation password.
-   *  If the user preexists, validates the old password.
+   *
+   * If the user already exists, validates the old password.
    *
    * @param user The user loaded from the database when editing a user, null
    * for a new user.
@@ -120,22 +121,29 @@ public class Password {
     log.trace("Entering validate");
 
     ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-        "password.newPassword", "required");
+        "password.newPassword", "required",
+        "The new password cannot be empty.");
     ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-        "password.confirmedPassword", "required");
+        "password.confirmedPassword", "required",
+        "Please confirm your new password.");
 
     if (getNewPassword().trim().length() < MINIMUM_PASSWORD_LENGTH) {
-      errors.rejectValue("password.newPassword", "field.min.length");
+      errors.rejectValue("password.newPassword", "field.min.length",
+          "The password must be " + MINIMUM_PASSWORD_LENGTH
+          + " characters long.");
     }
     if (!getNewPassword().equals(getConfirmedPassword())) {
-      errors.rejectValue("password.confirmedPassword", "field.not.equal");
+      errors.rejectValue("password.confirmedPassword", "field.not.equal",
+          "The new password does not match the password confirmation.");
     }
 
     // The user already exists and changes the password.
     boolean oldPasswordMatches = (user == null || "".equals(getOldPassword())
       && user.getPassword().equals(oldPassword));
     if (!oldPasswordMatches) {
-      errors.rejectValue("password.oldPassword", "field.not.equal");
+      errors.rejectValue("password.oldPassword", "field.not.equal",
+          "Enter your current password.");
+      
     }
     log.trace("Leaving validate");
   }

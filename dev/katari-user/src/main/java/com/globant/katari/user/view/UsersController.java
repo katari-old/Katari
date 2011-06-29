@@ -64,20 +64,9 @@ public abstract class UsersController extends AbstractCommandController {
 
     ModelAndView mav = new ModelAndView("users");
     mav.addObject("users", users);
-    // Only used to decide if we will show the delete button for a user.
+    mav.addObject("command", userFilterCommand);
     mav.addObject("currentUserId", SecurityUtils.getCurrentUser().getId());
-    mav.addObject("totalPageNumber",
-        userFilterCommand.getPaging().getTotalPageNumber());
     mav.addObject("request", request);
-    mav.addObject("message", "");
-    mav.addObject("userFilter", userFilterCommand);
-
-    // Sets the urls for pagination.
-    mav.addObject("nextPage", userFilterCommand.getUrlNextPage());
-    mav.addObject("previousPage", userFilterCommand.getUrlPrevPage());
-
-    // Sets the url for sorting.
-    mav.addObject("order", userFilterCommand.getUrlOrder());
 
     log.trace("Leaving handleRequestInternal");
     return mav;
