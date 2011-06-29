@@ -1,5 +1,19 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.31
+
+* What's new since version 0.30
+
+ This release only include minor fixes and enhacements:
+
+ * Added a css class to menu items to identify them.
+
+ * Minor katari-user refactor to support delete event vetoes.
+
+ * Stop supporting taglibs in freemarker, it conflicted with weblets.
+
+ * Improved katari-email documentation.
+
 Release notes for version 0.30
 
 * What's new since version 0.29
