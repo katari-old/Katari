@@ -104,7 +104,6 @@ public class DeleteUserCommand extends UserFilterCommand
    */
   public void validate(final Errors errors) {
     log.trace("Entering validate");
-    User user = userRepository.findUser(Long.valueOf(getUserId()));
     ProducerTemplate producer = eventBus.createProducerTemplate();
     DeleteMessage response = (DeleteMessage) producer.requestBody(
         "direct:katari.user.vetoDeleteUser", new DeleteMessage(userId));

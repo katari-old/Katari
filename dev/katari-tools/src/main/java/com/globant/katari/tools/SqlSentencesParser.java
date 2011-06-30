@@ -38,7 +38,7 @@ public class SqlSentencesParser {
 
   /** Construct a SqlSentencesParser.
    *
-   * @param fileName The name of the file to parse, it cannot be null.
+   * @param theFileName The name of the file to parse, it cannot be null.
    */
   public SqlSentencesParser(final String theFileName) {
     Validate.notNull(theFileName, "The sql file name to parse cannot be null.");

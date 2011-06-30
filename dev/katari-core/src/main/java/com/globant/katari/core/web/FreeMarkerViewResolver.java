@@ -8,10 +8,10 @@ public class FreeMarkerViewResolver extends
     org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver {
 
   /** Sets the view name to katari's FreemarkerView.
-	 */
+   */
   @Override
-	protected Class requiredViewClass() {
-		return FreeMarkerView.class;
-	}
+  protected Class<FreeMarkerView> requiredViewClass() {
+    return FreeMarkerView.class;
+  }
 }
 
