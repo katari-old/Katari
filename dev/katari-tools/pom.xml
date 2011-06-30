@@ -131,6 +131,12 @@
       <artifactId>log4j</artifactId>
     </dependency>
 
+    <!-- Use slfj4 commons logging implementation. -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
