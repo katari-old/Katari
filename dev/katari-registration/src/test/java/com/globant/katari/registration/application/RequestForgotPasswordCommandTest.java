@@ -68,6 +68,7 @@ public class RequestForgotPasswordCommandTest {
     User user = registrationCommand.execute(); // generate one token
 
     command.setEmail(email);
+    command.setBaseUrl("http://somewhere");
     command.validate(errors);
     command.execute(); // generate another token.
 

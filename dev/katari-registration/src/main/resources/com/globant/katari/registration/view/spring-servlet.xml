@@ -105,7 +105,7 @@
 
   <bean name='registration.forgotPasswordEmailPlainText' 
     class='com.globant.katari.core.spring.StringHolder'
-    p:value="Please copy and paste the follow link"/>
+    p:value="Please copy and paste the following link"/>
 
   <bean name='registration.forgotPasswordEmailConfigurer'
     class='com.globant.katari.registration.domain.EmailConfigurer'>
@@ -131,7 +131,7 @@
 
   <bean name='registration.resetPasswordEmailPlainText' 
     class='com.globant.katari.core.spring.StringHolder'
-    p:value="Please copy and paste the follow link"/>
+    p:value="Your password has been reset"/>
 
   <bean name='registration.resetPasswordEmailConfigurer'
     class='com.globant.katari.registration.domain.EmailConfigurer'>

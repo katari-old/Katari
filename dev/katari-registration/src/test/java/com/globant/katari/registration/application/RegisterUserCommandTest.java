@@ -105,7 +105,7 @@ public class RegisterUserCommandTest {
     assertEquals(command.getName(), user.getName());
 
     Errors errors = createMock(Errors.class);
-    errors.reject("existing.name", "A user with that namd alredy exists");
+    errors.reject("existing.name", "A user with that name alredy exists");
     replay(errors);
 
     command.setEmail("emiliano.arango2@globant.com");

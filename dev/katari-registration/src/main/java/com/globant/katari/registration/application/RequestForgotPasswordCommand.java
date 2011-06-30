@@ -25,19 +25,16 @@ import com.globant.katari.user.domain.UserRepository;
 public class RequestForgotPasswordCommand implements Command<Void>,
   Validatable {
 
-  /** The user email.*/
-  private String email;
-
-  /** The user repository. It's never null.*/
+  /** The user repository, never null.*/
   private final UserRepository userRepository;
 
-  /** The registration repository. It's never null.*/
+  /** The registration repository, never null.*/
   private final RegistrationRepository registrationRepository;
 
-  /** The email sender. It's never null.*/
+  /** The email sender, never null.*/
   private final EmailSender emailSender;
 
-  /** The email configuration, parameters etc.*/
+  /** The email configuration, parameters etc, never null. */
   private final EmailConfigurer emailConfigurer;
 
   /** The user that forgot his password.
@@ -45,6 +42,13 @@ public class RequestForgotPasswordCommand implements Command<Void>,
    * This is used only for caching, so the user is not retrieved twice. This is
    * set in the validate operation.*/
   private User user;
+
+  /** The user email.*/
+  private String email;
+
+  /** The base url of the link to the reset password in the sent email.
+   */
+  private String baseUrl;
 
   /** Builds the command.
    * @param theUserRepository The user repository. It cannot be null.
@@ -79,8 +83,9 @@ public class RequestForgotPasswordCommand implements Command<Void>,
     RecoverPasswordRequest request = new RecoverPasswordRequest(user);
     registrationRepository.saveRecoverPasswordRequest(request);
     Map<String, Object> values = new HashMap<String, Object>();
-    values.put("token", request.getToken());
-    values.put("userId", request.getUserId());
+    String url = baseUrl + "/resetPassword.do?userId=" + request.getUserId()
+        + "&token=" + request.getToken();
+    values.put("url", url);
     EmailModel model;
     model = new EmailModel(emailConfigurer.getEmailFrom(), user.getEmail(),
         values, emailConfigurer.getPlainMessage(),
@@ -120,4 +125,13 @@ public class RequestForgotPasswordCommand implements Command<Void>,
   public void setEmail(final String userEmail) {
     email = userEmail;
   }
+
+  /** Sets the base url.
+   *
+   * @param theBaseUrl the base url.
+   */
+  public void setBaseUrl(final String theBaseUrl) {
+    baseUrl = theBaseUrl;
+  }
 }
+

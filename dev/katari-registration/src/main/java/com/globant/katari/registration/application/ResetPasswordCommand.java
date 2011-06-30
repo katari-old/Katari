@@ -83,13 +83,11 @@ public class ResetPasswordCommand implements Command<User> {
   /** Retrieve recover password request by the userId + token and also
    * checks that the token is active.
    *
-   * double check that the userId and token are not null, else, will raise
+   * Double check that the userId and token are not null, else, will raise
    * an IllegalArgumentException.
    *
    * @return the user or null if the recover password token do not exist, or
    * the token is expired.
-   *
-   * @see com.globant.katari.core.application.Command#execute()
    */
   public User execute() {
 

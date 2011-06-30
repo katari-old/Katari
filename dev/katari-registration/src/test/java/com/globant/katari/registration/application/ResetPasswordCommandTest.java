@@ -89,6 +89,7 @@ public class ResetPasswordCommandTest {
     replay(errors);
 
     requestCommand.setEmail(email);
+    requestCommand.setBaseUrl("http://baseurl");
     requestCommand.validate(errors);
     requestCommand.execute();
 

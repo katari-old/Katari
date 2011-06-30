@@ -30,12 +30,6 @@ public class RegisterUserCommand implements Command<User>, Validatable {
   /** The password length. */
   private static final int PASSWORD_LENGTH = 20;
 
-  /** The user email.*/
-  private String email;
-
-  /** The user name.*/
-  private String name;
-
   /** The user repository, never null.*/
   private final UserRepository userRepository;
 
@@ -47,6 +41,16 @@ public class RegisterUserCommand implements Command<User>, Validatable {
 
   /** The email configurer, never null. */
   private final EmailConfigurer emailConfigurer;
+
+  /** The user email.*/
+  private String email;
+
+  /** The user name.*/
+  private String name;
+
+  /** The base url of the link to the reset password in the sent email.
+   */
+  private String baseUrl;
 
   /** Builds the command.
    * @param theUserRepository The user repository. Cannot be null.
@@ -85,8 +89,9 @@ public class RegisterUserCommand implements Command<User>, Validatable {
     registrationRepository.saveRecoverPasswordRequest(request);
 
     Map<String, Object> values = new HashMap<String, Object>(2);
-    values.put("userId", user.getId());
-    values.put("token", request.getToken());
+    String url = baseUrl + "/activateUser.do?userId=" + user.getId()
+        + "&token=" + request.getToken();
+    values.put("url", url);
 
     EmailModel model = new EmailModel(emailConfigurer.getEmailFrom(),
         user.getEmail(), values, emailConfigurer.getPlainMessage(),
@@ -116,7 +121,7 @@ public class RegisterUserCommand implements Command<User>, Validatable {
     }
     user = userRepository.findUserByName(name);
     if (user != null) {
-      errors.reject("existing.name", "A user with that namd alredy exists");
+      errors.reject("existing.name", "A user with that name alredy exists");
     }
   }
 
@@ -148,4 +153,12 @@ public class RegisterUserCommand implements Command<User>, Validatable {
     name = userName;
   }
 
+  /** Sets the base url.
+   *
+   * @param theBaseUrl the base url.
+   */
+  public void setBaseUrl(final String theBaseUrl) {
+    baseUrl = theBaseUrl;
+  }
 }
+

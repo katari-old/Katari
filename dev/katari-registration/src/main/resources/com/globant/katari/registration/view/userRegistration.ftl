@@ -12,6 +12,9 @@
     </div>
     <div>
       <form id="registrationForm" name="registrationForm" action="" method="post">
+        <#assign url = request.getRequestURL()/>
+        <input type='hidden' name='baseUrl'
+          value='${url?substring(0, url.lastIndexOf("/"))}'>
         <span class="formfield">
           <label for="name">Name</label>
           <@spring.formInput "command.name" />
