@@ -6,21 +6,15 @@
   <body>
 
     <div>
-      <span class="error" id="message">
-        <@spring.bind "command.*"/>
-        <@spring.showErrors  "<br/>" />
-      </span>
+      An email with your new password was sent to your inbox.
+      <#--
+      <#if result?exists>
+        An email with your new password was sent to your inbox.
+      <#else>
+        Oops... error, please start the recover workflow again.
+      </#if>
+      -->
     </div>
-
-    <#if result?exists>
-      <div>
-        An email was sent to your inbox: ${result.email}
-      </div>
-    <#else>
-      <div>
-        Oups... error, please start the recover workflow again please.
-      </div>
-    </#if>
 
   </body>
  <!-- vim: set ts=2 et sw=2 ai filetype=xml: -->

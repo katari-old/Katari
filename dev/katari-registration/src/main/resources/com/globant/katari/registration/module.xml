@@ -50,6 +50,7 @@
             <entry key='/forgotPassword.do' value='IS_AUTHENTICATED_ANONYMOUSLY' />
             <entry key='/resetPassword.do' value='IS_AUTHENTICATED_ANONYMOUSLY' />
             <entry key='/activateUser.do' value='IS_AUTHENTICATED_ANONYMOUSLY' />
+            <entry key='/resetPasswordResult.do' value='IS_AUTHENTICATED_ANONYMOUSLY' />
           </map>
         </constructor-arg>
       </bean>

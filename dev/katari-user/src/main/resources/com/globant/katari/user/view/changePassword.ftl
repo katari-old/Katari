@@ -36,9 +36,18 @@
             <@spring.formPasswordInput "command.password.confirmedPassword" />
           </span>       
 
+          <input type="hidden" name='backTo' value="${command.backTo!''}"/>
+
           <input class="btn rightMargin" type="submit" value="Save"/>
-          <input class="btn" type="submit" value="Cancel" onclick="window.location=
-              '${request.contextPath}/users.do';return false;"/>
+          <input class="btn" type="submit" value="Cancel"
+            <#if command.backTo?? && command.backTo?trim?length != 0>
+              onclick="window.location=
+                '${request.contextPath}/${command.backTo}';return false;"
+            <#else>
+              onclick="window.location=
+                '${request.contextPath}/users.do';return false;"
+            </#if>
+            />
               
         </div>
           

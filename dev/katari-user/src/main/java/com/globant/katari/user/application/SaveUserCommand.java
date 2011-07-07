@@ -50,6 +50,12 @@ public class SaveUserCommand implements Command<Void>, Validatable,
   */
   private User user = null;
 
+  /** The url to redirect back after editing the user.
+   *
+   * Goes back to the user list if not specified.
+   */
+  private String backTo = null;
+
   /**
    * The list of all roles available in the system.
    * It is null .
@@ -167,6 +173,23 @@ public class SaveUserCommand implements Command<Void>, Validatable,
    */
   public Password getPassword() {
     return password;
+  }
+
+  /** Returns the url to redirect to after saving the user information.
+   *
+   * @return Returns the url, as provided by the user.
+   */
+  public String getBackTo() {
+    return backTo;
+  }
+
+  /** Sets the url to redirect to after saving the user information.
+   *
+   * @param theUrl the url to return to. If not specified, it returns to the
+   * list of users.
+   */
+  public void setBackTo(final String theUrl) {
+    backTo = theUrl;
   }
 
   /** Returns all the available roles.

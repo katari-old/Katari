@@ -41,10 +41,14 @@
 
   <bean name='/resetPassword.do'
     class='com.globant.katari.core.spring.controller.CommandController'>
-    <constructor-arg index='0' value='resetPasswordRequest' />
+    <constructor-arg index='0' value='redirect:resetPasswordResult.do' />
     <lookup-method name='createCommandBean'
       bean='registration.resetPasswordRequestCommand' />
   </bean>
+
+  <bean name='/resetPasswordResult.do'
+    class='org.springframework.web.servlet.mvc.ParameterizableViewController'
+    p:viewName='resetPasswordRequest'/>
 
   <bean name='/activateUser.do'
     class='com.globant.katari.core.spring.controller.CommandController'>

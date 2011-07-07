@@ -131,6 +131,11 @@ public abstract class UserController extends SimpleFormController {
     mav.addObject("currentUserId", SecurityUtils.getCurrentUser().getId());
     mav.addObject("request", request);
 
+    String backTo = request.getParameter("backTo") ;
+    if (backTo != null && backTo.trim().length() != 0) {
+      mav.setViewName("redirect:" + backTo);
+    }
+
     log.trace("Leaving onSubmit");
 
     return mav;
