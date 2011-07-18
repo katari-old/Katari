@@ -7,7 +7,7 @@
   </head>
 
   <body>
-    <h3>Edit User</h3>
+    <h3><#if command.userId != 0>Edit User<#else>Create User</#if></h3>
     <#if (command.password)?? >
       <#assign action='createUser.do'>
     <#else>
