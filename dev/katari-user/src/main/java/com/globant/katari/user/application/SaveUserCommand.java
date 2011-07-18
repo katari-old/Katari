@@ -46,10 +46,6 @@ public class SaveUserCommand implements Command<Void>, Validatable,
    */
   private long userId = 0;
 
-  /** The user loaded from the userRepository or null if new.
-  */
-  private User user = null;
-
   /** The url to redirect back after editing the user.
    *
    * Goes back to the user list if not specified.
@@ -214,6 +210,14 @@ public class SaveUserCommand implements Command<Void>, Validatable,
     return Collections.unmodifiableList(availableRoles);
   }
 
+  /** Returns the currently logged in user.
+   *
+   * @return The currently logged in user, never null.
+   */
+  public User getMe() {
+    return (User) SecurityUtils.getCurrentUser();
+  }
+
   /** Initializes this command form the specified userId.
    *
    * This loads the user specified in the user id. If it is not found, it throws
@@ -221,9 +225,9 @@ public class SaveUserCommand implements Command<Void>, Validatable,
    */
   public void init() {
     log.trace("Entering init");
-    this.availableRoles = roleRepository.getRoles();
+    availableRoles = roleRepository.getRoles();
     if (userId != 0) {
-      user = userRepository.findUser(Long.valueOf(getUserId()));
+      User user = userRepository.findUser(userId);
       if (user == null) {
         throw new IllegalArgumentException("The user id was not found");
       }
@@ -246,11 +250,25 @@ public class SaveUserCommand implements Command<Void>, Validatable,
    */
   public void validate(final Errors errors) {
     log.trace("Entering validate");
+
     if (profile != null) {
+      errors.pushNestedPath("profile");
       profile.validate(userRepository, getUserId(), errors);
+      errors.popNestedPath();
     }
+
     if (password != null) {
+      User me = (User) SecurityUtils.getCurrentUser();
+      User user = userRepository.findUser(userId);
+      boolean editingMyself = (user != null && user.getId() == me.getId());
+      if (!editingMyself && me.isAdministrator()) {
+        // If an admin is editing somebody else, we skip the current password
+        // validation.
+        user = null;
+      }
+      errors.pushNestedPath("password");
       password.validate(user, errors);
+      errors.popNestedPath();
     }
     log.trace("Leaving validate");
   }
@@ -273,7 +291,7 @@ public class SaveUserCommand implements Command<Void>, Validatable,
       throw new RuntimeException("Not enough privileges");
     }
 
-    user = userRepository.findUser(Long.valueOf(getUserId()));
+    User user = userRepository.findUser(userId);
 
     boolean editingMyself = (user != null && user.getId() == me.getId());
     if (!(editingMyself || me.isAdministrator())) {

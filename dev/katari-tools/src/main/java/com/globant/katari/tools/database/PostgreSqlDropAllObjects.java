@@ -119,5 +119,14 @@ public class PostgreSqlDropAllObjects extends DatabaseTestSupport {
     dropTables(connection, markerTable);
     dropSequences(connection);
   }
+
+  /** {@inheritDoc}
+   * 
+   * This is not implemented, throws UnsupportedOperationException.
+   */
+  protected void doInitializeAutoincrement(final Connection connection,
+      final int initialValue) throws Exception {
+    throw new UnsupportedOperationException();
+  }
 }
 

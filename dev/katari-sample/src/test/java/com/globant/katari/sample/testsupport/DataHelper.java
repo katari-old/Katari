@@ -2,6 +2,7 @@
 
 package com.globant.katari.sample.testsupport;
 
+import java.util.List;
 import java.util.Date;
 
 import org.apache.commons.lang.Validate;
@@ -95,8 +96,10 @@ public final class DataHelper {
   public static void createTimeEntry(final TimeRepository repository,
       final User user, final Date date) {
     Validate.notNull(repository, "The time entry repository cannot be null");
-    Activity activity = repository.findActivity(1);
-    Project project = repository.findProject(1);
+    List<Activity> activities = repository.getActivities();
+    Activity activity = activities.get(0);
+    List<Project> projects = repository.getProjects();
+    Project project = projects.get(0);
     TimePeriod period = new TimePeriod("00:00", 1);
     TimeEntry timeEntry = new TimeEntry(activity, user, project,
         date, period, "Test note");
@@ -104,14 +107,14 @@ public final class DataHelper {
   }
 
   /** Creates a time entry for today.
-  *
-  * @param repository The time entry repository. It cannot be null.
-  *
-  * @param userId The user id of the time entry.
-  */
- public static void createTimeEntry(final TimeRepository repository,
-     final User user) {
-   createTimeEntry(repository, user, new Date());
- }
+   *
+   * @param repository The time entry repository. It cannot be null.
+   *
+   * @param userId The user id of the time entry.
+   */
+  public static void createTimeEntry(final TimeRepository repository,
+      final User user) {
+    createTimeEntry(repository, user, new Date());
+  }
 }
 

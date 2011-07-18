@@ -72,5 +72,36 @@ public class MySqlDropAllObjects extends DatabaseTestSupport {
       markerTable) throws Exception {
     dropTables(connection, markerTable);
   }
+
+  /** Template method to initialize the auto increment columns to a predefined
+   * value.
+   *
+   * @param connection The database connectino to use to drop all the objects.
+   * It cannot be null.
+   *
+   * @param initialValue the initial value to use for autoincrement.
+   *
+   * @throws Exception in case of error.
+   */
+  protected void doInitializeAutoincrement(final Connection connection,
+      final int initialValue) throws Exception {
+    Validate.notNull(connection, "The connection cannot be null.");
+
+    log.trace("Entering initializeAutoincrement");
+    Statement st = connection.createStatement();
+    ResultSet rs = null;
+    rs = st.executeQuery(listTables);
+    List<String> tableNames = new ArrayList<String>();
+    while (rs.next()) {
+      tableNames.add(rs.getString(1));
+    }
+    rs.close();
+    for (String table : tableNames) {
+      log.debug("Initializing autoincrement for table " + table);
+      st.executeUpdate("ALTER TABLE " + table + "  AUTO_INCREMENT = "
+            + initialValue);
+    }
+    log.trace("Leaving initializeAutoincrement");
+  }
 }
 

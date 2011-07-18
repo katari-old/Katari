@@ -11,14 +11,14 @@ import org.springframework.validation.Errors;
 import com.globant.katari.sample.testsupport.DataHelper;
 import com.globant.katari.sample.testsupport.SecurityTestUtils;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
+import com.globant.katari.sample.time.domain.Activity;
+import com.globant.katari.sample.time.domain.Project;
 import com.globant.katari.sample.time.domain.TimeEntry;
 import com.globant.katari.sample.time.domain.TimeRepository;
 import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserRepository;
 
 /** This class represents a TestCase of the save time entry commnad.
- *
- * @author nicolas.frontini
  */
 public class SaveTimeEntryCommandTest extends TestCase {
 
@@ -30,6 +30,8 @@ public class SaveTimeEntryCommandTest extends TestCase {
    */
   private UserRepository userRepository;
 
+  User user;
+
   /** This is a set up method of this TestCase.
    */
   public void setUp() {
@@ -40,17 +42,23 @@ public class SaveTimeEntryCommandTest extends TestCase {
     DataHelper.removeExtraTimeEntries(repository);
 
     // Login a user.
-    User user = userRepository.findUser(1);
+    user = userRepository.findUserByName("admin");
     SecurityTestUtils.setContextUser(user);
   }
 
-  private SaveTimeEntryCommand dafaultCommand() {
+  private SaveTimeEntryCommand defaultCommand() {
     SaveTimeEntryCommand saveCommand = (SaveTimeEntryCommand) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("saveTimeEntryCommand");
     // Create a new time entry.
     saveCommand.setDate(new Date());
-    saveCommand.setProjectId(1);
-    saveCommand.setActivityId(1);
+
+    List<Activity> activities = repository.getActivities();
+    Activity activity = activities.get(0);
+    List<Project> projects = repository.getProjects();
+    Project project = projects.get(0);
+
+    saveCommand.setProjectId(project.getId());
+    saveCommand.setActivityId(activity.getId());
     saveCommand.setDuration(60);
     saveCommand.setStart("09:00");
     saveCommand.setComment("Test note.");
@@ -59,12 +67,10 @@ public class SaveTimeEntryCommandTest extends TestCase {
   /** Test the execute method.
    */
   public void testExecute() {
-    User user = userRepository.findUser(1);
-    List<TimeEntry> timeEntries = repository.getTimeEntries(
-        user, new Date());
+    List<TimeEntry> timeEntries = repository.getTimeEntries(user, new Date());
     assertEquals(0, timeEntries.size());
 
-    SaveTimeEntryCommand saveTimeEntryCommand = dafaultCommand();
+    SaveTimeEntryCommand saveTimeEntryCommand = defaultCommand();
     saveTimeEntryCommand.execute();
     timeEntries = repository.getTimeEntries(user, new Date());
     assertEquals(1, timeEntries.size());
@@ -84,7 +90,7 @@ public class SaveTimeEntryCommandTest extends TestCase {
   /** Tests the validate method without errors.
    */
   public final void testValidate_noError() throws Exception {
-    SaveTimeEntryCommand saveTimeEntryCommand = dafaultCommand();
+    SaveTimeEntryCommand saveTimeEntryCommand = defaultCommand();
 
     Errors errors = new BindException(saveTimeEntryCommand,
         saveTimeEntryCommand.getClass().getName());
@@ -95,7 +101,7 @@ public class SaveTimeEntryCommandTest extends TestCase {
   /** Tests the validate method with empty start.
    */
   public final void testValidate_emptyStart() throws Exception {
-    SaveTimeEntryCommand saveTimeEntryCommand = dafaultCommand();
+    SaveTimeEntryCommand saveTimeEntryCommand = defaultCommand();
 
     saveTimeEntryCommand.setStart("");
     Errors errors = new BindException(saveTimeEntryCommand,
@@ -107,7 +113,7 @@ public class SaveTimeEntryCommandTest extends TestCase {
   /** Tests the validate method with empty start.
    */
   public final void testValidate_invalidStart() throws Exception {
-    SaveTimeEntryCommand saveTimeEntryCommand = dafaultCommand();
+    SaveTimeEntryCommand saveTimeEntryCommand = defaultCommand();
 
     // Fails because it has an invalid start time.
     saveTimeEntryCommand.setStart("0800");
@@ -164,7 +170,7 @@ public class SaveTimeEntryCommandTest extends TestCase {
   /** Tests the validate method with empty comment.
    */
   public final void testValidate_emptyComment() throws Exception {
-    SaveTimeEntryCommand saveTimeEntryCommand = dafaultCommand();
+    SaveTimeEntryCommand saveTimeEntryCommand = defaultCommand();
 
     saveTimeEntryCommand.setComment("");
     Errors errors = new BindException(saveTimeEntryCommand,
@@ -176,7 +182,7 @@ public class SaveTimeEntryCommandTest extends TestCase {
   /** Tests the validate method with invalid duration.
    */
   public final void testValidate_invalidDuration() throws Exception {
-    SaveTimeEntryCommand saveTimeEntryCommand = dafaultCommand();
+    SaveTimeEntryCommand saveTimeEntryCommand = defaultCommand();
 
     saveTimeEntryCommand.setDuration(0);
     Errors errors = new BindException(saveTimeEntryCommand,
@@ -185,3 +191,4 @@ public class SaveTimeEntryCommandTest extends TestCase {
     assertEquals(1, errors.getAllErrors().size());
   }
 }
+

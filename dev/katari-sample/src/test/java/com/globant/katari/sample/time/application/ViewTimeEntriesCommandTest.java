@@ -36,7 +36,7 @@ public class ViewTimeEntriesCommandTest extends TestCase {
         .getTimeModuleBeanFactory().getBean("timeRepository");
     UserRepository userRepository = (UserRepository)
         SpringTestUtils.getBeanFactory().getBean("user.userRepository");
-    user = userRepository.findUser(1);
+    user = userRepository.findUserByName("admin");
     DataHelper.createTimeEntry(repository, user);
     SecurityTestUtils.setContextUser(user);
   }

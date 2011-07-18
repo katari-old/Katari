@@ -40,6 +40,8 @@ public class UserProjectHoursReportControllerTest extends TestCase {
    */
   private UserRepository userRepository;
 
+  private User user;
+
   /** This is a set up method of this TestCase.
    */
   @Override
@@ -51,7 +53,8 @@ public class UserProjectHoursReportControllerTest extends TestCase {
         .getTimeModuleBeanFactory().getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils
         .getBeanFactory().getBean("user.userRepository");
-    DataHelper.createTimeEntry(timeRepository, userRepository.findUser(1));
+    user = userRepository.findUserByName("admin");
+    DataHelper.createTimeEntry(timeRepository, user);
   }
 
   /** Test the referenceData method.
@@ -63,7 +66,6 @@ public class UserProjectHoursReportControllerTest extends TestCase {
     expect(request.getAttribute("baseweb")).andReturn("path").anyTimes();
     replay(request);
 
-    User user = userRepository.findUser(1);
     SecurityTestUtils.setContextUser(user);
     Map map = userProjectHoursReportController.referenceData(request);
     assertFalse(map.isEmpty());

@@ -1,6 +1,6 @@
 -- Creates 5 applications.
-insert into applications (id, title, description, author, icon, thumbnail, url)
-values (1, 'Minesweeper',
+insert into applications (title, description, author, icon, thumbnail, url)
+values ('Minesweeper',
   'Minesweeper, the classic game that will sweep you
   off your feet! The objective is to locate and flag all the mine cells
   as fast as possible, without detonating the minefield. Left-click the
@@ -19,42 +19,91 @@ values (1, 'Minesweeper',
   'LabPixies', null,
  'http://www.labpixies.com/campaigns/minesweeper/images/thumbnail.jpg',
  'http://www.labpixies.com/campaigns/minesweeper/minesweeper.xml');
-insert into supported_views(application_id, view_name) values (1, 'default');
-insert into supported_views(application_id, view_name) values (1, 'home');
-insert into supported_views(application_id, view_name) values (1, 'profile');
-insert into supported_views(application_id, view_name) values (1, 'canvas');
+insert into supported_views(application_id, view_name)
+  select applications.id, 'default' from applications
+    where applications.title = 'Minesweeper';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'home' from applications
+    where applications.title = 'Minesweeper';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'profile' from applications
+    where applications.title = 'Minesweeper';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'canvas' from applications
+    where applications.title = 'Minesweeper';
 
-insert into applications (id, title, url) values (3, 'ToDo',
+insert into applications (title, url) values ('Activities',
+ 'http://localhost:8098/katari-sample/module/gadget/ActivityTest.xml');
+insert into supported_views(application_id, view_name)
+  select applications.id, 'default' from applications
+    where applications.title = 'Activities';
+
+insert into applications (title, url) values ('ToDo',
  'http://www.labpixies.com/campaigns/todo/todo.xml');
-insert into supported_views(application_id, view_name) values (3, 'default');
-insert into supported_views(application_id, view_name) values (3, 'home');
-insert into supported_views(application_id, view_name) values (3, 'profile');
-insert into supported_views(application_id, view_name) values (3, 'canvas');
+insert into supported_views(application_id, view_name)
+  select applications.id, 'default'
+    from applications where applications.title = 'ToDo';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'home'
+    from applications where applications.title = 'ToDo';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'profile'
+    from applications where applications.title = 'ToDo';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'canvas'
+    from applications where applications.title = 'ToDo';
 
-insert into applications (id, title, url) values (4, 'Flood It',
+insert into applications (title, url) values ('Flood It',
  'http://www.labpixies.com/campaigns/flood/flood.xml');
-insert into supported_views(application_id, view_name) values (4, 'default');
-insert into supported_views(application_id, view_name) values (4, 'home');
-insert into supported_views(application_id, view_name) values (4, 'canvas');
+insert into supported_views(application_id, view_name)
+  select applications.id, 'default'
+    from applications where applications.title = 'Flood It';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'home'
+    from applications where applications.title = 'Flood It';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'canvas'
+    from applications where applications.title = 'Flood It';
 
-insert into applications (id, title, icon, url) values (5, 'Chess',
+insert into applications (title, icon, url) values ('Chess',
  'http://ning.j2play.net/j2play-images/ImageServlet?id=7231',
  'http://ning.j2play.net/ning/web/game-200/app.xml');
-insert into supported_views(application_id, view_name) values (5, 'profile');
-insert into supported_views(application_id, view_name) values (5, 'canvas');
-insert into supported_views(application_id, view_name) values (5, 'about');
-insert into supported_views(application_id, view_name) values (5, 'ning.main');
+insert into supported_views(application_id, view_name)
+  select applications.id, 'default'
+    from applications where applications.title = 'Chess';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'home'
+    from applications where applications.title = 'Chess';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'canvas'
+    from applications where applications.title = 'Chess';
+insert into supported_views(application_id, view_name)
+  select applications.id, 'ning.main'
+    from applications where applications.title = 'Chess';
 
 -- Creates two gadget groups.
 insert into gadget_groups (name, view_name, group_type, number_of_columns)
- values ('top', 'dashboard', 'shared', 2);
+  values ('top', 'dashboard', 'shared', 2);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
- group_order) values (4, 1, 1, 0);
+  group_order) select applications.id, gadget_groups.id, 0, 0
+  from applications, gadget_groups
+  where applications.title = 'ToDo' and gadget_groups.name = 'top';
+
+insert into gadget_instances (application_id, gadget_group_id, group_column,
+ group_order) select applications.id, gadget_groups.id, 1, 0
+  from applications, gadget_groups
+  where applications.title = 'Chess' and gadget_groups.name = 'top';
 
 insert into gadget_groups (name, view_name, group_type, number_of_columns)
  values ('main', 'dashboard', 'template', 3);
 insert into gadget_instances (application_id, gadget_group_id, group_column,
- group_order) values (1, 2, 0, 1);
+ group_order)
+ select applications.id, gadget_groups.id, 0, 1
+  from applications, gadget_groups
+  where applications.title = 'Activities' and gadget_groups.name = 'main';
 insert into gadget_instances (application_id, gadget_group_id, group_column,
- group_order) values (3, 2, 1, 1);
+ group_order)
+ select applications.id, gadget_groups.id, 0, 1
+  from applications, gadget_groups
+  where applications.title = 'Flood It' and gadget_groups.name = 'main';
 

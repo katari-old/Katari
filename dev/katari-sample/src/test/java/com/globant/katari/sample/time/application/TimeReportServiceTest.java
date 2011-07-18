@@ -23,6 +23,8 @@ public class TimeReportServiceTest extends TestCase {
    */
   private TimeReportService timeReportService;
 
+  private User user;
+
   /** This is a set up method of this TestCase.
    */
   @Override
@@ -34,7 +36,7 @@ public class TimeReportServiceTest extends TestCase {
     UserRepository userRepository = (UserRepository)
         SpringTestUtils.getBeanFactory().getBean("user.userRepository");
 
-    User user = userRepository.findUser(1);
+    user = userRepository.findUserByName("admin");
     DataHelper.removeExtraTimeEntries(repository);
 
     Calendar tmpCalendar = Calendar.getInstance();
@@ -80,3 +82,4 @@ public class TimeReportServiceTest extends TestCase {
     assertEquals(2L, dtos.get(0).getHours().longValue());
   }
 }
+

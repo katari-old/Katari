@@ -22,6 +22,8 @@ import com.globant.katari.sample.testsupport.DataHelper;
 import com.globant.katari.sample.testsupport.SecurityTestUtils;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.time.application.SaveTimeEntryCommand;
+import com.globant.katari.sample.time.domain.Project;
+import com.globant.katari.sample.time.domain.Activity;
 import com.globant.katari.sample.time.domain.TimeEntry;
 import com.globant.katari.sample.time.domain.TimeRepository;
 import com.globant.katari.user.domain.User;
@@ -45,6 +47,8 @@ public class MyTimeEntryControllerTest extends TestCase {
    */
   private UserRepository userRepository;
 
+  private User user;
+
   /** This is a set up method of this TestCase.
    */
   protected final void setUp() {
@@ -54,7 +58,7 @@ public class MyTimeEntryControllerTest extends TestCase {
         .getTimeModuleBeanFactory().getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils
         .getBeanFactory().getBean("user.userRepository");
-    User user = userRepository.findUser(1);
+    user = userRepository.findUserByName("admin");
     DataHelper.createTimeEntry(timeRepository, user);
 
     SecurityTestUtils.setContextUser(user);
@@ -92,8 +96,14 @@ public class MyTimeEntryControllerTest extends TestCase {
     SaveTimeEntryCommand saveTimeEntryCommand = (SaveTimeEntryCommand)
         SpringTestUtils.getTimeModuleBeanFactory().getBean(
         "saveTimeEntryCommand");
-    saveTimeEntryCommand.setActivityId(1);
-    saveTimeEntryCommand.setProjectId(1);
+
+    List<Activity> activities = timeRepository.getActivities();
+    Activity activity = activities.get(0);
+    List<Project> projects = timeRepository.getProjects();
+    Project project = projects.get(0);
+
+    saveTimeEntryCommand.setActivityId(activity.getId());
+    saveTimeEntryCommand.setProjectId(project.getId());
     saveTimeEntryCommand.setComment("Test comment.");
     saveTimeEntryCommand.setDuration(60);
     saveTimeEntryCommand.setStart("09:00");

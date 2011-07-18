@@ -34,7 +34,7 @@ public class UserProjectHoursReportCommandTest extends TestCase {
     UserRepository userRepository = (UserRepository)
         SpringTestUtils.getBeanFactory().getBean("user.userRepository");
 
-    User user = userRepository.findUser(1);
+    User user = userRepository.findUserByName("admin");
     Calendar tmpCalendar = Calendar.getInstance();
     tmpCalendar.set(2008, 1, 15);
     DataHelper.removeExtraTimeEntries(repository);

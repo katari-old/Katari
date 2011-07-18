@@ -8,7 +8,9 @@
 
   <body>
     <h3>Change password</h3>
-    <form id="changePassword" name="changePassword" method="POST" action="changePassword.do">
+    <form id="changePassword" name="changePassword" method="POST"
+      action="changePassword.do">
+      <#setting number_format="computer">
 
       <span class="error" id="message">
         <@spring.bind "command.*"/>
@@ -21,10 +23,14 @@
 
           <@spring.formHiddenInput "command.userId" />
 
-          <span class="formfield">
-            <label for="oldPassword">Old Password</label>
-            <@spring.formPasswordInput "command.password.oldPassword" />
-          </span>
+          <#if command.userId == command.me.id>
+            <!-- Changing other user password, do not ask for the old password
+                 -->
+            <span class="formfield">
+              <label for="oldPassword">Old Password</label>
+              <@spring.formPasswordInput "command.password.oldPassword" />
+            </span>
+          </#if>
 
           <span class="formfield">
             <label for="password">New Password</label>

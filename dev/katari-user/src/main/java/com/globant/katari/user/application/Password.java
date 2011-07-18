@@ -111,8 +111,8 @@ public class Password {
    *
    * If the user already exists, validates the old password.
    *
-   * @param user The user loaded from the database when editing a user, null
-   * for a new user.
+   * @param user The user loaded from the database when editing a user, null to
+   * skip validation of the new password.
    *
    * @param errors Contextual state about the validation process. It can not be
    * null.
@@ -121,30 +121,30 @@ public class Password {
     log.trace("Entering validate");
 
     ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-        "password.newPassword", "required",
+        "newPassword", "required",
         "The new password cannot be empty.");
     ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-        "password.confirmedPassword", "required",
+        "confirmedPassword", "required",
         "Please confirm your new password.");
 
     if (getNewPassword().trim().length() < MINIMUM_PASSWORD_LENGTH) {
-      errors.rejectValue("password.newPassword", "field.min.length",
+      errors.rejectValue("newPassword", "field.min.length",
           "The password must be " + MINIMUM_PASSWORD_LENGTH
           + " characters long.");
     }
     if (!getNewPassword().equals(getConfirmedPassword())) {
-      errors.rejectValue("password.confirmedPassword", "field.not.equal",
+      errors.rejectValue("confirmedPassword", "field.not.equal",
           "The new password does not match the password confirmation.");
     }
 
     // The user already exists and changes the password.
-    boolean oldPasswordMatches = (user == null || "".equals(getOldPassword())
-      && user.getPassword().equals(oldPassword));
+    boolean oldPasswordMatches = (user == null ||
+      user.getPassword().equals(oldPassword));
     if (!oldPasswordMatches) {
-      errors.rejectValue("password.oldPassword", "field.not.equal",
+      errors.rejectValue("oldPassword", "field.not.equal",
           "Enter your current password.");
-      
     }
+
     log.trace("Leaving validate");
   }
 }

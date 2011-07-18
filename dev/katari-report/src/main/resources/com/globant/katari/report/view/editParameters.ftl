@@ -161,7 +161,8 @@
           <td>&nbsp;</td>
           <td>
             <input type="hidden" id="reloading" name="reloading" value="false"/>
-            <input type="hidden" name="parameterReportId" value="${command.reportId}"/>
+            <input type="hidden" name="parameterReportId"
+              value="${command.reportId?c}"/>
             <input class="btn" type="submit" value="show report"/>
           </td>
           <td></td>

@@ -158,8 +158,8 @@
         <#list timeEntryList as timeEntry>
           <tr>
             <td>
-              <a href='${request.contextPath}/editTimeEntry.do?timeEntryId=${timeEntry.id}'>
-                  ${timeEntry.id}
+              <a href='${request.contextPath}/editTimeEntry.do?timeEntryId=${timeEntry.id?c}'>
+                  ${timeEntry.id?c}
               </a>
             </td>
             <td>${timeEntry.project.name}</td>
@@ -173,7 +173,7 @@
               <form class="deleteTimeEntry" method="POST"
                 action="deleteTimeEntry.do">
                 <@spring.bind "command.timeEntryId" />
-                <input type="hidden" name="timeEntryId" value="${timeEntry.id}"/>
+                <input type="hidden" name="timeEntryId" value="${timeEntry.id?c}"/>
                 <input class="btn" type="submit" value="Delete"
                   onclick="return confirm('Are you sure you want to delete the time entry?');" />
               </form>

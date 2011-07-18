@@ -13,8 +13,6 @@ import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.tools.DatabaseTestSupport;
 
 /** This class contains methods to initialize a cleaned database.
- *
- * @author nicolas.frontini
  */
 public class TestDbSupport extends TestCase {
 
@@ -48,6 +46,11 @@ public class TestDbSupport extends TestCase {
 
     databaseTestSupport.runSqlSentences(SpringTestUtils.getDataSource(),
         "target/katari-sample.ddl");
+    // Initialize the autoincrement of all created tables to 1000. This is to
+    // make it very obvious when the client is formatting ids where it
+    // shouldn't (1,000 instead of 1000).
+    databaseTestSupport.initializeAutoincrement(
+        SpringTestUtils.getDataSource(), 1000);
     databaseTestSupport.runSqlSentences(SpringTestUtils.getDataSource(),
         "src/main/sql/db-setup.sql");
     databaseTestSupport.runSqlSentences(SpringTestUtils.getDataSource(),

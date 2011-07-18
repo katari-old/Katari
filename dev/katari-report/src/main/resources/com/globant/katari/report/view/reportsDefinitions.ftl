@@ -40,14 +40,14 @@
         </#if>
         <#list reportsDefinitions as report>
         <tr>
-          <td><a href="editParameters.do?reportId=${report.id}">
+          <td><a href="editParameters.do?reportId=${report.id?c}">
               ${report.name}
           </a></td>
           <td>${report.description}</td>
           <td>
             <@katari.secureUrlArea url="editReport.do"; url>
               <form method="GET" action="${url}" class="innerform">
-                <input type="hidden" name="reportId" value="${report.id}" />
+                <input type="hidden" name="reportId" value="${report.id?c}" />
                 <input type="submit" value="Edit" />
               </form>
             </@katari.secureUrlArea>
@@ -55,7 +55,7 @@
           <td>
             <@katari.secureUrlArea url="downloadReport.do"; url>
               <form method="GET" action="${url}" class="innerform">
-                <input type="hidden" name="reportId" value="${report.id}" />
+                <input type="hidden" name="reportId" value="${report.id?c}" />
                 <input type="submit" value="Download">
               </form>
             </@katari.secureUrlArea>
@@ -63,7 +63,7 @@
           <td>
             <@katari.secureUrlArea url="deleteReport.do"; url>
               <form method="POST" action="${url}" class="innerform">
-                <input type="hidden" name="reportId" value="${report.id}" />
+                <input type="hidden" name="reportId" value="${report.id?c}" />
                 <input type="submit" value="Delete"
                   onclick="return confirm('Are you sure you want to delete the report ${report.name}?');">
               </form>

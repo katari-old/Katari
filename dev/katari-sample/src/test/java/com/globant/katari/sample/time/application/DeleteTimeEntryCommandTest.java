@@ -8,11 +8,10 @@ import com.globant.katari.sample.testsupport.DataHelper;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.time.domain.TimeEntry;
 import com.globant.katari.sample.time.domain.TimeRepository;
+import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserRepository;
 
 /** This class represents a TestCase of the delete time entry commnad.
- *
- * @author nicolas.frontini
  */
 public class DeleteTimeEntryCommandTest extends TestCase {
 
@@ -28,9 +27,9 @@ public class DeleteTimeEntryCommandTest extends TestCase {
    */
   private UserRepository userRepository;
 
-  /** The user id of the time entry.
+  /** The user of the time entry.
    */
-  private long userId = 1;
+  private User user;
 
   /** This is a set up method of this TestCase.
    */
@@ -42,15 +41,15 @@ public class DeleteTimeEntryCommandTest extends TestCase {
     userRepository = (UserRepository) SpringTestUtils.getBeanFactory()
         .getBean("user.userRepository");
     DataHelper.removeExtraTimeEntries(timeRepository);
-    DataHelper.createTimeEntry(
-        timeRepository, userRepository.findUser(userId));
+    user = userRepository.findUserByName("admin");
+    DataHelper.createTimeEntry(timeRepository, user);
   }
 
   /** Test the execute method.
    */
   public void testExecute() {
-    TimeEntry timeEntry = timeRepository.getTimeEntries(
-        userRepository.findUser(userId), new Date()).get(0);
+    TimeEntry timeEntry;
+    timeEntry = timeRepository.getTimeEntries(user, new Date()).get(0);
     long timeEntryId = timeEntry.getId();
     assertNotNull(timeRepository.findTimeEntry(timeEntryId));
     deleteTimeEntryCommand.setTimeEntryId(timeEntryId);
@@ -58,3 +57,4 @@ public class DeleteTimeEntryCommandTest extends TestCase {
     assertNull(timeRepository.findTimeEntry(timeEntryId));
   }
 }
+

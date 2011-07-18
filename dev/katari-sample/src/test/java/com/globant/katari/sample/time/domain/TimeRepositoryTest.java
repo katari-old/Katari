@@ -10,8 +10,6 @@ import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserRepository;
 
 /** This class represents a TestCase of the time entry repository.
- *
- * @author nicolas.frontini
  */
 public class TimeRepositoryTest extends TestCase {
 
@@ -23,6 +21,12 @@ public class TimeRepositoryTest extends TestCase {
    */
   private UserRepository userRepository;
 
+  Activity activity;
+
+  Project project;
+
+  User user;
+
   /** This is a set up method of this TestCase.
    */
   protected final void setUp() {
@@ -30,15 +34,16 @@ public class TimeRepositoryTest extends TestCase {
         .getTimeModuleBeanFactory().getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils.getBeanFactory().getBean(
         "user.userRepository");
-    List<TimeEntry> list = timeRepository.getTimeEntries(
-        userRepository.findUser(1), new Date());
+    user = userRepository.findUserByName("admin");
+    List<TimeEntry> list = timeRepository.getTimeEntries(user, new Date());
     for (TimeEntry timeEntry : list) {
       timeRepository.remove(timeEntry);
     }
-    Activity activity = timeRepository.findActivity(1);
-    Project project = timeRepository.findProject(1);
+    List<Activity> activities = timeRepository.getActivities();
+    activity = activities.get(0);
+    List<Project> projects = timeRepository.getProjects();
+    project = projects.get(0);
     TimePeriod period = new TimePeriod("09:00", 120);
-    User user = userRepository.findUser(1);
     TimeEntry timeEntry = new TimeEntry(activity, user, project,
         new Date(), period, "Test note");
     timeRepository.save(timeEntry);
@@ -47,26 +52,26 @@ public class TimeRepositoryTest extends TestCase {
   /** Test find activity feature.
    */
   public final void testFindActivity() {
-    Activity activity = timeRepository.findActivity(1);
-    assertEquals(1, activity.getId());
-    activity = timeRepository.findActivity(-1);
-    assertNull(activity);
+    Activity loadedActivity = timeRepository.findActivity(activity.getId());
+    assertEquals(activity.getId(), loadedActivity.getId());
+    loadedActivity = timeRepository.findActivity(-1);
+    assertNull(loadedActivity);
   }
 
-  /** Test find prject feature.
+  /** Test find project feature.
    */
   public final void testFindProject() {
-    Project project = timeRepository.findProject(1);
-    assertEquals(1, project.getId());
-    project = timeRepository.findProject(-1);
-    assertNull(project);
+    Project loadedProject = timeRepository.findProject(project.getId());
+    assertEquals(project.getId(), loadedProject.getId());
+    loadedProject = timeRepository.findProject(-1);
+    assertNull(loadedProject);
   }
 
   /** Test find time entry feature.
    */
   public final void testFindTimeEntry() {
-    List<TimeEntry> timeEntryList = timeRepository.getTimeEntries(
-        userRepository.findUser(1), new Date());
+    List<TimeEntry> timeEntryList;
+    timeEntryList = timeRepository.getTimeEntries(user, new Date());
     TimeEntry timeEntry = timeRepository.findTimeEntry(
         timeEntryList.get(0).getId());
     assertEquals(timeEntryList.get(0).getId(), timeEntry.getId());
@@ -91,10 +96,7 @@ public class TimeRepositoryTest extends TestCase {
   /** Test save time entry method.
    */
   public final void testSave_timeEntry() {
-    Activity activity = timeRepository.findActivity(1);
-    Project project = timeRepository.findProject(1);
     TimePeriod period = new TimePeriod("09:00", 120);
-    User user = userRepository.findUser(1);
     TimeEntry timeEntry = new TimeEntry(activity, user, project,
         new Date(), period, "Test note");
 
@@ -103,3 +105,4 @@ public class TimeRepositoryTest extends TestCase {
     assertEquals(timeEntry.getId(), savedTimeEntry.getId());
   }
 }
+

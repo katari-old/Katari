@@ -61,6 +61,7 @@
       <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
         <constructor-arg index="0">
           <map>
+            <entry key="/changePassword.do" value="IS_AUTHENTICATED_REMEMBERED" />
             <entry key="/userDelete.do" value="ROLE_ADMINISTRATOR" />
             <entry key="/createUser.do" value="ROLE_ADMINISTRATOR" />
             <entry key="/**/*" value="ROLE_ADMINISTRATOR" />

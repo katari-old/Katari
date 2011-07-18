@@ -14,11 +14,10 @@ import com.globant.katari.sample.testsupport.DataHelper;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.time.application.DeleteTimeEntryCommand;
 import com.globant.katari.sample.time.domain.TimeRepository;
+import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserRepository;
 
 /** Test the DeleteTimeEntryController.
- *
- * @author nicolas.frontini
  */
 public class DeleteTimeEntryControllerTest extends TestCase {
 
@@ -34,8 +33,6 @@ public class DeleteTimeEntryControllerTest extends TestCase {
    */
   private UserRepository userRepository;
 
-  /** The user Id.
-   */
   private long timeEntryId;
 
   /** This is a set up method of this TestCase.
@@ -47,7 +44,8 @@ public class DeleteTimeEntryControllerTest extends TestCase {
         .getTimeModuleBeanFactory().getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils
         .getBeanFactory().getBean("user.userRepository");
-    DataHelper.createTimeEntry(timeRepository, userRepository.findUser(1));
+    User user = userRepository.findUserByName("admin");
+    DataHelper.createTimeEntry(timeRepository, user);
     timeEntryId = timeRepository.getTimeEntries().get(0).getId();
   }
 

@@ -71,7 +71,7 @@
         </#if>
 
         <#escape x as x?html>
-          <tr class='directory_entry ${class_first} ${class_last} item_${application.id}'>
+          <tr class='directory_entry ${class_first} ${class_last} item_${application.id?c}'>
             <td class='gadget'>
               <#if application.thumbnail??>
                 <img src='${application.thumbnail!}'
@@ -79,7 +79,7 @@
               </#if>
               <div>
                 <input class="btn" type="button" value="Add it now"
-                  onclick='addApplicationToGroup("${command.gadgetGroupName}", ${application.id})'>
+                  onclick='addApplicationToGroup("${command.gadgetGroupName}", ${application.id?c})'>
               </div>
             </td>
             <td class='info'>

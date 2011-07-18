@@ -151,15 +151,13 @@ public class Profile {
       final Errors errors) {
     log.trace("Entering validate");
     Validate.notNull(userRepository, "The user repository cannot be null");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "profile.name",
-        "required");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "profile.email",
-        "required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "required");
 
     // Checks if the user name is duplicated.
     User user = userRepository.findUserByName(name);
     if (null != user && userId != user.getId()) {
-      errors.rejectValue("profile.name", "exist");
+      errors.rejectValue("name", "exist");
     }
     log.trace("Leaving validate");
   }

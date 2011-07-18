@@ -7,6 +7,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 
+import java.util.List;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,13 +22,13 @@ import com.globant.katari.sample.testsupport.DataHelper;
 import com.globant.katari.sample.testsupport.SecurityTestUtils;
 import com.globant.katari.sample.testsupport.SpringTestUtils;
 import com.globant.katari.sample.time.application.SaveTimeEntryCommand;
+import com.globant.katari.sample.time.domain.Activity;
+import com.globant.katari.sample.time.domain.Project;
 import com.globant.katari.sample.time.domain.TimeRepository;
 import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserRepository;
 
 /** Test the EditTimeEntryController.
- *
- * @author nicolas.frontini
  */
 public class EditTimeControllerTest extends TestCase {
 
@@ -43,6 +44,8 @@ public class EditTimeControllerTest extends TestCase {
    */
   private UserRepository userRepository;
 
+  private User user;
+
   /** The user Id.
    */
   private long timeEntryId;
@@ -56,7 +59,7 @@ public class EditTimeControllerTest extends TestCase {
         .getTimeModuleBeanFactory().getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils
         .getBeanFactory().getBean("user.userRepository");
-    User user = userRepository.findUser(1);
+    user = userRepository.findUserByName("admin");
     DataHelper.createTimeEntry(timeRepository, user);
     timeEntryId = timeRepository.getTimeEntries().get(0).getId();
 
@@ -88,8 +91,14 @@ public class EditTimeControllerTest extends TestCase {
     SaveTimeEntryCommand saveTimeEntryCommand = (SaveTimeEntryCommand)
         SpringTestUtils.getTimeModuleBeanFactory().getBean(
         "saveTimeEntryCommand");
-    saveTimeEntryCommand.setActivityId(1);
-    saveTimeEntryCommand.setProjectId(1);
+
+    List<Activity> activities = timeRepository.getActivities();
+    Activity activity = activities.get(0);
+    List<Project> projects = timeRepository.getProjects();
+    Project project = projects.get(0);
+
+    saveTimeEntryCommand.setActivityId(activity.getId());
+    saveTimeEntryCommand.setProjectId(project.getId());
     saveTimeEntryCommand.setComment("Test comment.");
     saveTimeEntryCommand.setDuration(60);
     saveTimeEntryCommand.setStart("09:00");

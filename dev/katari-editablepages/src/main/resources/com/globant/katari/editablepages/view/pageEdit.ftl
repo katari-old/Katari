@@ -53,6 +53,7 @@
 
     <form id="userEdit" name="userEdit" method="POST" action="edit.do">
 
+      <#setting number_format="computer">
       <#assign htmlEscape = true in spring>
 
       <span class="error" id="message">

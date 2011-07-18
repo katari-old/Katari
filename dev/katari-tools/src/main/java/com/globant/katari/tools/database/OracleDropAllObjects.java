@@ -121,5 +121,14 @@ public class OracleDropAllObjects extends DatabaseTestSupport {
       st.executeUpdate("DROP VIEW " + view);
     }
   }
+
+  /** {@inheritDoc}
+   * 
+   * This is not implemented, throws UnsupportedOperationException.
+   */
+  protected void doInitializeAutoincrement(final Connection connection,
+      final int initialValue) throws Exception {
+    throw new UnsupportedOperationException();
+  }
 }
 

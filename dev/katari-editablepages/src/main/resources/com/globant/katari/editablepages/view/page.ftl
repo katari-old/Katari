@@ -66,12 +66,12 @@
               </@katari.secureUrlArea>
               <@katari.secureUrlArea
                   url="${baseweb}/module/editable-pages/edit/edit.do"; url>
-                { text: "Edit", url: "${url}?id=${page.id}",
+                { text: "Edit", url: "${url}?id=${page.id?c}",
                   className: "editPage" },
               </@katari.secureUrlArea>
               <@katari.secureUrlArea
                   url="${baseweb}/module/editable-pages/edit/remove.do"; url>
-                // disabled { text: "Remove", url: "${url}?id=${page.id}",
+                // disabled { text: "Remove", url: "${url}?id=${page.id?c}",
                 //  className: "removePage" },
               </@katari.secureUrlArea>
               <#if page.dirty>
@@ -81,13 +81,13 @@
                 </@katari.secureUrlArea>
                 <@katari.secureUrlArea
                     url="${baseweb}/module/editable-pages/edit/publish.do"; url>
-                  { text: "Publish", url: "${url}?id=${page.id}",
+                  { text: "Publish", url: "${url}?id=${page.id?c}",
                     className: "publishPage" },
                 </@katari.secureUrlArea>
                 <@katari.secureUrlArea
                     url="${baseweb}/module/editable-pages/edit/revert.do"; url>
                   { text: "Revert",
-                    url: "javascript:confirmRevert('${url}?id=${page.id}')",
+                    url: "javascript:confirmRevert('${url}?id=${page.id?c}')",
                     className: "revertPage" },
                 </@katari.secureUrlArea>
               </#if>

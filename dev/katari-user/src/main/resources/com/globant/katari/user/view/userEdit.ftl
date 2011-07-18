@@ -16,6 +16,9 @@
 
     <form id="userEdit" name="userEdit" method="POST" action="${action}">
 
+      <#setting number_format="computer">
+      <#assign htmlEscape = true in spring>
+
       <span class="error" id="message">
         <@spring.bind "command.*"/>
         <@spring.showErrors  "<br/>" />

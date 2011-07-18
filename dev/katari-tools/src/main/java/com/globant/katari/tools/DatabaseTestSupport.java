@@ -24,8 +24,6 @@ import com.globant.katari.tools.database.OracleDropAllObjects;
 
 /** DatabaseTestSupport abstract class for classes that can drop objects and
  * run sql sentences.
- *
- * @author nicolas.frontini
  */
 public abstract class DatabaseTestSupport {
 
@@ -119,6 +117,29 @@ public abstract class DatabaseTestSupport {
     }
   }
 
+  /** Initializes the auto increment columns to a predefined value.
+   *
+   * @param dataSource The data source to obtain the connection from. It cannot
+   * be null.
+   * 
+   * @param initialValue the initial value to use for autoincrement.
+   *
+   * @throws Exception in case of error.
+   */
+  public void initializeAutoincrement(final DataSource dataSource,
+      final int initialValue) throws Exception {
+    try {
+      Connection connection = dataSource.getConnection();
+      doInitializeAutoincrement(connection, initialValue);
+      // We are not that careful closing the connection because we exit in case
+      // of error.
+      connection.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+  }
+
   /** Template method to drop all tables from the data base.
    *
    * @param connection The database connectino to use to drop all the objects.
@@ -130,6 +151,19 @@ public abstract class DatabaseTestSupport {
    */
   protected abstract void doDropAll(final Connection connection, final String
       markerTable) throws Exception;
+
+  /** Template method to initialize the auto increment columns to a predefined
+   * value.
+   *
+   * @param connection The database connectino to use to drop all the objects.
+   * It cannot be null.
+   *
+   * @param initialValue the initial value to use for autoincrement.
+   *
+   * @throws Exception in case of error.
+   */
+  protected abstract void doInitializeAutoincrement(
+      final Connection connection, final int initialValue) throws Exception;
 
   /** Runs a set of sql sentences stored in a file.
    *

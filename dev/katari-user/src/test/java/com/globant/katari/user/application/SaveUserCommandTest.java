@@ -321,7 +321,7 @@ public class SaveUserCommandTest {
         changePasswordCommand.getClass().getName());
     changePasswordCommand.validate(errors);
 
-    assertThat(errors.getAllErrors().size(), is(2));
+    assertThat(errors.hasErrors(), is(true));
   }
 
   /* Tests if non admin users cannot create other users.
