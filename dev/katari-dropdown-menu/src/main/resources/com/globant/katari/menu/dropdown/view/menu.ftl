@@ -26,7 +26,7 @@
           name: 'katari_yui_patchedoverlay',
           type: 'js',
           varName: "Prototype.getConstrainedY",
-          path: 'patches/overlay_patch.js',
+          path: 'patches/overlay_patch.js'
       });
       loader.addModule({
           name: 'katari_yui_patchedmenu',
