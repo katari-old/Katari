@@ -24,7 +24,7 @@
   <bean name='/register.do'
     class='com.globant.katari.core.spring.controller.SimpleFormCommandController'>
     <property name="formView" value="userRegistration" />
-    <property name="successView" value="userRegistrationSucess" />
+    <property name="successView" value="userRegistrationSuccess" />
     <property name="validator" ref="commandValidator" />
     <lookup-method name='createCommandBean'
       bean='registration.registerUserCommand' />
@@ -33,15 +33,17 @@
   <bean name='/forgotPassword.do'
     class='com.globant.katari.core.spring.controller.SimpleFormCommandController'>
     <property name="formView" value="requestForgotPassword" />
-    <property name="successView" value="requestForgotPasswordSucess" />
+    <property name="successView" value="requestForgotPasswordSuccess" />
     <property name="validator" ref="commandValidator" />
     <lookup-method name='createCommandBean'
       bean='registration.requestForgotPasswordCommand' />
   </bean>
 
   <bean name='/resetPassword.do'
-    class='com.globant.katari.core.spring.controller.CommandController'>
-    <constructor-arg index='0' value='redirect:resetPasswordResult.do' />
+    class='com.globant.katari.registration.view.ResetPasswordController'>
+    <property name="formView" value="resetPasswordFailure" />
+    <property name="successView" value="redirect:resetPasswordResult.do" />
+    <property name="validator" ref="commandValidator" />
     <lookup-method name='createCommandBean'
       bean='registration.resetPasswordRequestCommand' />
   </bean>

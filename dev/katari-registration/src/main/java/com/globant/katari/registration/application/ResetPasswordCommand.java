@@ -1,6 +1,7 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.registration.application;
 
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,9 +12,14 @@ import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.commons.lang.Validate;
+
+import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
+import org.springframework.validation.Errors;
+
 import com.globant.katari.core.application.Command;
+import com.globant.katari.core.application.Validatable;
 import com.globant.katari.email.application.EmailSender;
 import com.globant.katari.email.model.EmailModel;
 import com.globant.katari.registration.domain.EmailConfigurer;
@@ -29,10 +35,10 @@ import com.globant.katari.user.integration.DomainUserDetails;
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
-public class ResetPasswordCommand implements Command<User> {
+public class ResetPasswordCommand implements Command<User>, Validatable {
 
   /** The class logger. */
-  private static final Logger LOG = getLogger(
+  private static Logger log = LoggerFactory.getLogger(
       ResetPasswordCommand.class);
 
   /** The token life, in ms (12 hours). */
@@ -80,6 +86,20 @@ public class ResetPasswordCommand implements Command<User> {
     emailConfigurer = theEmailConfigurer;
   }
 
+  /** Validates that the provided token is valid and corresponds to the user.
+   *
+   * {@inheritDoc}
+   */
+  public void validate(final Errors errors) {
+    RecoverPasswordRequest request;
+    request = registrationRepository.findRecoverPasswordRequest(userId, token);
+
+    if (request == null) {
+      errors.rejectValue("token", "forgotpassword.token.invalid",
+          "The reset password request is invalid or too old.");
+    }
+  }
+
   /** Retrieve recover password request by the userId + token and also
    * checks that the token is active.
    *
@@ -114,7 +134,7 @@ public class ResetPasswordCommand implements Command<User> {
     user.changePassword(newPassword);
     userRepository.save(user);
 
-    LOG.debug("Returning the user: {}", user.getEmail());
+    log.debug("Returning the user: {}", user.getEmail());
 
     Map<String, Object> values = new HashMap<String, Object>(1);
     values.put("newPassword", newPassword);
@@ -124,7 +144,7 @@ public class ResetPasswordCommand implements Command<User> {
         emailConfigurer.getSubject());
     emailSender.send(emailModel, emailConfigurer.getTemplate());
 
-    LOG.debug("Authenticating the user: " + user.getEmail());
+    log.debug("Authenticating the user: " + user.getEmail());
     DomainUserDetails details = new DomainUserDetails(user);
     Authentication authentication = new UsernamePasswordAuthenticationToken(
         details, "", details.getAuthorities());
@@ -147,11 +167,19 @@ public class ResetPasswordCommand implements Command<User> {
     token = userToken;
   }
 
+  /** Gets the user token.
+   *
+   * @return the user token.
+   */
+  public String getToken() {
+    return token;
+  }
+
   /** Sets the userId.
    * @param theUserId the user id.
    */
   public void setUserId(final Long theUserId) {
     userId = theUserId;
   }
-
 }
+
