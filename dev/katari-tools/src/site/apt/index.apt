@@ -11,10 +11,10 @@ Katari - build and test tools
 
  One notable feature is a mock smtp server. this is useful when your
  application sends emails and you need a very simple smtp server. To start it
- run:
+ run, include this module as a test dependency of your project and run:
 
 -----
-mvn exec:java -Dexec.mainClass=com.globant.katari.tools.MockSmtpServer
+mvn exec:java -Dexec.classpathScope=test -Dexec.mainClass=com.globant.katari.tools.MockSmtpServer
 -----
 
  including this jar in the classpath.
