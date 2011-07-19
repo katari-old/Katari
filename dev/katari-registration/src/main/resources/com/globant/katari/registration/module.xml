@@ -86,5 +86,61 @@
     </constructor-arg>
   </bean>
 
+  <!-- Overridable beans -->
+
+  <!-- Forgot password Email Configuration. -->
+
+  <bean name='registration.forgotPasswordEmailFrom' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="katari@globant.com"/>
+
+  <bean name='registration.forgotPasswordEmailSubject' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="Katari Registration Forgot Password"/>
+
+  <bean name='registration.forgotPasswordEmailTemplate' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="com/globant/katari/registration/view/registrationForgotPasswordEmailTemplate.ftl"/>
+
+  <bean name='registration.forgotPasswordEmailPlainText' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="Please copy and paste the following link"/>
+
+  <!-- Reset password Email Configuration. -->
+
+  <bean name='registration.resetPasswordEmailFrom' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="katari@globant.com"/>
+
+  <bean name='registration.resetPasswordEmailSubject' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="Katari Registration Forgot Password"/>
+
+  <bean name='registration.resetPasswordEmailTemplate' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="com/globant/katari/registration/view/registrationResetPasswordEmailTemplate.ftl"/>
+
+  <bean name='registration.resetPasswordEmailPlainText' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="Your password has been reset"/>
+
+  <!-- Reset create user Email Configuration. -->
+
+  <bean name='registration.createUserEmailFrom' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="katari@globant.com"/>
+
+  <bean name='registration.createUserEmailSubject' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="Katari Registration"/>
+
+  <bean name='registration.createUserEmailTemplate' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="com/globant/katari/registration/view/registrationCreateUserEmailTemplate.ftl"/>
+
+  <bean name='registration.createUserEmailPlainText' 
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value="You have succesfully created a new user, please copy and paste the link bellow"/>
+
 </beans>
 <!-- vim: set ts=2 et sw=2 ai : -->

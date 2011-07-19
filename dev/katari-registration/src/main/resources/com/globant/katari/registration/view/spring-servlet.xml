@@ -95,24 +95,6 @@
     <constructor-arg index='3' ref='registration.resetPasswordEmailConfigurer' />
   </bean>
 
-  <!-- Forgot password Email Configuration. -->
-
-  <bean name='registration.forgotPasswordEmailFrom' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="katari@globant.com"/>
-
-  <bean name='registration.forgotPasswordEmailSubject' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="Katari Registration Forgot Password"/>
-
-  <bean name='registration.forgotPasswordEmailTemplate' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="com/globant/katari/registration/view/registrationForgotPasswordEmailTemplate.ftl"/>
-
-  <bean name='registration.forgotPasswordEmailPlainText' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="Please copy and paste the following link"/>
-
   <bean name='registration.forgotPasswordEmailConfigurer'
     class='com.globant.katari.registration.domain.EmailConfigurer'>
     <constructor-arg index='0' ref='registration.forgotPasswordEmailFrom' />
@@ -121,24 +103,6 @@
     <constructor-arg index='3' ref='registration.forgotPasswordEmailPlainText' />
   </bean>
 
-  <!-- Reset password Email Configuration. -->
-
-  <bean name='registration.resetPasswordEmailFrom' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="katari@globant.com"/>
-
-  <bean name='registration.resetPasswordEmailSubject' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="Katari Registration Forgot Password"/>
-
-  <bean name='registration.resetPasswordEmailTemplate' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="com/globant/katari/registration/view/registrationResetPasswordEmailTemplate.ftl"/>
-
-  <bean name='registration.resetPasswordEmailPlainText' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="Your password has been reset"/>
-
   <bean name='registration.resetPasswordEmailConfigurer'
     class='com.globant.katari.registration.domain.EmailConfigurer'>
     <constructor-arg index='0' ref='registration.resetPasswordEmailFrom' />
@@ -146,24 +110,6 @@
     <constructor-arg index='2' ref='registration.resetPasswordEmailTemplate' />
     <constructor-arg index='3' ref='registration.resetPasswordEmailPlainText' />
   </bean>
-
-  <!-- Reset create user Email Configuration. -->
-
-  <bean name='registration.createUserEmailFrom' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="katari@globant.com"/>
-
-  <bean name='registration.createUserEmailSubject' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="Katari Registration"/>
-
-  <bean name='registration.createUserEmailTemplate' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="com/globant/katari/registration/view/registrationCreateUserEmailTemplate.ftl"/>
-
-  <bean name='registration.createUserEmailPlainText' 
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value="You have succesfully created a new user, please copy and paste the link bellow"/>
 
   <bean name='registration.createUserEmailConfigurer'
     class='com.globant.katari.registration.domain.EmailConfigurer'>
@@ -186,7 +132,6 @@
       class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basenames">
       <list>
-        <value>com.globant.yahoo.stats.messages</value>
       </list>
     </property>
     <property name="useCodeAsDefaultMessage">
