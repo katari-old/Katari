@@ -14,6 +14,8 @@ Release notes for version 0.34
 
  * User management was not working for ids over 1000.
 
+ * The registration module could not be configured.
+
 Release notes for version 0.33
 
 * What's new since version 0.32
