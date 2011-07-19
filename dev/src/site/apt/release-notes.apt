@@ -1,10 +1,33 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.34
+
+* What's new since version 0.33
+
+ This a bug fix only release:
+
+ * Show an error message if the change password token is invalid.
+
+ * The title of the edit or create user page is now Create User for new users.
+
+ * Dropdown menu was not shown in ie7.
+
+ * User management was not working for ids over 1000.
+
+Release notes for version 0.33
+
+* What's new since version 0.32
+
+ This release only includes one minor fix:
+
+ * Redirect the user after changing his password. This updates the decorated
+ pages to reflect the fact that the user is logged in.
+
 Release notes for version 0.32
 
 * What's new since version 0.31
 
- This release only include one minor fix:
+ This release only includes one minor fix:
 
  * The forgot password and registration emails hardcoded the base url.
 
@@ -12,7 +35,7 @@ Release notes for version 0.31
 
 * What's new since version 0.30
 
- This release only include minor fixes and enhacements:
+ This release only includes minor fixes and enhacements:
 
  * Added a css class to menu items to identify them.
 
