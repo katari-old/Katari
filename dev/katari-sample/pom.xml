@@ -578,12 +578,13 @@
 
   <profiles>
 
-    <!-- We skip the ddl generation if we also skip the tests -->
+    <!-- We skip the ddl generation if we also run one specific test, to speed
+         things up a little bit. -->
     <profile>
       <id>run-tests</id>
       <activation>
         <property>
-          <name>!skipTests</name>
+          <name>!test</name>
         </property>
       </activation>
       <build>
