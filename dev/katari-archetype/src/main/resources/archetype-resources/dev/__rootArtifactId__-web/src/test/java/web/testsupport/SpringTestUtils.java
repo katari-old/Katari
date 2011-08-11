@@ -20,8 +20,6 @@ import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 /** Utility class to give support to test cases.
- *
- * @author nicolas.frontini
  */
 public final class SpringTestUtils {
 
@@ -29,15 +27,15 @@ public final class SpringTestUtils {
    */
   private static Logger log = LoggerFactory.getLogger(SpringTestUtils.class);
 
-  /** a data source.
+  /** a data source, as a singleton.
    */
   private static DataSource dataSource = null;
 
-  /** Bean factory.
+  /** Bean factory, as a singleton.
    */
   private static ApplicationContext beanFactory;
 
-  /** User module Bean factory.
+  /** User module Bean factory, as a singleton.
    */
   private static ApplicationContext userModuleBeanFactory;
 
@@ -48,28 +46,23 @@ public final class SpringTestUtils {
 
   /** Gets the configured data source.
    *
-   * @return a DataSource.
+   * @return a DataSource, never null.
    */
   public static synchronized DataSource getDataSource() {
     if (dataSource == null) {
-      beanFactory = getBeanFactory();
-      dataSource = (DataSource) beanFactory.getBean("dataSource");
+      dataSource = (DataSource) getBeanFactory().getBean("dataSource");
     }
     return dataSource;
   }
 
   /** Gets the connection to the database.
    *
-   * @return a Connection.
+   * @return a Connection, never null.
    *
-   * @exception SQLException if a database access error occurs
+   * @exception SQLException if a database access error occurs.
    */
-  public static synchronized Connection getConnection() throws SQLException {
-    if (dataSource == null) {
-      beanFactory = getBeanFactory();
-      dataSource = (DataSource) beanFactory.getBean("dataSource");
-    }
-    Connection connection = dataSource.getConnection();
+  public static Connection getConnection() throws SQLException {
+    Connection connection = getDataSource().getConnection();
     return connection;
   }
 
@@ -86,8 +79,7 @@ public final class SpringTestUtils {
       appContext.setServletContext(sc);
       appContext.setConfigLocations(new String[] {
         "/WEB-INF/applicationContext.xml",
-        "/WEB-INF/applicationContextRuntime.xml",
-        "classpath:/com/globant/katari/user/view/spring-servlet.xml" });
+        "/WEB-INF/applicationContextRuntime.xml"});
       appContext.refresh();
       beanFactory = appContext;
     }

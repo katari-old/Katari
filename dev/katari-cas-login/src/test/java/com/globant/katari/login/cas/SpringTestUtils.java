@@ -20,11 +20,11 @@ public final class SpringTestUtils {
    */
   private static Logger log = LoggerFactory.getLogger(SpringTestUtils.class);
 
-  /** The bean factory for the test application context.
+  /** The bean factory for the module application context.
    */
   private static ApplicationContext beanFactory;
 
-  /** The view bean factory for the test application context.
+  /** The view bean factory for the module application context.
    */
   private static ApplicationContext viewBeanFactory;
 
@@ -53,7 +53,7 @@ public final class SpringTestUtils {
     return getViewBeanFactory().getBean(name);
   }
 
-  /** Returns the singleton bean factory for the test application context.
+  /** Returns the singleton bean factory for the module application context.
    *
    * @return a BeanFactory, never null.
    */
