@@ -42,12 +42,14 @@ public class MenuEntriesTest extends ParentRunner<MenuNode> {
   private WebClient webClient;
 
   /** The MenuEntriesTest Constructor.
-   * @param klass the test class.
+   *
+   * @param testClass the test class.
+   *
    * @throws InitializationError initialization error.
    */
-  public MenuEntriesTest(final java.lang.Class<?> klass)
+  public MenuEntriesTest(final java.lang.Class<?> testClass)
       throws InitializationError {
-    super(klass);
+    super(testClass);
   }
 
   /**
