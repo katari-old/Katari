@@ -226,13 +226,13 @@
     <constructor-arg index="1" value='50' />
     <constructor-arg index="2">
       <list>
-        <ref bean="local-login.fontArial" />
+        <ref bean="local-login.font" />
       </list>
     </constructor-arg>
   </bean>
 
   <!-- A font is declared like this -->
-  <bean id="local-login.fontArial" class="java.awt.Font">
+  <bean id="local-login.font" class="java.awt.Font">
     <constructor-arg index="0" value='Arial' />
     <constructor-arg index="1" value='0' />
     <constructor-arg index="2" value='10' />
@@ -264,7 +264,7 @@
     class="com.octo.captcha.component.image.textpaster.SimpleTextPaster">
     <constructor-arg index="0" value='8' />
     <constructor-arg index="1" value='10' />
-    <constructor-arg index="2" ref="local-login.colorGreen" />
+    <constructor-arg index="2" ref="local-login.color" />
   </bean>
 
   <!-- And a color definition. -->
@@ -272,7 +272,7 @@
        Color constructor that takes three floats from 0 to 1, instead of three
        ints from 0 to 255.
   -->
-  <bean id="local-login.colorGreen" class="java.awt.Color">
+  <bean id="local-login.color" class="java.awt.Color">
     <constructor-arg index="0" type="int" value='0' />
     <constructor-arg index="1" type="int" value='255' />
     <constructor-arg index="2" type="int" value='0'/>
