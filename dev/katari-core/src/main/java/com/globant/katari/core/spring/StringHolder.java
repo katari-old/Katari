@@ -10,7 +10,7 @@ import org.springframework.beans.factory.FactoryBean;
  * This is used to create a string that can be referenced from another bean and
  * can be configured by a post-processor like PropertyOverrideConfigurer.
  */
-public class StringHolder implements FactoryBean {
+public class StringHolder implements FactoryBean<String> {
 
   /** The string value..
    *
@@ -31,7 +31,7 @@ public class StringHolder implements FactoryBean {
    *
    * @return The value, never null.
    */
-  public Object getObject() {
+  public String getObject() {
     return value;
   }
 

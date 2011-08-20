@@ -14,7 +14,8 @@ import org.w3c.dom.Element;
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
-public class NullPropertyParser implements BeanDefinitionParser, FactoryBean {
+public class NullPropertyParser implements BeanDefinitionParser,
+    FactoryBean<Object> {
 
   /** The name of the katari null element.*/
   private static final String NULL = "null";

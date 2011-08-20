@@ -17,7 +17,7 @@ import com.globant.katari.core.web.MenuNode;
  * from MenuBarBeanDefinitionParser with all the information to create a
  * menubar.
  */
-public class MenuBarFactory implements FactoryBean {
+public class MenuBarFactory implements FactoryBean<MenuBar> {
 
   /** The created menubar.
    */
@@ -54,7 +54,7 @@ public class MenuBarFactory implements FactoryBean {
    *
    * @return the menubar. It never returns null.
    */
-  public Object getObject() {
+  public MenuBar getObject() {
     Validate.notNull(menuBar, "Must first call setMenuBar().");
     createChildren(menuBar, children);
     return menuBar;

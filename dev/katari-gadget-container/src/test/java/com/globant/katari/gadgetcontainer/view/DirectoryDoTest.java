@@ -57,7 +57,7 @@ public class DirectoryDoTest {
     repository.getHibernateTemplate().bulkUpdate("delete from GadgetInstance");
     repository.getHibernateTemplate().bulkUpdate("delete from GadgetGroup");
     repository.getHibernateTemplate().bulkUpdate("delete from CoreUser");
-    repository.getHibernateTemplate().execute(new HibernateCallback() {
+    repository.getHibernateTemplate().execute(new HibernateCallback<Object>() {
       public Object doInHibernate(Session session) throws HibernateException,
           SQLException {
         session.createSQLQuery("delete from supported_views").executeUpdate();

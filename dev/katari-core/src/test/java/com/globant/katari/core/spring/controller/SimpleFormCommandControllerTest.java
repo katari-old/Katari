@@ -7,6 +7,7 @@ import static org.easymock.EasyMock.verify;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.util.Map;
 import java.util.HashMap;
 
 import org.junit.Test;
@@ -28,7 +29,8 @@ public class SimpleFormCommandControllerTest {
   public void testOnSubmitObject() throws Exception {
 
     BindException bindException = createMock(BindException.class);
-    expect(bindException.getModel()).andReturn(new HashMap<String, String>());
+    Map emptyMap = new HashMap<String, String>();
+    expect(bindException.getModel()).andReturn(emptyMap);
     replay(bindException);
 
     SimpleFormCommandController controller = new SimpleFormCommandController() {

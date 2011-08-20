@@ -15,8 +15,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * Class that's responsible for initializing the modules.
  * @author pablo.saavedra
  */
-public class ModuleInitializer implements ApplicationListener,
-    ApplicationContextAware {
+public class ModuleInitializer
+    implements ApplicationListener<ApplicationEvent>, ApplicationContextAware {
 
   /**
    * The logger, featuring slf4j.

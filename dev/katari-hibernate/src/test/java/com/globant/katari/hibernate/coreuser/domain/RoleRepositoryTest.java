@@ -1,21 +1,42 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.hibernate.coreuser.domain;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4
+    .AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 
 /**
  * Tests Role repository with a db datasources for testing purpose.
  * @author gerardo.bercovich
  */
-public class RoleRepositoryTest extends
-    AbstractTransactionalDataSourceSpringContextTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+@TransactionConfiguration(defaultRollback=false)
+@ContextConfiguration(locations = {
+    "classpath:com/globant/katari/hibernate/coreuser/applicationContext.xml"
+  })
+public class RoleRepositoryTest
+    extends AbstractTransactionalJUnit4SpringContextTests {
 
   /**
    * This is the implementation of the repository of the role.
    * Injected by Spring.
    */
+  @Autowired
   private RoleRepository roleRepository = null;
 
   /**
@@ -23,27 +44,10 @@ public class RoleRepositoryTest extends
    */
   private final String ADMIN_ROLE_NAME = "ADMINISTRATOR";
 
-  /**
-   * Defines constructor for disabling rollback only transactions.
+  /** Creates administrator role.
    */
-  public RoleRepositoryTest() {
-    this.setDefaultRollback(false);
-  }
-
-  /**
-   * Configures application context xml file.
-   */
-  @Override
-  protected String[] getConfigLocations() {
-    return new String[] {
-        "classpath:com/globant/katari/hibernate/coreuser/applicationContext.xml" };
-  }
-
-  /**
-   * Creates administrator role.
-   */
-  @Override
-  protected void onSetUp() throws Exception {
+  @Before
+  public void onSetUp() throws Exception {
     Role newRole = new Role(ADMIN_ROLE_NAME);
     roleRepository.save(newRole);
   }
@@ -51,13 +55,14 @@ public class RoleRepositoryTest extends
   /**
    * Deletes all the roles.
    */
-  @Override
-  protected void onTearDown() throws Exception {
+  @After
+  public void onTearDown() throws Exception {
     this.deleteFromTables(new String[]{"roles"});
   }
 
   /** Searches for a known role.
    */
+  @Test
   public void testFindRoleByName() throws Exception {
     Role adminRole = roleRepository.findRoleByName(ADMIN_ROLE_NAME);
     assertNotNull(adminRole);
@@ -66,11 +71,13 @@ public class RoleRepositoryTest extends
 
   /** Finds roles.
    */
+  @Test
   public void testGetRoles() throws Exception {
     final List<Role> roles = roleRepository.getRoles();
     assertEquals(1, roles.size());
   }
 
+  @Test
   public void testGetRolesById() throws Exception {
     final long id = roleRepository.findRoleByName(ADMIN_ROLE_NAME).getId();
     final ArrayList<String> ids = new ArrayList<String>();

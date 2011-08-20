@@ -119,7 +119,7 @@ public class CronTrigger extends CronTriggerBean implements BeanFactoryAware,
    * RuntimeException on other problems.
    */
   @Override
-  public void afterPropertiesSet() throws ParseException {
+  public void afterPropertiesSet() throws Exception {
 
     LazyInitTargetSource lazyInitScheduledCommand = new LazyInitTargetSource();
     lazyInitScheduledCommand.setTargetBeanName(taskBeanName);

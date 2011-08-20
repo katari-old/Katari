@@ -12,10 +12,12 @@ import org.springframework.beans.factory.BeanFactory;
 
 public class CronTriggerTest {
 
+  @SuppressWarnings("unchecked")
   @Test
-  public void test() throws Exception {
+  public void getJobDetail() throws Exception {
     BeanFactory beanFactory = createMock(BeanFactory.class);
-    expect(beanFactory.getType("job")).andReturn(ScheduledCommand.class);
+    Class<?> beanType = ScheduledCommand.class;
+    expect((Class) beanFactory.getType("job")).andReturn(beanType);
     replay(beanFactory);
     
     CronTrigger trigger = new CronTrigger("0 0 0 * * ?", "job");

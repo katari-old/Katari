@@ -204,7 +204,6 @@ public class ConstructorArgumentsBeanNameAutoProxyCreator extends
      * @return An AOP proxy, possibly modified to use constructor arguments
      * @see DefaultAopProxyFactory#createAopProxy(AdvisedSupport)
      */
-    @SuppressWarnings("unchecked")
     public AopProxy createAopProxy(final AdvisedSupport config) {
       // Create proxy
       AopProxy proxy = delegate.createAopProxy(config);

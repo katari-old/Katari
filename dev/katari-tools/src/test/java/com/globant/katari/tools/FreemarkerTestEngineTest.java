@@ -124,7 +124,6 @@ public class FreemarkerTestEngineTest extends TestCase {
     assertTrue("The file " + fileName + " was not found.", output.exists());
   }
 
-  @SuppressWarnings("unchecked")
   public void testRunAndValidate_springErrors() throws Exception {
     // Creates the basic model.
     Map<String, Object> model = buildModel();

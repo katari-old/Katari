@@ -9,7 +9,7 @@ import org.apache.commons.lang.Validate;
 
 /** A spring factory bean that creates a string concatenating other strings.
  */
-public class JoinedStrings extends AbstractFactoryBean {
+public class JoinedStrings extends AbstractFactoryBean<String> {
 
   /** The values to concatenate, in the provided oder, never null.
    */
@@ -18,7 +18,7 @@ public class JoinedStrings extends AbstractFactoryBean {
   /** {@inheritDoc}
    */
   @Override
-  protected Object createInstance() {
+  protected String createInstance() {
     return StringUtils.join(values);
   }
 

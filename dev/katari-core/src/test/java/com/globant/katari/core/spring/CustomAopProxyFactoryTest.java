@@ -1,3 +1,5 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.core.spring;
 
 import java.lang.reflect.InvocationHandler;
@@ -35,8 +37,8 @@ public class CustomAopProxyFactoryTest extends TestCase {
             SpringProxy.class, AopProxy.class }, ih);
 
     AopProxyFactory proxyFactory = EasyMock.createMock(AopProxyFactory.class);
-    AopProxyFactory factory = new ConstructorArgumentsBeanNameAutoProxyCreator.ConstructorArgsAopProxyFactory(
-        bf, "someBean", proxyFactory);
+    AopProxyFactory factory = new ConstructorArgumentsBeanNameAutoProxyCreator
+      .ConstructorArgsAopProxyFactory(bf, "someBean", proxyFactory);
     EasyMock.expect(proxyFactory.createAopProxy(support)).andReturn(proxy);
 
     EasyMock.replay(bf);
@@ -50,22 +52,22 @@ public class CustomAopProxyFactoryTest extends TestCase {
     EasyMock.verify(support);
     EasyMock.verify(ih);
     EasyMock.verify(proxyFactory);
-
   }
 
+  @SuppressWarnings("unchecked")
   public void testProxyClassWithDefaultConstructor() throws Throwable {
-    Class< ? > targetClass = getClass();
+    Class<?> targetClass = getClass();
     ConfigurableListableBeanFactory bf = EasyMock
         .createMock(ConfigurableListableBeanFactory.class);
 
     AdvisedSupport support = EasyMock.createMock(AdvisedSupport.class);
-    EasyMock.expect(support.getTargetClass()).andReturn(targetClass);
+    EasyMock.expect((Class) support.getTargetClass()).andReturn(targetClass);
 
     AopProxy proxy = EasyMock.createMock(AopProxy.class);
 
     AopProxyFactory proxyFactory = EasyMock.createMock(AopProxyFactory.class);
-    AopProxyFactory factory = new ConstructorArgumentsBeanNameAutoProxyCreator.ConstructorArgsAopProxyFactory(
-        bf, "someBean", proxyFactory);
+    AopProxyFactory factory = new ConstructorArgumentsBeanNameAutoProxyCreator
+      .ConstructorArgsAopProxyFactory(bf, "someBean", proxyFactory);
     EasyMock.expect(proxyFactory.createAopProxy(support)).andReturn(proxy);
 
     EasyMock.replay(bf);
@@ -79,6 +81,7 @@ public class CustomAopProxyFactoryTest extends TestCase {
     EasyMock.verify(proxyFactory);
   }
 
+  @SuppressWarnings("unchecked")
   public void testProxyClassWithNoDefaultConstructor() throws Throwable {
 
     ConstructorArgumentValues values = EasyMock
@@ -97,16 +100,17 @@ public class CustomAopProxyFactoryTest extends TestCase {
         .times(2);
 
     AdvisedSupport support = EasyMock.createMock(AdvisedSupport.class);
-    EasyMock.expect(support.getTargetClass()).andReturn(MockAopProxy.class)
-        .anyTimes();
+    Class<?> targetClass = MockAopProxy.class;
+    EasyMock.expect((Class) support.getTargetClass()).andReturn(targetClass);
+    EasyMock.expectLastCall().anyTimes();
 
     AopProxy proxy = new MockAopProxy(
         new ExpectBehavior< Object >(new Object[] {new Object[] {"Test" },
             new Class[] {MockAopProxy.class } }));
 
     AopProxyFactory proxyFactory = EasyMock.createMock(AopProxyFactory.class);
-    AopProxyFactory factory = new ConstructorArgumentsBeanNameAutoProxyCreator.ConstructorArgsAopProxyFactory(
-        bf, "someBean", proxyFactory);
+    AopProxyFactory factory = new ConstructorArgumentsBeanNameAutoProxyCreator
+      .ConstructorArgsAopProxyFactory(bf, "someBean", proxyFactory);
     EasyMock.expect(proxyFactory.createAopProxy(support)).andReturn(proxy);
 
     EasyMock.replay(bf);
@@ -124,6 +128,7 @@ public class CustomAopProxyFactoryTest extends TestCase {
     EasyMock.verify(values);
   }
 
+  @SuppressWarnings("unchecked")
   public void testProxyClassWithTwoNonDefaultConstructor() throws Throwable {
 
     ConstructorArgumentValues values = EasyMock
@@ -131,8 +136,6 @@ public class CustomAopProxyFactoryTest extends TestCase {
     EasyMock.expect(values.getArgumentCount()).andReturn(2).anyTimes();
     EasyMock.expect(values.getIndexedArgumentValue(0, Behavior.class))
         .andReturn(new ConstructorArgumentValues.ValueHolder("Test"));
-//    EasyMock.expect(values.getIndexedArgumentValue(1, String.class)).andReturn(
-        //new ConstructorArgumentValues.ValueHolder("Test"));
 
     BeanDefinition mockBd = EasyMock.createMock(BeanDefinition.class);
     EasyMock.expect(mockBd.getConstructorArgumentValues()).andReturn(values)
@@ -144,16 +147,17 @@ public class CustomAopProxyFactoryTest extends TestCase {
         .times(2);
 
     AdvisedSupport support = EasyMock.createMock(AdvisedSupport.class);
-    EasyMock.expect(support.getTargetClass()).andReturn(MockAopProxy.class)
-        .anyTimes();
+    Class<?> targetClass = MockAopProxy.class;
+    EasyMock.expect((Class) support.getTargetClass()).andReturn(targetClass);
+    EasyMock.expectLastCall().anyTimes();
 
     AopProxy proxy = new MockAopProxy(
         new ExpectBehavior< Object >(new Object[] {new Object[] {"Test" },
             new Class[] {MockAopProxy.class } }));
 
     AopProxyFactory proxyFactory = EasyMock.createMock(AopProxyFactory.class);
-    AopProxyFactory factory = new ConstructorArgumentsBeanNameAutoProxyCreator.ConstructorArgsAopProxyFactory(
-        bf, "someBean", proxyFactory);
+    AopProxyFactory factory = new ConstructorArgumentsBeanNameAutoProxyCreator
+      .ConstructorArgsAopProxyFactory(bf, "someBean", proxyFactory);
     EasyMock.expect(proxyFactory.createAopProxy(support)).andReturn(proxy);
 
     EasyMock.replay(bf);
@@ -171,6 +175,7 @@ public class CustomAopProxyFactoryTest extends TestCase {
     EasyMock.verify(values);
   }
 
+  @SuppressWarnings("unchecked")
   public void testProxyClassWithNoSetConstructorArgumentsMethod()
       throws Throwable {
 
@@ -178,14 +183,15 @@ public class CustomAopProxyFactoryTest extends TestCase {
         .createMock(ConfigurableListableBeanFactory.class);
 
     AdvisedSupport support = EasyMock.createMock(AdvisedSupport.class);
-    EasyMock.expect(support.getTargetClass()).andReturn(MockAopProxy.class)
-        .anyTimes();
+    Class<?> targetClass = MockAopProxy.class;
+    EasyMock.expect((Class) support.getTargetClass()).andReturn(targetClass);
+    EasyMock.expectLastCall().anyTimes();
 
     AopProxy proxy = EasyMock.createMock(AopProxy.class);
 
     AopProxyFactory proxyFactory = EasyMock.createMock(AopProxyFactory.class);
-    AopProxyFactory factory = new ConstructorArgumentsBeanNameAutoProxyCreator.ConstructorArgsAopProxyFactory(
-        bf, "someBean", proxyFactory);
+    AopProxyFactory factory = new ConstructorArgumentsBeanNameAutoProxyCreator
+      .ConstructorArgsAopProxyFactory(bf, "someBean", proxyFactory);
     EasyMock.expect(proxyFactory.createAopProxy(support)).andReturn(proxy);
 
     EasyMock.replay(bf);

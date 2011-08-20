@@ -38,7 +38,7 @@ public class OverridingMapFactoryBean extends MapFactoryBean {
    * @return The new map, never null.
    */
   @SuppressWarnings("unchecked")
-  protected Object createInstance() {
+  protected Map createInstance() {
     Map map = (Map) super.createInstance();
     if (overridingMap != null) {
       map.putAll(overridingMap);

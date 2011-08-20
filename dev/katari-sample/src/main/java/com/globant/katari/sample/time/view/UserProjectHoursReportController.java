@@ -49,7 +49,7 @@ public abstract class UserProjectHoursReportController
       final HttpServletResponse response, final Object command,
       final BindException errors) throws Exception {
     log.trace("Entering onSubmit");
-    Map<Object, Object> model = new HashMap<Object, Object>();
+    Map<String, Object> model = new HashMap<String, Object>();
 
     UserProjectHoursReportCommand userProjectHoursReportCommand =
       (UserProjectHoursReportCommand) command;
