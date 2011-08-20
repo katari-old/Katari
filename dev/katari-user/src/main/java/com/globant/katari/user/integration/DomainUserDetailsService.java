@@ -35,7 +35,7 @@ public class DomainUserDetailsService implements UserDetailsService {
    * @param theUserRepository The user repository to get the domain user from.
    * It cannot be null.
    */
-  DomainUserDetailsService(final UserRepository theUserRepository) {
+  public DomainUserDetailsService(final UserRepository theUserRepository) {
     Validate.notNull(theUserRepository, "The user repository cannot be null");
     userRepository = theUserRepository;
   }
