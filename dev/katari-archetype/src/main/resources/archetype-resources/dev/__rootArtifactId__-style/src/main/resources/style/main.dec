@@ -8,6 +8,15 @@
   <head>
     <title>${title}</title>
 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <!-- caching pragmas, forces no caching in all known situations.
+    Beware, not all proxies support http cache control, use http headers
+    instead -->
+    <meta http-equiv='pragma' content='no-cache'>
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+
     <script type='text/javascript'
       src="${baseweb}/module/ajax/yui/yuiloader/yuiloader-min.js">
     </script>

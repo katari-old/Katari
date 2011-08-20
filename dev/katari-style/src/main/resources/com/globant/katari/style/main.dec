@@ -8,6 +8,8 @@
   <head>
     <title>${title}</title>
 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
     <!-- caching pragmas, forces no caching in all known situations.
     Beware, not all proxies support http cache control, use http headers
     instead -->

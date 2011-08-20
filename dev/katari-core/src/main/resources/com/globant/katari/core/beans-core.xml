@@ -55,6 +55,23 @@
               <!-- This should be the first filter to execute to guarantee to
               ensure that the encoding is set before any request.getParameter
               is performed. -->
+              <constructor-arg value='-1000101'/>
+            </bean>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean
+                      class="com.globant.katari.core.web.ChangeLocaleFilter">
+                      <constructor-arg ref='localeResolver'/>
+                    </bean>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+              <!-- This should be the first filter to execute to guarantee to
+              ensure that the encoding is set before any request.getParameter
+              is performed. -->
               <constructor-arg value='-1000100'/>
             </bean>
             <!-- Validates the generated html output. -->
@@ -485,6 +502,45 @@
     </constructor-arg>
   </bean>
   <!-- End of security related beans. -->
+
+  <!-- localeResolver to obtain a locale from the request. It may be replace by
+       overriding the bean. Be careful, though, to always use a resolver that
+       supports setLocale().
+       
+  We set the max age to two years from now. By default, CookieLocaleResolver
+  uses Integer.MAX_VALUE. This makes the cookie date into the past in jetty,
+  although it works fine in tomcat.
+
+  It is not clear which implementation is correct (jetty vs tomcat). There seem
+  to be some inconsistencies in the documentation of the Expires value in a
+  cookie header. According to RFC-2109, Netscape's original proposal defined
+  the expires value to be of the format
+
+  Wdy, DD-Mon-YY HH:MM:SS GMT
+
+  but the original cookie spec (found in an archive) said that the format is:
+
+  Wdy, DD-Mon-YYYY HH:MM:SS GMT
+
+  (4 digit year instead of 2). The netscape spec references RFC 822, RFC 850,
+  RFC 1036, and RFC 1123, all using 2 digit years, except for 1123, that
+  changes that to an optional 4 digit year.
+
+  RFC-2109 uses Max-Age, that has the same meaning of cookieMaxAge. To force
+  the use of Max-Age, cookie version should be set to 1, but setVersion javadoc
+  for java 6 says:
+
+  "Since RFC 2109 is still somewhat new, consider version 1 as experimental; do
+  not use it yet on production sites."
+
+  This is funny considering that this RFC is from February 1997.
+
+  Which is the safest option?
+  -->
+  <bean id="localeResolver"
+    class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+    <property name='cookieMaxAge' value='63072000'/>
+  </bean>
 
   <!-- The roles that users will need to access the root of the web
        application. This includes the index.jsp file. -->

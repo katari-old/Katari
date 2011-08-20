@@ -15,14 +15,16 @@
     <pattern>/module/shindig/*</pattern>
   </excludes>
 
-  <!-- Decorate login/logout related pages. -->
-  <decorator name="login" page="/module/decorator/login.dec">
-    <pattern>/module/cas/login*</pattern>
-    <pattern>/module/cas/logout*</pattern>
+  <!-- Uncomment to decorate login/logout related pages, for example, if you
+       don't want to show the menu for the login page. -->
+  <!--
+  <decorator name="login" charset="utf-8" page="/module/decorator/login.dec">
+    <pattern>/module/local-login/*</pattern>
   </decorator>
+  -->
 
   <!-- Decorate the rest of the pages. -->
-  <decorator name="main" page="/module/decorator/main.dec">
+  <decorator name="main" charset="utf-8" page="/module/decorator/main.dec">
     <pattern>*</pattern>
   </decorator>
 
