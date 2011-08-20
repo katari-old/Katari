@@ -24,9 +24,9 @@ import com.octo.captcha.service.CaptchaServiceException;
 /** A filter that adds a captcha validation over the normal acegi
  * authentication.
  */
-public class AuthenticationWithCaptchaProcessingFilter extends
-  AuthenticationProcessingFilter implements InitializingBean,
-  MessageSourceAware {
+public class AuthenticationWithCaptchaProcessingFilter
+  extends AuthenticationProcessingFilter
+  implements InitializingBean, MessageSourceAware {
 
   /** The service used to validate the captcha, it is never null.
    */
@@ -55,6 +55,10 @@ public class AuthenticationWithCaptchaProcessingFilter extends
    * This is never null.
    */
   private MessageSourceAccessor messages;
+
+  /** Flag to indicate if this class will ignore the call to setMessageSource.
+   */
+  boolean ignoreSetMessageSource = false;
 
   /** {@inheritDoc}
    *
@@ -192,15 +196,25 @@ public class AuthenticationWithCaptchaProcessingFilter extends
     blackList = ipBlackList;
   }
 
-  /** Creates and sets the message source accessor from a message source (see
-   * messages).
+  /** Sets the message source to use to resolve locale aware message codes.
+   *
+   * If this operation is called mutiple times, only the first one is
+   * considered, all the other ones are ignored.
    *
    * @param messageSource the provided message source. It cannot be null.
+   *
+   * Implementation notes: removing MessageSourceAware from the list of
+   * implemented interfaces does not work because something in the class
+   * hierarchy implements MessageSourceAware anyway.
    */
   @Override
   public void setMessageSource(final MessageSource messageSource) {
-    Validate.notNull(messageSource, "The message source cannot be null.");
-    messages = new MessageSourceAccessor(messageSource);
+    if (!ignoreSetMessageSource) {
+      Validate.notNull(messageSource, "The message source cannot be null.");
+      messages = new MessageSourceAccessor(messageSource);
+      super.setMessageSource(messageSource);
+      ignoreSetMessageSource = true;
+    }
   }
 }
 

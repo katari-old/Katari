@@ -2,12 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:p="http://www.springframework.org/schema/p"
-  xmlns:util="http://www.springframework.org/schema/util"      
+  xmlns:util="http://www.springframework.org/schema/util"
   xmlns:katari="http://www.globant.com/schema/katari"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
   http://www.springframework.org/schema/util
-  http://www.springframework.org/schema/util/spring-util-2.0.xsd      
+  http://www.springframework.org/schema/util/spring-util-2.0.xsd
   http://www.globant.com/schema/katari
   http://www.globant.com/schema/katari/katari.xsd">
 
@@ -21,13 +21,8 @@
   <!-- An implementation of UserDetailsService that authenticates users against
   an in-memory database that is loaded from the userMap properties. -->
   <bean id="katari.userDetailsService"
-      class="org.acegisecurity.userdetails.memory.InMemoryDaoImpl">
-    <property name="userMap">
-      <value>
-        admin=password,ROLE_ADMIN
-      </value>
-    </property>
-  </bean>
+    class="org.acegisecurity.userdetails.memory.InMemoryDaoImpl"
+    p:userMap="admin=password,ROLE_ADMIN"/>
 
   <bean id="local-login.module"
       class="com.globant.katari.core.web.ConfigurableModule">
@@ -94,15 +89,14 @@
   <bean class='com.globant.katari.core.spring.StringHolder'
     name='local-login.loginFormUrl' p:value="/module/local-login/login.do"/>
 
-  <bean id="local-login.authenticationProvider" class=
-    "org.acegisecurity.providers.dao.DaoAuthenticationProvider">
-    <property name="userDetailsService">
-      <ref local="katari.userDetailsService" />
-    </property>
-  </bean>
+  <bean id="local-login.authenticationProvider"
+    class="com.globant.katari.login.local.application.DaoAuthenticationProvider"
+    p:userDetailsService-ref="katari.userDetailsService"
+    p:messageSource-ref="local-login.messageSource"
+    />
 
-  <bean id="local-login.authenticationManager" class=
-    "org.acegisecurity.providers.ProviderManager"
+  <bean id="local-login.authenticationManager"
+    class="org.acegisecurity.providers.ProviderManager"
     p:providers-ref='local-login.authenticationProviders'/>
 
   <!-- Intended to be overriden by other modules with ListFactoryAppender. -->
@@ -119,17 +113,18 @@
     p:filterProcessesUrl="/module/local-login/j_acegi_security_check"
     p:captchaService-ref="local-login.captchaService"
     p:captchaValidationParameter='j_captcha_response'
-    p:ipBlacklist-ref="local-login.ipBlacklist" />
+    p:ipBlacklist-ref="local-login.ipBlacklist"
+    p:messageSource-ref="local-login.messageSource"/>
 
   <bean id="local-login.logoutFilter"
-      class="com.globant.katari.login.local.view.LogoutFilter">
+    class="com.globant.katari.login.local.view.LogoutFilter"
+    p:filterProcessesUrl="/logout">
     <constructor-arg value="/module/local-login/logout.do" />
     <constructor-arg>
       <list>
         <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
       </list>
     </constructor-arg>
-    <property name="filterProcessesUrl" value="/logout"/>
   </bean>
 
   <bean id="local-login.ipBlacklist" destroy-method='destroy'
@@ -138,6 +133,14 @@
     <constructor-arg index="1" ref="local-login.enableCaptcha"/>
     <constructor-arg index="2" ref="local-login.forceCaptcha"/>
   </bean>
+
+  <!-- Message source for this module, loaded from localized "messages_xx"
+  files.
+  Note: as this message source is not named messageSource, it is not used as
+  the defaulte message source for the application context. -->
+  <bean id="local-login.messageSource"
+    class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+    p:basename="classpath:/com/globant/katari/login/local/l10n/messages" />
 
   <!-- Override in the global application context to enable captcha in the
        login page. -->
@@ -182,7 +185,7 @@
 
   <bean id="local-login.imageEngine"
     class="com.octo.captcha.engine.GenericCaptchaEngine">
-    <constructor-arg index="0"> 
+    <constructor-arg index="0">
       <list>
         <ref bean="local-login.captchaFactory" />
       </list>
