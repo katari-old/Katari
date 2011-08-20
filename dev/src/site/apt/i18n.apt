@@ -123,8 +123,8 @@ Design
 
   * What is the best way to decouple l10n from each module?
 
-  * Define a way to localize ftls and decs. How do they interact with loading the
-    template (ftl) from the file system?
+  * Define a way to localize ftls and decs. How do they interact with loading
+    the template (ftl) from the file system?
 
   * See if it is possible to enable reloading of resources from the file system,
     as supported today by Katari for static content.
