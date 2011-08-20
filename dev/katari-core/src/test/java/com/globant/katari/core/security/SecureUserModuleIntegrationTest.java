@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 
 import org.acegisecurity.ConfigAttribute;
 import org.acegisecurity.ConfigAttributeDefinition;
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 
 import com.globant.katari.core.web.ConfigurableModule;
 import com.globant.katari.core.web.ModuleContext;

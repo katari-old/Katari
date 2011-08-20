@@ -2,7 +2,7 @@
 
 package com.globant.katari.quartz.domain;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;

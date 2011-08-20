@@ -6,7 +6,7 @@ import java.lang.reflect.Proxy;
 
 import junit.framework.TestCase;
 
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 import org.springframework.aop.SpringProxy;
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.framework.AopProxy;

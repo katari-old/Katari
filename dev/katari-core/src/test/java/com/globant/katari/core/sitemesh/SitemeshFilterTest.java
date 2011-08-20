@@ -9,7 +9,7 @@ import javax.servlet.ServletContext;
 
 import junit.framework.TestCase;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 /* Tests the custom sitemesh filter.
  */

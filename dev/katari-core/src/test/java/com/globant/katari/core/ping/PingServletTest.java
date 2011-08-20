@@ -2,7 +2,7 @@
 
 package com.globant.katari.core.ping;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import java.io.PrintWriter;
 

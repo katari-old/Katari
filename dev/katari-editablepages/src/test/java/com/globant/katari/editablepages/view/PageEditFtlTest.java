@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Locale;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 

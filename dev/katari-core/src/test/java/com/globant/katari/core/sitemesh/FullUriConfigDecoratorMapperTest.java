@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 import com.opensymphony.module.sitemesh.Decorator;
 import com.opensymphony.module.sitemesh.mapper.ConfigLoader;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 /* Tests the custom sitemesh decorator mapper.
  */

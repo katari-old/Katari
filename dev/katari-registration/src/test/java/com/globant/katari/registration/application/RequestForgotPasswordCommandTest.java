@@ -1,6 +1,6 @@
 package com.globant.katari.registration.application;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import java.util.List;
 import java.util.UUID;

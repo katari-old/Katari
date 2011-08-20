@@ -4,7 +4,7 @@ package com.globant.katari.editablepages.view;
 
 import java.util.Map;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import org.junit.Before;
 import org.junit.Test;

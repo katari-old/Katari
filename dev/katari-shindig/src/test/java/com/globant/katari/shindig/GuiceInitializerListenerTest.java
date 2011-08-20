@@ -4,7 +4,7 @@ package com.globant.katari.shindig;
 
 import java.util.LinkedList;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import org.junit.Test;
 import org.junit.Before;

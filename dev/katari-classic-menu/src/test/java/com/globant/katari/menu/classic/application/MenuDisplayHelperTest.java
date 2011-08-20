@@ -2,7 +2,7 @@
 
 package com.globant.katari.menu.classic.application;
 
-import static org.easymock.classextension.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.createNiceMock;
 
 import java.util.List;
 import java.util.LinkedList;

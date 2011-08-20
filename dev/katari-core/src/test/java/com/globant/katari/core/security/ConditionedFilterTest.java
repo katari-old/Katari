@@ -8,7 +8,7 @@ import javax.servlet.ServletResponse;
 import junit.framework.TestCase;
 
 import org.acegisecurity.util.FilterChainProxy;
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 
 /**
  * Tests the Conditioned Filter.

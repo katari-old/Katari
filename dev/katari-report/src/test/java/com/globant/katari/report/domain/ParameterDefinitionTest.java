@@ -10,7 +10,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 
 /** Tests Report Definition.
  */

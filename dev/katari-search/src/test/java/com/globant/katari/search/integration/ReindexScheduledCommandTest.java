@@ -3,7 +3,7 @@ package com.globant.katari.search.integration;
 
 import org.junit.Test;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import com.globant.katari.search.domain.IndexRepository;
 

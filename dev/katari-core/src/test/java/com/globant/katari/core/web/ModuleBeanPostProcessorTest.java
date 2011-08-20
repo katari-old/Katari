@@ -2,13 +2,13 @@
 
 package com.globant.katari.core.web;
 
-import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.EasyMock.createMock;
 
 import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 import com.globant.katari.core.login.LoginConfigurationSetter;

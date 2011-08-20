@@ -1,9 +1,9 @@
 package com.globant.katari.registration.application;
 
 import static com.globant.katari.registration.SpringTestUtils.*;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
 import java.util.Date;

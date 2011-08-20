@@ -6,7 +6,7 @@ import com.globant.katari.tools.FreemarkerTestEngine;
 
 import org.junit.Test;
 import org.junit.Before;
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import java.util.List;
 import java.util.ArrayList;

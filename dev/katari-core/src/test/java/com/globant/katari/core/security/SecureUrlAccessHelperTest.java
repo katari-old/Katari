@@ -14,7 +14,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 
 import org.apache.commons.lang.Validate;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 /**
  * SecureUrlAccessHelper test case.

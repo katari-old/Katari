@@ -4,7 +4,7 @@ package com.globant.katari.gadgetcontainer.domain;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import org.junit.Before;
 import org.junit.Test;

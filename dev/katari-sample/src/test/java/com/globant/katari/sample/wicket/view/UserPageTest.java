@@ -5,9 +5,9 @@ package com.globant.katari.sample.wicket.view;
 import static org.easymock.EasyMock.anyInt;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.createNiceMock;
-import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.replay;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

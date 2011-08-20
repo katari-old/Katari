@@ -2,7 +2,7 @@
 
 package com.globant.katari.core.web;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import java.util.List;
 import java.util.LinkedList;

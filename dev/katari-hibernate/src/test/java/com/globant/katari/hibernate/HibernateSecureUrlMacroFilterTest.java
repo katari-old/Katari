@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import junit.framework.TestCase;
 
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 
 import com.globant.katari.hibernate.DevelopmentDataBaseChecker;
 

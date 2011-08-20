@@ -2,7 +2,7 @@
 
 package com.globant.katari.core.web;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextListener;

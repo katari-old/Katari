@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.sql.DataSource;
 
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.springframework.validation.BindException;

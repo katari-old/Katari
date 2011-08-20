@@ -7,7 +7,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.userdetails.UserDetails;
 import org.apache.commons.lang.Validate;
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 /**

@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 

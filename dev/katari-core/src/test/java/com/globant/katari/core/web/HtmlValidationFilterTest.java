@@ -2,7 +2,7 @@
 
 package com.globant.katari.core.web;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;

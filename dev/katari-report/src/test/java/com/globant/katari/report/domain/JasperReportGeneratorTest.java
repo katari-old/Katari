@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 import junit.framework.TestCase;
 
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 
 import com.globant.katari.report.ReportsTestSupport;
 

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import org.apache.shindig.common.crypto.BlobCrypter;
 import org.apache.shindig.common.uri.Uri;

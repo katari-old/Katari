@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import junit.framework.TestCase;
 
 import org.acegisecurity.Authentication;
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 
 import com.globant.katari.cas.CasTicketRegisteringProcessingFilter;
 import com.globant.katari.cas.CasTicketRegistry;

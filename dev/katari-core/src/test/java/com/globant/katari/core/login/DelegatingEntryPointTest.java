@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.ui.AuthenticationEntryPoint;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import junit.framework.TestCase;
 

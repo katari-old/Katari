@@ -2,7 +2,7 @@ package com.globant.katari.login.cas;
 
 import javax.servlet.http.HttpSession;
 
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 
 import junit.framework.TestCase;
 

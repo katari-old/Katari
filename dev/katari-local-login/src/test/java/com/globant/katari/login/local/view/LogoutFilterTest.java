@@ -3,10 +3,10 @@
 package com.globant.katari.login.local.view;
 
 import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.verify;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.createNiceMock;
-import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.replay;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;

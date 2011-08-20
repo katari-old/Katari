@@ -7,7 +7,7 @@ import com.globant.katari.user.application.Password;
 import com.globant.katari.user.application.Profile;
 import com.globant.katari.user.application.SaveUserCommand;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import org.junit.Test;
 

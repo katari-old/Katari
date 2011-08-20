@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import com.globant.katari.search.application.SearchCommand;
 import com.globant.katari.search.domain.SearchResultElement;

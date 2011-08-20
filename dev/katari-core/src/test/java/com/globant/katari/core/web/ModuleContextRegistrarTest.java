@@ -2,7 +2,7 @@
 
 package com.globant.katari.core.web;
 
-import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.EasyMock.createMock;
 
 import org.springframework.beans.DirectFieldAccessor;
 

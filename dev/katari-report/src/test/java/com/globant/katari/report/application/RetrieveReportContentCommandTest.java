@@ -2,7 +2,7 @@ package com.globant.katari.report.application;
 
 import junit.framework.TestCase;
 
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 
 import com.globant.katari.report.domain.JasperReportRepository;
 import com.globant.katari.report.domain.ReportDefinition;

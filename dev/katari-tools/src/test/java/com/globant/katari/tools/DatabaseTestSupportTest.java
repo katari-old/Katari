@@ -9,7 +9,7 @@ import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.hibernate.cfg.Configuration;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

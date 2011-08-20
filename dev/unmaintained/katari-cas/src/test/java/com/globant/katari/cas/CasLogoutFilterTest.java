@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import junit.framework.TestCase;
 
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 
 import com.globant.katari.cas.CasLogoutFilter;
 import com.globant.katari.cas.CasTicketRegistry;

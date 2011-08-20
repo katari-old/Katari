@@ -18,7 +18,7 @@ import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.WebappTemplateLoader;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 /** Tests the FreemarkerDecoratorServlet.
  */

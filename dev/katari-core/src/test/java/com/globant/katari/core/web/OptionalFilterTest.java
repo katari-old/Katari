@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.Test;
 import org.junit.Before;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 public class OptionalFilterTest {
 

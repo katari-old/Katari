@@ -2,7 +2,7 @@
 
 package com.globant.katari.menu.dropdown.application;
 
-import static org.easymock.classextension.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.createNiceMock;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
