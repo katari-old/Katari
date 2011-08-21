@@ -8,23 +8,37 @@ import java.util.LinkedList;
 import java.util.Enumeration;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Locale;
 import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.Validate;
 import com.globant.katari.core.web.ServletConfigWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceResolvable;
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.support.RequestContext;
+import org.springframework.web.servlet.view.AbstractTemplateView;
 
 import freemarker.cache.TemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.WebappTemplateLoader;
+import freemarker.template.SimpleHash;
+import freemarker.template.Template;
+import freemarker.template.TemplateModel;
 
 /** A reimplementation of the freemarker decorator servlet for sitemesh that
  * can specify multiple loading paths.
@@ -45,6 +59,10 @@ import freemarker.cache.WebappTemplateLoader;
  * - debug: The debug parameter enables hot reloading of templates from the
  *   file system. If this is false, DebugPrefix and AdditionalDebugPrefixes are
  *   ignored.
+ *
+ * Finally, this servlet expects, in the constructor, the message source to use
+ * to resolve message codes. As a side effect of this, this servlet cannot be
+ * created in web.xml.
  */
 public class FreemarkerDecoratorServlet extends
     com.opensymphony.module.sitemesh.freemarker.FreemarkerDecoratorServlet {
@@ -94,6 +112,29 @@ public class FreemarkerDecoratorServlet extends
   /** The value of the debug initialization parameter.
    */
   private boolean debug = false;
+
+  /** The message source to resolve message codes.
+   *
+   * This is never null.
+   */
+  private MessageSource messageSource;
+
+  /** The local web application context associated with this filter.
+   *
+   * This is used to scope the message resolution to a specific bean. It is
+   * never null after the call to init.
+   */
+  private GenericWebApplicationContext applicationContext = null;
+
+  /** Creates a freemarker decorator filter.
+   *
+   * @param theMessageSource the message source to resolve message codes. It
+   * cannot be null.
+   */
+  public FreemarkerDecoratorServlet(final MessageSource theMessageSource) {
+    Validate.notNull(theMessageSource, "The message source cannot be null.");
+    messageSource = theMessageSource;
+  }
 
   /** A servlet config that strips the DebugPrefix, AdditionalTemplatePaths,
    * AdditionalDebugPrefixes and debug initialization parameter from the list
@@ -145,20 +186,6 @@ public class FreemarkerDecoratorServlet extends
       }
       return Collections.enumeration(modified);
     }
-
-    /*
-      Enumeration original = super.getInitParameterNames();
-      List modified = new Vector();
-      Vector modified = new Vector();
-      while (original.hasMoreElements()) {
-        String name = (String) original.nextElement();
-        if (!strippedParameters.contains(name)) {
-          modified.add(name);
-        }
-      }
-      return modified.elements();
-    }
-    */
   }
 
   /** Initializes the servlet.
@@ -184,6 +211,28 @@ public class FreemarkerDecoratorServlet extends
     }
     log.debug("Initialized debug to {}", debug);
     super.init(new ConfigWithoutAdditionlPaths(config));
+
+    // Creates the local application context. It delegates all message
+    // resolving to the message passed as parameter.
+    applicationContext = new GenericWebApplicationContext() {
+      public String getMessage(final String code, final Object[] args, final
+          String defaultMessage, final Locale locale) {
+        return messageSource.getMessage(code, args, defaultMessage, locale);
+      }
+      public String getMessage(final String code, final Object[] args, final
+          Locale locale) throws NoSuchMessageException {
+        return messageSource.getMessage(code, args, locale);
+      }
+      public String getMessage(final MessageSourceResolvable resolvable, final
+          Locale locale) throws NoSuchMessageException {
+        return messageSource.getMessage(resolvable, locale);
+      }
+    };
+    WebApplicationContext parent = WebApplicationContextUtils
+      .getRequiredWebApplicationContext(getServletContext());
+    applicationContext.setParent(parent);
+    applicationContext.refresh();
+
     log.trace("Leaving init");
   }
 
@@ -344,6 +393,25 @@ public class FreemarkerDecoratorServlet extends
     } else {
       return path;
     }
+  }
+
+  /** {@inheritDoc}
+   *
+   * Adds and exposes a RequestContext to the freemarker temeplate decorator,
+   * to support the macros from spring.ftl.
+   */
+  protected boolean preTemplateProcess(final HttpServletRequest request,
+      final HttpServletResponse response, final Template template,
+      final TemplateModel templateModel) throws ServletException, IOException {
+
+    request.setAttribute(RequestContext.WEB_APPLICATION_CONTEXT_ATTRIBUTE,
+        applicationContext);
+
+    SimpleHash model = (SimpleHash) templateModel;
+    model.put(AbstractTemplateView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE,
+        new RequestContext(request, response, getServletContext(), null));
+    return super.preTemplateProcess(request, response, template,
+        templateModel);
   }
 }
 

@@ -147,6 +147,7 @@
                 <include>**/*.css</include>
                 <include>**/*.png</include>
                 <include>**/*.ico</include>
+                <include>**/*.properties</include>
               </includes>
             </fileSet>
             <fileSet filtered="true" encoding="UTF-8">

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:p="http://www.springframework.org/schema/p"
       xmlns:katari="http://www.globant.com/schema/katari"
       xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
@@ -50,7 +51,9 @@
             <entry key="/.*\.dec">
               <bean class="com.globant.katari.core.web.ServletAndParameters">
                 <constructor-arg index="0">
-                  <bean class="com.globant.katari.core.sitemesh.FreemarkerDecoratorServlet"/>
+                  <bean class="com.globant.katari.core.sitemesh.FreemarkerDecoratorServlet">
+                    <constructor-arg index='0' ref='decorator.messageSource'/>
+                  </bean>
                 </constructor-arg>
                 <constructor-arg index="1">
                   <map>
@@ -59,9 +62,9 @@
                     <entry key="DebugPrefix"
                       value="../katari-style/src/main/resources"/>
                     <entry key="AdditionalTemplatePaths"
-                      value="class://com/globant/katari/core/web"/>
+                      value="class://com/globant/katari/core/web;class://org/springframework/web/servlet/view/freemarker"/>
                     <entry key="AdditionalDebugPrefixes"
-                      value="../katari-core/src/main/resources"/>
+                      value="../katari-core/src/main/resources;../katari-core/src/main/resources;"/>
                     <entry key="debug" value-ref="debugMode"/>
                   </map>
                 </constructor-arg>
@@ -113,6 +116,14 @@
       </bean>
     </property>
   </bean>
+
+  <!-- Message source for this module, loaded from localized "messages_xx"
+  files.
+  Note: as this message source is not named messageSource, it is not used as
+  the defaulte message source for the application context. -->
+  <bean id="decorator.messageSource"
+    class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+    p:basename="classpath:/com/globant/katari/style/l10n/messages" />
 
 </beans>
 

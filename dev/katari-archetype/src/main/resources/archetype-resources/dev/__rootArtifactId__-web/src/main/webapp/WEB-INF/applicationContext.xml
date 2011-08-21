@@ -75,6 +75,12 @@
   <!--  The quartz module. -->
   <katari:import module="com.globant.katari.quartz"/>
 
+  <!-- Provides email. -->
+  <katari:import module="com.globant.katari.email" />
+
+  <!-- Provides registration. -->
+  <katari:import module="com.globant.katari.registration" />
+
   <!-- The style module. It provides a sample style and serves the static
   content used in the application. -->
   <katari:import module="${package}.style"/>

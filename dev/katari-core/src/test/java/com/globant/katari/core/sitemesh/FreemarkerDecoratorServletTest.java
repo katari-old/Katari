@@ -2,35 +2,52 @@
 
 package com.globant.katari.core.sitemesh;
 
+import java.io.File;
+import java.io.FileReader;
 import java.util.Hashtable;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
+import org.springframework.context.MessageSource;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.web.servlet.view.AbstractTemplateView;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import freemarker.cache.TemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.WebappTemplateLoader;
+import freemarker.template.SimpleHash;
+import freemarker.template.Template;
 
 import static org.easymock.EasyMock.*;
 
 /** Tests the FreemarkerDecoratorServlet.
  */
-public class FreemarkerDecoratorServletTest extends TestCase {
+public class FreemarkerDecoratorServletTest {
+
+  private MessageSource messageSource = createNiceMock(MessageSource.class);
 
   /** Very naive subclass just to get access to the internal status.
    */
-  private static class ServletWithTemplateLoader extends
-    FreemarkerDecoratorServlet {
+  private class ServletWithTemplateLoader extends FreemarkerDecoratorServlet {
+
+    public ServletWithTemplateLoader() {
+      super(messageSource);
+    }
 
     private static final long serialVersionUID = 1L;
-    
+
     public TemplateLoader[] loaders;
 
     public TemplateLoader getTemplateLoader() {
@@ -48,14 +65,15 @@ public class FreemarkerDecoratorServletTest extends TestCase {
   private ServletConfig createServletConfig(final Hashtable<String, String>
       parameters) {
     // Mocks the servlet context.
-    ServletContext context = createMock(ServletContext.class);
-    expect(context.getServletContextName()).andReturn("/freemarker");
-    expectLastCall().anyTimes();
+    MockServletContext context = new MockServletContext();
+    context.setServletContextName("/freemarker");
 
-    // Under some conditions, the init method asks context to log the call.
-    context.log(isA(String.class));
-    expectLastCall().anyTimes();
-    replay(context);
+    GenericWebApplicationContext applicationContext;
+    applicationContext = new GenericWebApplicationContext();
+    applicationContext.refresh();
+    context.setAttribute(
+        WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,
+        applicationContext);
 
     // Mocks the servlet config.
     MockServletConfig config = new MockServletConfig(context);
@@ -69,7 +87,8 @@ public class FreemarkerDecoratorServletTest extends TestCase {
   /* Tests if the servlet is initialized correctly for one additional template
    * path and no debug related attributes.
    */
-  public final void testInit_noDebug() throws Exception {
+  @Test
+  public final void init_noDebug() throws Exception {
 
     // Creates an enumeration with all the parameter names.
     Hashtable<String, String> parameters = new Hashtable<String, String>();
@@ -93,7 +112,8 @@ public class FreemarkerDecoratorServletTest extends TestCase {
 
   /* Tests if the servlet is initialized correctly.
    */
-  public final void testInit_debugAndDebugPrefix() throws Exception {
+  @Test
+  public final void init_debugAndDebugPrefix() throws Exception {
 
     // Creates an enumeration with all the parameter names.
     Hashtable<String, String> parameters = new Hashtable<String, String>();
@@ -118,7 +138,8 @@ public class FreemarkerDecoratorServletTest extends TestCase {
   /* Tests if the servlet is initialized correctly with multiple additional
    * template paths.
    */
-  public final void testInit_debug() throws Exception {
+  @Test
+  public final void init_debug() throws Exception {
 
     // Creates an enumeration with all the parameter names.
     Hashtable<String, String> parameters = new Hashtable<String, String>();
@@ -150,7 +171,8 @@ public class FreemarkerDecoratorServletTest extends TestCase {
   /* Tests if the servlet is initialized correctly with multiple additional
    * template paths.
    */
-  public final void testInit_debugFalse() throws Exception {
+  @Test
+  public final void init_debugFalse() throws Exception {
 
     // Creates an enumeration with all the parameter names.
     Hashtable<String, String> parameters = new Hashtable<String, String>();
@@ -173,6 +195,23 @@ public class FreemarkerDecoratorServletTest extends TestCase {
     assertEquals(2, servlet.loaders.length);
     assertTrue(servlet.loaders[0] instanceof ClassTemplateLoader);
     assertTrue(servlet.loaders[1] instanceof ClassTemplateLoader);
+  }
+
+  @Test
+  public void preTemplateProcess() throws Exception {
+    ServletWithTemplateLoader servlet = new ServletWithTemplateLoader();
+    servlet.init(createServletConfig(new Hashtable<String, String>()));
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    File ftl = new File(
+        "src/main/resources/com/globant/katari/core/web/katari.ftl");
+    Template template = new Template("t", new FileReader(ftl), null, null);
+    SimpleHash model = new SimpleHash();
+    servlet.preTemplateProcess(request, response, template, model);
+    assertThat(model.get(
+        AbstractTemplateView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE),
+        is(notNullValue()));
   }
 }
 

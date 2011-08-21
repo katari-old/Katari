@@ -506,7 +506,7 @@
   <!-- localeResolver to obtain a locale from the request. It may be replace by
        overriding the bean. Be careful, though, to always use a resolver that
        supports setLocale().
-       
+
   We set the max age to two years from now. By default, CookieLocaleResolver
   uses Integer.MAX_VALUE. This makes the cookie date into the past in jetty,
   although it works fine in tomcat.

@@ -271,6 +271,11 @@
 
     <dependency>
       <groupId>com.globant.katari</groupId>
+      <artifactId>katari-email</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globant.katari</groupId>
       <artifactId>katari-registration</artifactId>
     </dependency>
 
