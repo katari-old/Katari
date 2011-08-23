@@ -18,8 +18,10 @@
   <!-- Message source for this context, loaded from localized "messages_xx"
   files -->
   <bean id="messageSource"
-      class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-      p:basename="classpath:/com/globant/katari/login/local/l10n/messages" />
+    class="com.globant.katari.core.spring.KatariMessageSource"
+    p:basename="classpath:/com/globant/katari/login/local/l10n/messages"
+    p:debugPrefix='../katari-local-login/src/main/resources'
+    p:debug-ref='debugMode'/>
 
   <bean id="viewResolver"
     class="com.globant.katari.core.web.FreeMarkerViewResolver"

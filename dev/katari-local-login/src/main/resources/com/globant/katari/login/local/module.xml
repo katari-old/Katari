@@ -139,8 +139,10 @@
   Note: as this message source is not named messageSource, it is not used as
   the defaulte message source for the application context. -->
   <bean id="local-login.messageSource"
-    class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-    p:basename="classpath:/com/globant/katari/login/local/l10n/messages" />
+    class="com.globant.katari.core.spring.KatariMessageSource"
+    p:basename="classpath:/com/globant/katari/login/local/l10n/messages"
+    p:debugPrefix='../katari-local-login/src/main/resources'
+    p:debug-ref='debugMode'/>
 
   <!-- Override in the global application context to enable captcha in the
        login page. -->

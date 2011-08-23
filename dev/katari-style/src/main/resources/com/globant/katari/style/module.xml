@@ -122,8 +122,10 @@
   Note: as this message source is not named messageSource, it is not used as
   the defaulte message source for the application context. -->
   <bean id="decorator.messageSource"
-    class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-    p:basename="classpath:/com/globant/katari/style/l10n/messages" />
+    class="com.globant.katari.core.spring.KatariMessageSource"
+    p:basename="classpath:/com/globant/katari/style/l10n/messages"
+    p:debugPrefix='../katari-style/src/main/resources'
+    p:debug-ref='debugMode'/>
 
 </beans>
 
