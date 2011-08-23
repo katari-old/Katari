@@ -4,23 +4,21 @@ import org.apache.commons.lang.Validate;
 
 /**
  * This class holds all the information to create a new email.
- * This one should be configured by spring to be complaiment with i18l.
  *
- * @author waabox (emiliano[dot]arango[at]globant[dot]com)
- *
+ * This one should be configured by spring to be i18n compliant.
  */
 public class EmailConfigurer {
 
-  /** The "admin" emails. It's never null.*/
+  /** The "admin" emails, never null.*/
   private final String emailFrom;
 
-  /** The email's subject. It's never null.*/
+  /** The email's subject, never null.*/
   private final String subject;
 
-  /** The email's template (Freemarker). It's never null.*/
+  /** The email's template (Freemarker), never null.*/
   private final String template;
 
-  /** The email's plain message (non HTML) It's never null. */
+  /** The email's plain message (non HTML), never null. */
   private final String plainMessage;
 
   /** Builds a new instance of the email configurer.
@@ -70,3 +68,4 @@ public class EmailConfigurer {
     return plainMessage;
   }
 }
+
