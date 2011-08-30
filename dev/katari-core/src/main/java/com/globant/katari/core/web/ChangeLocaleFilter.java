@@ -24,8 +24,8 @@ import org.springframework.web.servlet.LocaleResolver;
 
 /** Filter to change the locale.
  *
- * This filter expects a katari-lang request parameter and sets the locale
- * accordingly in the locale resolver and in the LocaleContextHolder.
+ * This filter expects a lang request parameter and sets the locale accordingly
+ * in the locale resolver and in the LocaleContextHolder.
  *
  * It expects a locale resolver that supports setLocale (ej:
  * CookieLocaleResolver), AcceptHeaderLocaleResolver won't work.
@@ -78,7 +78,7 @@ public final class ChangeLocaleFilter implements Filter {
     HttpServletRequest httpRequest = (HttpServletRequest) request;
     HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-    String newLocale = request.getParameter("katari-lang");
+    String newLocale = request.getParameter("lang");
     if (newLocale != null) {
       Locale locale = StringUtils.parseLocaleString(newLocale.toLowerCase());
       LocaleContextHolder.setLocale(locale);

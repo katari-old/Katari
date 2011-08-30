@@ -57,7 +57,7 @@ public class ChangeLocaleFilterTest {
     // Execute the test.
     ChangeLocaleFilter filter = new ChangeLocaleFilter(localeResolver);
 
-    request.setParameter("katari-lang", "es_AR");
+    request.setParameter("lang", "es_AR");
     filter.doFilter(request, response, chain);
     verify(localeResolver);
   }
