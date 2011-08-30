@@ -8,24 +8,27 @@ package ${package}.web.functionaltest;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 /** Test that the ping servlet aswers.
  */
 public class PingTest {
 
   @Test
-  public final void testPing() throws Exception {
+  public final void ping() throws Exception {
 
-    HttpMethod method = null;
+    HttpClient client = null;
     try {
-      HttpClient client = new HttpClient();
-      method = new GetMethod(SimplePageVerifier.getBaseUrl() + "/ping");
+      HttpGet method = null;
+      client = new DefaultHttpClient();
+      method = new HttpGet(SimplePageVerifier.getBaseUrl() + "/ping"); 
+      HttpResponse response = client.execute(method);
+      String responseBody = EntityUtils.toString(response.getEntity());
 
-      client.executeMethod(method);
-      String responseBody = method.getResponseBodyAsString();
       assertTrue("Response doesn't match 'Loading spring context: SUCCESS'",
           responseBody.matches("(?s).*Loading spring context: SUCCESS.*"));
       assertTrue("Response doesn't match 'Application started successfully'",
@@ -35,7 +38,9 @@ public class PingTest {
       assertTrue("Response doesn't match 'this is a development database'",
           responseBody.matches("(?s).*this is a development database.*"));
     } finally {
-      method.releaseConnection();
+      if (client != null) {
+        client.getConnectionManager().shutdown();
+      }
     }
   }
 }

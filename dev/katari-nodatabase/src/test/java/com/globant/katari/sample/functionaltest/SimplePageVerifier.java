@@ -13,7 +13,7 @@ import org.apache.commons.lang.Validate;
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequestSettings;
+import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -150,11 +150,11 @@ public final class SimplePageVerifier extends TestCase {
     Validate.notNull(matchRegExp, "The regular expression cannot be null.");
     Validate.notNull(notMatchRegExp, "The regular expression cannot be null.");
 
-    WebRequestSettings webRequestSettings = new WebRequestSettings(
+    WebRequest webRequest = new WebRequest(
         new URL(getBaseUrl() + url + requestParameters), httpMethod);
 
     // Verify the title page.
-    HtmlPage page = (HtmlPage) webClient.getPage(webRequestSettings);
+    HtmlPage page = (HtmlPage) webClient.getPage(webRequest);
     assertNotNull(page);
     assertTrue("The regular expression '" + titleRegExp
         + "' does not matches the page title: \n" + page.getTitleText(), page
@@ -202,11 +202,11 @@ public final class SimplePageVerifier extends TestCase {
     Validate.notNull(httpMethod, "The http method cannot be null.");
     Validate.notNull(title, "The title cannot be null.");
 
-    WebRequestSettings webRequestSettings = new WebRequestSettings(
+    WebRequest webRequest = new WebRequest(
         new URL(getBaseUrl() + url + requestParameters), httpMethod);
 
     // Verify the title page.
-    HtmlPage page = (HtmlPage) webClient.getPage(webRequestSettings);
+    HtmlPage page = (HtmlPage) webClient.getPage(webRequest);
     assertNotNull(page);
     assertEquals(title, page.getTitleText());
   }

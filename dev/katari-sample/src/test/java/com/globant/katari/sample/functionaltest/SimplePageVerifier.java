@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequestSettings;
+import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -166,11 +166,10 @@ public final class SimplePageVerifier extends TestCase {
     log.trace("Entering verifyPage");
 
     String location = getBaseUrl() + url + requestParameters;
-    WebRequestSettings webRequestSettings;
-    webRequestSettings = new WebRequestSettings(new URL(location), httpMethod);
+    WebRequest webRequest = new WebRequest(new URL(location), httpMethod);
 
     // Verify the title page.
-    HtmlPage page = (HtmlPage) webClient.getPage(webRequestSettings);
+    HtmlPage page = (HtmlPage) webClient.getPage(webRequest);
     log.debug("Page {}: \n{}\n", location, page.asXml());
     assertNotNull(page);
     assertTrue("The regular expression '" + titleRegExp
@@ -223,11 +222,10 @@ public final class SimplePageVerifier extends TestCase {
     log.trace("Entering verifyPage");
 
     String location = getBaseUrl() + url + requestParameters;
-    WebRequestSettings webRequestSettings;
-    webRequestSettings = new WebRequestSettings(new URL(location), httpMethod);
+    WebRequest webRequest = new WebRequest(new URL(location), httpMethod);
 
     // Verify the title page.
-    HtmlPage page = (HtmlPage) webClient.getPage(webRequestSettings);
+    HtmlPage page = (HtmlPage) webClient.getPage(webRequest);
     log.debug("Page {}: \n{}\n", location, page.asXml());
     assertNotNull(page);
     assertEquals(title, page.getTitleText());

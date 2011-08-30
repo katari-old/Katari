@@ -117,6 +117,12 @@
       </dependency>
 
       <dependency>
+        <groupId>net.sourceforge.nekohtml</groupId>
+        <artifactId>nekohtml</artifactId>
+        <version>1.9.15</version>
+      </dependency>
+
+      <dependency>
         <groupId>dumbster</groupId>
         <artifactId>dumbster</artifactId>
         <version>1.6</version>
@@ -167,7 +173,7 @@
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
-        <version>4.0.3</version>
+        <version>4.1.2</version>
         <exclusions>
           <exclusion>
             <groupId>commons-codec</groupId>
@@ -1111,7 +1117,7 @@ try {
     <dependency.junit.version>4.5</dependency.junit.version>
     <dependency.easymock.version>3.0</dependency.easymock.version>
     <dependency.spring.version>3.0.5.RELEASE</dependency.spring.version>
-    <dependency.htmlunit.version>2.5</dependency.htmlunit.version>
+    <dependency.htmlunit.version>2.9</dependency.htmlunit.version>
     <dependency.hibernate-core.version>
       3.5.3-Final
     </dependency.hibernate-core.version>
