@@ -28,11 +28,6 @@
 
     <dependency>
       <groupId>org.easymock</groupId>
-      <artifactId>easymockclassextension</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
     </dependency>
 
@@ -316,7 +311,7 @@
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-maven2-plugin</artifactId>
-        <version>1.0</version>
+        <version>1.1.2</version>
 
         <executions>
 
@@ -602,7 +597,7 @@
           <plugin>
             <groupId>org.codehaus.cargo</groupId>
             <artifactId>cargo-maven2-plugin</artifactId>
-            <version>0.3.1</version>
+            <version>1.1.2</version>
             <configuration>
               <container>
                 <containerId>tomcat5x</containerId>

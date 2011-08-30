@@ -29,11 +29,6 @@
       <artifactId>easymock</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymockclassextension</artifactId>
-    </dependency>
-
     <!-- Katari dependencies -->
     <dependency>
       <groupId>com.globant.katari</groupId>
