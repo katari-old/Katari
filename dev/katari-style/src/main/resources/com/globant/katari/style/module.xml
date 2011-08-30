@@ -123,7 +123,7 @@
   the defaulte message source for the application context. -->
   <bean id="decorator.messageSource"
     class="com.globant.katari.core.spring.KatariMessageSource"
-    p:basename="classpath:/com/globant/katari/style/l10n/messages"
+    p:basename="classpath:/com/globant/katari/style/lang/messages"
     p:debugPrefix='../katari-style/src/main/resources'
     p:debug-ref='debugMode'/>
 

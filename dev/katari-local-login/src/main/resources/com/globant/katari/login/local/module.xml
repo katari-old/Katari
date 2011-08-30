@@ -140,7 +140,7 @@
   the defaulte message source for the application context. -->
   <bean id="local-login.messageSource"
     class="com.globant.katari.core.spring.KatariMessageSource"
-    p:basename="classpath:/com/globant/katari/login/local/l10n/messages"
+    p:basename="classpath:/com/globant/katari/login/local/lang/messages"
     p:debugPrefix='../katari-local-login/src/main/resources'
     p:debug-ref='debugMode'/>
 

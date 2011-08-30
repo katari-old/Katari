@@ -126,7 +126,7 @@
   the defaulte message source for the application context. -->
   <bean id="decorator.messageSource"
     class="com.globant.katari.core.spring.KatariMessageSource"
-    p:basename="classpath:/${packageInPathFormat}/style/l10n/messages"
+    p:basename="classpath:/${packageInPathFormat}/style/lang/messages"
     p:debugPrefix='../${rootArtifactId}-style/src/main/resources'
     p:debug-ref="debugMode"/>
 
