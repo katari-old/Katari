@@ -82,5 +82,18 @@ public class JsonRepresentation {
   public JSONArray getJsonArray() {
     return jsonArray;
   }
+
+  /** Obtains this json array or object is string format.
+   *
+   * @return a string representing the json object or array. Never returns
+   * null.
+   */
+  public String toString() {
+    if (jsonArray != null) {
+      return jsonArray.toString();
+    } else {
+      return jsonObject.toString();
+    }
+  }
 }
 

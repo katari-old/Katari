@@ -16,7 +16,7 @@ import org.json.JSONArray;
 public class JsonRepresentationTest {
 
   @Test
-  public void testWrite_object() throws Exception {
+  public void write_object() throws Exception {
 
     Writer writer = new StringWriter();
 
@@ -29,7 +29,7 @@ public class JsonRepresentationTest {
   }
 
   @Test
-  public void testWrite_array() throws Exception {
+  public void write_array() throws Exception {
 
     Writer writer = new StringWriter();
 
@@ -39,6 +39,18 @@ public class JsonRepresentationTest {
     assertThat(writer.toString(), is("[]"));
     assertThat(rep.getJsonObject(), is(nullValue()));
     assertThat(rep.getJsonArray(), is(not(nullValue())));
+  }
+
+  @Test
+  public void toString_object() throws Exception {
+    JsonRepresentation rep = new JsonRepresentation(new JSONObject());
+    assertThat(rep.toString(), is("{}"));
+  }
+
+  @Test
+  public void toString_array() throws Exception {
+    JsonRepresentation rep = new JsonRepresentation(new JSONArray());
+    assertThat(rep.toString(), is("[]"));
   }
 }
 
