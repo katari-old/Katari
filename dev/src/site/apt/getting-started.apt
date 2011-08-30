@@ -211,7 +211,7 @@ src/main/resources/com/globant/acme/coyote/hello/module.xml:
             <entry key=".*\.do">
               <bean class="com.globant.katari.core.web.ServletAndParameters">
                 <constructor-arg index="0">
-                  <bean class="org.springframework.web.servlet.DispatcherServlet" />
+                  <bean class="com.globant.katari.core.web.DispatcherServlet" />
                 </constructor-arg>
                 <constructor-arg index="1">
                   <map>
