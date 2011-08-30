@@ -40,7 +40,7 @@ public abstract class CoreUser {
 
   /** The length in characters of the user name.
    */
-  private static final int USER_NAME_LENGTH = 50;
+  private static final int USER_NAME_LENGTH = 100;
 
   /** The id of the user.
    *
