@@ -14,8 +14,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class KatariMessageSourceTest {
 
-  @Test
-  public void calculateFilenamesForLocale_noDebug() {
+  @Test public void calculateFilenamesForLocale_noDebug() {
     KatariMessageSource messageSource = new KatariMessageSource();
 
     List<String> fileNames = messageSource.calculateFilenamesForLocale(
@@ -25,8 +24,30 @@ public class KatariMessageSourceTest {
     assertThat(fileNames.get(1), is("classpath:messages_en"));
   }
 
-  @Test
-  public void calculateFilenamesForLocale_debug() {
+  @Test public void calculateFilenamesForLocale_withFallback() {
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.UK);
+
+    List<String> fileNames = messageSource.calculateFilenamesForLocale(
+        "classpath:messages", Locale.US);
+    assertThat(fileNames.size(), is(3));
+    assertThat(fileNames.get(0), is("classpath:messages_en_US"));
+    assertThat(fileNames.get(1), is("classpath:messages_en"));
+    assertThat(fileNames.get(2), is("classpath:messages_en_GB"));
+  }
+
+  @Test public void calculateFilenamesForLocale_noDebugAndDir() {
+    KatariMessageSource messageSource = new KatariMessageSource();
+
+    List<String> fileNames = messageSource.calculateFilenamesForLocale(
+        "classpath:com/lang/messages", Locale.US);
+    assertThat(fileNames.size(), is(4));
+    assertThat(fileNames.get(0), is("classpath:com/lang_en_US/messages"));
+    assertThat(fileNames.get(1), is("classpath:com/lang/messages_en_US"));
+    assertThat(fileNames.get(2), is("classpath:com/lang_en/messages"));
+    assertThat(fileNames.get(3), is("classpath:com/lang/messages_en"));
+  }
+
+  @Test public void calculateFilenamesForLocale_debug() {
     KatariMessageSource messageSource = new KatariMessageSource();
 
     messageSource.setDebug(true);
@@ -34,12 +55,32 @@ public class KatariMessageSourceTest {
 
     List<String> fileNames = messageSource.calculateFilenamesForLocale(
         "classpath:messages", Locale.US);
-    assertThat(fileNames.size(), is(5));
+    assertThat(fileNames.size(), is(4));
     assertThat(fileNames.get(0), is("file:fs/messages_en_US"));
     assertThat(fileNames.get(1), is("file:fs/messages_en"));
-    assertThat(fileNames.get(2), is("file:fs/messages"));
-    assertThat(fileNames.get(3), is("classpath:messages_en_US"));
-    assertThat(fileNames.get(4), is("classpath:messages_en"));
+    assertThat(fileNames.get(2), is("classpath:messages_en_US"));
+    assertThat(fileNames.get(3), is("classpath:messages_en"));
+  }
+
+  @Test public void calculateFilenamesForLocale_debugAndDir() {
+    KatariMessageSource messageSource = new KatariMessageSource();
+
+    messageSource.setDebug(true);
+    messageSource.setDebugPrefix("fs");
+
+    List<String> fileNames = messageSource.calculateFilenamesForLocale(
+        "classpath:com/lang/messages", Locale.US);
+    assertThat(fileNames.size(), is(8));
+
+    assertThat(fileNames.get(0), is("file:fs/com/lang_en_US/messages"));
+    assertThat(fileNames.get(1), is("file:fs/com/lang/messages_en_US"));
+    assertThat(fileNames.get(2), is("file:fs/com/lang_en/messages"));
+    assertThat(fileNames.get(3), is("file:fs/com/lang/messages_en"));
+
+    assertThat(fileNames.get(4), is("classpath:com/lang_en_US/messages"));
+    assertThat(fileNames.get(5), is("classpath:com/lang/messages_en_US"));
+    assertThat(fileNames.get(6), is("classpath:com/lang_en/messages"));
+    assertThat(fileNames.get(7), is("classpath:com/lang/messages_en"));
   }
 
   @Test public void getMessage_fromClasspath() {
@@ -47,7 +88,7 @@ public class KatariMessageSourceTest {
 
     messageSource.setDebug(false);
     messageSource.setDebugPrefix(
-        "src/test/resources/com/globant/katari/core/spring");
+        "src/test/resources/com/lang/katari/core/spring");
     messageSource.setBasename("classpath:katariMessageSource");
 
     String message = messageSource.getMessage("test1", null, Locale.US);
@@ -80,8 +121,8 @@ public class KatariMessageSourceTest {
     File dest = new File("target/test-data");
     dest.mkdirs();
     File src = new File("src/test/resources/com/globant/katari/core/"
-        + "spring/katariMessageSource.properties");
-    File dst = new File("target/test-data/katariMessageSource.properties");
+        + "spring/katariMessageSource_en.properties");
+    File dst = new File("target/test-data/katariMessageSource_en.properties");
     FileCopyUtils.copy(src, dst);
     // The message sources checks the timpestamp of the file to reload.
     dst.setLastModified(System.currentTimeMillis() - 10000);
@@ -97,6 +138,31 @@ public class KatariMessageSourceTest {
 
     message = messageSource.getMessage("test2", null, Locale.US);
     assertThat(message, is("overriden_2"));
+  }
+
+  @Test public void getMessage_overrideInParent() {
+    KatariMessageSource parent = new KatariMessageSource();
+    parent.setBasename(
+        "classpath:com/globant/katari/core/spring/katariMessageSource");
+    KatariMessageSource messageSource = new KatariMessageSource();
+    messageSource.setBasename("classpath:katariMessageSource");
+    messageSource.setParentMessageSource(parent);
+
+    String message = messageSource.getMessage("test1", null, Locale.US);
+    assertThat(message, is("overriden_1"));
+  }
+
+  @Test public void getMessage_overrideForModule() {
+    KatariMessageSource parent = new KatariMessageSource();
+    parent.setBasename(
+        "classpath:com/globant/katari/core/spring/katariMessageSource");
+    KatariMessageSource messageSource = new KatariMessageSource();
+    messageSource.setBasename("classpath:katariMessageSource");
+    messageSource.setParentMessageSource(parent);
+    messageSource.setModuleName("local-login");
+
+    String message = messageSource.getMessage("test2", null, Locale.US);
+    assertThat(message, is("overriden_2_for_module_name"));
   }
 }
 
