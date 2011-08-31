@@ -156,7 +156,7 @@ public class KatariMessageSource
   /** Constructor.
    *
    * Creates a KatariMessageSource. This constructor is intended to be used in
-   * modules.
+   * modules. It inherits the fallbackLocale from the parent.
    *
    * @param theModuleName the name of the module. It cannot be null.
    */
@@ -168,6 +168,7 @@ public class KatariMessageSource
     setFallbackToSystemLocale(false);
     setParentMessageSource(theParent);
     moduleName = theModuleName;
+    fallbackLocale = theParent.fallbackLocale;
   }
 
   /** {@inheritDoc}
