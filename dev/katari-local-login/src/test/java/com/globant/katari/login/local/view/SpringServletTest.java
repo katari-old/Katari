@@ -46,6 +46,12 @@ public class SpringServletTest {
       + " >\n"
       + "  <property name='sourceList'><list/></property>\n"
       + " </bean>\n"
+      + " <bean id='katari.messageSource'\n"
+      + "  class='com.globant.katari.core.spring.KatariMessageSource'>\n"
+      + "  <property name='basename'\n"
+      + "    value='classpath:/com/globant/katari/core/lang/messages'/>\n"
+      + "  <constructor-arg index='0' value='en'/>\n"
+      + " </bean>\n"
       + "</beans>\n";
 
     parent = new AbstractXmlApplicationContext() {

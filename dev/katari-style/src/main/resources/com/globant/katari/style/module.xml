@@ -125,7 +125,10 @@
     class="com.globant.katari.core.spring.KatariMessageSource"
     p:basename="classpath:/com/globant/katari/style/lang/messages"
     p:debugPrefix='../katari-style/src/main/resources'
-    p:debug-ref='debugMode'/>
+    p:debug-ref='debugMode'>
+    <constructor-arg index='0' value='local-login'/>
+    <constructor-arg index='1' ref='katari.messageSource'/>
+  </bean>
 
 </beans>
 

@@ -42,6 +42,12 @@ public class ModuleTest {
       + " <bean id='local-login.captchaService'"
       + "  class='com.octo.captcha.service.image"
       + ".DefaultManageableImageCaptchaService'/>"
+      + " <bean id='katari.messageSource'\n"
+      + "  class='com.globant.katari.core.spring.KatariMessageSource'>\n"
+      + "  <property name='basename'\n"
+      + "    value='classpath:/com/globant/katari/core/lang/messages'/>\n"
+      + "  <constructor-arg index='0' value='en'/>\n"
+      + " </bean>\n"
       + "</beans>\n";
 
     parent = new AbstractXmlApplicationContext() {

@@ -21,7 +21,10 @@
     class="com.globant.katari.core.spring.KatariMessageSource"
     p:basename="classpath:/com/globant/katari/login/local/lang/messages"
     p:debugPrefix='../katari-local-login/src/main/resources'
-    p:debug-ref='debugMode'/>
+    p:debug-ref='debugMode'>
+    <constructor-arg index='0' value='local-login'/>
+    <constructor-arg index='1' ref='katari.messageSource'/>
+  </bean>
 
   <bean id="viewResolver"
     class="com.globant.katari.core.web.FreeMarkerViewResolver"

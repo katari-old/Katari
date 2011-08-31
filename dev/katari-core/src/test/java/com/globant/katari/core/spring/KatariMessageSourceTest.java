@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.*;
 public class KatariMessageSourceTest {
 
   @Test public void calculateFilenamesForLocale_noDebug() {
-    KatariMessageSource messageSource = new KatariMessageSource();
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
 
     List<String> fileNames = messageSource.calculateFilenamesForLocale(
         "classpath:messages", Locale.US);
@@ -36,7 +36,7 @@ public class KatariMessageSourceTest {
   }
 
   @Test public void calculateFilenamesForLocale_noDebugAndDir() {
-    KatariMessageSource messageSource = new KatariMessageSource();
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
 
     List<String> fileNames = messageSource.calculateFilenamesForLocale(
         "classpath:com/lang/messages", Locale.US);
@@ -48,7 +48,7 @@ public class KatariMessageSourceTest {
   }
 
   @Test public void calculateFilenamesForLocale_debug() {
-    KatariMessageSource messageSource = new KatariMessageSource();
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
 
     messageSource.setDebug(true);
     messageSource.setDebugPrefix("fs");
@@ -63,7 +63,7 @@ public class KatariMessageSourceTest {
   }
 
   @Test public void calculateFilenamesForLocale_debugAndDir() {
-    KatariMessageSource messageSource = new KatariMessageSource();
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
 
     messageSource.setDebug(true);
     messageSource.setDebugPrefix("fs");
@@ -84,7 +84,7 @@ public class KatariMessageSourceTest {
   }
 
   @Test public void getMessage_fromClasspath() {
-    KatariMessageSource messageSource = new KatariMessageSource();
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
 
     messageSource.setDebug(false);
     messageSource.setDebugPrefix(
@@ -97,7 +97,7 @@ public class KatariMessageSourceTest {
   }
 
   @Test public void getMessage_fromFs() {
-    KatariMessageSource messageSource = new KatariMessageSource();
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
 
     messageSource.setDebug(true);
     messageSource.setDebugPrefix(
@@ -111,7 +111,7 @@ public class KatariMessageSourceTest {
 
   @Test public void getMessage_fromFsNoCached() throws Exception {
 
-    KatariMessageSource messageSource = new KatariMessageSource();
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
     messageSource.setDebug(true);
     messageSource.setDebugPrefix("target/test-data");
     messageSource.setBasename("classpath:katariMessageSource");
@@ -141,25 +141,24 @@ public class KatariMessageSourceTest {
   }
 
   @Test public void getMessage_overrideInParent() {
-    KatariMessageSource parent = new KatariMessageSource();
+    KatariMessageSource parent = new KatariMessageSource(Locale.US);
     parent.setBasename(
         "classpath:com/globant/katari/core/spring/katariMessageSource");
-    KatariMessageSource messageSource = new KatariMessageSource();
+    KatariMessageSource messageSource;
+    messageSource = new KatariMessageSource("local-login", parent);
     messageSource.setBasename("classpath:katariMessageSource");
-    messageSource.setParentMessageSource(parent);
 
     String message = messageSource.getMessage("test1", null, Locale.US);
     assertThat(message, is("overriden_1"));
   }
 
   @Test public void getMessage_overrideForModule() {
-    KatariMessageSource parent = new KatariMessageSource();
+    KatariMessageSource parent = new KatariMessageSource(Locale.US);
     parent.setBasename(
         "classpath:com/globant/katari/core/spring/katariMessageSource");
-    KatariMessageSource messageSource = new KatariMessageSource();
+    KatariMessageSource messageSource;
+    messageSource = new KatariMessageSource("local-login", parent);
     messageSource.setBasename("classpath:katariMessageSource");
-    messageSource.setParentMessageSource(parent);
-    messageSource.setModuleName("local-login");
 
     String message = messageSource.getMessage("test2", null, Locale.US);
     assertThat(message, is("overriden_2_for_module_name"));

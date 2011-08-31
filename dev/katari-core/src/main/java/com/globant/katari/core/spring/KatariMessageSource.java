@@ -120,7 +120,7 @@ public class KatariMessageSource
 
   /** The name of the module that this message source belongs to.
    *
-   * This should only be null for a parent, global, message source.
+   * This is null for a parent, global, message source.
    */
   private String moduleName;
 
@@ -142,20 +142,32 @@ public class KatariMessageSource
    */
   private String debugPrefix = "file:.";
 
-  /** Constructor.
-   */
-  public KatariMessageSource() {
-    setFallbackToSystemLocale(false);
-  }
-
-  /** Constructor.
-   *
+  /** Constructor to be used for the global (without parent) message source.
+   * 
    * @param theFallbackLocale the locale to use when the message is not found
    * in the requested locale. It cannot be null.
    */
   public KatariMessageSource(final Locale theFallbackLocale) {
+    Validate.notNull(theFallbackLocale, "The fallback locale cannot be null.");
     setFallbackToSystemLocale(false);
     fallbackLocale = theFallbackLocale;
+  }
+
+  /** Constructor.
+   *
+   * Creates a KatariMessageSource. This constructor is intended to be used in
+   * modules.
+   *
+   * @param theModuleName the name of the module. It cannot be null.
+   */
+  public KatariMessageSource(final String theModuleName,
+      final KatariMessageSource theParent) {
+    Validate.notNull(theModuleName, "The module name cannot be null.");
+    Validate.notNull(theParent, "The parent cannot be null.");
+
+    setFallbackToSystemLocale(false);
+    setParentMessageSource(theParent);
+    moduleName = theModuleName;
   }
 
   /** {@inheritDoc}
@@ -286,15 +298,6 @@ public class KatariMessageSource
       message = super.getMessageInternal(code, args, locale);
     }
     return message;
-  }
-
-  /** The name of the module that this message source belongs to.
-   *
-   * @param theModuleName the name of the module. It should only be null for a
-   * parent, global, message source.
-   */
-  public void setModuleName(final String theModuleName) {
-    moduleName = theModuleName;
   }
 
   /** Sets the debug mode.

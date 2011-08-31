@@ -127,8 +127,10 @@
   <bean id="decorator.messageSource"
     class="com.globant.katari.core.spring.KatariMessageSource"
     p:basename="classpath:/${packageInPathFormat}/style/lang/messages"
-    p:debugPrefix='../${rootArtifactId}-style/src/main/resources'
-    p:debug-ref="debugMode"/>
+    p:debugPrefix='../${rootArtifactId}-style/src/main/resources'>
+    <constructor-arg index='0' value='local-login'/>
+    <constructor-arg index='1' ref='katari.messageSource'/>
+  </bean>
 
 </beans>
 
