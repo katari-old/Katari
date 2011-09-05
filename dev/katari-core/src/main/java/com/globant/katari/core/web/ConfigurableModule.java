@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.globant.katari.core.login.LoginProvider;
 import com.globant.katari.core.security.StaticUrlToRoleMapper;
 import com.globant.katari.core.security.UrlToRoleMapper;
+import com.globant.katari.core.spring.KatariMessageSource;
 
 /** A module implementation intended to be used in a spring xml configuration
  * file, with setters for all the possible properties.
@@ -30,7 +31,15 @@ public class ConfigurableModule implements Module {
 
   /** The default roles array to instanciate the UrlToRoleMapper by default.
    */
-  private static final String[] DEFAULT_ROLES = {"IS_AUTHENTICATED_REMEMBERED"};
+  private static final String[] DEFAULT_ROLES = {
+    "IS_AUTHENTICATED_REMEMBERED"
+  };
+
+  /** The message source to use in this module.
+   *
+   * Null if the module is not internationalized.
+   */
+  private KatariMessageSource messageSource = null;
 
   /** The list of web application listeners that the module provides.
    *
@@ -119,6 +128,9 @@ public class ConfigurableModule implements Module {
 
     if (menuBar != null) {
       log.debug("Registering menu bar.");
+      if (messageSource != null) {
+        menuBar.setMessageSource(messageSource);
+      }
       context.registerMenu(menuBar);
     }
 
@@ -137,6 +149,17 @@ public class ConfigurableModule implements Module {
    * This method does nothing.
    */
   public void destroy() {
+  }
+
+  /** Sets the message source to use in this module.
+   *
+   * Don't call this operation if your module is not internationalized.
+   *
+   * @param theMessageSource the message source, it cannot be null.
+   */
+  public void setMessageSource(final KatariMessageSource theMessageSource) {
+    Validate.notNull(theMessageSource, "The message source cannot be null.");
+    messageSource = theMessageSource;
   }
 
   /** Sets the listeners for this module.

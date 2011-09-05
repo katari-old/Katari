@@ -4,9 +4,13 @@ package com.globant.katari.core.web;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Locale;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+
+import com.globant.katari.core.spring.KatariMessageSource;
 
 /* Test case for the menu node component
  */
@@ -252,6 +256,63 @@ public class MenuNodeTest {
     assertEquals(levelC, levelB.getHome());
     assertEquals(levelC, levelA.getHome());
     assertEquals(levelC, menuBar.getHome());
+  }
+
+  @Test public void getDisplayName() {
+    MenuBar menuBar = new MenuBar("root", "root");
+    MenuNode menuNode = new MenuNode(menuBar, "admin", "levelA", 0, null);
+    assertThat(menuNode.getDisplayName(), is("admin"));
+  }
+
+  @Test public void getDisplayName_withMessageSource() {
+    MenuBar menuBar = new MenuBar("root", "root");
+    MenuNode menuNode = new MenuNode(menuBar, "admin", "levelA", 0, null);
+
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
+    messageSource.setBasename("classpath:katariMessageSource");
+    menuBar.setMessageSource(messageSource);
+
+    assertThat(menuNode.getDisplayName(), is("Administration"));
+  }
+
+  @Test public void getDisplayName_mergeWithOtherMessageSource() {
+    MenuBar menuBar1 = new MenuBar("root", "root");
+    MenuNode menuNode1 = new MenuNode(menuBar1, "admin", "levelA", 0, null);
+
+    MenuBar menuBar2 = new MenuBar("root", "root");
+    MenuNode menuNode2 = new MenuNode(menuBar2, "admin", "levelA", 0, null);
+
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
+    messageSource.setBasename("classpath:katariMessageSource");
+    menuBar2.setMessageSource(messageSource);
+
+    assertThat(menuNode1.getDisplayName(), is("admin"));
+    assertThat(menuNode2.getDisplayName(), is("Administration"));
+
+    menuBar1.merge(menuBar2, new HashMap<String, String>(), "");
+
+    assertThat(menuNode1.getDisplayName(), is("Administration"));
+    assertThat(menuNode2.getDisplayName(), is("Administration"));
+  }
+
+  @Test public void getDisplayName_mergeWithThisMessageSource() {
+    MenuBar menuBar1 = new MenuBar("root", "root");
+    MenuNode menuNode1 = new MenuNode(menuBar1, "admin", "levelA", 0, null);
+
+    MenuBar menuBar2 = new MenuBar("root", "root");
+    MenuNode menuNode2 = new MenuNode(menuBar2, "admin", "levelA", 0, null);
+
+    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
+    messageSource.setBasename("classpath:katariMessageSource");
+    menuBar2.setMessageSource(messageSource);
+
+    assertThat(menuNode1.getDisplayName(), is("admin"));
+    assertThat(menuNode2.getDisplayName(), is("Administration"));
+
+    menuBar2.merge(menuBar1, new HashMap<String, String>(), "");
+
+    assertThat(menuNode1.getDisplayName(), is("admin"));
+    assertThat(menuNode2.getDisplayName(), is("Administration"));
   }
 }
 

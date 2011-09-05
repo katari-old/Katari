@@ -5,6 +5,7 @@ package com.globant.katari.core.web;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,6 +14,9 @@ import org.apache.commons.lang.Validate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.i18n.LocaleContextHolder;
+
+import com.globant.katari.core.spring.KatariMessageSource;
 
 /** This represents a node item in a menu, a node item could be either a
  * container or a leaf.
@@ -27,6 +31,13 @@ public class MenuNode implements Comparable<MenuNode> {
   /** The class logger.
    */
   private final Logger log = LoggerFactory.getLogger(MenuNode.class);
+
+  /** The message source associated with the menu node.
+   *
+   * If specified, this message source is used to obtain the display name of
+   * the menu node. It is null if the menu is not internationalized.
+   */
+  private KatariMessageSource messageSource;
 
   /** The node display name to the customer.
    *
@@ -85,8 +96,8 @@ public class MenuNode implements Comparable<MenuNode> {
   /**
    * Creates a new <code>MenuNode</code> container.
    *
-   * @param theParent the parent for this node, it cannot be null. if you need a
-   * top level container a MenuBar should be used.
+   * @param theParent the parent for this node, it cannot be null. if you need
+   * a top level container a MenuBar should be used.
    * @param theDisplayName the node display name to the customer. It cannot be
    * null.
    * @param theName the node identifier name. It cannot be null and cannot
@@ -161,14 +172,19 @@ public class MenuNode implements Comparable<MenuNode> {
    * @return the node display name, it is never null.
    */
   public String getDisplayName() {
-    return this.displayName;
+    Locale locale = LocaleContextHolder.getLocale();
+    if (messageSource != null) {
+      return messageSource.getMessage(getPath(), null, displayName, locale);
+    } else {
+      return displayName;
+    }
   }
 
   /**
    * Returns the node identifier name.
    *
-   * @return the node identifier name, it is never null and cannot contain empty
-   * spaces.
+   * @return the node identifier name, it is never null and cannot contain
+   * empty spaces.
    */
   public String getName() {
     return this.name;
@@ -212,8 +228,8 @@ public class MenuNode implements Comparable<MenuNode> {
   /**
    * Returns the parent <code>MenuNode</code> of the receiver.
    *
-   * @return the parent container for this node. A null parent means a top level
-   * node (a MenuBar).
+   * @return the parent container for this node. A null parent means a top
+   * level node (a MenuBar).
    */
   public MenuNode getParent() {
     return this.parent;
@@ -223,8 +239,8 @@ public class MenuNode implements Comparable<MenuNode> {
    * Returns the home <code>MenuNode</code> of the container.
    *
    * @return the home leaf of this container. the first added child will be
-   * assumed as home until a new home leaf is explicitly added. Null if the node
-   * has no chidren.
+   * assumed as home until a new home leaf is explicitly added. Null if the
+   * node has no chidren.
    */
   public MenuNode getHome() {
     return this.home;
@@ -238,7 +254,8 @@ public class MenuNode implements Comparable<MenuNode> {
    *
    * @param theHome the home leaf of this container. the first added child will
    * be assumed as home until a new home leaf is explicitly added. It cannot be
-   * specified as null but it will be null while this node contains no children.
+   * specified as null but it will be null while this node contains no
+   * children.
    */
   private void setHome(final MenuNode theHome) {
     Validate.notNull(theHome, "you can't specify a null home node");
@@ -327,6 +344,11 @@ public class MenuNode implements Comparable<MenuNode> {
           Validate.isTrue(!thisCurrNode.isLeaf() && !otherCurrNode.isLeaf(),
               "You cannot have a leaf node with the same name as other menu"
               + " node. The problematic menu is " + otherCurrNode.getPath());
+          if (thisCurrNode.messageSource == null) {
+            // Make sure that if somebody specified a message source, the node
+            // always has a message source.
+            thisCurrNode.messageSource = otherCurrNode.messageSource;
+          }
           thisCurrNode.merge(otherCurrNode, variables, prefix);
           // thisCurrNode.home = null;
         } else {
@@ -487,6 +509,20 @@ public class MenuNode implements Comparable<MenuNode> {
    */
   public int compareTo(final MenuNode theOther) {
     return this.position - theOther.position;
+  }
+
+  /** Sets the message source to use to display the label of this menu node.
+   *
+   * Call this only if the menu node is internationalized.
+   *
+   * @param theMessageSource the message source. It cannot be null.
+   */
+  void setMessageSource(final KatariMessageSource theMessageSource) {
+    Validate.notNull(theMessageSource, "The message source cannot be null.");
+    messageSource = theMessageSource;
+    for(MenuNode node : childNodes) {
+      node.setMessageSource(theMessageSource);
+    }
   }
 }
 

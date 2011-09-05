@@ -70,6 +70,21 @@
       </bean>
     </property>
 
+    <property name="messageSource">
+      <!-- Message source for this module, loaded from localized "messages_xx"
+      files.
+      Note: as this message source is not named messageSource, it is not used as
+      the defaulte message source for the application context. -->
+      <bean id="user.messageSource"
+        class="com.globant.katari.core.spring.KatariMessageSource"
+        p:basename="classpath:/com/globant/katari/user/lang/messages"
+        p:debugPrefix='../katari-user/src/main/resources'
+        p:debug-ref='debugMode'>
+        <constructor-arg index='0' value='user'/>
+        <constructor-arg index='1' ref='katari.messageSource'/>
+      </bean>
+    </property>
+
   </bean>
 
   <!-- We expose the user repository as a public bean. It is used for the
