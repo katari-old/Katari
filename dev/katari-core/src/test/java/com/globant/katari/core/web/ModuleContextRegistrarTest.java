@@ -8,12 +8,14 @@ import org.springframework.beans.DirectFieldAccessor;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
 import com.globant.katari.core.login.LoginConfigurationSetter;
+import com.globant.katari.core.spring.KatariMessageSource;
 
 public class ModuleContextRegistrarTest {
 
@@ -27,7 +29,8 @@ public class ModuleContextRegistrarTest {
     loginConfig = createMock(LoginConfigurationSetter.class);
 
     ModuleContextRegistrar registrar = new ModuleContextRegistrar(listener,
-        filter, containerServlet, menuBar, loginConfig);
+        filter, containerServlet, new KatariMessageSource(Locale.US), menuBar,
+        loginConfig);
 
     ModuleContext context = registrar.getNewModuleContext("test");
     MenuBar contextMenuBar = (MenuBar) (new DirectFieldAccessor(context))
@@ -45,7 +48,8 @@ public class ModuleContextRegistrarTest {
     loginConfig = createMock(LoginConfigurationSetter.class);
 
     ModuleContextRegistrar registrar = new ModuleContextRegistrar(listener,
-        filter, containerServlet, menuBar, loginConfig);
+        filter, containerServlet, new KatariMessageSource(Locale.US), menuBar,
+        loginConfig);
     List<String> moduleNames = new LinkedList<String>();
     moduleNames.add("test");
     registrar.setModuleMenusToIgnore(moduleNames);
@@ -66,7 +70,8 @@ public class ModuleContextRegistrarTest {
     loginConfig = createMock(LoginConfigurationSetter.class);
 
     ModuleContextRegistrar registrar = new ModuleContextRegistrar(listener,
-        filter, containerServlet, menuBar, loginConfig);
+        filter, containerServlet, new KatariMessageSource(Locale.US), menuBar,
+        loginConfig);
     List<String> moduleNames = new LinkedList<String>();
     moduleNames.add(".*");
     registrar.setModuleMenusToIgnore(moduleNames);

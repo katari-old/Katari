@@ -25,16 +25,13 @@
   <bean id="contextRegistrar"
     class="com.globant.katari.core.web.ModuleContextRegistrar">
 
+    <constructor-arg ref='moduleListenerProxy'/>
+    <constructor-arg ref='moduleFilterProxy'/>
+    <constructor-arg ref='moduleContainer'/>
     <constructor-arg>
-      <ref bean='moduleListenerProxy'/>
-    </constructor-arg>
-
-    <constructor-arg>
-      <ref bean='moduleFilterProxy'/>
-    </constructor-arg>
-
-    <constructor-arg>
-      <ref bean='moduleContainer'/>
+      <bean class="com.globant.katari.core.spring.KatariMessageSource">
+        <constructor-arg index='0' value='en'/>
+      </bean>
     </constructor-arg>
 
     <!-- The initial menu bar. It defines the order of the menu elements. -->
@@ -44,9 +41,7 @@
       </katari:menuBar>
     </constructor-arg>
 
-    <constructor-arg>
-      <ref bean='loginConfigurer' />
-    </constructor-arg>
+    <constructor-arg ref='loginConfigurer' />
   </bean>
 
   <bean id="loginConfigurer"

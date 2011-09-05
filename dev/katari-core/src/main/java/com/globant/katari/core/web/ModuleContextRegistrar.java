@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import org.apache.commons.lang.Validate;
 
 import com.globant.katari.core.login.LoginConfigurationSetter;
+import com.globant.katari.core.spring.KatariMessageSource;
 
 /** This class builds and maintains a ModuleContext registry.
  *
@@ -48,6 +49,13 @@ public class ModuleContextRegistrar {
    * It is never null.
    */
   private ModuleContainerServlet moduleContainerServlet;
+
+  /** The application-wise message source.
+   * 
+   * This message source is used when the module does not specifies its own
+   * message source. It cannot be null.
+   */
+  private KatariMessageSource messageSource;
 
   /** The menu bar for the whole application.
    *
@@ -89,16 +97,22 @@ public class ModuleContextRegistrar {
    * @param theModuleContainerServlet The module container servlet. It cannot
    * be null.
    *
+   * @param theMessageSource The application-wise message source, to be used
+   * when a module does not specify its own. It cannot be null.
+   *
    * @param theMenuBar The initial menu bar that will be merged with the
    * modules. This can be used to set the order of the menu containers. It
    * cannot be null.
    *
    * @param theLoginConfiguration The login configuration. It cannot be null.
    */
-  public ModuleContextRegistrar(final ModuleListenerProxy
-      theModuleListenerProxy, final ModuleFilterProxy theModuleFilterProxy,
-      final ModuleContainerServlet theModuleContainerServlet, final MenuBar
-      theMenuBar, final LoginConfigurationSetter theLoginConfiguration) {
+  public ModuleContextRegistrar(
+      final ModuleListenerProxy theModuleListenerProxy,
+      final ModuleFilterProxy theModuleFilterProxy,
+      final ModuleContainerServlet theModuleContainerServlet,
+      final KatariMessageSource theMessageSource,
+      final MenuBar theMenuBar,
+      final LoginConfigurationSetter theLoginConfiguration) {
 
     Validate.notNull(theModuleListenerProxy, "The module listener proxy cannot"
         + " be null");
@@ -106,12 +120,14 @@ public class ModuleContextRegistrar {
         + " null");
     Validate.notNull(theModuleContainerServlet, "The module container servlet"
         + " cannot be null");
+    Validate.notNull(theMessageSource, "The message source cannot be null");
     Validate.notNull(theMenuBar, "The menu bar cannot be null");
     Validate.notNull(theLoginConfiguration, "The login provider "
         + "cannot be null");
     moduleListenerProxy = theModuleListenerProxy;
     moduleFilterProxy = theModuleFilterProxy;
     moduleContainerServlet = theModuleContainerServlet;
+    messageSource = theMessageSource;
     menuBar = theMenuBar;
     loginConfiguration = theLoginConfiguration;
   }
@@ -151,12 +167,12 @@ public class ModuleContextRegistrar {
 
     if (skipModule) {
       context = new ModuleContext(moduleName, moduleListenerProxy,
-        moduleFilterProxy, moduleContainerServlet, null, beanToModuleName,
-        loginConfiguration);
+        moduleFilterProxy, moduleContainerServlet, messageSource, null,
+        beanToModuleName, loginConfiguration);
     } else {
       context = new ModuleContext(moduleName, moduleListenerProxy,
-        moduleFilterProxy, moduleContainerServlet, menuBar, beanToModuleName,
-        loginConfiguration);
+        moduleFilterProxy, moduleContainerServlet, messageSource, menuBar,
+        beanToModuleName, loginConfiguration);
     }
     registry.put(moduleName, context);
     return context;

@@ -2,9 +2,7 @@
 
 package com.globant.katari.core.web;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.*;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -13,8 +11,7 @@ import java.util.Map;
 import java.util.Locale;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import org.junit.Before;
 
 import com.globant.katari.core.security.StaticUrlToRoleMapper;
 import com.globant.katari.core.security.UrlToRoleMapper;
@@ -22,6 +19,13 @@ import com.globant.katari.core.security.UrlToRoleMapper;
 import com.globant.katari.core.spring.KatariMessageSource;
 
 public class ConfigurableModuleTest {
+
+  KatariMessageSource messageSource;
+
+  @Before public void setUp() {
+    messageSource = new KatariMessageSource(Locale.US);
+    messageSource.setBasename("classpath:katariMessageSource");
+  }
 
   @Test public void init() {
 
@@ -54,6 +58,7 @@ public class ConfigurableModuleTest {
     context.registerFilters(filters);
     context.registerEntryPoints(entryPoints);
     context.registerWeblets(weblets);
+    expect(context.getMessageSource()).andReturn(messageSource);
     context.registerMenu(menuBar);
     context.registerUrlToRoleMapper(urlToRoleMapper);
     replay(context);
@@ -64,9 +69,6 @@ public class ConfigurableModuleTest {
   }
 
   @Test public void init_menuWithMessageSource() {
-
-    KatariMessageSource messageSource = new KatariMessageSource(Locale.US);
-    messageSource.setBasename("classpath:katariMessageSource");
 
     List<FilterMapping> filters = new LinkedList<FilterMapping>();
 
@@ -100,6 +102,7 @@ public class ConfigurableModuleTest {
     context.registerFilters(filters);
     context.registerEntryPoints(entryPoints);
     context.registerWeblets(weblets);
+    expect(context.getMessageSource()).andReturn(messageSource);
     context.registerMenu(menuBar);
     context.registerUrlToRoleMapper(urlToRoleMapper);
     replay(context);

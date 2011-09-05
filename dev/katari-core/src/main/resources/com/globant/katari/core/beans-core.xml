@@ -179,6 +179,7 @@
     <constructor-arg ref='katari.moduleListenerProxy'/>
     <constructor-arg ref='katari.moduleFilterProxy'/>
     <constructor-arg ref='katari.moduleContainer'/>
+    <constructor-arg ref='katari.messageSource'/>
 
     <!-- The initial menu bar. It defines the order of the menu elements. -->
     <constructor-arg ref='katari.menuBar'/>

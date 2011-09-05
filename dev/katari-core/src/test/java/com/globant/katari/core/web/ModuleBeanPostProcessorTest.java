@@ -4,6 +4,7 @@ package com.globant.katari.core.web;
 
 import static org.easymock.EasyMock.createMock;
 
+import java.util.Locale;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -12,6 +13,7 @@ import org.easymock.EasyMock;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 import com.globant.katari.core.login.LoginConfigurationSetter;
+import com.globant.katari.core.spring.KatariMessageSource;
 
 /* Tests the ModuleBeanPostProcessor.
  */
@@ -30,7 +32,7 @@ public class ModuleBeanPostProcessorTest extends TestCase {
     MenuBar menuBar = new MenuBar();
     LoginConfigurationSetter conf = createMock(LoginConfigurationSetter.class);
     registrar = new ModuleContextRegistrar(listeners,
-        filters, container, menuBar, conf);
+        filters, container, new KatariMessageSource(Locale.US), menuBar, conf);
     postProcessor = new ModuleBeanPostProcessor(registrar);
   }
 

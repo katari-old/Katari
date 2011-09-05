@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.globant.katari.core.login.LoginConfigurationSetter;
 import com.globant.katari.core.login.LoginProvider;
 import com.globant.katari.core.security.UrlToRoleMapper;
+import com.globant.katari.core.spring.KatariMessageSource;
 
 /** The module context is the way a module interacts with the module container.
  *
@@ -50,6 +51,13 @@ public class ModuleContext {
    * Modules register their filters in this proxy. It is never null.
    */
   private final ModuleFilterProxy filterProxy;
+
+  /** The application-wise message source.
+   * 
+   * This message source is used when the module does not specifies its own
+   * message source. It cannot be null.
+   */
+  private KatariMessageSource messageSource;
 
   /** The menu bar where the module merges its own menu bar.
    *
@@ -108,6 +116,9 @@ public class ModuleContext {
    * @param theContainerServlet The module container servlet. It cannot be
    * null.
    *
+   * @param theMessageSource The application-wise message source, to be used
+   * when a module does not specify its own. It cannot be null.
+   *
    * @param theMenuBar The menu bar where the module merges its own menu bar.
    * If null, the menu bar from the module is ignored.
    *
@@ -120,6 +131,7 @@ public class ModuleContext {
       final ModuleListenerProxy theListenerProxy,
       final ModuleFilterProxy theFilterProxy,
       final ModuleContainerServlet theContainerServlet,
+      final KatariMessageSource theMessageSource,
       final MenuBar theMenuBar,
       final Map<String, String> theBeanToModuleNames,
       final LoginConfigurationSetter theLoginConfigurer) {
@@ -133,6 +145,7 @@ public class ModuleContext {
         + " be null");
     Validate.notNull(theContainerServlet, "The module contair servlet cannot"
         + " be null");
+    Validate.notNull(theMessageSource, "The message source cannot be null");
     Validate.notNull(theBeanToModuleNames, "The bean to module names map"
         + " cannot be null");
     Validate.notNull(theLoginConfigurer, "The login"
@@ -142,6 +155,7 @@ public class ModuleContext {
     listenerProxy = theListenerProxy;
     filterProxy = theFilterProxy;
     containerServlet = theContainerServlet;
+    messageSource = theMessageSource;
     menuBar = theMenuBar;
     beanToModuleNames = theBeanToModuleNames;
 
@@ -289,6 +303,17 @@ public class ModuleContext {
   public void setLoginProvider(final LoginProvider provider) {
     Validate.notNull(provider, "The provider cannot be null");
     loginConfigurer.setLoginConfiguration(provider);
+  }
+
+  /** The application-wise message source.
+   * 
+   * This message source is used when the module does not specifies its own
+   * message source.
+   *
+   * @return the global message source, never null.
+   */
+  public KatariMessageSource getMessageSource() {
+    return messageSource;
   }
 }
 

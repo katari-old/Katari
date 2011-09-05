@@ -130,6 +130,8 @@ public class ConfigurableModule implements Module {
       log.debug("Registering menu bar.");
       if (messageSource != null) {
         menuBar.setMessageSource(messageSource);
+      } else {
+        menuBar.setMessageSource(context.getMessageSource());
       }
       context.registerMenu(menuBar);
     }
