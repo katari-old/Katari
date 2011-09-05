@@ -224,6 +224,15 @@
   <!-- We use the userDetailsService from the user module. -->
   <alias name="user.userDetailsService" alias="katari.userDetailsService"/>
 
+  <!-- Overrides katari message source. -->
+  <bean id="katari.messageSource"
+    class="com.globant.katari.core.spring.KatariMessageSource"
+    p:basename="WEB-INF/lang/messages"
+    p:debugPrefix='../${rootArtifactId}-web/src/main/webapp'
+    p:debug-ref='debugMode'>
+    <constructor-arg index='0' value='en'/>
+  </bean>
+
   <!-- Defines the list of modules to exclude from the menu. Each entry is a
        regular expression, so you can eliminate all menu items with:
        -->
