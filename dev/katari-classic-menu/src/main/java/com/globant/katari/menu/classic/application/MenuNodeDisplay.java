@@ -31,7 +31,7 @@ public class MenuNodeDisplay {
    */
   private String linkPath;
 
-  /** True if the menu display node is enabled, otherwhise false.
+  /** True if the menu display node is enabled, otherwise false.
    *
    * A disabled menu node is displayed (rendered) but clicking on it has no
    * effect. If the node is disabled it cannot be selected.
@@ -40,7 +40,7 @@ public class MenuNodeDisplay {
 
   /** True if the menu node is selected, otherwise false.
    *
-   * Being a selected node means that the node path is base part of the curremt
+   * Being a selected node means that the node path is base part of the current
    * selection path or the selection path itself. If the node is selected,
    * cannot be disabled.
    */
@@ -57,7 +57,7 @@ public class MenuNodeDisplay {
    * @param theLinkPath The url that this menu node points to. It cannot be
    * null.
    *
-   * @param isEnabled True if the menu node is enabled, otherwhise false.
+   * @param isEnabled True if the menu node is enabled, otherwise false.
    * Disabled menu nodes are displayed but not clickable.
    *
    * @param isSelected True if the menu node is selected. A node is selected if
@@ -105,12 +105,12 @@ public class MenuNodeDisplay {
     return linkPath;
   }
 
-  /** True if the menu node is enabled, false otherwhise.
+  /** True if the menu node is enabled, false otherwise.
    *
    * A disabled menu node is displayed (rendered) but clicking on it has no
    * effect. If the node is disabled it cannot be selected.
    *
-   * @return True if the menu node is enabled, otherwhise false.
+   * @return True if the menu node is enabled, otherwise false.
    */
   public boolean isEnabled() {
     return enabled;
@@ -118,7 +118,7 @@ public class MenuNodeDisplay {
 
   /** True if the menu node is selected, otherwise false.
    *
-   * This is true if the menu node is part of the curremt selection path. If
+   * This is true if the menu node is part of the current selection path. If
    * the node is selected, it cannot be disabled.
    *
    * @return True if the menu node is selected, otherwise false.
