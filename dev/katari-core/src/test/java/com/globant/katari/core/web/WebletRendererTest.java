@@ -5,7 +5,10 @@ package com.globant.katari.core.web;
 import java.util.TreeMap;
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.junit.Before;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
@@ -21,9 +24,10 @@ import static org.easymock.EasyMock.*;
 
 /* Tests the weblet renderer.
  */
-public class WebletRendererTest extends TestCase {
+public class WebletRendererTest {
 
-  public void testRenderWebletResponse() throws Exception {
+  @Test
+  public void renderWebletResponse() throws Exception {
 
     RequestDispatcher dispatcher = new RequestDispatcher() {
       public void include(final ServletRequest request, final
@@ -52,7 +56,7 @@ public class WebletRendererTest extends TestCase {
 
     String result = renderer.renderWebletResponse("user", "search", null,
         request, response);
-    assertEquals("content", result);
+    assertThat(result, is("content"));
   }
 
   /* The sample servlets set this variable when the dispatcher calls service on
@@ -67,7 +71,8 @@ public class WebletRendererTest extends TestCase {
   private ServletConfig config;
 
   @SuppressWarnings("serial")
-  protected void setUp() {
+  @Before
+  public void setUp() {
 
     servletCalled = "";
     pathInfo = null;
@@ -117,7 +122,8 @@ public class WebletRendererTest extends TestCase {
 
   /* Tests if service correctly dispatches a request to *.do.
   */
-  public final void testService_dotdo() throws Exception {
+  @Test
+  public final void service_dotdo() throws Exception {
 
     // Mocks the servlet request.
     HttpServletRequest request = createNiceMock(HttpServletRequest.class);
@@ -126,16 +132,11 @@ public class WebletRendererTest extends TestCase {
     expectLastCall().anyTimes();
     expect(request.getRequestURL()).andReturn(new StringBuffer());
     expectLastCall().anyTimes();
-    expect(request.getServletPath()).andReturn("/module");
-    expectLastCall().anyTimes();
-    expect(request.getContextPath()).andReturn("/katari-i");
-    expectLastCall().anyTimes();
-    expect(request.getPathInfo()).andReturn("/user/welcome.do");
-    expectLastCall().anyTimes();
-    expect(request.getMethod()).andReturn("GET");
-    expectLastCall().anyTimes();
-    expect(request.getProtocol()).andReturn("http");
-    expectLastCall().anyTimes();
+    expect(request.getServletPath()).andReturn("/module").anyTimes();
+    expect(request.getContextPath()).andReturn("/katari-i").anyTimes();
+    expect(request.getPathInfo()).andReturn("/user/welcome.do").anyTimes();
+    expect(request.getMethod()).andReturn("GET").anyTimes();
+    expect(request.getProtocol()).andReturn("http").anyTimes();
     replay(request);
 
     ModuleContainerServlet servlet = new ModuleContainerServlet();
@@ -144,11 +145,11 @@ public class WebletRendererTest extends TestCase {
     servlet.init(config);
     servlet.service(request, null);
 
-    assertEquals(".do", servletCalled);
-    assertNull(pathInfo);
+    assertThat(servletCalled, is(".do"));
+    assertThat(pathInfo, is(nullValue()));
   }
 
-  /* Tests if service correctly dispatches a request to 'test' and the pathinfo
+  /* Tests if service correctly dispatches a request to 'test' and the pathInfo
    * is correct.
    */
   public final void testService_testPathInfo() throws Exception {
@@ -160,16 +161,12 @@ public class WebletRendererTest extends TestCase {
     expectLastCall().anyTimes();
     expect(request.getRequestURL()).andReturn(new StringBuffer());
     expectLastCall().anyTimes();
-    expect(request.getServletPath()).andReturn("/module");
-    expectLastCall().anyTimes();
-    expect(request.getContextPath()).andReturn("/katari-i");
-    expectLastCall().anyTimes();
+    expect(request.getServletPath()).andReturn("/module").anyTimes();
+    expect(request.getContextPath()).andReturn("/katari-i").anyTimes();
     expect(request.getPathInfo()).andReturn("/user/test/user/21?action=remove");
     expectLastCall().anyTimes();
-    expect(request.getMethod()).andReturn("GET");
-    expectLastCall().anyTimes();
-    expect(request.getProtocol()).andReturn("http");
-    expectLastCall().anyTimes();
+    expect(request.getMethod()).andReturn("GET").anyTimes();
+    expect(request.getProtocol()).andReturn("http").anyTimes();
     replay(request);
 
     ModuleContainerServlet servlet = new ModuleContainerServlet();
@@ -178,8 +175,8 @@ public class WebletRendererTest extends TestCase {
     servlet.init(config);
     servlet.service(request, null);
 
-    assertEquals("test", servletCalled);
-    assertEquals("/user/21?action=remove", pathInfo);
+    assertThat(servletCalled, is("test"));
+    assertThat(pathInfo, is("/user/21?action=remove"));
   }
 }
 

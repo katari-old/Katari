@@ -6,11 +6,11 @@ A library of katari convenient macros.
 Renders a weblet.
 -->
 <#macro weblet moduleName webletName instance = '' >
-  <#if instance == '' >
-    <#assign className='weblet weblet_' + moduleName + '_' + webletName>
-  <#else>
+  <#if !instance?is_hash && instance != '' >
     <#assign className='weblet weblet_' + moduleName + '_' + webletName + '_' +
       instance>
+  <#else>
+    <#assign className='weblet weblet_' + moduleName + '_' + webletName>
   </#if>
   <div class='${className}'>
     ${request.getAttribute("::weblet-renderer").renderWebletResponse(

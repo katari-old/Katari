@@ -7,7 +7,7 @@
       http://www.globant.com/schema/katari
       http://www.globant.com/schema/katari/katari.xsd">
 
-  <!-- The home module configuration file. This file must be included in the
+  <!-- The gadget module configuration file. This file must be included in the
   application context to use this module. -->
 
   <bean id="gadget.module"

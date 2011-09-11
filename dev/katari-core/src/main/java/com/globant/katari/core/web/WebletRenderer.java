@@ -104,8 +104,8 @@ public class WebletRenderer {
    *
    * @param webletName The name of the weblet. It cannot be null.
    *
-   * @param instance An optional weblet instance name. The weblet uses the
-   * instance as it pleases, for example, to draw different thing according to
+   * @param instance An optional weblet instance data. The weblet uses the
+   * instance as it pleases, for example, to draw different things according to
    * the instance name. It is ignored if it is null or the empty string.
    *
    * @param request The servlet request. It cannot be null.
@@ -120,7 +120,7 @@ public class WebletRenderer {
    * @throws ServletException in case of an unexpected error.
    */
   public String renderWebletResponse(final String moduleName,
-      final String webletName, final String instance,
+      final String webletName, final Object instance,
       final HttpServletRequest request, final HttpServletResponse response)
     throws ServletException, IOException {
 
