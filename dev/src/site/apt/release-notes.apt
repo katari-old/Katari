@@ -1,5 +1,17 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.37
+
+ This release continues adding internationalization related features.
+
+* What's new since version 0.36
+
+ * It is now possible to translate menus, and override their translations.
+
+ * Added more control on the selection of the client locale.
+
+ * The weblet instance can now be any object, instead of only a string.
+
 Release notes for version 0.36
 
 * What's new since version 0.35
