@@ -539,8 +539,20 @@
   Which is the safest option?
   -->
   <bean id="localeResolver"
-    class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+    class="com.globant.katari.core.web.RestrictedCookieLocaleResolver">
+    <constructor-arg index='0' ref='katari.supportedLocales'/>
+    <constructor-arg index='1' ref='katari.defaultLocale'/>
     <property name='cookieMaxAge' value='63072000'/>
+  </bean>
+
+  <!-- beans intended to be overriden by the application to support additional
+       locales or a different default locale. -->
+  <util:set id='katari.supportedLocales'>
+    <value>en</value>
+  </util:set>
+
+  <bean id="katari.defaultLocale" class="java.util.Locale">
+    <constructor-arg index='0' value='en'/>
   </bean>
 
   <!-- The global message source. All modules make this message source its

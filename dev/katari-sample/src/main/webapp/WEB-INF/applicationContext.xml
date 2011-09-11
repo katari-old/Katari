@@ -263,6 +263,16 @@
     <constructor-arg index='0' value='en'/>
   </bean>
 
+  <!-- Overrides the list of supported locales and the default locale. -->
+  <util:set id='katari.supportedLocales'>
+    <value>en</value>
+    <value>es</value>
+  </util:set>
+
+  <bean id="katari.defaultLocale" class="java.util.Locale">
+    <constructor-arg index='0' value='en'/>
+  </bean>
+
   <!-- Defines the list of modules to exclude from the menu. Each entry is a
        regular expression, so you can eliminate all menu items with:
        -->
