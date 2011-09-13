@@ -41,7 +41,7 @@ used to mark the menu as selected.
   <#assign linkPath = baseweb + menuItem.linkPath/>
 
   <#if linkPath?contains("?")>
-    <#assign linkPath = linkPath + "&selected-module-entry=" + path/>
+    <#assign linkPath = linkPath + "&amp;selected-module-entry=" + path/>
   <#else>
     <#assign linkPath = linkPath + "?selected-module-entry=" + path/>
   </#if>
