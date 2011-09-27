@@ -18,12 +18,13 @@ import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateSequenceModel;
+import freemarker.template.TemplateScalarModel;
 
 /** A Freemarker JsonRepresentation model to expose the Json objects from the
  * JsonRepresentation as freemarker elements.
  */
 public final class JsonRepresentationModel implements TemplateHashModel,
-    TemplateSequenceModel {
+    TemplateSequenceModel, TemplateScalarModel {
 
   /** The class logger.
    */
@@ -159,6 +160,19 @@ public final class JsonRepresentationModel implements TemplateHashModel,
       throw new TemplateModelException("size() only applies to an array");
     }
     return array.length();
+  }
+
+  /** {@inheritDoc}
+   *
+   * Returns the json object or array as a string.
+   *
+   * This makes it possible to show in the freemarker page the json string with
+   * ${result}.
+   *
+   * This operation is the implementation of the TemplateScalarModel interfase.
+   */
+  public String getAsString() {
+    return representation.toString();
   }
 }
 

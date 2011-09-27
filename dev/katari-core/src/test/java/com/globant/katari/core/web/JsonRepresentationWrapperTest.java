@@ -214,5 +214,33 @@ public final class JsonRepresentationWrapperTest {
     assertThat(result, is("e='nullValue'"));
   }
 
+  @Test
+  public void testAsScalarModel() throws Exception {
+    StringReader reader = new StringReader("json='${result}'");
+
+    Map<String, Object> model = new HashMap<String, Object>();
+
+    JSONObject nestedObject = new JSONObject();
+    nestedObject.put("key1", "value key1");
+    nestedObject.put("key2", "value key2");
+
+    JSONArray nestedArray = new JSONArray();
+    nestedArray.put(0, "value 0");
+    nestedArray.put(1, "value 1");
+
+    JSONArray array = new JSONArray();
+    array.put(0, nestedObject);
+    array.put(1, nestedArray);
+
+    model.put("result", new JsonRepresentation(array));
+
+    Writer out = new StringWriter();
+
+    Template template = new Template("wrapper", reader, configuration);
+    template.process(model, out);
+    String result = out.toString();
+    log.debug("Output for testNestedJSONObject is {}", result);
+    assertThat(result, is("json='"  + array.toString() + "'"));
+  }
 }
 
