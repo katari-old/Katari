@@ -41,6 +41,15 @@
         </section>
       </sections>
     </chapter>
+    <chapter>
+      <id>i18n</id>
+      <title>Internationalization</title>
+      <sections>
+        <section>
+          <id>i18n</id>
+        </section>
+      </sections>
+    </chapter>
     <!-- chapter>
       <id>module container</id>
       <title>The module container</title>
@@ -86,7 +95,7 @@
     </chapter>
     <chapter>
       <id>social-modules</id>
-      <title>Shindig</title>
+      <title>Katari Social</title>
       <sections>
         <section>
           <id>katari-shindig</id>

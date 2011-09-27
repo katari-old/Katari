@@ -2,9 +2,6 @@
 
 Introduction
 
-  Here we lay out what must be considered to implement internationalization
-  (i18n) in a Katari application. But first, a minimal introduction.
-
   When an application needs to be prepared for different cultures (countries,
   languages, etc) we are talking about internationalization (i18n) and
   localization (l10n).
@@ -16,8 +13,9 @@ Introduction
 
   []
 
-  Here we focus on i18n. There are several aspects of i18n that must be taken
-  into account:
+  We don't want to go to an in depth discussion of internationalization here,
+  but these are the main aspects to take into account when you want your
+  application transalated to many languages:
 
   * Deployment: will there be one installation per language? Or one installation
     must support all the languages?
@@ -33,17 +31,17 @@ Introduction
     differences? What about colors?
 
   * Language selection: what mechanisms will be used to allow the final user to
-  change the language?
+    change the language?
 
   []
 
-  Once these (and surely many more I can't recall now) are taken into account,
-  the i18n process must also consider all the technical aspects, of which the
-  most important is related to the byte vs string difference: you must be sure
-  that bytes are correctly translated to strings and viceversa. Under java, this
-  issue surfaces when the application has to move data to or from the virtual
-  machine so you must configure the encoding to use in such tranlations. Places
-  where you must pay attention:
+  Once these (and surely many more) are taken into account, the i18n process
+  must also consider all the technical aspects, of which the most important is
+  related to the byte vs string difference: you must be sure that bytes are
+  correctly translated to strings and viceversa. Under java, this issue surfaces
+  when the application has to move data to or from the virtual machine so you
+  must configure the encoding to use in such tranlations. Places where you must
+  pay attention:
 
   * The database must be correctly configured. This includes the connection
   string, that under some drivers it specifies the encoding to use.
@@ -58,76 +56,200 @@ Introduction
 
   * Property files.
 
-  * Which encoding to use? The safest encoding to use is utf-8.
-
   []
 
 Design
 
-* Requirements
+ The way Katari chooses to implement internationalization allows flexibility in
+ many aspects:
 
  * Each module writer can decide to support i18n or not. This will not be
    enforced by Katari.
 
  * Katari uses mainly resource messages and freemarker templates. The freemarker
-   templates are used in sitemesh and in spring-mvc. Localization must be
-   'uniform', ie, the localization a sitemesh template and a spring-mvc page
-   must be similar. As a challenge to solve, sitemesh does not support resource
-   based localization as spring-mvc does (see @message macro).
+   templates are used in sitemesh and in spring-mvc. Localization is
+   uniform, ie, the localization of a sitemesh template and a spring-mvc page
+   are similar: you can use @message macro in spring-mvc managed views and in
+   freemarker decorators.
 
- * A module can be i18n but be localized to just one locale. It should be
-   possible to add additional locales without rebuilding the module. Probably
-   simply a jar with the same package and the locale specific files may do.
+ * A module can be i18n but be localized to just one locale. But it is
+   possible to add additional locales without rebuilding the module, just adding
+   a new jar with the transaltion.
 
- * As a plus, it would be nice for developers to 'override' the freemarker
-   templates using a mechanism similar to i18n.
+ * If you are building a web application, you can override any message you
+   choose in any locale.
 
- * Decide if Katari should define a way to let users choose which locale to use.
+ * Katari provides a way to let users choose which locale to use.
+
+  * Resources can be loaded from the file system, as supported today by Katari
+    for static content. This allows you to see your translation changes in debug
+    mode with just a refresh in your browser.
 
  []
 
-* Special cases
+Writing a localized application
 
- * It would be nice to have just one file for a specific locale. This makes it
-   easier to administer translations to a new language.
+ If you want to internationalize your application, you must decide what locales
+ you will support and which is the default one. The default locale is used when
+ the used provides a locale that you not support.
 
-* Possible stategy
-
-  * Add the messageSource to the application context. Make sure to use the
-    reloadable version, that supports not using the default locale.
+ To declare the supported locales, add this to your main application context
+ (usually in src/main/webapp/WEB-INF/applicationContext.xml in your web module):
 
 ------
-  <bean id="messageSource"
-      class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-    <property name="basename" value="com.globant.laslenas.ecom.messages"/>
-    <property name="useCodeAsDefaultMessage" value='true'/>
+  <util:set id='katari.supportedLocales'>
+    <value>en</value>
+    <value>es</value>
+  </util:set>
+------
+
+ Of course, you can add as many locales as you want.
+
+ The default locale is configured in the same applicationContext file:
+
+------
+  <bean id="katari.defaultLocale" class="java.util.Locale">
+    <constructor-arg index='0' value='en'/>
   </bean>
 ------
 
-    this can be added to katari-core, giving the option of overriding the
-    basename/basenames parameter
+ This would be enough if the all the modules you use already support the
+ languages you want.
 
-  * Decide how will the user change the locale. One option is to use a filter so
-    the locale can be changed in every request. This will also support changing
-    the locale with a drop down in the login page, for example. This filter can
-    be configured in katari-core. This filter will obtain the selected locale
-    from the request and store it within the locale resolver.
+ To select a language, just add lang=en (or any other locale) to any request. A
+ filter will pick that parameter and change the locale accordingly. You can add
+ a locale selection input in any form in your application, and the locale chosen
+ by the user will be stored in a cookie. If the locale selected is not in the
+ list of supported locale, Katari will pick your default locale.
 
-    One drawback with this is that it won't be easy for the application to
-    configure the locale from a user profile. Or just use tha browser provided
-    locale.
+ If a module in your application has already been internationalized, but it
+ has not been translated to a language you need, you have two choices:
 
-  * The coder will have to define the locale resolver for the app.
+ * Create a jar file with the transalted messages.
 
-* Open issues
+ * Add the translated messages to the global messages files (see below).
 
-  * What is the best way to decouple l10n from each module?
+* Create a jar with translated messages.
 
-  * Define a way to localize ftls and decs. How do they interact with loading
-    the template (ftl) from the file system?
+ If you have to translate a module you do not own, this is the most 'community
+ friendly' way: create a jar file with the translated messages. You need to know
+ what is the base name for the messages file of the module you are translating
+ (this base name is, by convention, <module-package-name>/lang/messages). Look
+ in the module documentation for this base name. Now, translate the main
+ properties file of the module and place it in:
 
-  * See if it is possible to enable reloading of resources from the file system,
-    as supported today by Katari for static content.
+----
+ <module-package-name>/lang/<locale>/messages.properties
+----
 
-i18n Guide
+ For example, suppose you want to add the portuguese translation for the
+ katari-local-login module. Place the translated file in the package:
+
+----
+ com/globant/katari/login/local/lang/pt/messages.properties
+----
+
+ Create a jar named katari-local-login-lang_pt (it could be any other name, but
+ this is a good one), with this one file and add it as a dependency of your web
+ application.
+
+ One complication of this approach is that loading the translation from the file
+ system in debug mode does not work. You will need to build the jar and restart
+ your web application any time you want to see the effect of a change in the
+ translation.
+
+* Add the translated messages to the global messages files
+
+ Every web application may have its own message source. Katari searches for
+ translated messages first in this message source. This allows application
+ writers to override any message from any module, and provide in their
+ application translations that are not yet available in the module.
+
+ This message source usually references properties files in the WEB-INF/lang
+ directory of the war file.
+
+ A sample message source, defined in the applicationContext.xml of the webapp,
+ is:
+
+----
+  <!-- Overrides katari message source. -->
+  <bean id="katari.messageSource"
+    class="com.globant.katari.core.spring.KatariMessageSource"
+    p:basename="WEB-INF/lang/messages"
+    p:debugPrefix='../katari-sample/src/main/webapp'
+    p:debug-ref='debugMode'>
+    <constructor-arg index='0' value='en'/>
+  </bean>
+----
+
+ All attributes are self-explained. The debugPrefix is the prefix to add to the
+ base name to find the properties files in the file system in debug mode. This
+ allows developers to see the result of their work without restarting the
+ application.
+
+ The constructor argument is the default locale to select in case no locale was
+ provided by the client.
+
+ Next, you need to know the message keys you need to tranlate. You need to find
+ in the original module the corresponding properties files. Then add to your
+ WEB-INF/lang/messages_<locale>.properties all the keys prefixed with the module
+ name. For example, katari-local-login has a message key username.label. To
+ translate to portuguese, add a key:
+
+-----
+ local-login.username.label= ....
+-----
+
+ to WEB-INF/lang/messages_pt.properties
+
+Internationalizing you module
+
+ Depending on your module, you will need to provide translations for your spring
+ mvc components or for components outside spring mvc (like menu entries).
+
+ For the components outside spring mvc, you need to register a
+ KatariMessageSource for your module:
+
+-----
+    <property name="messageSource">
+      <!-- Message source for this module, loaded from localized "messages_xx"
+      files.
+      Note: as this message source is not named messageSource, it is not used as
+      the defaulte message source for the application context. -->
+      <bean id="local-login.messageSource"
+        class="com.globant.katari.core.spring.KatariMessageSource"
+        p:basename="classpath:/com/globant/katari/login/local/lang/messages"
+        p:debugPrefix='../katari-local-login/src/main/resources'
+        p:debug-ref='debugMode'>
+        <constructor-arg index='0' value='local-login'/>
+        <constructor-arg index='1' ref='katari.messageSource'/>
+      </bean>
+    </property>
+-----
+
+ This goes inside your ConfigurableModule bean.
+
+ For spring mvc, you need to add something similar to your spring-servlet.xml:
+
+-----
+  <!-- Message source for this context, loaded from localized "messages_xx"
+  files -->
+  <bean id="messageSource"
+    class="com.globant.katari.core.spring.KatariMessageSource"
+    p:basename="classpath:/com/globant/katari/login/local/lang/messages"
+    p:debugPrefix='../katari-local-login/src/main/resources'
+    p:debug-ref='debugMode'>
+    <constructor-arg index='0' value='local-login'/>
+    <constructor-arg index='1' ref='katari.messageSource'/>
+  </bean>
+-----
+
+ Future versions of katari will allow you to reuse the same bean definitions for
+ both cases. For now, just define to beans that use the same base names for the
+ message files.
+
+ The previous examples where stolen from katari-local-login. Change the values
+ for your module.
+
+ Now create your properties files for the locales you support.
 
