@@ -23,7 +23,7 @@ menuitempath : the path of menuitem to be evaluated.
 -->
 <#function selected menuitempath>
   <#if current()??>
-    <#if current()?starts_with(menuitempath) >
+    <#if (current() + '/')?starts_with(menuitempath + '/') >
       <#return "selected"/>
     </#if>
   </#if>
