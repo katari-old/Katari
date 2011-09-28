@@ -1,5 +1,22 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.39
+
+* What's new since version 0.38
+
+ * JsonRepresentation can now be rendered directly as json in freemarker.
+
+ * Added i18n section to the user manual.
+
+ * Bug fixed: If one menu item was a prefix of a sibling menu item (ex:
+ Twitter_Accounts and Twitter_Account), katari selected both menus.
+
+Release notes for version 0.38
+
+ This release just fixed a bug in menus: when a menu entry link has request
+ parameters, the menu generated a link with an unescaped &, which is invalid
+ html.
+
 Release notes for version 0.37
 
  This release continues adding internationalization related features.
