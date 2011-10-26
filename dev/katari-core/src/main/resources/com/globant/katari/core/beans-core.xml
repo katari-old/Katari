@@ -478,30 +478,79 @@
     <constructor-arg index="0" ref="katari.contextRegistrar" />
     <constructor-arg index="1">
       <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
-        <constructor-arg index="0">
-          <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <constructor-arg index="0" ref='katari.rootPermissions' />
+        <!--
+          <bean class='com.globant.katari.core.spring.OverridingMapFactoryBean'>
             <property name="targetMapClass" value="java.util.LinkedHashMap" />
-              <property name="sourceMap">
-                <map>
-                  <entry key="/j_acegi_cas_security_check">
-                    <list>
-                      <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
-                    </list>
-                  </entry>
-                  <entry key="/ping/**">
-                    <list>
-                      <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
-                    </list>
-                  </entry>
-                  <entry key="/*"><ref bean='katari.rootRoles'/></entry>
-                  <entry key="/**"><ref bean='katari.defaultRoles'/></entry>
-                </map>
-              </property>
+            <property name="overridingMap">
+              <map>
+                <entry key="/j_acegi_cas_security_check">
+                  <list>
+                    <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+                  </list>
+                </entry>
+                <entry key="/ping/**">
+                  <list>
+                    <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+                  </list>
+                </entry>
+                <entry key="/*"><ref bean='katari.rootRoles'/></entry>
+                <entry key="/**"><ref bean='katari.defaultRoles'/></entry>
+              </map>
+            </property>
           </bean>
         </constructor-arg>
+          -->
       </bean>
     </constructor-arg>
   </bean>
+
+  <!-- The permissions for the 'out of modules' links. -->
+  <bean id='katari.defaultRootPermissions'
+    class="org.springframework.beans.factory.config.MapFactoryBean">
+    <property name="targetMapClass" value="java.util.LinkedHashMap" />
+    <property name="sourceMap">
+      <map>
+        <entry key="/j_acegi_cas_security_check">
+          <list>
+            <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+          </list>
+        </entry>
+        <entry key="/ping/**">
+          <list>
+            <value>IS_AUTHENTICATED_ANONYMOUSLY</value>
+          </list>
+        </entry>
+        <entry key="/*"><ref bean='katari.rootRoles'/></entry>
+        <entry key="/**"><ref bean='katari.defaultRoles'/></entry>
+      </map>
+    </property>
+  </bean>
+
+  <!-- Additional permissions that can be added by the application writer.
+       These permissions will have more priority than the default ones. -->
+  <bean id='katari.additionalRootPermissions'
+    class="org.springframework.beans.factory.config.MapFactoryBean">
+    <property name="targetMapClass" value="java.util.LinkedHashMap" />
+    <property name="sourceMap">
+      <map />
+    </property>
+  </bean>
+
+  <bean id='katari.rootPermissions2'
+    class='com.globant.katari.core.spring.OverridingMapFactoryBean'>
+    <property name="targetMapClass" value="java.util.LinkedHashMap" />
+    <property name='sourceMap' ref='katari.additionalRootPermissions'/>
+    <property name="overridingMap" ref='katari.defaultRootPermissions'/>
+  </bean>
+
+  <bean id='katari.rootPermissions'
+    class='com.globant.katari.core.spring.OverridingMapFactoryBean'>
+    <property name="targetMapClass" value="java.util.LinkedHashMap" />
+    <property name='sourceMap' ref='katari.rootPermissions2'/>
+    <property name="overridingMap" ref='katari.additionalRootPermissions'/>
+  </bean>
+
   <!-- End of security related beans. -->
 
   <!-- localeResolver to obtain a locale from the request. It may be replace by
