@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * first path component after the servlet map is the module name. This servlet
  * delegates the request to another servlet hidding all this module thing.
  */
-public final class ModuleContainerServlet extends HttpServlet {
+public class ModuleContainerServlet extends HttpServlet {
 
   /** The serialization version number.
    *
