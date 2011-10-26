@@ -1,5 +1,14 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.40
+
+* What's new since version 0.39
+
+ * Fine grain configuration for non modules urls. Now you can add a additional
+ url-role mappings to urls that are outside modules.
+
+ * Fixed some double slashes when the application is deployed in the root context.
+
 Release notes for version 0.39
 
 * What's new since version 0.38
