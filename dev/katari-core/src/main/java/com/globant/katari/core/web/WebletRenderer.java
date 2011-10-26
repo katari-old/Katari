@@ -84,7 +84,11 @@ public class WebletRenderer {
      */
     @Override
     public String getContextPath() {
-      return super.getContextPath() + "/module/" + moduleName;
+      String contextPath = super.getContextPath();
+      if (contextPath.equals("/")) {
+        contextPath = "";
+      }
+      return contextPath + "/module/" + moduleName;
     }
 
     /** The http method.

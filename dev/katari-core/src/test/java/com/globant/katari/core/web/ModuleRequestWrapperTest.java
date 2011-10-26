@@ -19,9 +19,9 @@ public class ModuleRequestWrapperTest extends TestCase {
 
   public final void testGetContextPath() {
     HttpServletRequest request = createNiceMock(HttpServletRequest.class);
-    expect(request.getContextPath()).andReturn("/katari");
-    expect(request.getServletPath()).andReturn("/module");
-    expect(request.getPathInfo()).andReturn(null);
+    expect(request.getContextPath()).andReturn("/katari").anyTimes();
+    expect(request.getServletPath()).andReturn("/module").anyTimes();
+    expect(request.getPathInfo()).andReturn(null).anyTimes();
     replay(request);
 
     ModuleRequestWrapper wrapper;

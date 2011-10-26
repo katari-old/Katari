@@ -66,14 +66,23 @@ class ModuleRequestWrapper extends HttpServletRequestWrapper {
     moduleName = theModuleName;
 
     if (isIncluded()) {
-      contextPath = (String) theRequest.getAttribute(
-          "javax.servlet.include.context_path")
-        + (String) theRequest.getAttribute(
-            "javax.servlet.include.servlet_path")
+      String includedContextPath = (String) theRequest.getAttribute(
+            "javax.servlet.include.context_path");
+      if (includedContextPath.equals("/")) {
+        contextPath = "";
+      } else {
+        contextPath = includedContextPath;
+      }
+      contextPath += (String) theRequest.getAttribute(
+          "javax.servlet.include.servlet_path")
         + "/" + moduleName;
     } else {
-      contextPath = theRequest.getContextPath() + theRequest.getServletPath()
-        + "/" + moduleName;
+      if (theRequest.getContextPath().equals("/")) {
+        contextPath = "";
+      } else {
+        contextPath = theRequest.getContextPath();
+      }
+      contextPath += theRequest.getServletPath() + "/" + moduleName;
     }
 
     servletPath = theServletPath;
