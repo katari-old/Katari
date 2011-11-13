@@ -55,6 +55,27 @@
               <!-- This should be the first filter to execute to guarantee to
               ensure that the encoding is set before any request.getParameter
               is performed. -->
+              <constructor-arg value='-1000102'/>
+            </bean>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean
+                      class="com.globant.katari.core.web.ExceptionHandlerFilter">
+                      <constructor-arg index='0' 
+                        ref='exceptionHandlerFilter.freemarkerConfig' />
+                     <constructor-arg index='1' 
+                        ref='exceptionHandlerFilter.defaultErrorView' />
+                     <constructor-arg index='2' ref='debugMode' />
+                    </bean>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+              <!-- This should be the first filter to execute to guarantee to
+              ensure that the encoding is set before any request.getParameter
+              is performed. -->
               <constructor-arg value='-1000101'/>
             </bean>
             <bean class="com.globant.katari.core.web.FilterMapping">
@@ -154,6 +175,15 @@
     </property>
 
   </bean>
+
+  <bean id='exceptionHandlerFilter.defaultErrorView'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='error.ftl' />
+
+  <bean id='exceptionHandlerFilter.freemarkerConfig'
+    class='org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean'
+    p:preferFileSystemAccess='false'
+    p:templateLoaderPath="classpath:/" />
 
   <bean name='htmlValidator'
     class="com.globant.katari.core.web.HtmlValidationFilter"
