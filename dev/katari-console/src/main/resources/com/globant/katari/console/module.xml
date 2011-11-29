@@ -57,7 +57,7 @@
                     <entry key="mimeType_js" value="text/javascript"/>
                     <entry key="mimeType_png" value="image/png"/>
                     <entry key="mimeType_gif" value="image/gif"/>
-                    <entry key="mimeType_jpg" value="image/jpg"/>
+                    <entry key="mimeType_jpg" value="image/jpeg"/>
                     <entry key="mimeType_html" value="text/html"/>
                     <entry key="mimeType_swf"
                       value="application/x-shockwave-flash"/>
