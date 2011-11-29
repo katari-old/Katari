@@ -3,7 +3,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
   http://maven.apache.org/maven-v4_0_0.xsd">
-  <!-- vim: set ts=2 et sw=2 ai: -->
 
   <parent>
     <groupId>\${groupId}</groupId>
@@ -45,6 +44,14 @@
     <!-- Filters the main decorator to include the version number. -->
     <resources>
       <resource>
+        <directory>src/main</directory>
+        <targetPath>${packageInPathFormat}/style</targetPath>
+        <filtering>true</filtering>
+        <includes>
+          <include>VERSION</include>
+        </includes>
+      </resource>
+      <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
         <includes>
@@ -61,5 +68,6 @@
 
   </build>
 
+  <!-- vim: set ts=2 et sw=2 ai: -->
 </project>
 
