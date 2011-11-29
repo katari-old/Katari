@@ -143,10 +143,12 @@
                 <exclude>**/footer.dec</exclude>
               </excludes>
               <includes>
+                <include>**/*.ftl</include>
                 <include>**/*.dec</include>
                 <include>**/*.gif</include>
                 <include>**/*.css</include>
                 <include>**/*.png</include>
+                <include>**/*.jpg</include>
                 <include>**/*.ico</include>
                 <include>**/*.properties</include>
               </includes>
