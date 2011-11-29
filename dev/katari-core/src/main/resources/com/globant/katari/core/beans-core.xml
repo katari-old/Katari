@@ -63,37 +63,13 @@
                 <bean class="com.globant.katari.core.web.FilterAndParameters">
                   <constructor-arg>
                     <bean
-                      class="com.globant.katari.core.web.ExceptionHandlerFilter">
-                      <constructor-arg index='0' 
-                        ref='exceptionHandlerFilter.freemarkerConfig' />
-                     <constructor-arg index='1' 
-                        ref='exceptionHandlerFilter.defaultErrorView' />
-                     <constructor-arg index='2' ref='debugMode' />
-                    </bean>
-                  </constructor-arg>
-                </bean>
-              </constructor-arg>
-              <!-- This should be the first filter to execute to guarantee to
-              ensure that the encoding is set before any request.getParameter
-              is performed. -->
-              <constructor-arg value='-1000101'/>
-            </bean>
-            <bean class="com.globant.katari.core.web.FilterMapping">
-              <constructor-arg><value>.*</value></constructor-arg>
-              <constructor-arg>
-                <bean class="com.globant.katari.core.web.FilterAndParameters">
-                  <constructor-arg>
-                    <bean
                       class="com.globant.katari.core.web.ChangeLocaleFilter">
                       <constructor-arg ref='localeResolver'/>
                     </bean>
                   </constructor-arg>
                 </bean>
               </constructor-arg>
-              <!-- This should be the first filter to execute to guarantee to
-              ensure that the encoding is set before any request.getParameter
-              is performed. -->
-              <constructor-arg value='-1000100'/>
+              <constructor-arg value='-1000101'/>
             </bean>
             <!-- Validates the generated html output. -->
             <bean class="com.globant.katari.core.web.FilterMapping">
@@ -175,15 +151,6 @@
     </property>
 
   </bean>
-
-  <bean id='exceptionHandlerFilter.defaultErrorView'
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value='error.ftl' />
-
-  <bean id='exceptionHandlerFilter.freemarkerConfig'
-    class='org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean'
-    p:preferFileSystemAccess='false'
-    p:templateLoaderPath="classpath:/" />
 
   <bean name='htmlValidator'
     class="com.globant.katari.core.web.HtmlValidationFilter"
@@ -636,7 +603,7 @@
 
   <!-- The global message source. All modules make this message source its
        parent.
-       
+
        This is intended to be overriden in the web application context. -->
   <bean id="katari.messageSource"
     class="com.globant.katari.core.spring.KatariMessageSource"

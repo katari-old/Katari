@@ -28,25 +28,28 @@
       }
 
       #norris h4 {
-        color: white;        margin: 10px;
+        color: white;
+        margin: 10px;
         font-size: 15pt;
         text-align: center;
       }
     </style>
   </head>
   <body>
-    <h1>Error</h1>
-    <#if debugMode>
-       <div id="norris">
-        <img src="http://www.dailyjist.com/wp-content/uploads/2010/12/chuck-norris-2.jpg" alt="chuck norris catch it!"/>
-        <h4>I catch it for you!</h4>
-      </div>
-      <h2>${exception.message}</h2>
-      <div id="stacktrace">
-        <#list exception.stackTrace as stack>
-          ${stack} <br />
-        </#list>
-      </div>
-    </#if>
+    <h1>Error!!</h1>
+
+     <div id="norris">
+       <img src="${baseweb}/module/decorator/image/chuck-norris-2.jpg"
+         alt="chuck norris catch it!"/>
+       <h4>I caught it for you!</h4>
+     </div>
+     <h2>${exception.message}</h2>
+     <div id="stacktrace">
+       <#list exception.stackTrace as stack>
+         ${stack} <br />
+       </#list>
+     </div>
+
   </body>
 </html>
+

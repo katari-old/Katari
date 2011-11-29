@@ -19,6 +19,23 @@
       <bean class="org.springframework.beans.factory.config.ListFactoryBean">
         <property name="sourceList">
           <list>
+            <!-- Filter to catch and show user friendly exceptions. -->
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean class="com.globant.katari.core.web.ExceptionHandlerFilter">
+                      <constructor-arg index='0' value='/module/decorator/error.ftl' />
+                      <constructor-arg index='1' ref='debugMode' />
+                    </bean>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+              <!-- This should be executed as soon as possible, after encoding
+                   and locale -->
+              <constructor-arg value='-1000100'/>
+            </bean>
             <!-- Sitemesh filter, mapped to all urls. It loads the
             configuration file from this module. -->
             <bean class="com.globant.katari.core.web.FilterMapping">
@@ -39,6 +56,21 @@
                 </bean>
               </constructor-arg>
             </bean>
+            <!-- Filter to catch and show user friendly exceptions, that will
+                 be decorated by sitemesh. -->
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean class="com.globant.katari.core.web.ExceptionHandlerFilter">
+                      <constructor-arg index='0' value='/module/decorator/error.ftl' />
+                      <constructor-arg index='1' ref='debugMode' />
+                    </bean>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+            </bean>
           </list>
         </property>
       </bean>
@@ -48,7 +80,7 @@
       <bean class="org.springframework.beans.factory.config.MapFactoryBean">
         <property name="sourceMap">
           <map>
-            <entry key="/.*\.dec">
+            <entry key="/.*\.(dec|ftl)">
               <bean class="com.globant.katari.core.web.ServletAndParameters">
                 <constructor-arg index="0">
                   <bean class="com.globant.katari.core.sitemesh.FreemarkerDecoratorServlet">
@@ -88,6 +120,7 @@
                       value="../katari-style/src/main/resources"/>
                     <entry key="requestCacheContent" value="true"/>
                     <entry key="mimeType_png" value="image/png"/>
+                    <entry key="mimeType_jpg" value="image/jpeg"/>
                     <entry key="mimeType_gif" value="image/gif"/>
                     <entry key="mimeType_css" value="text/css"/>
                     <entry key="mimeType_js" value="text/javascript"/>
