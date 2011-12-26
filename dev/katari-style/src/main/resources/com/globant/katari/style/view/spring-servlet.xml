@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:katari="http://www.globant.com/schema/katari"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.globant.com/schema/katari
+    http://www.globant.com/schema/katari/katari.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <!-- freemarker config -->
+  <bean id="freemarkerConfig"
+    class="com.globant.katari.core.web.FreeMarkerConfigurer"
+    p:templateLoaderPath='classpath:/com/globant/katari/style/view'
+    p:debugPrefix='../katari-style/src/main/resources'
+    p:debug-ref='debugMode'
+    p:defaultEncoding="UTF-8"/>
+
+  <!-- View resolvers can also be configured with ResourceBundles or XML files.
+  If you need different view resolving based on Locale, you have to use the
+  resource bundle resolver. -->
+  <bean id="viewResolver"
+    class="com.globant.katari.core.web.FreeMarkerViewResolver"
+    p:prefix="/" p:suffix=".ftl"
+    p:exposeSpringMacroHelpers="true"
+    p:exposeRequestAttributes="true" />
+
+  <!-- Controllers -->
+  <bean name="/error.do"
+    class="org.springframework.web.servlet.mvc.UrlFilenameViewController"/>
+
+  <!-- Controllers -->
+  <bean name="/decoratedError.do"
+    class="org.springframework.web.servlet.mvc.UrlFilenameViewController"/>
+
+  <!-- Message source for this module, loaded from localized "messages_xx"
+  files -->
+  <bean id="messageSource"
+    class="com.globant.katari.core.spring.KatariMessageSource"
+    p:useCodeAsDefaultMessage='true'
+    p:basename="classpath:/com/globant/katari/style/lang/messages"
+    p:debugPrefix='../katari-style/src/main/resources'
+    p:debug-ref='debugMode'>
+    <constructor-arg index='0' value='style'/>
+    <constructor-arg index='1' ref='katari.messageSource'/>
+  </bean>
+
+  <!-- vim: set ts=2 sw=2 et ai: -->
+</beans>
+
+

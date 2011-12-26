@@ -66,8 +66,8 @@ public class WebletResponseWrapper extends ServletOutputInterceptor {
     String result = null;
     try {
       flushBuffer();
-      // I cannot assume that encoding can be null (it is not explicit in the
-      // javadocs).
+      // I cannot assume that encoding cannot be null (it is not explicit in
+      // the javadocs).
       String encoding = getResponse().getCharacterEncoding();
       if (encoding == null) {
         result = outputStream.toString();

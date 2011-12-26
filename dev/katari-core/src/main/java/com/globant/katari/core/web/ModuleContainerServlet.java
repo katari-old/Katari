@@ -306,8 +306,7 @@ public class ModuleContainerServlet extends HttpServlet {
     return request.getAttribute("javax.servlet.include.request_uri") != null;
   }
 
-  /** This class contains the data necessary to forward a request to a
-   * servlet.
+  /** This class contains the data necessary to forward a request to a servlet.
    */
   public static final class ServletData {
 

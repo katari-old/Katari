@@ -42,6 +42,19 @@ public class ExceptionHandlerFilterTest {
     filter.destroy();
     assertThat(response.getIncludedUrl(), is("/module/decorator/error.ftl"));
     assertThat(request.getAttribute("exception"), is(notNullValue()));
+    assertThat(response.getContentType(), is("text/html; charset=utf-8"));
+  }
+
+  @Test
+  public void testDoFilter_errorPageInJson() throws Exception {
+    filter = new ExceptionHandlerFilter("/module/decorator/error.ftl", false);
+    filter.init(filterConfig);
+    FilterChain chain = new FilterChainMock("RuntimeException");
+    request.addHeader("Accept", "application/json");
+    filter.doFilter(request, response, chain);
+    filter.destroy();
+    assertThat(response.getContentType(),
+        is("application/json; charset=utf-8"));
   }
 
   @Test
@@ -88,6 +101,8 @@ public class ExceptionHandlerFilterTest {
     filter.doFilter(request, response, chain);
     assertThat(response.getIncludedUrl(), is("/module/decorator/error.ftl"));
     assertThat(request.getAttribute("exception"), is(notNullValue()));
+    assertThat(response.getCookies(), is(notNullValue()));
+    assertThat(response.getCookies()[0].getName(), is("previewErrorPage"));
   }
 
   private static class FilterChainMock implements FilterChain {

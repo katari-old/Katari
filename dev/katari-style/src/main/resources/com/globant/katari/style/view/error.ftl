@@ -46,7 +46,7 @@
      <h2>${exception.message}</h2>
      <div id="stacktrace">
        <#list exception.stackTrace as stack>
-         ${stack} <br />
+         ${stack?html} <br />
        </#list>
      </div>
 

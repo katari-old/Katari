@@ -16,6 +16,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
 
 import org.apache.commons.lang.Validate;
 
@@ -36,6 +37,10 @@ import org.slf4j.LoggerFactory;
  * force the error page to show up, there must be an exception downstream for
  * that.
  *
+ * If previewErrorPage is specified, subsequent errors will show the error
+ * page, unless the user specifies previewErrorPage=false. This is implemented
+ * as a cookie name 'previewErrorPage'.
+ *
  * It is intended to be configured in two different places. First, just after
  * the sitemesh decorator filter, to catch the errors in the 'content' of the
  * page. This gives sitemesh the opportunity to decorate the error page, so the
@@ -50,6 +55,15 @@ import org.slf4j.LoggerFactory;
  *
  * The error page template has access to the exception in a request parameter
  * called 'exception'.
+ *
+ * This filter makes the following variables available to the error page:
+ *
+ *  - exception: contains the exception object.
+ *
+ *  - type: the type that is expected for the response. It can be 'html' or
+ *  'json'. This is used to support ajax error messages. The type is set to
+ *  json when the Accept header contains 'application/json'. It is 'html'
+ *  otherwise.
  */
 public class ExceptionHandlerFilter implements Filter {
 
@@ -125,22 +139,6 @@ public class ExceptionHandlerFilter implements Filter {
 
   /** Filters the request and generates an error page in case of exception.
    *
-   * This page contains information about:
-   * <ul>
-   *  <li>
-   *    The Exception
-   *  </li>
-   *  <li>
-   *    Current Request
-   *  </li>
-   *  <li>
-   *    If the application runs on debug or not.
-   *  </li>
-   *  <li>
-   *    The show stack trace parameter.
-   *  </li>
-   * </ul>
-   *
    * {@inheritDoc}.
    */
   public void doFilter(final ServletRequest request, final ServletResponse
@@ -160,6 +158,16 @@ public class ExceptionHandlerFilter implements Filter {
     ResponseBufferer wrapper = new ResponseBufferer(httpResponse);
 
     try {
+      Cookie previewCookie = null;
+      String previewParameterValue = request.getParameter("previewErrorPage");
+      if ("false".equals(previewParameterValue)) {
+        previewCookie = new Cookie("previewErrorPage", "false");
+      } else if (previewParameterValue != null) {
+        previewCookie = new Cookie("previewErrorPage", "true");
+      }
+      if (previewCookie != null) {
+        wrapper.addCookie(previewCookie);
+      }
       chain.doFilter(request, wrapper);
       wrapper.flushBuffer();
       response.getOutputStream().write(wrapper.toByteArray());
@@ -201,7 +209,26 @@ public class ExceptionHandlerFilter implements Filter {
       final HttpServletResponse response, final Exception e)
       throws IOException, ServletException {
 
-    boolean preview = request.getParameter("previewErrorPage") != null;
+    boolean preview = false;
+
+    String previewParameterValue = request.getParameter("previewErrorPage");
+    if (previewParameterValue == null) {
+      // previewErrorPage not in parameter, check for cookie.
+      Cookie[] cookies = request.getCookies();
+      if (cookies != null) {
+        for (Cookie cookie : cookies) {
+          if (cookie.getName().equals("previewErrorPage")) {
+            preview = "true".equals(cookie.getValue());
+          }
+        }
+      }
+    } else if ("false".equals(previewParameterValue)) {
+      preview = false;
+    } else {
+      // if previewErrorPage is present, we assume to want the preview no
+      // matter the value of the parameter.
+      preview = true;
+    }
 
     // We don't generate the output in debug mode.
     if (debugMode && !preview) {
@@ -210,6 +237,18 @@ public class ExceptionHandlerFilter implements Filter {
       log.error(e.getMessage(), e);
 
       request.setAttribute("exception", e);
+
+      String acceptType = request.getHeader("Accept");
+      if (acceptType != null && acceptType.contains("application/json")) {
+        response.setContentType("application/json; charset=utf-8");
+        request.setAttribute("type", "json");
+      } else {
+        response.setContentType("text/html; charset=utf-8");
+        request.setAttribute("type", "html");
+      }
+
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
       RequestDispatcher dispatcher;
       dispatcher = servletContext.getRequestDispatcher(templateName);
       dispatcher.include(request, response);

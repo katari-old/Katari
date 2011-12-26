@@ -29,7 +29,7 @@
                 <bean class="com.globant.katari.core.web.FilterAndParameters">
                   <constructor-arg>
                     <bean class="com.globant.katari.core.web.ExceptionHandlerFilter">
-                      <constructor-arg index='0' value='/module/decorator/error.ftl' />
+                      <constructor-arg index='0' value='/module/decorator/error.do' />
                       <constructor-arg index='1' ref='debugMode' />
                     </bean>
                   </constructor-arg>
@@ -67,7 +67,7 @@
                 <bean class="com.globant.katari.core.web.FilterAndParameters">
                   <constructor-arg>
                     <bean class="com.globant.katari.core.web.ExceptionHandlerFilter">
-                      <constructor-arg index='0' value='/module/decorator/error.ftl' />
+                      <constructor-arg index='0' value='/module/decorator/decoratedError.do' />
                       <constructor-arg index='1' ref='debugMode' />
                     </bean>
                   </constructor-arg>
@@ -83,7 +83,25 @@
       <bean class="org.springframework.beans.factory.config.MapFactoryBean">
         <property name="sourceMap">
           <map>
-            <entry key="/.*${symbol_escape}.(dec|ftl)">
+            <!-- The spring-mvc controller servlet -->
+            <entry key=".*\.do">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="com.globant.katari.core.web.DispatcherServlet" />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/${packageInPathFormat}/style/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+            <!-- The freemarker decorators -->
+            <entry key="/.*${symbol_escape}.dec">
               <bean class="com.globant.katari.core.web.ServletAndParameters">
                 <constructor-arg index="0">
                   <bean class="com.globant.katari.core.sitemesh.FreemarkerDecoratorServlet">
