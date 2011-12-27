@@ -70,3 +70,14 @@ git svn dcommit
 # Rollback last commit:
 git reset --soft HEAD~1
 
+# Working with branches:
+
+# Bring new svn branches to the local repository:
+git svn fetch
+
+# List remote (svn) branches:
+git branch -r
+
+# Checkout a remote branch:
+git checkout -b <local-branch-name> <remote-branch-name>
+
