@@ -1,11 +1,22 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.41
+
+* What's new since version 0.40
+
+ * Show a custom error page and provide the infrastructure to show ajax errors.
+
+* Resolved issues since version 0.40
+
+ * Katari was sending image/jpg instead of image/jpeg for the content type of
+ jpeg files.
+
 Release notes for version 0.40
 
 * What's new since version 0.39
 
- * Fine grain configuration for non modules urls. Now you can add a additional
- url-role mappings to urls that are outside modules.
+ * Fine grain permission configuration for non modules urls. Now you can add
+ additional url-role mappings to urls that are outside modules.
 
  * Fixed some double slashes when the application is deployed in the root context.
 
