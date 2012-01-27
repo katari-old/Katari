@@ -16,6 +16,8 @@ import com.globant.katari.core.application.Command;
  * to the client.
  *
  * This sets the content type to application/json.
+ *
+ * The result of executing the command must not be null.
  */
 public abstract class JsonCommandController extends AbstractCommandController {
 
@@ -24,8 +26,8 @@ public abstract class JsonCommandController extends AbstractCommandController {
    *
    * {@inheritDoc}
    *
-   * Note: This controller always returns null, because write directly to the
-   * response.
+   * Note: This controller always returns null, because it writes directly to
+   * the response.
    */
   @Override
   @SuppressWarnings("unchecked")
@@ -36,7 +38,13 @@ public abstract class JsonCommandController extends AbstractCommandController {
     Command<JsonRepresentation> jsonCommand;
     jsonCommand = (Command<JsonRepresentation>) command;
     response.addHeader("Content-type", "application/json; charset=UTF-8");
-    jsonCommand.execute().write(response.getWriter());
+    JsonRepresentation result = jsonCommand.execute();
+		if (result == null) {
+		  throw new RuntimeException("The result of executing the command"
+          + " cannnot be null. If your command may return nullt, then you"
+          + " should use another controller");
+		}
+    result.write(response.getWriter());
 
     return null;
   }

@@ -30,41 +30,55 @@ import com.globant.katari.core.application.JsonRepresentation;
 public class JsonCommandControllerTest {
 
   private MockHttpServletRequest request;
+  private JsonCommandController controller;
+
+  private JsonRepresentation commandResult;
+
+  private ByteArrayOutputStream os = new ByteArrayOutputStream();
+  private PrintWriter writer = new PrintWriter(os);
+
+  private HttpServletResponse response = createMock(HttpServletResponse.class);
 
   @Before
   public void setUp() throws Exception {
     request = new MockHttpServletRequest("GET", "getGadgetGroup.do");
-  }
 
-  @Test
-  public void testHandle() throws Exception {
-
-    JsonCommandController controller = new JsonCommandController() {
+    controller = new JsonCommandController() {
       protected Command<JsonRepresentation> createCommandBean() {
         return new Command<JsonRepresentation>() {
           public JsonRepresentation execute() {
-            return new JsonRepresentation(new JSONObject());
+            return commandResult;
           }
         };
       }
     };
 
-    ByteArrayOutputStream os = new ByteArrayOutputStream();
-    PrintWriter writer = new PrintWriter(os);
-
-    HttpServletResponse response = createMock(HttpServletResponse.class);
     response.addHeader("Content-type", "application/json; charset=UTF-8");
     expect(response.getWriter()).andReturn(writer);
     replay(response);
 
-    ModelAndView mv;
-    mv = controller.handleRequest(request, response);
+  }
+
+  @Test
+  public void testHandle() throws Exception {
+
+    // The command will return an empty json object.
+    commandResult = new JsonRepresentation(new JSONObject());
+
+    ModelAndView modelAndView = controller.handleRequest(request, response);
 
     // piggybacked assertion :).
-    assertThat(mv, nullValue());
+    assertThat(modelAndView, nullValue());
 
     writer.flush();
     assertThat(os.toString(), is("{}"));
+  }
+
+  @Test(expected = RuntimeException.class)
+  public void testHandle_nullCommandResult() throws Exception {
+    // The command will return null.
+    commandResult = null;
+    controller.handleRequest(request, response);
   }
 }
 
