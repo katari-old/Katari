@@ -22,6 +22,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.LineIterator;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.Validate;
 
 import org.slf4j.Logger;
@@ -75,7 +78,41 @@ public class HtmlValidationFilter implements Filter {
      * @return the byte array of the generated response, never null.
      */
     public byte[] toByteArray() {
-     return output.toByteArray();
+      return output.toByteArray();
+    }
+
+    /** Prepares the content to be shown in an html page, escaping html tags,
+     * adding line numbers and line breaks.
+     *
+     * @return the formatted content, never null.
+     */
+    public String getFormattedContent() {
+      StringBuilder result = new StringBuilder(output.size());
+      try {
+
+        InputStream capturedOutput;
+        capturedOutput = new ByteArrayInputStream(output.toByteArray());
+        LineIterator lines;
+        lines = IOUtils.lineIterator(capturedOutput, getCharacterEncoding());
+
+        try {
+          int lineNumber = 0;
+          while (lines.hasNext()) {
+            String line = lines.nextLine();
+            lineNumber ++;
+            /// do something with line
+            result.append(String.valueOf(lineNumber));
+            result.append(": ");
+            result.append(StringEscapeUtils.escapeHtml(line));
+            result.append("<br>");
+          }
+        } finally {
+          LineIterator.closeQuietly(lines);
+        }
+      } catch (IOException e) {
+        throw new RuntimeException("Error reading output", e);
+      }
+      return result.toString();
     }
 
     /** {@inheritDoc}
@@ -150,11 +187,12 @@ public class HtmlValidationFilter implements Filter {
       Validate.notEmpty(errors);
       StringBuilder output = new StringBuilder();
       for (TidyMessage message : errors) {
-        output.append("line ").append(message.getLine())
-          .append(" column ").append(message.getColumn())
-          .append(" - ").append(message.getLevel())
-          .append(": ").append(message.getMessage())
-          .append("\n");
+        output.append("line ").append(message.getLine());
+        output.append(" column ").append(message.getColumn());
+        output.append(" - ").append(message.getLevel());
+        output.append(": ");
+        output.append(StringEscapeUtils.escapeHtml(message.getMessage()));
+        output.append("<br>\r");
       }
       return output.toString();
     }
@@ -234,16 +272,28 @@ public class HtmlValidationFilter implements Filter {
           //
           // TODO This is using a non localized string conversion.
           String message = "There where validation errors for "
-            + requestUri + ":\n"
-            + errors.getErrorMessage() + "\n"
-            + "The html output was:\n"
-            + new String(wrapper.toByteArray());
+            + requestUri + ":<br>\r"
+            + errors.getErrorMessage() + "<br>\r"
+            + "The html output was:<br>\r<pre>"
+            + new String(wrapper.getFormattedContent())
+            + "</pre>";
+
           log.debug(message);
-          throw new ServletException(message);
+          httpResponse.setStatus(500);
+          PrintWriter out = httpResponse.getWriter();
+          out.print("<html><head><title>Validation error</title></head>");
+          out.print("<body style='font-family: monospace;'/>");
+          out.print(message);
+          out.print("</body></html>");
+          // throw new ServletException(message);
+        } else {
+          // No error, send the response to the client.
+          response.getOutputStream().write(wrapper.toByteArray());
         }
+      } else {
+        // Unknown content type, send the response to the client.
+        response.getOutputStream().write(wrapper.toByteArray());
       }
-      // No validation error, send the response to the client.
-      response.getOutputStream().write(wrapper.toByteArray());
     } else {
       chain.doFilter(request, response);
     }

@@ -620,7 +620,7 @@
       <dependency>
         <groupId>jtidy</groupId>
         <artifactId>jtidy</artifactId>
-        <version>r938</version>
+        <version>r1261</version>
       </dependency>
 
       <!-- Beware: jcaptcha depends on jhlabs imaging that is not in the public

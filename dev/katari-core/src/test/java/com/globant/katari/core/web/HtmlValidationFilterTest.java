@@ -4,8 +4,9 @@ package com.globant.katari.core.web;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -13,11 +14,10 @@ import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,9 +35,7 @@ public class HtmlValidationFilterTest {
 
   private HttpServletRequest request;
 
-  private HttpServletResponse response;
-
-  private  ByteArrayOutputStream output;
+  private MockHttpServletResponse response;
 
   @Before
   public final void setUp() throws Exception {
@@ -55,19 +53,8 @@ public class HtmlValidationFilterTest {
     expect(request.getRequestURI()).andReturn("/test");
     replay(request);
 
-    output = new ByteArrayOutputStream();
-    // Creates a ServletOutputStream
-    ServletOutputStream servletStream = new ServletOutputStream() {
-      public void write(final int theByte) {
-        output.write(theByte);
-      }
-    };
-
-    // Mocks the servlet response.
-    response = createNiceMock(HttpServletResponse.class);
-    expect(response.getContentType()).andReturn("text/html");
-    expect(response.getOutputStream()).andReturn(servletStream);
-    replay(response);
+    response = new MockHttpServletResponse();
+    response.setContentType("text/html");
   }
 
   /* Tests that the filter succeeds on valid html.
@@ -95,7 +82,7 @@ public class HtmlValidationFilterTest {
     HtmlValidationFilter filter = new HtmlValidationFilter();
     filter.init(filterConfig);
     filter.doFilter(request, response, chain);
-    verify(response);
+    assertThat(response.getStatus(), is(200));
   }
 
   /* Tests that the filter throws an exception on invalid html.
@@ -202,7 +189,7 @@ public class HtmlValidationFilterTest {
 
   /* Tests that the filter considers the invalid attribute 'validator'.
    */
-  @Test(expected=ServletException.class)
+  @Test
   public final void testDoFilter_considerValidator() throws Exception {
 
     request = createNiceMock(HttpServletRequest.class);
@@ -236,9 +223,10 @@ public class HtmlValidationFilterTest {
     filter.init(filterConfig);
     // Would throw an exception if enabled.
     filter.doFilter(request, response, chain);
+    assertThat(response.getStatus(), is(500));
   }
 
-  /* Tests what happens when the user does not call flush on the reseponse or
+  /* Tests what happens when the user does not call flush on the response or
    * writer.
    */
   @Test
@@ -263,7 +251,7 @@ public class HtmlValidationFilterTest {
     HtmlValidationFilter filter = new HtmlValidationFilter();
     filter.init(filterConfig);
     filter.doFilter(request, response, chain);
-    verify(response);
+    assertThat(response.getStatus(), is(200));
   }
 }
 

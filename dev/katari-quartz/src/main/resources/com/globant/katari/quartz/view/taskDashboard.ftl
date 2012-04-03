@@ -56,13 +56,13 @@
             content.push("<div style='background-color:#AFF584; width:" +
                 value + "%; text-align:right'>");
               content.push(value + "%");
-              content.push("</div>");
+              content.push("<\/div>");
             } else if (isRunning) {
               content.push("Running");
             } else {
               content.push("Task not running");
             }
-            content.push("</div>");
+            content.push("<\/div>");
             cell.innerHTML = content.join("");
           };
 
