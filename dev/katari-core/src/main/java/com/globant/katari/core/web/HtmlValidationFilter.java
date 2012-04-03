@@ -285,7 +285,6 @@ public class HtmlValidationFilter implements Filter {
           out.print("<body style='font-family: monospace;'/>");
           out.print(message);
           out.print("</body></html>");
-          // throw new ServletException(message);
         } else {
           // No error, send the response to the client.
           response.getOutputStream().write(wrapper.toByteArray());
