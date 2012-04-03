@@ -62,12 +62,10 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>${dependency.release-plugin.version}</version>
         <configuration>
-          <!-- Where to tag -->
-          <tagBase>
-            https://projects.globant.com/svn/katari/release
-          </tagBase>
           <goals>install site-deploy assembly:attached deploy</goals>
           <autoVersionSubmodules>true</autoVersionSubmodules>
+          <pushChanges>false</pushChanges> 
+          <localCheckout>true</localCheckout>
         </configuration>
       </plugin>
 
@@ -88,13 +86,17 @@
   </build>
 
   <!-- The scm information used by continuous integration and documentation. -->
-  <scm>
+  <!-- scm>
     <connection>scm:svn:https://projects.globant.com/svn/katari/main</connection>
     <developerConnection>
       scm:svn:https://projects.globant.com/svn/katari/main
     </developerConnection>
     <url>https://projects.globant.com/trac/katari/browser/main</url>
-  </scm>
+  </scm-->
+  <scm> 
+    <connection>scm:git:ssh://git@myserver:22/maven.master.git</connection> 
+    <developerConnection>scm:git:ssh://git@myserver:22/maven.master.git</developerConnection> 
+  </scm> 
 
   <issueManagement>
     <system>trac</system>
@@ -183,7 +185,7 @@
     <!-- Dependencies versions. They are declared here to avoid duplication in
     the archetype. -->
     <dependency.release-plugin.version>
-      2.0-beta-9
+      2.2.2
     </dependency.release-plugin.version>
     <dependency.assembly-plugin.version>
       2.2-beta-4
