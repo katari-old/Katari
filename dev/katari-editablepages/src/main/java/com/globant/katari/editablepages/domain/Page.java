@@ -235,7 +235,7 @@ public class Page {
 
   /** Returns the content of the page.
    *
-   * TODO Decice if returning null is the best option. An empty string is also
+   * TODO Decide if returning null is the best option. An empty string is also
    * a good choice.
    *
    * @return The published content. If it is a new page that was never

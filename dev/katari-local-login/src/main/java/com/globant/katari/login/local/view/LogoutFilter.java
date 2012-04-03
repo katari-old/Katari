@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.acegisecurity.ui.logout.LogoutHandler;
 
-/**
- * This logout filter handles the logout by calling the acegi implementation. It
- * bassically behaves the same way but if the logout succeed the current request
- * parameters are appended to the success url.
+/** This logout filter handles the logout by calling the acegi implementation.
+ *
+ * It behaves as the original LogoutHandler, but if the logout succeed the
+ * current request parameters are appended to the success url.
  *
  * @author mariano.nardi
  */
