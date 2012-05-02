@@ -2,21 +2,25 @@
 
 package com.globant.katari.jsmodule.view;
 
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.After;
+
 import javax.servlet.ServletContext;
 
+import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ByteArrayResource;
 
-import org.springframework.mock.web.MockServletContext;
+import com.globant.katari.core.spring.controller.JsonCommandController;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.After;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import com.globant.katari.jsmodule.application.ResolveDependenciesCommand;
 
 /** Tests the spring-servlet.xml.
  *
@@ -25,34 +29,22 @@ import static org.hamcrest.CoreMatchers.*;
  */
 public class SpringServletTest {
 
-  private AbstractXmlApplicationContext parent = null;
+  private XmlWebApplicationContext parent = null;
 
   private XmlWebApplicationContext appContext = null;
 
   @Before
   public void createContexts() throws Exception {
 
-    /* Define a minimal parent context. */
-    final String beans =
-      "<?xml version='1.0' encoding='UTF-8'?>\n"
-      + "<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN'"
-      + " 'http://www.springframework.org/dtd/spring-beans.dtd'>\n"
-      + "<beans>\n"
-      + " <bean class='com.globant.katari.core.spring.StringHolder'"
-      + "   name='debugMode'>\n"
-      + "  <property name='value' value='false'/>\n"
-      + " </bean>\n"
-      + "</beans>\n";
-
-    parent = new AbstractXmlApplicationContext() {
-      protected Resource[] getConfigResources() {
-        return new Resource[] {new ByteArrayResource(beans.getBytes())};
-      }
-    };
-    parent.refresh();
-
     ServletContext sc;
     sc = new MockServletContext(".", new FileSystemResourceLoader());
+
+    parent = new XmlWebApplicationContext();
+    parent.setServletContext(sc);
+    parent.setConfigLocations(new String[] {
+      "classpath:applicationContext.xml" });
+    parent.refresh();
+
     appContext = new XmlWebApplicationContext();
     appContext.setParent(parent);
     appContext.setServletContext(sc);
@@ -62,9 +54,16 @@ public class SpringServletTest {
   }
 
   @Test
-  public void testHelloType() {
-    Object logout = appContext.getBean("/hello.do");
-    assertThat(logout, instanceOf(HelloController.class));
+  public void testController() {
+    Object logout = appContext.getBean(
+        "/com/globant/katari/jsmodule/action/resolveDependencies.do");
+    assertThat(logout, instanceOf(JsonCommandController.class));
+  }
+
+  @Test
+  public void testCommand() {
+    Object logout = appContext.getBean("jsmodule.resolveDependenciesCommand");
+    assertThat(logout, instanceOf(ResolveDependenciesCommand.class));
   }
 
   @After

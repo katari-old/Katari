@@ -9,7 +9,8 @@
     http://www.globant.com/schema/katari/katari.xsd">
 
   <!-- freemarker config -->
-  <bean id="freemarkerConfig" class="com.globant.katari.core.web.FreeMarkerConfigurer"
+  <bean id="freemarkerConfig"
+    class="com.globant.katari.core.web.FreeMarkerConfigurer"
     p:templateLoaderPath='classpath:/com/globant/katari/jsmodule/view/'
     p:debugPrefix='../katari-jsmodule/src/main/resources'
     p:debug-ref='debugMode'/>
@@ -23,8 +24,33 @@
     p:exposeSpringMacroHelpers="true"
     p:exposeRequestAttributes="true" />
 
-  <bean name='/hello.do'
-    class='com.globant.katari.jsmodule.view.HelloController'/>
+  <!-- End Points -->
+
+  <bean name="/com/globant/katari/jsmodule/action/resolveDependencies.do"
+    class="com.globant.katari.core.spring.controller.JsonCommandController">
+    <lookup-method name="createCommandBean"
+      bean="jsmodule.resolveDependenciesCommand" />
+  </bean>
+
+  <!-- Commands -->
+
+  <bean name="jsmodule.resolveDependenciesCommand" scope="prototype"
+      class="com.globant.katari.jsmodule.application.ResolveDependenciesCommand">
+    <constructor-arg index="0" ref="jsmodule.dependenciesResolver" />
+    <constructor-arg index="1" ref="jsmodule.bundleCache" />
+    <constructor-arg index="2" ref="debugMode" />
+  </bean>
+
+  <!-- Utilities -->
+
+  <bean name="jsmodule.dependenciesFinder"
+      class="com.globant.katari.jsmodule.domain.DependenciesFinder">
+  </bean>
+
+  <bean name="jsmodule.dependenciesResolver"
+      class="com.globant.katari.jsmodule.domain.DependenciesResolver">
+    <constructor-arg index="0" ref="jsmodule.dependenciesFinder" />
+  </bean>
 
   <!-- vim: set ts=2 sw=2 et ai: -->
 </beans>

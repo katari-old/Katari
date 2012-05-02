@@ -84,6 +84,11 @@
     </dependency>
 
     <dependency>
+      <groupId>com.globant.yui</groupId>
+      <artifactId>yuicompressor</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.acegisecurity</groupId>
       <artifactId>acegi-security</artifactId>
     </dependency>

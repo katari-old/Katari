@@ -8,9 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -23,6 +25,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import com.globant.katari.core.web.BaseStaticContentServlet;
+import com.globant.katari.jsmodule.domain.BundleCache;
 
 /** Servlet that serves static content (gif, png, css, js) from the classpath.
  *
@@ -46,17 +49,33 @@ import com.globant.katari.core.web.BaseStaticContentServlet;
  * from this servlet, as specified by the property staticContentPath in some
  * katari-resource-set file.
  *
- * As a future enhacement, this servlet will be able to bundle and compress
- * javascript and css files.
+ * If the requested file is in package /com/globant/katari/jsmodule/bundle,
+ * this servlet assumes it is a bundle. See ResolveDependenciesCommand.
+ *
+ * As a future enhacement, this servlet will be able to bundle and compress css
+ * files.
  */
 public class ContentModuleServlet extends BaseStaticContentServlet {
 
   /** The serialization version number.
-  *
-  * This number must change every time a new serialization incompatible change
-  * is introduced in the class.
-  */
- private static final long serialVersionUID = 1;
+   *
+   * This number must change every time a new serialization incompatible change
+   * is introduced in the class.
+   */
+  private static final long serialVersionUID = 1;
+
+  /** Default path for the cached bundled files.
+   *
+   * The default value is "/com/globant/katari/jsmodule/bundle/".
+   */
+  public static final String BUNDLE_PATH =
+    "/com/globant/katari/jsmodule/bundle/";
+
+  /** Content type for ".js" files.
+   *
+   * The value is "text/javascript".
+   */
+  private static final String JS_CONTENT_TYPE = "text/javascript";
 
   /** The class logger.
    */
@@ -67,6 +86,21 @@ public class ContentModuleServlet extends BaseStaticContentServlet {
    */
   private SortedMap<String, ResourceSet> resourceSets
     = new TreeMap<String, ResourceSet>();
+
+  /** Contains the cache of the bundled files, never null.
+   */
+  private BundleCache cache;
+
+  /** Makes a new instance of the {@link ContentModuleServlet} with the given
+   * {@link BundleCache}.
+   *
+   * @param theCache The {@link BundleCache} contains the cache of the bundled
+   * files. Cannot be null.
+   */
+  public ContentModuleServlet(final BundleCache theCache) {
+    Validate.notNull(theCache, "The Bundle Cache cannot be null.");
+    cache = theCache;
+  }
 
   /** Initializes the servlet.
    *
@@ -104,16 +138,25 @@ public class ContentModuleServlet extends BaseStaticContentServlet {
   protected String getContentType(final String path) {
     log.trace("Entering getContentType('{}')", path);
 
-    ResourceSet set = findResourceSet(path);
-    if (set != null) {
-      String basePath = set.getBasePath();
-      Map<String, String> mimeTypes;
-      mimeTypes = resourceSets.get(basePath).getMimeTypes();
-      int dotPosition = path.lastIndexOf('.');
-      if (dotPosition != -1) {
-        String contentType = mimeTypes.get(path.substring(dotPosition + 1));
-        log.trace("Leaving getContentType with {}", contentType);
-        return contentType;
+    if (path.contains(BUNDLE_PATH)) {
+      // We only support javascript.
+      String bundleName = path.substring(path.lastIndexOf("/") + 1);
+      if (StringUtils.isNotEmpty(bundleName)) {
+        log.trace("Leaving getContentType with {}", JS_CONTENT_TYPE);
+        return JS_CONTENT_TYPE;
+      }
+    } else {
+      ResourceSet set = findResourceSet(path);
+      if (set != null) {
+        String basePath = set.getBasePath();
+        Map<String, String> mimeTypes;
+        mimeTypes = resourceSets.get(basePath).getMimeTypes();
+        int dotPosition = path.lastIndexOf('.');
+        if (dotPosition != -1) {
+          String contentType = mimeTypes.get(path.substring(dotPosition + 1));
+          log.trace("Leaving getContentType with {}", contentType);
+          return contentType;
+        }
       }
     }
     log.trace("Leaving getContentType with null");
@@ -128,29 +171,39 @@ public class ContentModuleServlet extends BaseStaticContentServlet {
 
     Validate.notNull(path, "The resource path cannot be null");
 
-    ResourceSet set = findResourceSet(path);
-    if (set != null) {
-      if (isInDebugMode()) {
-        String filePath = buildPath(set.getDebugPrefix(), path);
-        log.debug("In debug mode, looking for file {}", filePath);
-        File file = new File(filePath);
-        if (file.exists()) {
-          log.trace("Leaving findInputStream with a file resource");
-          return new FileInputStream(file);
+    if (path.contains(BUNDLE_PATH)) {
+      String bundleName = path.substring(path.lastIndexOf("/") + 1);
+      String bundleContent = cache.findContent(bundleName);
+      if (StringUtils.isNotEmpty(bundleName)) {
+        log.trace("Leaving findInputStream with a file resource");
+        return new ByteArrayInputStream(bundleContent.getBytes("UTF-8"));
+      }
+    } else {
+      ResourceSet set = findResourceSet(path);
+      if (set != null) {
+        if (isInDebugMode()) {
+          String filePath = buildPath(set.getDebugPrefix(), path);
+          log.debug("In debug mode, looking for file {}", filePath);
+          File file = new File(filePath);
+          if (file.exists()) {
+            log.trace("Leaving findInputStream with a file resource");
+            return new FileInputStream(file);
+          }
         }
-      }
-      // The resource path must not start with '/', or it will fail under
-      // certain containers.
-      String resource;
-      if (path.startsWith("/")) {
-        resource = path.substring(1);
-      } else {
-        resource = path;
-      }
+        // The resource path must not start with '/', or it will fail under
+        // certain containers.
+        String resource;
+        if (path.startsWith("/")) {
+          resource = path.substring(1);
+        } else {
+          resource = path;
+        }
 
-      log.debug("Looking for resource {}", resource);
-      return getResourceAsStream(resource);
+        log.debug("Looking for resource {}", resource);
+        return getResourceAsStream(resource);
+      }
     }
+
     log.trace("Leaving findInputStream");
     return null;
   }

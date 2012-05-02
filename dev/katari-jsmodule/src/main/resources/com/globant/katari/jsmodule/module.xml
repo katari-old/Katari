@@ -8,14 +8,46 @@
 
   <bean id="jsmodule.module"
     class="com.globant.katari.core.web.ConfigurableModule">
+
+    <!-- This module has 4 main endpoints:
+
+         /com/globant/katari/jsmodule/bundle: serves bundles.
+
+         /com/globant/katari/jsmodule/js: serves local js files.
+
+         /com/globant/katari/jsmodule/action: actions, ending in .do.
+
+         anything else (not bundle, action or js) is assumed to be a resource
+         served from the class path of another module.
+         -->
     <property name="entryPoints">
       <bean class="org.springframework.beans.factory.config.MapFactoryBean">
         <property name="sourceMap">
           <map>
+            <!-- The spring-mvc controller servlet -->
+            <entry key="/com/globant/katari/jsmodule/action/.*\.do">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="com.globant.katari.core.web.DispatcherServlet" />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/jsmodule/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+
             <entry key="/.*">
               <bean class="com.globant.katari.core.web.ServletAndParameters">
                 <constructor-arg index="0">
-                  <bean class="com.globant.katari.jsmodule.view.ContentModuleServlet"/>
+                  <bean class="com.globant.katari.jsmodule.view.ContentModuleServlet">
+                    <constructor-arg index="0" ref="jsmodule.bundleCache"/>
+                  </bean>
                 </constructor-arg>
                 <constructor-arg index="1">
                   <map>
@@ -29,7 +61,7 @@
         </property>
       </bean>
     </property>
-
+    
     <!-- Everybody can access the static resources. -->
     <property name="urlToRoleMapper">
       <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
@@ -40,6 +72,10 @@
         </constructor-arg>
       </bean>
     </property>
+  </bean>
+
+  <bean name="jsmodule.bundleCache"
+      class="com.globant.katari.jsmodule.domain.BundleCache">
   </bean>
 <!-- vim: set ts=2 sw=2 et ai: -->  
 </beans>

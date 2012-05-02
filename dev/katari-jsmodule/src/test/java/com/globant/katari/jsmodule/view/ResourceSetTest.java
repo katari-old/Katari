@@ -18,7 +18,7 @@ public class ResourceSetTest {
     ResourceSet resourceSet = new ResourceSet(propertiesUrl);
 
     assertThat(resourceSet.getBasePath(),
-        is("com/globant/katari/jsmodule/view"));
+        is("/com/globant/katari/jsmodule/view"));
     assertThat(resourceSet.getDebugPrefix(),
         is("../katari-jsmodule/src/test/resources"));
     assertThat(resourceSet.getMimeTypes().size(), is(2));
