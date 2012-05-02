@@ -424,7 +424,9 @@
         <configuration>
           <!-- Excludes all the tests from the default surefire execution
           phase. -->
-          <includes><include /></includes>
+          <excludes>
+            <exclude>**/functionaltest/**/*.java</exclude>
+          </excludes>
           <!-- Workaround for unable to get lock on ... See
                http://jira.codehaus.org/browse/SONAR-172 -->
           <systemProperties>
@@ -458,37 +460,13 @@
               <goal>test</goal>
             </goals>
           </execution>
-          <!-- Unit tests that do not require the web application deployed in
-          the container. This is bound to the test phase. -->
-          <execution>
-            <id>Tests</id>
-            <phase>test</phase>
-            <configuration>
-              <excludes>
-                <exclude>**/functionaltest/**/*.java</exclude>
-              </excludes>
-              <includes>
-                <include>**/*Test.java </include>
-              </includes>
-              <!-- Workaround for unable to get lock on ... See
-                   http://jira.codehaus.org/browse/SONAR-172 -->
-              <systemProperties>
-                <property>
-                  <name>cobertura.use.java.nio</name>
-                  <value>false</value>
-                </property>
-              </systemProperties>
-            </configuration>
-            <goals>
-              <goal>test</goal>
-            </goals>
-          </execution>
           <!-- Unit tests that require the web application deployed in the
           container. This is bound to the integration-test phase. -->
           <execution>
             <id>Functional tests</id>
             <phase>integration-test</phase>
             <configuration>
+              <excludes><exclude>none</exclude></excludes>
               <includes>
                 <include>**/functionaltest/**/*Test.java </include>
               </includes>

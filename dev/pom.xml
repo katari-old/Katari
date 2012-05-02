@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
   <name>Katari - dev</name>
   <url>
-    https://projects.globant.com/nexus/content/repositories/site/${groupId}/katari/${version}
+    https://projects.globant.com/nexus/content/repositories/site/${project.groupId}/katari/${project.version}
   </url>
 
   <licenses>
@@ -132,7 +132,7 @@
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-tools</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
         <scope>test</scope>
       </dependency>
 
@@ -513,123 +513,123 @@
       </dependency>
 
       <dependency>
-        <groupId>${groupId}</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>katari-style</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-core</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-hibernate</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-monitoring</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-classic-menu</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-dropdown-menu</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-report</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-editablepages</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-search</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-ajax</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-cas-login</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-local-login</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-console</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-shindig</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-gadget-container</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-user</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-jsmodule</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-quartz</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-email</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-registration</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
@@ -753,6 +753,18 @@
       <plugins>
 
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.3.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.1.2</version>
+        </plugin>
+
+        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>cobertura-maven-plugin</artifactId>
           <version>2.4</version>
@@ -768,7 +780,7 @@
             <dependency>
               <groupId>com.globant.katari</groupId>
               <artifactId>katari-siteskin</artifactId>
-              <version>${version}</version>
+              <version>${project.version}</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -864,6 +876,62 @@
               </source>
             </configuration>
           </execution>
+          <execution>
+            <!-- This execution needs latex. In ubuntu, install
+                 texlive-latex-recommended and texlive-fonts-recommended.  -->
+            <id>prepare-latex-sources</id>
+            <phase>site</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>
+                <![CDATA[
+def texdir = project.basedir.canonicalPath + '/target/generated-site/latex/user-manual'
+dest = texdir + '/user-manual.tex.tmp';
+latex = texdir + '/user-manual.tex'
+new File(dest).delete();
+new File(dest).withWriter {
+  file ->
+  new File(latex).eachLine {
+    line ->
+    file.writeLine(
+      line.replaceAll('\\\\usepackage\\{graphics\\}.*',
+          '\\\\usepackage{graphicx}\n' \
+          + '\\\\usepackage[a4paper,top=3cm,bottom=3cm,pdftex=true]{geometry}')
+        .replace('linkcolor=green', 'linkcolor=blue')
+        .replace('\\begin{document}',
+          '\\let\\oldincludegraphics\\includegraphics\n' \
+          + '\\renewcommand{\\includegraphics}[1]{\\oldincludegraphics[width=1\\textwidth]{#1}}\n' \
+          + '\n' \
+          + '\\begin{document}'
+        )
+    );
+  }
+}
+new File(dest).renameTo(new File(latex));
+
+try {
+  def outStream = new StringBuffer()
+  def errStream = new StringBuffer()
+  // must execute twice, to update the table of contents.
+  def proc = "pdflatex -interaction=nonstopmode user-manual.tex".execute(null,
+    new File(texdir));
+  proc.consumeProcessOutput(outStream, errStream)
+  proc.waitFor()
+  proc = "pdflatex -interaction=nonstopmode user-manual.tex".execute(null,
+    new File(texdir));
+  proc.consumeProcessOutput(outStream, errStream)
+  proc.waitFor()
+  println outStream
+  println errStream
+} catch (Exception e) {
+  log.error("Error generating pdf from latex files, ignoring....");
+}
+                ]]>
+              </source>
+            </configuration>
+          </execution>
         </executions>
         <inherited>false</inherited>
       </plugin>
@@ -890,7 +958,7 @@
                 <!-- Now, copy only apts, but filtered. -->
                 <copy todir="target/site-src/" preservelastmodified="true" filtering="true">
                   <filterset>
-                    <filter token="version" value="${version}" />
+                    <filter token="version" value="${project.version}" />
                   </filterset>
                   <fileset dir="src/site/" includes="**/*.apt" />
                 </copy>
@@ -898,7 +966,7 @@
                 <!-- Copy and filter the apt files for the user manual book -->
                 <copy todir="target/book-src/apt" preservelastmodified="true" filtering="true">
                   <filterset>
-                    <filter token="version" value="${version}" />
+                    <filter token="version" value="${project.version}" />
                   </filterset>
                   <fileset dir="src/site/apt" />
                 </copy>
@@ -995,71 +1063,6 @@
         <inherited>false</inherited>
       </plugin>
 
-      <!-- This plugin needs latex. In ubuntu, install texlive-latex-recommended
-           and texlive-fonts-recommended.
-           -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>groovy-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>prepare-latex-sources</id>
-            <phase>site</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <source>
-                <![CDATA[
-def texdir = project.basedir.canonicalPath + '/target/generated-site/latex/user-manual'
-dest = texdir + '/user-manual.tex.tmp';
-latex = texdir + '/user-manual.tex'
-new File(dest).delete();
-new File(dest).withWriter {
-  file ->
-  new File(latex).eachLine {
-    line ->
-    file.writeLine(
-      line.replaceAll('\\\\usepackage\\{graphics\\}.*',
-          '\\\\usepackage{graphicx}\n' \
-          + '\\\\usepackage[a4paper,top=3cm,bottom=3cm,pdftex=true]{geometry}')
-        .replace('linkcolor=green', 'linkcolor=blue')
-        .replace('\\begin{document}',
-          '\\let\\oldincludegraphics\\includegraphics\n' \
-          + '\\renewcommand{\\includegraphics}[1]{\\oldincludegraphics[width=1\\textwidth]{#1}}\n' \
-          + '\n' \
-          + '\\begin{document}'
-        )
-    );
-  }
-}
-new File(dest).renameTo(new File(latex));
-
-try {
-  def outStream = new StringBuffer()
-  def errStream = new StringBuffer()
-  // must execute twice, to update the table of contents.
-  def proc = "pdflatex -interaction=nonstopmode user-manual.tex".execute(null,
-    new File(texdir));
-  proc.consumeProcessOutput(outStream, errStream)
-  proc.waitFor()
-  proc = "pdflatex -interaction=nonstopmode user-manual.tex".execute(null,
-    new File(texdir));
-  proc.consumeProcessOutput(outStream, errStream)
-  proc.waitFor()
-  println outStream
-  println errStream
-} catch (Exception e) {
-  log.error("Error generating pdf from latex files, ignoring....");
-}
-                ]]>
-              </source>
-            </configuration>
-          </execution>
-        </executions>
-        <inherited>false</inherited>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
@@ -1119,7 +1122,7 @@ try {
     </snapshotRepository>
     <site>
       <id>globant-public-releases</id>
-      <url>dav:${repositoryRoot}/site/${groupId}/katari/${version}</url>
+      <url>dav:${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
     </site>
   </distributionManagement>
 

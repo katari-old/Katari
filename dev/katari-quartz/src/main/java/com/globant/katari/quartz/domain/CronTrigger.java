@@ -2,8 +2,6 @@
 
 package com.globant.katari.quartz.domain;
 
-import java.text.ParseException;
-
 import org.apache.commons.lang.Validate;
 
 import org.quartz.JobDetail;
@@ -113,10 +111,7 @@ public class CronTrigger extends CronTriggerBean implements BeanFactoryAware,
    *
    * {@inheritDoc}
    *
-   * @throws ParseException if the cron expression is invalid. Throwing
-   * ParseException is just inherited from CronTriggerBean. It should be able
-   * to throw more exceptions, because current implementation throws
-   * RuntimeException on other problems.
+   * @throws Exception if an error occured.
    */
   @Override
   public void afterPropertiesSet() throws Exception {

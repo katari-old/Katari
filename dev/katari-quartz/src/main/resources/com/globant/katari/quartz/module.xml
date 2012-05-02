@@ -63,6 +63,14 @@
         </constructor-arg>
       </bean>
     </property>
+
+    <property name='listeners'>
+      <list>
+        <bean class='com.globant.katari.quartz.application.SchedulerStarterListener'>
+          <constructor-arg index="0" ref='quartz.schedulerFactory'/>
+        </bean>
+      </list>
+    </property>
   </bean>
 
   <!-- list of tasks that will be executed by quartz. Use ListFactoryAppender
@@ -74,6 +82,7 @@
   <bean id='quartz.schedulerFactory'
     class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
     p:triggers-ref='quartz.schedulerTasks' p:exposeSchedulerInRepository="true"
+    p:autoStartup='false'
     />
 
   <!-- Basic quartz schedules. -->

@@ -240,49 +240,20 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <!-- Excludes all the tests from the default surefire execution
-          phase. -->
-          <includes><include /></includes>
+          <!-- Excludes all the functional tests from the default surefire
+               execution phase. -->
+          <excludes>
+            <exclude>**/functionaltest/**/*.java</exclude>
+          </excludes>
         </configuration>
         <executions>
-          <!-- We use the surefire plugin to set up the database. This is bound
-          to the test-compile phase. We could not manage to use
-          exec-maven-plugin. -->
-          <execution>
-            <id>Tests setup</id>
-            <phase>test-compile</phase>
-            <configuration>
-              <includes>
-                <include>com/globant/katari/sample/testsupport/database/TestDbSupport.java</include>
-              </includes>
-            </configuration>
-            <goals>
-              <goal>test</goal>
-            </goals>
-          </execution>
-          <!-- Unit tests that do not require the web application deployed in
-          the container. This is bound to the test phase. -->
-          <execution>
-            <id>Tests</id>
-            <phase>test</phase>
-            <configuration>
-              <excludes>
-                <exclude>**/functionaltest/**/*.java</exclude>
-              </excludes>
-              <includes>
-                <include>**/*Test.java </include>
-              </includes>
-            </configuration>
-            <goals>
-              <goal>test</goal>
-            </goals>
-          </execution>
-          <!-- Unit tests that require the web application deployed in the
-          container. This is bound to the integration-test phase. -->
+          <!-- Unit tests that require the web application deployed to a
+               container. This is bound to the integration-test phase. -->
           <execution>
             <id>Functional tests</id>
             <phase>integration-test</phase>
             <configuration>
+              <excludes><exclude>none</exclude></excludes>
               <includes>
                 <include>**/functionaltest/**/*Test.java </include>
               </includes>

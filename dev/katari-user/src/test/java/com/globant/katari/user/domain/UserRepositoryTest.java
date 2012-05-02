@@ -4,8 +4,9 @@ package com.globant.katari.user.domain;
 
 import java.util.List;
 
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
+import org.junit.After;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.*;
@@ -46,8 +47,15 @@ public class UserRepositoryTest {
         "user.userRepository");
     roleRepository = (RoleRepository) SpringTestUtils.getBean(
         "coreuser.roleRepository");
-    addUsersAndRoles();
     SpringTestUtils.beginTransaction();
+    addUsersAndRoles();
+    SpringTestUtils.endTransaction();
+    SpringTestUtils.beginTransaction();
+  }
+
+  @After
+  public final void tearDown() {
+    SpringTestUtils.endTransaction();
   }
 
   /** Adds a pair of users to be used in the tests.

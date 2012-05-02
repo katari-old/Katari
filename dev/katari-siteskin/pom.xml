@@ -3,8 +3,11 @@
 
   <parent>
     <groupId>com.globant.katari</groupId>
+    <!-- This is used to style the maven generated site, so it depends directly
+         on katari, not on dev -->
     <artifactId>katari</artifactId>
     <version>0.44-SNAPSHOT</version>
+    <relativePath>../..</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>

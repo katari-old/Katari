@@ -1,12 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <!-- vim: set ts=2 et sw=2 ai: -->
 
-  <parent>
-    <groupId>com.globant.maven</groupId>
-    <artifactId>globant-parent</artifactId>
-    <version>1.17</version>
-  </parent>
-
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.globant.katari</groupId>
   <artifactId>katari</artifactId>
@@ -17,7 +11,7 @@
     A template application that serves as a base for all java based Globant
     projects.
   </description>
-  <url>${repositoryRoot}/site/${groupId}/katari/${version}</url>
+  <url>${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
 
   <modules>
     <module>dev</module>
@@ -142,7 +136,7 @@
     </snapshotRepository>
     <site>
       <id>globant-public-releases</id>
-      <url>dav:${repositoryRoot}/site/${groupId}/katari/${version}</url>
+      <url>dav:${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
     </site>
   </distributionManagement>
 
@@ -169,6 +163,7 @@
   </mailingLists>
 
   <properties>
+    <project.build.sourceEncoding>ASCII</project.build.sourceEncoding>
     <!-- Dependencies versions. They are declared here to avoid duplication in
     the archetype. -->
     <dependency.release-plugin.version>

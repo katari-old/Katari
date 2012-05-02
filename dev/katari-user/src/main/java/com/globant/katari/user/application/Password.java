@@ -138,8 +138,8 @@ public class Password {
     }
 
     // The user already exists and changes the password.
-    boolean oldPasswordMatches = (user == null ||
-      user.getPassword().equals(oldPassword));
+    boolean oldPasswordMatches = (user == null
+        || user.getPassword().equals(oldPassword));
     if (!oldPasswordMatches) {
       errors.rejectValue("oldPassword", "field.not.equal",
           "Enter your current password.");

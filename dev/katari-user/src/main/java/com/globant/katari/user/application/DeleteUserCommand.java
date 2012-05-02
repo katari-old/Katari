@@ -113,6 +113,8 @@ public class DeleteUserCommand extends UserFilterCommand
     log.trace("Leaving validate");
   }
 
+  /** {@inheritDoc}
+   */
   public void init() {
     users = super.execute();
   }
