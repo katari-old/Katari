@@ -118,19 +118,6 @@
       <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
       <snapshots><enabled>false</enabled></snapshots>
     </repository>
-    <!-- for javamelody -->
-    <repository>
-      <id>glassfish-public</id>
-      <url>http://maven.glassfish.org/content/groups/public/</url>
-      <snapshots><enabled>false</enabled></snapshots>
-    </repository>
-    <!-- for jrobin -->
-    <repository>
-      <id>opennms-repo</id>
-      <name>OpenNMS Repository</name>
-      <url>http://repo.opennms.org/maven2</url>
-      <snapshots><enabled>false</enabled></snapshots>
-    </repository>
   </repositories>
 
   <pluginRepositories>

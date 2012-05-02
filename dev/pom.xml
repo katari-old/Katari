@@ -171,6 +171,12 @@
       </dependency>
 
       <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>1.6</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
         <version>4.1.2</version>
@@ -698,7 +704,7 @@
       <dependency>
         <groupId>net.bull.javamelody</groupId>
         <artifactId>javamelody-core</artifactId>
-        <version>1.20.0</version>
+        <version>1.37.0</version>
       </dependency>
 
       <dependency>
