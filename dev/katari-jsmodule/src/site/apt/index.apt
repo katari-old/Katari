@@ -6,13 +6,16 @@ Js modules
  it possible to manage them with maven, deploying to repositories and tracking
  dependencies and versions.
 
+ Additionally, this module resolves js dependencies and, in non-debug mode,
+ bundles them.
+
 Using this module
 
  To include this module in a Katari based application, simply put a line of the
  form:
 
 ------
-<katari:import module="com.globant.katari.jsmodule"/>
+  <katari:import module="com.globant.katari.jsmodule"/>
 ------
 
  Then, add the dependencies to you pom file:
@@ -32,8 +35,42 @@ Using this module
     src='${baseweb}/module/jsmodule/com/globant/jslib/jquery/jquery.js'>
 -----
 
- Future versions of this module will provide compression, bundling and dynamic
- dependency management.
+Dependency resolution and bundling
+
+ To use this module dependency resolution and bundling, you need to include
+ katari-loader.js in your freemarker file and initialize your loader:
+
+----
+ <script type="text/javascript"
+   src="${baseweb}/module/jsmodule/com/globant/katari/jsmodule/js/katari-loader.js">
+ </script>
+ <script type="text/javascript">
+  Loader = new katari.jsmodule.Loader('${baseweb}');
+ </script>
+----
+
+ Then, whenever you need a js file, use:
+
+----
+ <script type="text/javascript">
+   Loader.importFile('/com/globant/jslib/jquery/jquery.js');
+  </script>
+----
+
+ And finally, usually at the end of your freemarker file, tell the loader to
+ load all imported files:
+
+----
+  <script type="text/javascript">
+    jQuery(document).ready(function () {
+      Loader.load();
+    });
+  </script>
+----
+
+ If your application is in debug mode, the loader will include all javascript
+ files as they are stored. In non-debug mode, the loader compresses and bundles
+ all javascript sources in a single file.
 
 Packaging javascript
 
@@ -50,5 +87,17 @@ mimeType.js=text/javascript
 debugPrefix=../jquery/src/main/resources
 -----
 
+ To declare the dependencies for a file named, for example [something].js, add
+ a file [something].dep.js in the same directory as the source javascript with:
 
+-----
+ {
+  js: ["/com/globant/katari/jsmodule/testfile/jquery.js",
+       "/com/globant/katari/jsmodule/testfile/jquery-ui.js"
+      ]
+ }
+-----
+
+ All the dependent content for the file must be available from the jsmodule
+ katari module.
 
