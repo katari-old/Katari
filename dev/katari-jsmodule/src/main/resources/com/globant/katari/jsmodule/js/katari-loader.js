@@ -1,10 +1,128 @@
 /**
- * IG Expansion top-level namespace.
+ * Katari top-level namespace.
  * @namespace
  */
 var katari = katari || {};
 
 katari.jsmodule = katari.jsmodule || {};
+
+// Setup katari.jsmodule.onDomReady() to allow cross-browser suscription to DOM
+// ready event.
+(function () {
+  var domReadyCallbacks = [];
+  var domIsReady = false;
+
+  var ready = function () {
+    var i, j;
+
+    // Defer if body doesn't exist yet, for IE's sake.
+    if (!document.body) {
+      return setTimeout(ready, 1);
+    }
+
+    domIsReady = true;
+
+    for (i = 0, j = domReadyCallbacks.length; i < j; i++) {
+      domReadyCallbacks.splice(i, 1)[0]();
+    }
+  };
+
+  var domContentLoaded;
+  // Define domContentLoaded (cleanup function for the dom ready method)
+  if (document.addEventListener) {
+    domContentLoaded = function () {
+      document.removeEventListener("DOMContentLoaded", domContentLoaded, false);
+      ready();
+    };
+  } else if (document.attachEvent) {
+    domContentLoaded = function () {
+      // Make sure body exists, at least, in case IE gets a little overzealous
+      if (document.readyState === "complete") {
+        document.detachEvent("onreadystatechange", domContentLoaded);
+        ready();
+      }
+    };
+  }
+
+  // The DOM ready check for Internet Explorer
+  var doScrollCheck = function () {
+    if (!domIsReady) {
+      try {
+        // If IE is used, use the trick by Diego Perini
+        // http://javascript.nwbox.com/IEContentLoaded/
+        document.documentElement.doScroll("left");
+      } catch (e) {
+        setTimeout(doScrollCheck, 1);
+        return;
+      }
+
+      // Execute any waiting functions
+      ready();
+    }
+  };
+
+  var bindReady = function () {
+    // If there are subscribers, binding has already happened; exit.
+    if (domReadyCallbacks.length > 0) {
+      return;
+    }
+
+    if (document.readyState === "complete") {
+      // Handle it asynchronously to allow scripts the chance to delay ready
+      setTimeout(ready, 1);
+    } else {
+      // Mozilla, Opera and webkit nightlies currently support this event
+      if (document.addEventListener) {
+        // Use the handy event callback
+        document.addEventListener("DOMContentLoaded", domContentLoaded, false);
+
+        // A fallback to window.onload, that will always work
+        window.addEventListener("load", function () {ready();}, false);
+      // If IE event model is used
+      } else if (document.attachEvent) {
+        // Ensure firing before onload, maybe late but safe also for iframes.
+        document.attachEvent("onreadystatechange", domContentLoaded);
+
+        // A fallback to window.onload, that will always work
+        window.attachEvent("onload", ready);
+
+        // If IE and not a frame
+        // continually check to see if the document is ready
+        var toplevel = false;
+
+        try {
+          toplevel = window.frameElement === null;
+        } catch (e) {}
+
+        if (document.documentElement.doScroll && toplevel) {
+          doScrollCheck();
+        }
+      }
+    }
+  };
+
+  katari.jsmodule.onDomReady = function (callback) {
+    bindReady();
+    domReadyCallbacks.push(callback);
+  };
+})();
+
+/** Contains the current browser information. */
+var Browser = (function () {
+  var ua = navigator.userAgent;
+  var isOpera;
+  isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]';
+
+  var currentBrowser = {
+    IE:             !!window.attachEvent && !isOpera,
+    Opera:          isOpera,
+    WebKit:         ua.indexOf('AppleWebKit/') > -1,
+    Gecko:          ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') === -1,
+    MobileSafari:   /Apple.*Mobile/.test(ua)
+  };
+
+  return currentBrowser;
+})();
 
 /**
  * Loads JS files, including their dependencies.
@@ -15,10 +133,6 @@ katari.jsmodule = katari.jsmodule || {};
  * file is found, it's assumed that there are no dependencies. On
  * <code>load</code> includes a bundle of all requested files in no-debug
  * mode, or each separate file uncompressed in debug mode.
- *
- * TODO (carolina.becerra) This still depends on jQuery, needed to trigger
- * load() on its "ready" event, using jQuery,ajax and browser detection on
- * includeScript(). Let's remove it.
  *
  * @param {String} baseweb The base path of the application. Cannot be null or
  *     undefined.
@@ -94,8 +208,8 @@ katari.jsmodule.Loader = function (baseweb) {
     var includeSequentially;
     // Check preconditions: includes cannot be null or undefined, nor empty.
     if (!includes || !includes.js || includes.js.length === 0) {
-      throw new Error('katari.jsmodule.Loader.include: attempted to include'
-          + ' empty or undefined lists of files.');
+      throw new Error('katari.jsmodule.Loader.include: attempted to include' +
+          ' empty or undefined lists of files.');
     }
 
     jsIncludes = includes.js;
@@ -104,14 +218,8 @@ katari.jsmodule.Loader = function (baseweb) {
       if (jsIncludes.length > 0) {
         var filePath = jsIncludes.shift();
 
-        // TODO (carolina.becerra) Remove this hardcoded filter.
-        if (filePath !==
-            '/com/globant/igexpansion/smp/style/ui/lib/jquery-1.6.2-min.js') {
-          includeScript(baseweb + '/module/jsmodule' + filePath,
-              includeSequentially);
-        } else {
-          includeSequentially();
-        }
+        includeScript(baseweb + '/module/jsmodule' + filePath,
+            includeSequentially);
       } else {
         onReady();
       }
@@ -126,7 +234,7 @@ katari.jsmodule.Loader = function (baseweb) {
    * @param {String} url Url to include. It cannnot be null or empty.
    * @param {Function} [callback] Function called after the script is
    *     completely loaded. It can be null.
-   * @memberOIGE.Loader
+   * @memberOf katari.jsmodule.Loader
    * @private
    */
   var includeScript = function (url, callback) {
@@ -138,25 +246,23 @@ katari.jsmodule.Loader = function (baseweb) {
 
     // Was a callback requested
     if (typeof callback === "function") {
-      // Opera supports both onload and onreadystatechange.
-      if (!jQuery.browser.Opera) {
-        // The IE way is using the onreadystatechange event.
+      // Some browsers support onreadystatechange (Opera, IE).
+      if (script.onreadystatechange !== undefined) {
         script.onreadystatechange = function () {
           if (script.readyState === 'loaded' ||
               script.readyState === 'complete') {
             callback(url);
           }
         };
-      }
 
-      // Gecko-compliant browsers supports onload.
-      script.onload = function () {
-        callback(url);
-      };
+      // Others support onload (Gecko-compliant)
+      } else if (Browser.Gecko || script.onload !== undefined) {
+        script.onload = function () {
+          callback(url);
+        };
 
-      // Safari 2 doesn't support either onload or readystate, creating a
-      // timer is the only way to do this in Safari 2.
-      if (jQuery.browser.WebKit && navigator.userAgent.match(/Version\/2/)) {
+      // The rest will have to make do with a timer.
+      } else {
         interval = setInterval(function () {
           if (/loaded|complete/.test(document.readyState)) {
             clearInterval(interval);
@@ -184,12 +290,51 @@ katari.jsmodule.Loader = function (baseweb) {
     }
   };
 
+  /**
+   * Make an ajax call to post data with a success callback.
+   *
+   * @param {String} endpoint The url to post to.
+   * @param {String} params The data to post in the following format
+   *     "key=value&key2=value2(...)".
+   * @param {Function} successCallback Function to execute on successful return
+   *     of the call. Gets passed the parsed response.
+   */
+  var post = function (endpoint, params, successCallback) {
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+      // code for IE7+, Firefox, Chrome, Opera, Safari
+      xmlhttp = new XMLHttpRequest();
+    } else {
+      // code for IE6, IE5
+      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", endpoint, true);
+    xmlhttp.setRequestHeader("Content-type",
+        "application/x-www-form-urlencoded");
+    xmlhttp.onreadystatechange = function () {
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.responseXML) {
+          xmlresponse = xmlhttp.responseXML;
+        } else if (xmlhttp.responseText) {
+          xmlresponse = xmlhttp.responseText;
+        }
+        try {
+          successCallback(JSON.parse(xmlhttp.responseXML));
+        } catch (ex) {
+          successCallback(JSON.parse(xmlhttp.responseText));
+        }
+      }
+    };
+    xmlhttp.send(params);
+  };
+
   return {
     /**
      * Adds a file to the list of files to be imported.
      *
-     * @param {String} pathToFile The path to the file to import. Cannot be null
-     *     or undefined.
+     * @param {String} pathToFile The path to the file to import. Cannot be
+     * null nor undefined.
      *
      * @memberOf katari.jsmodule.Loader
      * @public
@@ -212,33 +357,31 @@ katari.jsmodule.Loader = function (baseweb) {
      * @public
      */
     load : function () {
-      var endpoint = baseweb + '/module/jsmodule/com/globant/katari'
-          + '/jsmodule/action/resolveDependencies.do';
+      var endpoint = baseweb + '/module/jsmodule/com/globant/katari' +
+          '/jsmodule/action/resolveDependencies.do';
 
       if (hasLoaded) {
-        throw new Error('katari.jsmodule.Loader.load: method already' +
-            ' invoked, cannot make more than one load.');
+        throw new Error('katari.jsmodule.Loader.load: method already invoked, ' +
+            'cannot make more than one load.');
       } else {
         hasLoaded = true;
 
         if (toInclude.length) {
-          jQuery.ajax(endpoint, {
-            data : {
-              files : toInclude
-            },
-            success : include,
-            dataType : 'json',
-            traditional : true,
-            type : 'POST'
-          });
+          var params = "";
+          var i, j;
+          for (i = 0, j = toInclude.length; i < j; i++) {
+            params += '&files=' + toInclude[i];
+          }
+
+          params = params.replace('&', '');
+
+          post(endpoint, params, include);
         }
       }
     },
 
     /**
      * Takes subscriptions to the "ready" event of the Loader.
-     *
-     *
      *
      * @param {Function} callback A function to be triggered on the event.
      *     Cannot be null or undefined.
