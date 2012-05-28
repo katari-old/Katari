@@ -57,7 +57,7 @@
     <property name="menuBar">
       <katari:menuBar>
         <katari:menuNode name='Administration'>
-          <katari:menuItem name='Monitor' link='m' />
+          <katari:menuItem name='Monitor' link='katari-monitoring' />
         </katari:menuNode>
       </katari:menuBar>
     </property>
@@ -68,7 +68,6 @@
         <constructor-arg index="0">
           <map>
             <entry key='/**/*' value='ROLE_ADMINISTRATOR' />
-            <!-- entry key='/**/*' value='IS_AUTHENTICATED_ANONYMOUSLY' /-->
           </map>
         </constructor-arg>
       </bean>

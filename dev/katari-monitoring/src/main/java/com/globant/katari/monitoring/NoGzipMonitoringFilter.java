@@ -25,6 +25,10 @@ import net.bull.javamelody.MonitoringFilter;
  * output.
  *
  * This is needed because sitemesh cannot decorate compressed pages.
+ *
+ * Also, made the monitoring url independent of the context path. You can now
+ * rewrite the context path in your application, and the filter will still show
+ * the statistics in the monitoring url.
  */
 public final class NoGzipMonitoringFilter implements Filter {
 
@@ -67,11 +71,23 @@ public final class NoGzipMonitoringFilter implements Filter {
 
     HttpServletRequest httpRequest = (HttpServletRequest) request;
     HttpServletRequestWrapper w = new HttpServletRequestWrapper(httpRequest) {
+
+      @Override
       public Enumeration getHeaders(final String name) {
         if (name.equals("Accept-Encoding")) {
           return new Vector().elements();
         }
         return super.getHeaders(name);
+      }
+
+      @Override
+      public String getRequestURI() {
+        String requestUri = super.getRequestURI();
+        if (requestUri.matches(".*/katari-monitoring$")) {
+          return getContextPath() + "/module/monitoring/m";
+        } else {
+          return requestUri;
+        }
       }
     };
 
