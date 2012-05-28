@@ -2,37 +2,32 @@
 
 package com.globant.katari.menu.classic.application;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createNiceMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.Cookie;
 
-import junit.framework.TestCase;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockFilterChain;
+import org.springframework.mock.web.MockHttpServletResponse;
+
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 import com.globant.katari.core.security.MenuAccessFilterer;
 import com.globant.katari.core.web.MenuBar;
 import com.globant.katari.core.web.MenuNode;
 import com.globant.katari.core.web.ModuleContextRegistrar;
 
-public class MenuSupportFilterTest extends TestCase {
+public class MenuSupportFilterTest {
 
-  private HttpServletRequest request;
+  private MockHttpServletRequest request;
 
-  private HttpServletResponse response;
-
-  private HttpSession session;
+  private MockHttpServletResponse response;
 
   private FilterChain chain;
 
@@ -40,48 +35,25 @@ public class MenuSupportFilterTest extends TestCase {
 
   private MenuAccessFilterer filterer;
 
-  @Override
+  @Before
   public void setUp() throws Exception {
-    // Mocks the context
-    ServletContext context = createMock(ServletContext.class);
-    replay(context);
 
-    // Mocks the Session
-    session = createMock(HttpSession.class);
-    session.setAttribute("::selected-module-entry", "/");
-
-    // Mocks the servlet request.
-    request = createNiceMock(HttpServletRequest.class);
-    expect(request.getSession()).andReturn(session);
-    expect(request.getParameter("selected-module-entry")).andReturn("/");
-    request.setAttribute(eq("::menu-display-helper"),
-        isA(MenuDisplayHelper.class));
-    replay(request);
-
-    // Mocks the servlet response.
-    response = createNiceMock(HttpServletResponse.class);
-    replay(response);
-
-    // Mocks the filter chain.
-    chain = createMock(FilterChain.class);
-    chain.doFilter(request, response);
-    expectLastCall().anyTimes();
-    replay(chain);
+    request = new MockHttpServletRequest(null, null, null);
+    response = new MockHttpServletResponse();
+    chain = new MockFilterChain();
 
     // Mocks the ModuleContextRegistrar.
     registrar = createNiceMock(ModuleContextRegistrar.class);
     // Mocks the Menu access filterer
     filterer = createNiceMock(MenuAccessFilterer.class);
-
   }
 
   /* Tests the menu support filter.
    */
+  @Test
   public final void testDoFilter() throws Exception {
 
-    expect(session.getAttribute("::selected-module-entry")).andReturn("/");
-    replay(session);
-
+    request.setCookies(new Cookie("selected-module-entry", "/"));
     MenuBar menuBar = new MenuBar();
     new MenuNode(menuBar, "Node", "Node", 1, "");
     expect(filterer.filterMenuNodes(menuBar.getChildNodes())).andReturn(
@@ -97,19 +69,18 @@ public class MenuSupportFilterTest extends TestCase {
     filter.doFilter(request, response, chain);
     filter.destroy();
 
-    verify(request);
-    verify(session);
+    assertThat(request.getAttribute("::menu-display-helper"),
+        is(instanceOf(MenuDisplayHelper.class)));
+    // We do send the cookie again.
+    Cookie cookie = response.getCookie("selected-module-entry");
+    assertThat(cookie, is(nullValue()));
   }
 
   /* Tests the menu support filter simulating the initial user request (no
    * module entry selected).
    */
+  @Test
   public final void testDoFilter_noModuleEntry() throws Exception {
-
-    expect(session.getAttribute("::selected-module-entry")).andReturn(null);
-    session.setAttribute("::selected-module-entry", "/root/Node");
-    replay(session);
-
     MenuBar menuBar = new MenuBar();
     MenuNode node = new MenuNode(menuBar, "Node", "Node", 1, "");
     node.getName();
@@ -126,19 +97,15 @@ public class MenuSupportFilterTest extends TestCase {
     filter.doFilter(request, response, chain);
     filter.destroy();
 
-    verify(request);
-    verify(session);
+    Cookie cookie = response.getCookie("selected-module-entry");
+    assertThat(cookie, is(nullValue()));
   }
 
   /* Tests the menu support filter simulating the initial user request (no
    * module entry selected).
    */
+  @Test
   public final void testDoFilter_noMenuNodes() throws Exception {
-
-    expect(session.getAttribute("::selected-module-entry")).andReturn(null);
-    session.setAttribute("::selected-module-entry", "");
-    replay(session);
-
     MenuBar menuBar = new MenuBar();
     expect(filterer.filterMenuNodes(menuBar.getChildNodes())).andReturn(
         new ArrayList<MenuNode>()).anyTimes();
@@ -151,10 +118,8 @@ public class MenuSupportFilterTest extends TestCase {
     filter.doFilter(request, response, chain);
     filter.destroy();
 
-    verify(request);
-    verify(session);
+    Cookie cookie = response.getCookie("selected-module-entry");
+    assertThat(cookie, is(nullValue()));
   }
-
-  
 }
 

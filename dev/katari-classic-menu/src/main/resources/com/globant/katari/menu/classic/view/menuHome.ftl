@@ -8,8 +8,8 @@
 
   <body>
     <ul id="menuHome">
-      <#list menu.helper().getMenuNodesForPath(menu.current()) as menuitem>
-        <li class="${menu.selected(menuitem.menuNode.path)}">
+      <#list menu.helper.getMenuNodesForCurrentPath() as menuitem>
+        <li class="${menu.selected(menuitem)}">
           <a href="${menu.buildPath(menuitem)}">
             ${menuitem.menuNode.displayName}</a>
         </li>

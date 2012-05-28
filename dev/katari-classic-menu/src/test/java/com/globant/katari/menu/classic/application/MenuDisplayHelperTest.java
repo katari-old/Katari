@@ -68,15 +68,17 @@ public class MenuDisplayHelperTest extends TestCase {
 
   public void testGetMenuNodesForLevel() {
 
-    MenuDisplayHelper helper = new MenuDisplayHelper(menuBar, filterer);
+    MenuDisplayHelper helper;
 
+    helper = new MenuDisplayHelper(menuBar, "/root/a/b/a", filterer);
     List<MenuNodeDisplay> nodes;
-    nodes = helper.getMenuNodesForLevel("/root/a/b/a", 2);
+    nodes = helper.getMenuNodesForLevel(2);
     assertEquals(2, nodes.size());
     assertTrue(!nodes.get(0).isSelected());
     assertTrue(nodes.get(1).isSelected());
 
-    nodes = helper.getMenuNodesForLevel("/root/b/bb/b", 2);
+    helper = new MenuDisplayHelper(menuBar, "/root/b/bb/a", filterer);
+    nodes = helper.getMenuNodesForLevel(2);
     assertEquals(3, nodes.size());
     assertTrue(!nodes.get(0).isSelected());
     assertEquals("a", nodes.get(0).getMenuNode().getName());
@@ -85,7 +87,8 @@ public class MenuDisplayHelperTest extends TestCase {
     assertTrue(!nodes.get(2).isSelected());
     assertEquals("b", nodes.get(2).getMenuNode().getName());
 
-    nodes = helper.getMenuNodesForLevel("/root/a/b/a", 3);
+    helper = new MenuDisplayHelper(menuBar, "/root/a/b/a", filterer);
+    nodes = helper.getMenuNodesForLevel(3);
     assertEquals(1, nodes.size());
     assertTrue(nodes.get(0).isSelected());
     assertEquals("a", nodes.get(0).getMenuNode().getName());
@@ -93,15 +96,17 @@ public class MenuDisplayHelperTest extends TestCase {
   }
 
   public void testGetMenuNodesForLevel_onleaf() {
-    MenuDisplayHelper helper = new MenuDisplayHelper(menuBar, filterer);
-    helper.getMenuNodesForLevel("/root/a/b/a", 4);
+    MenuDisplayHelper helper;
+    helper = new MenuDisplayHelper(menuBar, "/root/a/b/a", filterer);
+    helper.getMenuNodesForLevel(4);
   }
 
   public void testGetMenuNodesForPath() {
-    MenuDisplayHelper helper = new MenuDisplayHelper(menuBar, filterer);
+    MenuDisplayHelper helper;
+    helper = new MenuDisplayHelper(menuBar, "/root/b/b", filterer);
 
     List<MenuNodeDisplay> nodes;
-    nodes = helper.getMenuNodesForPath("/root/b/b");
+    nodes = helper.getMenuNodesForCurrentPath();
     assertEquals(2, nodes.size());
     assertEquals("a", nodes.get(0).getMenuNode().getName());
     assertEquals("b", nodes.get(1).getMenuNode().getName());
@@ -132,10 +137,11 @@ public class MenuDisplayHelperTest extends TestCase {
       }
     };
 
-    MenuDisplayHelper helper = new MenuDisplayHelper(menuBar, filterer);
+    MenuDisplayHelper helper;
+    helper = new MenuDisplayHelper(menuBar, "/root/b/bb/b", filterer);
     List<MenuNodeDisplay> nodes;
 
-    nodes = helper.getMenuNodesForLevel("/root/b/bb/b", 2);
+    nodes = helper.getMenuNodesForLevel(2);
 
     assertEquals(3, nodes.size());
     assertTrue(!nodes.get(0).isSelected());
@@ -173,10 +179,11 @@ public class MenuDisplayHelperTest extends TestCase {
       }
     };
 
-    MenuDisplayHelper helper = new MenuDisplayHelper(menuBar, filterer);
+    MenuDisplayHelper helper;
+    helper = new MenuDisplayHelper(menuBar, "/root/b/bb/b", filterer);
     List<MenuNodeDisplay> nodes;
 
-    nodes = helper.getMenuNodesForLevel("/root/b/bb/b", 2);
+    nodes = helper.getMenuNodesForLevel(2);
 
     assertEquals(3, nodes.size());
     assertTrue(!nodes.get(0).isSelected());

@@ -11,8 +11,9 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.Validate;
 
@@ -24,7 +25,7 @@ import com.globant.katari.core.web.MenuNode;
 import com.globant.katari.core.web.ModuleContextRegistrar;
 
 /** This filter makes available the MenuDisplayHelper for the menu rendering
- * logic, and puts the current selected menu entry in the user's session.
+ * logic, and puts the current selected menu entry in a user's cookie.
  */
 public final class MenuSupportFilter implements Filter {
 
@@ -76,8 +77,8 @@ public final class MenuSupportFilter implements Filter {
   public void destroy() {
   }
 
-  /** Stores the MenuDisplayHelper in the request an the selected menu in the
-   * session.
+  /** Stores the MenuDisplayHelper in the request an the selected menu in
+   * a cookie.
    *
    * This looks for the menu tree in the registrar and filter the menu nodes
    * according to the user permissions using a
@@ -86,8 +87,8 @@ public final class MenuSupportFilter implements Filter {
    * '::menu-display-helper'.
    *
    * Also looks for a request parameter named selected-module-entry and, if
-   * found, it copies the parameter value to the session attribute named
-   * '::selected-module-entry'.
+   * found, it copies the parameter value to a cookie named
+   * 'selected-module-entry'.
    *
    * @param request The http/https request to filter. It cannot be null.
    *
@@ -109,50 +110,64 @@ public final class MenuSupportFilter implements Filter {
           + " requests.");
     }
 
+    if (!(response instanceof HttpServletResponse)) {
+      throw new ServletException("This filter can only be applied to http"
+          + " responses.");
+    }
+
     HttpServletRequest servletRequest = (HttpServletRequest) request;
-    HttpSession session = servletRequest.getSession();
+    HttpServletResponse servletResponse = (HttpServletResponse) response;
 
     String entry = servletRequest.getParameter("selected-module-entry");
 
     if (entry != null) {
-      session.setAttribute("::selected-module-entry", entry);
+      setMenuPathCookie(servletRequest, servletResponse, entry);
+    } else {
+      // Obtain the menu entry from the received cookie.
+      Cookie[] cookies = servletRequest.getCookies();
+      if (cookies != null) {
+        for (Cookie cookie : cookies) {
+          if (cookie.getName().equals("selected-module-entry")) {
+            entry = cookie.getValue();
+          }
+        }
+      }
     }
 
-    entry = (String) session.getAttribute("::selected-module-entry");
     if (entry == null) {
-      entry = obtainMenuEntry();
-      session.setAttribute("::selected-module-entry", entry);
+      // No menu entry, we set it to "", as expected by MenuDisplayHelper.
+      entry = "";
     }
 
-    MenuDisplayHelper helper = new MenuDisplayHelper(registrar.getMenuBar(),
-        filterer);
+    MenuDisplayHelper helper;
+    helper = new MenuDisplayHelper(registrar.getMenuBar(), entry, filterer);
     servletRequest.setAttribute("::menu-display-helper", helper);
 
     chain.doFilter(request, response);
     log.trace("Leaving doFilter");
   }
 
-  /**
-   * Obtains the first menu entry available for the current user.
-   * <p>
-   * All the child nodes are filtered according to the user's permissions, and
-   * the first menu node's path from the filtered list is returned.
-   * </p>
-   * <p>
-   * In case the user has no available menu nodes, an empty string is returned.
-   * </p>
-   * @return The path for the first available menu node for the current user,
-   *         or an empty string if no menu nodes are available. Never returns
-   *         null.
+  /** Sets the 'selected-module-entry' cookie to send to the client, with entry
+   * as value, for the request context path.
+   *
+   * @param servletRequest the servlet request to obtain the path from. It
+   * cannot be null.
+   *
+   * @param servletResponse the servlet response to use to send the cookie to
+   * the client. It cannot be null.
+   *
+   * @param entry the current menu entry path, to send to the client as the
+   * cookie value.
    */
-  private String obtainMenuEntry() {
-    List<MenuNode> childFilteredNodes = filterer.filterMenuNodes(registrar
-        .getMenuBar().getChildNodes());
-    if (childFilteredNodes.isEmpty()) {
-      log.warn("No menu nodes are accesible for the current user");
-      return "";
+  private void setMenuPathCookie(final HttpServletRequest servletRequest,
+      final HttpServletResponse servletResponse, final String entry) {
+    String path = (String) servletRequest.getAttribute("baseweb");
+    if (path == null) {
+      path = servletRequest.getContextPath();
     }
-    return childFilteredNodes.get(0).getPath();
+    Cookie cookie = new Cookie("selected-module-entry", entry);
+    cookie.setPath(path);
+    servletResponse.addCookie(cookie);
   }
 }
 

@@ -1,12 +1,5 @@
 <#-- Obtains the MenuDisplayHelper object. -->
-<#function helper>
-  <#return request.getAttribute("::menu-display-helper")/>
-</#function>
-
-<#-- Obtains the current selected menu path (a string). -->
-<#function current>
-  <#return request.getSession().getAttribute("::selected-module-entry")/>
-</#function>
+<#assign helper = request.getAttribute("::menu-display-helper")/>
 
 <#-- Obtains the current menu level (an integer). -->
 <#function level>
@@ -21,11 +14,9 @@ containers will also be selected
 
 menuitempath : the path of menuitem to be evaluated.
 -->
-<#function selected menuitempath>
-  <#if current()??>
-    <#if (current() + '/')?starts_with(menuitempath + '/') >
-      <#return "selected"/>
-    </#if>
+<#function selected menuitem>
+  <#if menuitem.selected>
+    <#return "selected"/>
   </#if>
   <#return "noselected"/>
 </#function>
