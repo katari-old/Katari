@@ -24,7 +24,12 @@ application is running against a development database and the users sends a
 securityDebug=true parameter. -->
 <#macro secureUrlArea url else=''>
   <#assign urlHelper = request.getAttribute("secureUrlHelper")>
-  <#assign testMode = request.getSession().getAttribute("securityDebug")??>
+  <#assign session = request.getSession(false)??>
+  <#if !session??>
+    <#assign testMode = session.getAttribute("securityDebug")??>
+  <#else>
+    <#assign testMode = false>
+  </#if>
   <#assign canAccess = urlHelper.canAccessUrl(request.getRequestURI(), url)>
   <#if !testMode>
     <#if canAccess>

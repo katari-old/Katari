@@ -31,7 +31,8 @@ import org.slf4j.LoggerFactory;
  * http://localhost/katari-web/module/user/users.do?securityDebug=true
  *
  * After that, debug mode is enabled until the request includes a parameter
- * securityDebug=false.
+ * securityDebug=false. This only happens if the application is running in
+ * debug mode.
  *
  * @author gerardo.bercovich
  */
@@ -42,6 +43,10 @@ public class SecureUrlMacroFilter implements Filter {
   private static Logger log = LoggerFactory.getLogger(
       SecureUrlMacroFilter.class);
 
+  /** A flag that states if the application is running in debug mode.
+   */
+  private final boolean debugMode;
+
   /** The secure url macro helper.
    *
    * It is never null.
@@ -50,11 +55,16 @@ public class SecureUrlMacroFilter implements Filter {
 
   /** The constructor for an application with no database.
    *
+   * @param theDebugMode a flag that states if the application is running in
+   * debug mode.
+   *
    * @param theHelper the secure url macro helper instance. It cannot be null.
    */
-  public SecureUrlMacroFilter(final SecureUrlAccessHelper theHelper) {
+  public SecureUrlMacroFilter(final boolean theDebugMode,
+      final SecureUrlAccessHelper theHelper) {
     Validate.notNull(theHelper, "The SecureUrlAccessHelper cannot be null");
     helper = theHelper;
+    debugMode = theDebugMode;
   }
 
   /** Puts the helper in the request and continues with the chain.

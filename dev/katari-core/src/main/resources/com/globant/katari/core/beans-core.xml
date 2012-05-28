@@ -258,7 +258,8 @@
   This filter supports the debug mode for secure urls. -->
   <bean id='katari.secureUrlMacroFilter'
     class='com.globant.katari.core.security.SecureUrlMacroFilter'>
-    <constructor-arg index='0' ref='katari.secureUrlAccessHelper' />
+    <constructor-arg index='0' ref='debugMode' />
+    <constructor-arg index='1' ref='katari.secureUrlAccessHelper' />
   </bean>
 
   <!-- Secure url access helper. Used to check if an url is accessible. This

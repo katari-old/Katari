@@ -31,7 +31,7 @@ public class SecureUrlMacroFilterTest extends TestCase {
    * securityDebug attribute in true.
    */
   public void testDoFilter_securityDebug_enable() throws Exception {
-    SecureUrlMacroFilter filter = new SecureUrlMacroFilter(helper);
+    SecureUrlMacroFilter filter = new SecureUrlMacroFilter(true, helper);
 
     session = EasyMock.createMock(HttpSession.class);
     session.setAttribute("securityDebug", "true");
@@ -46,7 +46,7 @@ public class SecureUrlMacroFilterTest extends TestCase {
    * the session if the request includes a securityDebug attribute in false.
    */
   public void testDoFilter_securityDebug_disable() throws Exception{
-    final SecureUrlMacroFilter filter = new SecureUrlMacroFilter(helper);
+    final SecureUrlMacroFilter filter = new SecureUrlMacroFilter(true, helper);
 
     session = EasyMock.createMock(HttpSession.class);
     session.setAttribute("securityDebug", "true");
@@ -66,7 +66,7 @@ public class SecureUrlMacroFilterTest extends TestCase {
    * non-recognized value.
    */
   public void testDoFilter_securityDebug_anyValue_disable() throws Exception{
-    final SecureUrlMacroFilter filter = new SecureUrlMacroFilter(helper);
+    final SecureUrlMacroFilter filter = new SecureUrlMacroFilter(true, helper);
 
     session = EasyMock.createMock(HttpSession.class);
     session.setAttribute("securityDebug", "true");

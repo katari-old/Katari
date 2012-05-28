@@ -86,18 +86,6 @@
       </bean>
     </property>
   </bean>
-
-  <!-- Puts the helper for the katari free marker url macros in the request
-  making it accessible to the rendering proccess.
-  This filter supports the debug mode for secure urls. It checks that the app
-  is using development database.
-  This bean overrides the bean defined in beans-core.xml. -->
-  <bean id="katari.secureUrlMacroFilter"
-    class="com.globant.katari.hibernate.HibernateSecureUrlMacroFilter">
-    <constructor-arg index="0" ref="katari.secureUrlAccessHelper"/>
-    <constructor-arg index="1" ref="katari.developmentDataBaseChecker"/>
-  </bean>
-
 </beans>
 
 <!-- vim: set ts=2 et sw=2 ai: -->
