@@ -32,8 +32,8 @@ import org.slf4j.LoggerFactory;
  * exception. This parameter must not start with '/'.<br>
  *
  * requestCacheContent: whether to send the cache headers to the client with an
- * expiration date in the future, or the headers that state that the content
- * should not be cached (true / false). It is false by default.<br>
+ * expiration date one month in the future, or the headers that state that the
+ * content should not be cached (true / false). It is false by default.<br>
  *
  * mimeType_[extension]: the mime type for the corresponding extension, for
  * example mymeType_gif = "image/gif".<br>
@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  * debug: whether to enable debug mode or not. In debug mode, the servlet
  * attempts to load the requested content directly from the file system. This
  * makes it possible to edit the resources directly from disk and see the
- * results inmediately without a redeploy. It is false by default.<br>
+ * results immediately without a redeploy. It is false by default.<br>
  *
  * debugPrefix: in debug mode, a prefix that is prepended to the
  * staticContentPath to search for the resource as a File. A typical value

@@ -35,8 +35,8 @@ import org.slf4j.LoggerFactory;
  * This accepts the following configuration parameters:<br>
  *
  * requestCacheContent: whether to send the cache headers to the client with an
- * expiration date in the future, or the headers that state that the content
- * should not be cached (true / false). It is false by default.<br>
+ * expiration date one month in the future, or the headers that state that the
+ * content should not be cached (true / false). It is false by default.<br>
  *
  * debug: whether to enable debug mode or not. In debug mode, the servlet
  * attempts to load the requested content directly from the file system. This
@@ -206,7 +206,6 @@ public abstract class BaseStaticContentServlet extends HttpServlet {
       return;
     }
 
-    Calendar cal = Calendar.getInstance();
     // check for if-modified-since, prior to any other headers
     long requestedOn = 0;
     try {
@@ -215,39 +214,34 @@ public abstract class BaseStaticContentServlet extends HttpServlet {
       log.warn("Invalid If-Modified-Since header value: '"
           + request.getHeader("If-Modified-Since") + "', ignoring");
     }
-    long lastModifiedMillis = lastModified.getTimeInMillis();
-    long now = cal.getTimeInMillis();
-    cal.add(Calendar.DAY_OF_MONTH, 1);
-    long expires = cal.getTimeInMillis();
-
-    boolean notModified;
-    notModified =  0 < requestedOn && requestedOn <= lastModifiedMillis;
-
-    if (!debug && notModified) {
-      // not modified, content is not sent - only basic headers and status
-      // SC_NOT_MODIFIED
-      response.setDateHeader("Expires", expires);
-      response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-      is.close();
-
-      log.trace("Leaving findStaticResource with SC_NOT_MODIFIED");
-      return;
-    }
 
     // set the content-type header
     response.setContentType(contentType);
 
+    Calendar cal = Calendar.getInstance();
+    long now = cal.getTimeInMillis();
+    response.setDateHeader("Date", now);
     if (!debug && requestCacheContent) {
       // set heading information for caching static content
-      response.setDateHeader("Date", now);
+      cal.add(Calendar.MONTH, 1);
+      long expires = cal.getTimeInMillis();
+      // max-age is 1 month, in seconds.
+      response.setHeader("Cache-Control", "public, max-age=2592000");
       response.setDateHeader("Expires", expires);
-      response.setDateHeader("Retry-After", expires);
-      response.setHeader("Cache-Control", "public");
-      response.setDateHeader("Last-Modified", lastModifiedMillis);
     } else {
+      // By default, never cache the static content.
       response.setHeader("Cache-Control", "no-cache");
       response.setHeader("Pragma", "no-cache");
-      response.setHeader("Expires", "-1");
+      response.setHeader("Expires", "Thu, 01 Jan 1970 00:00:00 GMT");
+    }
+
+    long lastModifiedMillis = lastModified.getTimeInMillis();
+    boolean notModified;
+    notModified =  0 < requestedOn && requestedOn <= lastModifiedMillis;
+    if (!debug && notModified) {
+      response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+      log.trace("Leaving findStaticResource with SC_NOT_MODIFIED");
+      return;
     }
 
     try {

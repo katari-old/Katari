@@ -229,7 +229,8 @@ public class StaticContentServletTest {
     staticContentServlet.service(request, response);
     String output = response.getContentAsString().trim();
     assertEquals("Sample not modified.", output);
-    assertEquals("-1", response.getHeader("Expires"));
+    assertEquals("Thu, 01 Jan 1970 00:00:00 GMT",
+        response.getHeader("Expires"));
 
     // Now, create a new file and check that it was found.
     FileWriter out = new FileWriter(sample);
