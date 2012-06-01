@@ -156,7 +156,7 @@ To deploy this application under tomcat, you must:
 file contains the database credentials. You can use
 katari-sample/src/test/resources/katari.properties as a sample.
 
-4- Create a file in <TOMCAT_HOME>/common/classes named logging.properties to
+4- Create a file in <TOMCAT_HOME>/common/classes named log4j.properties to
 configure the log. You can use katari-sample/src/test/resources/log4j.properties
 as a sample.
 

@@ -155,9 +155,9 @@ ${rootArtifactId}.properties. This
 file contains the database credentials. You can use
 ${rootArtifactId}-web/src/test/resources/${rootArtifactId}.properties as a sample.
 
-4- Create a file in <TOMCAT_HOME>/common/classes named logging.properties to
-configure the log. You can use ${rootArtifactId}-web/src/test/resources/log4j.properties
-as a sample.
+4- Create a file in <TOMCAT_HOME>/common/classes named log4j.properties to
+configure the log. You can use
+${rootArtifactId}-web/src/test/resources/log4j.properties as a sample.
 
 The URL of the application will depend on how tomcat is configured, by default:
 http://localhost:8080/${rootArtifactId}-web/
