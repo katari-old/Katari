@@ -1,5 +1,53 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.46
+
+* What's new since version 0.45
+
+ * Use a single connection in TestDbSupport. This lets you run your database
+ installation within a transaction, speeding up builds.
+
+ * New operation to check if the database schema matches the session factory.
+ You can now skip recreating the schema if not necessary, thus speeding up
+ builds.
+
+ * Added the data source to the transaction manager, to let it close the
+ connection when the transaction is closed. This is necessary to let the
+ transaction manager propagate the read-only status to the database connection,
+ useful to deploy in a master/slave database configuration.
+
+Release notes for version 0.45
+
+* What's new since version 0.44
+
+ * Remove securityDebug and the current menu from the session. This makes it
+ possible to create a fully stateless katari application..
+
+ * If configured for caching, StaticContentServlet now expires the content in
+ one month.
+
+Release notes for version 0.44
+
+* What's new since version 0.43
+
+ * Added javascript dependency resolution.
+
+ * Defer starting quartz until the webapp starts.
+
+ * Upgraded javamelody to version 0.37.0.
+
+Release notes for version 0.43
+
+* What's new since version 0.42
+
+ * Upgraded tidy to r1261. Improved tidy output.
+
+Upgrading from 0.42
+
+ * The new tidy version is more picky. You will probably need to fix some
+ errors that were not previously detected. Alternatively, you can force the old
+ version by excluding tidy from katari-core and forcing version r938.
+
 Release notes for version 0.42
 
 * What's new since version 0.41
