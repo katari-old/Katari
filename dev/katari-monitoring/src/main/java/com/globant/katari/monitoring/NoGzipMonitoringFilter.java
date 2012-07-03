@@ -44,9 +44,19 @@ public final class NoGzipMonitoringFilter implements Filter {
   private static Logger log = LoggerFactory.getLogger(
       NoGzipMonitoringFilter.class);
 
+  /** Hack to be able to call getMonitoringUrl on MonitoringFilter.
+   */
+  private static class MonitoringFilter2 extends MonitoringFilter {
+    /** {inheritDoc}
+     */
+    public String getMonitoringUrl2(HttpServletRequest request) {
+      return super.getMonitoringUrl(request);
+    }
+  }
+
   /** The wrapped monitoring filter.
    */
-  private MonitoringFilter monitoring = new MonitoringFilter();
+  private MonitoringFilter2 monitoring = new MonitoringFilter2();
 
   /** {@inheritDoc}
    */
@@ -70,8 +80,12 @@ public final class NoGzipMonitoringFilter implements Filter {
     }
 
     HttpServletRequest httpRequest = (HttpServletRequest) request;
+
+    final String monitoringUrl = monitoring.getMonitoringUrl2(httpRequest);
     HttpServletRequestWrapper w = new HttpServletRequestWrapper(httpRequest) {
 
+      /** {inheritDoc}
+       */
       @Override
       public Enumeration getHeaders(final String name) {
         if (name.equals("Accept-Encoding")) {
@@ -80,13 +94,28 @@ public final class NoGzipMonitoringFilter implements Filter {
         return super.getHeaders(name);
       }
 
+      /** {inheritDoc}
+       */
       @Override
       public String getRequestURI() {
         String requestUri = super.getRequestURI();
         if (requestUri.matches(".*/katari-monitoring$")) {
-          return getContextPath() + "/module/monitoring/m";
+          return getContextPath() + monitoringUrl;
         } else {
           return requestUri;
+        }
+      }
+
+      /** {inheritDoc}
+       */
+      @Override
+      public String getContextPath() {
+        String contextPath = super.getContextPath();
+        String requestUri = super.getRequestURI();
+        if (requestUri.matches(".*/katari-monitoring$")) {
+          return "";
+        } else {
+          return contextPath;
         }
       }
     };
