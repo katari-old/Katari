@@ -32,8 +32,8 @@ public class TimeRepositoryTest extends TestCase {
   protected final void setUp() {
     timeRepository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
-    userRepository = (UserRepository) SpringTestUtils.getBeanFactory().getBean(
-        "user.userRepository");
+    userRepository = (UserRepository) SpringTestUtils
+    		.get().getBeanFactory().getBean("user.userRepository");
     user = userRepository.findUserByName("admin");
     List<TimeEntry> list = timeRepository.getTimeEntries(user, new Date());
     for (TimeEntry timeEntry : list) {

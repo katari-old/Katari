@@ -38,7 +38,7 @@ public class DeleteTimeEntryCommandTest extends TestCase {
         .getTimeModuleBeanFactory().getBean("deleteTimeEntryCommand");
     timeRepository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
-    userRepository = (UserRepository) SpringTestUtils.getBeanFactory()
+    userRepository = (UserRepository) SpringTestUtils.get().getBeanFactory()
         .getBean("user.userRepository");
     DataHelper.removeExtraTimeEntries(timeRepository);
     user = userRepository.findUserByName("admin");

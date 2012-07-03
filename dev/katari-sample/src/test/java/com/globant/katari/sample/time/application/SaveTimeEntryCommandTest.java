@@ -37,7 +37,7 @@ public class SaveTimeEntryCommandTest extends TestCase {
   public void setUp() {
     repository = (TimeRepository) SpringTestUtils.getTimeModuleBeanFactory()
         .getBean("timeRepository");
-    userRepository = (UserRepository) SpringTestUtils
+    userRepository = (UserRepository) SpringTestUtils.get()
         .getBeanFactory().getBean("user.userRepository");
     DataHelper.removeExtraTimeEntries(repository);
 

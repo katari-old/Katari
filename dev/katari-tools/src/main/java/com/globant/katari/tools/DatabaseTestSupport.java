@@ -2,7 +2,6 @@
 
 package com.globant.katari.tools;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -17,6 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+
+import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 
 import com.globant.katari.tools.database.MySqlDropAllObjects;
 import com.globant.katari.tools.database.PostgreSqlDropAllObjects;
@@ -97,20 +101,36 @@ public abstract class DatabaseTestSupport {
    * Checks if the marker table exists and contains 'YES DROP ME'. If it does,
    * it drops all objects in the database, excluding the marker table.
    *
-   * @param dataSource The data source to obtain the connection from. It cannot
-   * be null.
+   * @param connection The database connection to use. It cannot be null.
    *
    * @param markerTable The marker table name. This table must exist and have
    * one column named drop_database with 'YES DROP ME'.
    */
-  public void dropAll(final DataSource dataSource, final String markerTable) {
+  public void dropAll(final Connection connection, final String markerTable) {
     try {
-      Connection connection = dataSource.getConnection();
       assertDevelopmentDatabase(connection, markerTable);
       doDropAll(connection, markerTable);
-      // We are not that careful closing the connection because we exit in case
-      // of error.
-      connection.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+  }
+
+  /** Deletes all rows from all tables in the data base.
+   *
+   * Checks if the marker table exists and contains 'YES DROP ME'. If it does,
+   * it deletes all rows in the database, excluding the marker table.
+   *
+   * @param connection The database connection to use. It cannot be null.
+   *
+   * @param markerTable The marker table name. This table must exist and have
+   * one column named drop_database with 'YES DROP ME'.
+   */
+  public void deleteAll(final Connection connection,
+      final String markerTable) {
+    try {
+      assertDevelopmentDatabase(connection, markerTable);
+      doDeleteAll(connection, markerTable);
     } catch (Exception e) {
       e.printStackTrace();
       System.exit(1);
@@ -119,21 +139,16 @@ public abstract class DatabaseTestSupport {
 
   /** Initializes the auto increment columns to a predefined value.
    *
-   * @param dataSource The data source to obtain the connection from. It cannot
-   * be null.
+   * @param connection The database connection to use. It cannot be null.
    * 
    * @param initialValue the initial value to use for autoincrement.
    *
    * @throws Exception in case of error.
    */
-  public void initializeAutoincrement(final DataSource dataSource,
+  public void initializeAutoincrement(final Connection connection,
       final int initialValue) throws Exception {
     try {
-      Connection connection = dataSource.getConnection();
       doInitializeAutoincrement(connection, initialValue);
-      // We are not that careful closing the connection because we exit in case
-      // of error.
-      connection.close();
     } catch (Exception e) {
       e.printStackTrace();
       System.exit(1);
@@ -150,6 +165,18 @@ public abstract class DatabaseTestSupport {
    * @throws Exception in case of error.
    */
   protected abstract void doDropAll(final Connection connection, final String
+      markerTable) throws Exception;
+
+  /** Template method to delete all rows from all tables in the data base.
+   *
+   * @param connection The database connectino to use to drop all the objects.
+   * It cannot be null.
+   *
+   * @param markerTable The name of the marker table. It cannot be null.
+   *
+   * @throws Exception in case of error.
+   */
+  protected abstract void doDeleteAll(final Connection connection, final String
       markerTable) throws Exception;
 
   /** Template method to initialize the auto increment columns to a predefined
@@ -169,21 +196,18 @@ public abstract class DatabaseTestSupport {
    *
    * Sentences in the file are delimited by a line ending in ;.
    *
-   * @param dataSource the datasource to use to run the sql sentences. It
-   * cannot be null.
+   * @param connection the database connection to use to run the sql sentences.
+   * It cannot be null.
    *
    * @param fileName the String with the file name.
    */
-  public void runSqlSentences(final DataSource dataSource, final String
+  public void runSqlSentences(final Connection connection, final String
       fileName) {
     log.trace("Entering runSqlSentences('" + fileName + "')");
-    Validate.notNull(dataSource, "The data source cannot be null.");
     Validate.notNull(fileName, "The file name cannot be null.");
 
-    Connection connection = null;
     String sentence = null;
     try {
-      connection = dataSource.getConnection();
       Statement statement = connection.createStatement();
       SqlSentencesParser parser = new SqlSentencesParser(fileName);
 
@@ -195,16 +219,6 @@ public abstract class DatabaseTestSupport {
       System.out.println("Error executing " + sentence);
       e.printStackTrace();
       System.exit(1);
-    } finally {
-      if (connection != null) {
-        try {
-          connection.close();
-        } catch (Exception e) {
-          // This should never happen.
-          e.printStackTrace();
-          System.exit(1);
-        }
-      }
     }
     log.trace("Leaving runSqlSentences");
   }
@@ -260,6 +274,39 @@ public abstract class DatabaseTestSupport {
     if (!message.equals("YES, DROP ME")) {
       throw new RuntimeException("Marker table does not contain the"
           + " correct row");
+    }
+  }
+
+  /** Checks if the database schema matches the hibernate session factory.
+   *
+   * @param sessionFactory the hibernate session factory. It cannot be null.
+   *
+   * @param connection the database connection. It cannot be null.
+   *
+   * @return returns true if the database schema matches the session factory,
+   * false otherwise.
+   */
+  public boolean isUpToDate(final LocalSessionFactoryBean sessionFactory,
+      final Connection connection) {
+
+    Configuration configuration = sessionFactory.getConfiguration();
+
+    Dialect dialect = Dialect.getDialect(configuration.getProperties());
+
+    DatabaseMetadata databaseMetadata = null;
+    try {
+      databaseMetadata = new DatabaseMetadata(connection, dialect, false);
+    } catch (Exception e) {
+      System.out.println("Error obtaining database metadata");
+      e.printStackTrace();
+      System.exit(1);
+    }
+
+    try {
+      configuration.validateSchema(dialect, databaseMetadata);
+      return true;
+    } catch (HibernateException e) {
+      return false;
     }
   }
 }

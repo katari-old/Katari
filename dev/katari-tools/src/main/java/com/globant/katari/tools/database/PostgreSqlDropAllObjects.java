@@ -121,6 +121,14 @@ public class PostgreSqlDropAllObjects extends DatabaseTestSupport {
   }
 
   /** {@inheritDoc}
+   */
+  @Override
+  protected void doDeleteAll(final Connection connection, final String
+      markerTable) throws Exception {
+    throw new RuntimeException("Not implemented");
+  }
+
+  /** {@inheritDoc}
    * 
    * This is not implemented, throws UnsupportedOperationException.
    */

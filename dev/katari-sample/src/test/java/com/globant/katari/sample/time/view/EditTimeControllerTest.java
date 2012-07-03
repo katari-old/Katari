@@ -57,7 +57,7 @@ public class EditTimeControllerTest extends TestCase {
         .getTimeModuleBeanFactory().getBean("/editTimeEntry.do");
     timeRepository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
-    userRepository = (UserRepository) SpringTestUtils
+    userRepository = (UserRepository) SpringTestUtils.get()
         .getBeanFactory().getBean("user.userRepository");
     user = userRepository.findUserByName("admin");
     DataHelper.createTimeEntry(timeRepository, user);

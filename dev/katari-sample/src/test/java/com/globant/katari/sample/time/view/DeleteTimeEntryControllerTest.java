@@ -42,7 +42,7 @@ public class DeleteTimeEntryControllerTest extends TestCase {
         .getTimeModuleBeanFactory().getBean("/deleteTimeEntry.do");
     timeRepository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
-    userRepository = (UserRepository) SpringTestUtils
+    userRepository = (UserRepository) SpringTestUtils.get()
         .getBeanFactory().getBean("user.userRepository");
     User user = userRepository.findUserByName("admin");
     DataHelper.createTimeEntry(timeRepository, user);

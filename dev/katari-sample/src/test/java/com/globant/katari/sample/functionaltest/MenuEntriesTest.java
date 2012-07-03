@@ -56,7 +56,7 @@ public class MenuEntriesTest extends ParentRunner<MenuNode> {
    */
   protected List<MenuNode> getChildren() {
     ModuleContextRegistrar registrar = (ModuleContextRegistrar) SpringTestUtils
-        .getBeanFactory().getBean("katari.contextRegistrar");
+        .get().getBeanFactory().getBean("katari.contextRegistrar");
     MenuBar menuBar = registrar.getMenuBar();
     return getMenuLeaves(menuBar);
   }

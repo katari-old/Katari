@@ -33,8 +33,8 @@ public class UsersTest extends TestCase {
    * @throws Exception when setup fails.
    */
   protected final void setUp() throws Exception {
-    repository = (UserRepository) SpringTestUtils.getBeanFactory().getBean(
-        "user.userRepository");
+    repository = (UserRepository) SpringTestUtils.get().getBeanFactory()
+    		.getBean("user.userRepository");
     addUsers();
   }
 

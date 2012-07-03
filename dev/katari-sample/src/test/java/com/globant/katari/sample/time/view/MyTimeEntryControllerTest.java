@@ -56,7 +56,7 @@ public class MyTimeEntryControllerTest extends TestCase {
         .getTimeModuleBeanFactory().getBean("/myTime.do");
     timeRepository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
-    userRepository = (UserRepository) SpringTestUtils
+    userRepository = (UserRepository) SpringTestUtils.get()
         .getBeanFactory().getBean("user.userRepository");
     user = userRepository.findUserByName("admin");
     DataHelper.createTimeEntry(timeRepository, user);

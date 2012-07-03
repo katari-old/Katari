@@ -32,7 +32,15 @@ public class MySqlDropAllObjects extends DatabaseTestSupport {
    */
   private static String listTables = "show tables";
 
-  /** Drop all tables from the database.
+  /** {@inheritDoc}
+   */
+  @Override
+  protected void doDropAll(final Connection connection, final String
+      markerTable) throws Exception {
+    dropTables(connection, markerTable);
+  }
+
+  /** Drops all tables from the database.
    *
    * @param connection The connection to execute sql sentences. It cannot be
    * null.
@@ -68,9 +76,27 @@ public class MySqlDropAllObjects extends DatabaseTestSupport {
   /** {@inheritDoc}
    */
   @Override
-  protected void doDropAll(final Connection connection, final String
+  protected void doDeleteAll(final Connection connection, final String
       markerTable) throws Exception {
-    dropTables(connection, markerTable);
+    Validate.notNull(connection, "The connection cannot be null.");
+
+    // Drops all tables.
+    log.debug("Deleting all rows");
+    Statement st = connection.createStatement();
+    ResultSet rs = null;
+    rs = st.executeQuery(listTables);
+    List<String> tableNames = new ArrayList<String>();
+    while (rs.next()) {
+      tableNames.add(rs.getString(1));
+    }
+    rs.close();
+    st.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+    for (String table : tableNames) {
+      if (!table.equalsIgnoreCase(markerTable)) {
+        log.debug("Deleting table " + table);
+        st.executeUpdate("delete from " + table);
+      }
+    }
   }
 
   /** Template method to initialize the auto increment columns to a predefined

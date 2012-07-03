@@ -2,6 +2,8 @@
 
 package com.globant.katari.tools;
 
+import java.io.File;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -15,6 +17,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.context.support.XmlWebApplicationContext;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.core.io.FileSystemResourceLoader;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+
+import javax.servlet.ServletContext;
 
 /**  Utility class to give support to test cases.
  *
@@ -46,7 +53,7 @@ public abstract class SpringTestUtilsBase {
 
   /** Company spring servlet Bean factory.
    */
-  private ApplicationContext companyModuleBeanFactory;
+  private ApplicationContext servletBeanFactory;
 
   /** The katari transaction manager for the application context.
    */
@@ -75,7 +82,7 @@ public abstract class SpringTestUtilsBase {
    *
    * @return a DataSource.
    */
-  public synchronized DataSource getDataSource() {
+  private synchronized DataSource getDataSource() {
     if (dataSource == null) {
       beanFactory = getBeanFactory();
       dataSource = (DataSource) beanFactory.getBean("dataSource");
@@ -83,7 +90,8 @@ public abstract class SpringTestUtilsBase {
     return dataSource;
   }
 
-  /** Gets the connection to the database.
+  /** Gets the connection to the database, enlisted to the current transaction
+   * if any.
    *
    * @return a Connection.
    *
@@ -94,7 +102,7 @@ public abstract class SpringTestUtilsBase {
       beanFactory = getBeanFactory();
       dataSource = (DataSource) beanFactory.getBean("dataSource");
     }
-    Connection connection = dataSource.getConnection();
+    Connection connection = DataSourceUtils.getConnection(dataSource);
     return connection;
   }
 
@@ -105,9 +113,16 @@ public abstract class SpringTestUtilsBase {
   public synchronized ApplicationContext getBeanFactory() {
     log.trace("Entering getBeanFactory");
     if (beanFactory == null) {
-      log.debug("Creating a beanFactory");
+      log.debug("Creating the global beanFactory");
       XmlWebApplicationContext appContext = new XmlWebApplicationContext();
       appContext.setConfigLocations(globalConfigurationFiles);
+      if (new File("./src/main/webapp").exists()) {
+	// We assume that the module references a web application if there is a
+	// webapp directory.
+        ServletContext sc = new MockServletContext("./src/main/webapp",
+            new FileSystemResourceLoader());
+        appContext.setServletContext(sc);
+      }
       appContext.refresh();
       beanFactory = appContext;
     }
@@ -120,14 +135,12 @@ public abstract class SpringTestUtilsBase {
    * @return a BeanFactory
    */
   public synchronized ApplicationContext getServletBeanFactory() {
-    if (companyModuleBeanFactory == null) {
-      log.info("Creating a beanFactory");
-      companyModuleBeanFactory = new FileSystemXmlApplicationContext(
-          new String[]
-          {"classpath:/com/globant/igexpansion/smp/community/view/spring-servlet.xml"},
-          getBeanFactory());
+    if (servletBeanFactory == null) {
+      log.info("Creating the servlet beanFactory");
+      servletBeanFactory = new FileSystemXmlApplicationContext(
+          servletConfigurationFiles, getBeanFactory());
     }
-    return companyModuleBeanFactory;
+    return servletBeanFactory;
   }
 
   /** Obtains a bean from the global bean factory.

@@ -64,6 +64,9 @@ public class DatabaseTestSupportTest {
       protected void doDropAll(final Connection connection, final String
           markerTable) throws Exception {
       }
+      protected void doDeleteAll(final Connection connection, final String
+          markerTable) throws Exception {
+      }
       protected void doInitializeAutoincrement(final Connection connection,
           final int initialValue) throws Exception {
         throw new UnsupportedOperationException();

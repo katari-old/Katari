@@ -32,7 +32,7 @@ public class UserProjectHoursReportCommandTest extends TestCase {
     TimeRepository repository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
     UserRepository userRepository = (UserRepository)
-        SpringTestUtils.getBeanFactory().getBean("user.userRepository");
+        SpringTestUtils.get().getBeanFactory().getBean("user.userRepository");
 
     User user = userRepository.findUserByName("admin");
     Calendar tmpCalendar = Calendar.getInstance();

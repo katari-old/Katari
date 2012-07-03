@@ -53,6 +53,14 @@ public class OracleDropAllObjects extends DatabaseTestSupport {
     dropAllViews(markerTable, connection);
   }
 
+  /** {@inheritDoc}
+   */
+  @Override
+  protected void doDeleteAll(final Connection connection, final String
+      markerTable) throws Exception {
+    throw new RuntimeException("Not implemented");
+  }
+
   /** Drops all tables.
    *
    * @param markerName Table marker name
