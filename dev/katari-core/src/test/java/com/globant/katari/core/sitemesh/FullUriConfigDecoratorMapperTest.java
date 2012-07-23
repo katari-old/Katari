@@ -4,20 +4,21 @@ package com.globant.katari.core.sitemesh;
 
 import javax.servlet.http.HttpServletRequest;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.assertThat;
 
 import com.opensymphony.module.sitemesh.Decorator;
 import com.opensymphony.module.sitemesh.mapper.ConfigLoader;
 
 import static org.easymock.EasyMock.*;
+import static org.hamcrest.CoreMatchers.*;
 
 /* Tests the custom sitemesh decorator mapper.
  */
-public class FullUriConfigDecoratorMapperTest  extends TestCase {
+public class FullUriConfigDecoratorMapperTest  {
 
-  /* Tests the getNamedDecorator method.
-   */
-  public final void testGetNamedDecorator() throws Exception {
+  @Test
+  public void getNamedDecorator() throws Exception {
 
     Decorator decorator = createMock(Decorator.class);
     expect(decorator.getRole()).andReturn(null);
@@ -30,12 +31,12 @@ public class FullUriConfigDecoratorMapperTest  extends TestCase {
 
     FullUriConfigDecoratorMapper mapper = new FullUriConfigDecoratorMapper();
     mapper.setConfigLoader(configLoader);
-    assertEquals(decorator, mapper.getNamedDecorator(null, "sampleDecorator"));
+    Decorator result = mapper.getNamedDecorator(null, "sampleDecorator");
+    assertThat(result, is(decorator));
   }
 
-  /* Tests the getDecorator method.
-   */
-  public final void testGetDecorator() throws Exception {
+  @Test
+  public final void getDecorator() throws Exception {
 
     HttpServletRequest request = createNiceMock(HttpServletRequest.class);
     expect(request.getServletPath()).andReturn("/servletPath");
@@ -55,7 +56,20 @@ public class FullUriConfigDecoratorMapperTest  extends TestCase {
 
     FullUriConfigDecoratorMapper mapper = new FullUriConfigDecoratorMapper();
     mapper.setConfigLoader(configLoader);
-    assertSame(decorator, mapper.getDecorator(request, null));
+    Decorator result = mapper.getDecorator(request, null);
+    assertThat(result, is(decorator));
+  }
+
+  @Test
+  public final void getDecorator_skip() throws Exception {
+
+    HttpServletRequest request = createNiceMock(HttpServletRequest.class);
+    expect(request.getAttribute("katari-skip-decoration")).andReturn("");
+    replay(request);
+
+    FullUriConfigDecoratorMapper mapper = new FullUriConfigDecoratorMapper();
+    Decorator result = mapper.getDecorator(request, null);
+    assertThat(result, is(nullValue()));
   }
 }
 

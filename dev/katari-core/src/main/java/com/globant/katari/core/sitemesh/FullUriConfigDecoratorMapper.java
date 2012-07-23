@@ -22,6 +22,9 @@ import com.opensymphony.module.sitemesh.mapper.ConfigLoader;
  * Reads decorators and mappings from the <code>config</code> property (default
  * '/WEB-INF/decorators.xml'). This is almost the same as the default decorator
  * mapper, except that it matches against the request including the path info.
+ *
+ * Additionally, a page can force sitemesh to skip decorating it adding a
+ * request attribute called katari-skip-decoration, with any value.
  */
 public class FullUriConfigDecoratorMapper extends AbstractDecoratorMapper {
 
@@ -85,11 +88,15 @@ public class FullUriConfigDecoratorMapper extends AbstractDecoratorMapper {
    *
    * @param page The content of the undecorated page. It cannot be null.
    *
-   * @return the decorator to use to decorate the page.
+   * @return the decorator to use to decorate the page, null if the page
+   * should not be decorated.
    */
   public Decorator getDecorator(final HttpServletRequest request, final Page
       page) {
     log.trace("Entering getDecorator");
+    if (request.getAttribute("katari-skip-decoration") != null) {
+      return null;
+    }
     String thisPath = request.getServletPath();
     String pathInfo = request.getPathInfo();
 
