@@ -14,18 +14,22 @@ import java.net.HttpURLConnection;
 
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Test;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 import com.globant.katari.tools.NanoHTTPD;
 
 /* Tests the cas service builder.
  */
-public class NanoHTTPDTest extends TestCase {
+public class NanoHTTPDTest {
 
   private NanoHTTPD server = null;
 
   private URLConnection connection = null;
 
+  @After
   public void tearDown() {
     // We stop the server.
     if (server != null) {
@@ -33,9 +37,8 @@ public class NanoHTTPDTest extends TestCase {
     }
   }
 
-  /* Tests if the nanohttp server correctly returns what's expected.
-   */
-  public final void testServe_simple() throws IOException {
+  @Test
+  public final void serve_simple() throws IOException {
 
     server = new NanoHTTPD(0) {
       public Response serve(final String uri, final String method, final
@@ -44,10 +47,11 @@ public class NanoHTTPDTest extends TestCase {
             "retrieved data");
       }
     };
-    assertEquals("retrieved data\n", getResponse(null, false));
+    assertThat(getResponse(null, false), is("retrieved data\n"));
   }
 
-  public final void testServe_errorStatus() throws IOException {
+  @Test(expected = FileNotFoundException.class)
+  public final void serve_errorStatus() throws IOException {
 
     server = new NanoHTTPD(0) {
       public Response serve(final String uri, final String method, final
@@ -56,15 +60,12 @@ public class NanoHTTPDTest extends TestCase {
             NanoHTTPD.MIME_PLAINTEXT, null);
       }
     };
-    try {
-      getResponse(null, false);
-      fail();
-    } catch (FileNotFoundException ex) {
-      // Test passed.
-    }
+
+    getResponse(null, false);
   }
 
-  public final void testServe_param() throws IOException {
+  @Test
+  public final void serve_param() throws IOException {
 
     server = new NanoHTTPD(0) {
       // Implements a simple echo.
@@ -74,10 +75,11 @@ public class NanoHTTPDTest extends TestCase {
             params.getProperty("echo"));
       }
     };
-    assertEquals("hello\n", getResponse("echo=hello", false));
+    assertThat(getResponse("echo=hello", false), is("hello\n"));
   }
 
-  public final void testServe_header() throws IOException {
+  @Test
+  public final void serve_header() throws IOException {
 
     server = new NanoHTTPD(0) {
       // Implements a simple with a header.
@@ -89,12 +91,13 @@ public class NanoHTTPDTest extends TestCase {
         return response;
       }
     };
-    assertEquals("test\n", getResponse("echo=hello", false));
-    assertEquals("hello", connection.getHeaderField("echo"));
+    assertThat(getResponse("echo=hello", false), is("test\n"));
+    assertThat(connection.getHeaderField("echo"), is("hello"));
   }
 
-  public final void testServe_post() throws IOException {
-
+  @Test
+  public final void serve_post() throws IOException {
+ 
     server = new NanoHTTPD(0) {
       // Implements a simple echo.
       public Response serve(final String uri, final String method, final
@@ -103,7 +106,20 @@ public class NanoHTTPDTest extends TestCase {
             params.getProperty("echo"));
       }
     };
-    assertEquals("hello\n", getResponse("echo=hello", true));
+    assertThat(getResponse("echo=hello", true), is("hello\n"));
+  }
+
+  @Test
+  public final void serve_postNoBody() throws IOException {
+
+    server = new NanoHTTPD(0) {
+      // Implements a simple echo.
+      public Response serve(final String uri, final String method, final
+          Properties header, final Properties params) {
+        return new NanoHTTPD.Response(NanoHTTPD.MIME_PLAINTEXT, "echo");
+      }
+    };
+    assertThat(getResponse(null, true), is("echo\n"));
   }
 
   private final String getResponse(final String params, final boolean post)
@@ -122,9 +138,11 @@ public class NanoHTTPDTest extends TestCase {
       ((HttpURLConnection) connection).setRequestMethod("POST");
       ((HttpURLConnection) connection).setDoOutput(true);
       PrintWriter out = new PrintWriter(connection.getOutputStream());
-      out.println(params);
-      out.println("\r\n");
-      out.println("\r\n");
+      if (params != null) {
+        out.println(params);
+        out.println("\r\n");
+        out.println("\r\n");
+      }
       out.close();
     }
 

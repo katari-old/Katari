@@ -373,7 +373,10 @@ public abstract class NanoHTTPD {
           }
           StringBuilder postLine = new StringBuilder();
           char[] buf = new char[BUFFER_SIZE];
-          int read = in.read(buf);
+          int read = 0;
+          if (contentLength != 0) {
+            read = in.read(buf);
+          }
           while (read >= 0 && contentLength > 0
               && !postLine.toString().endsWith(EOL)) {
             contentLength -= read;
