@@ -27,6 +27,21 @@
         <property name="sourceList">
           <list>
             <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*/module/monitoring/katari-monitoring.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean class
+                      ="com.globant.katari.core.web.ClusterNodeProxyFilter">
+                      <constructor-arg ref='katari.clusterNodes' />
+                    </bean>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+              <!-- We want this filter to execute before the monitor. -->
+              <constructor-arg><value>9</value></constructor-arg>
+            </bean>
+            <bean class="com.globant.katari.core.web.FilterMapping">
               <constructor-arg><value>.*</value></constructor-arg>
               <constructor-arg>
                 <bean class="com.globant.katari.core.web.FilterAndParameters">
@@ -45,7 +60,7 @@
                   </constructor-arg>
                 </bean>
               </constructor-arg>
-              <!-- We want this filter to executer after the decorators. -->
+              <!-- We want this filter to execute after the decorators. -->
               <constructor-arg><value>10</value></constructor-arg>
             </bean>
           </list>
@@ -57,7 +72,8 @@
     <property name="menuBar">
       <katari:menuBar>
         <katari:menuNode name='Administration'>
-          <katari:menuItem name='Monitor' link='katari-monitoring' />
+          <katari:menuItem name='Monitor' link='katari-monitoring?katari-node='
+            />
         </katari:menuNode>
       </katari:menuBar>
     </property>

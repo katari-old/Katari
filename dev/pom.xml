@@ -75,7 +75,7 @@
     <module>katari-quartz</module>
     <module>katari-email</module>
     <module>katari-registration</module>
-    <!-- Monitoring with JavaMelody-->
+    <!-- Monitoring with JavaMelody -->
     <module>katari-monitoring</module>
     <!-- Integration tests. It includes tests for katari-archetype and
          katari-module-archetype. -->

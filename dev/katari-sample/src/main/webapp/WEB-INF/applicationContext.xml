@@ -284,6 +284,15 @@
   </util:list>
   -->
 
+  <!-- Sample node configuration. There are 3 nodes configured: two that hit
+       localhost (in localhost and 127.0.0.1) and another one that will fail.
+       -->
+  <util:map id='katari.clusterNodes'>
+    <entry key="node1-localhost" value="http://localhost:8098"/>
+    <entry key="node2-127-0-0-1" value="http://127.0.0.1:8098"/>
+    <entry key="node3-this-will-fail" value="http://will-fail"/>
+  </util:map>
+
   <!-- Port mappings for HTTP/HTTPS access. -->
   <bean id='katari.httpsPortMapper'
       class='org.acegisecurity.util.PortMapperImpl'>
