@@ -12,6 +12,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.DiscriminatorValue;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import org.apache.commons.lang.Validate;
 
 import org.compass.annotations.Searchable;
@@ -26,6 +29,7 @@ import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 @Entity
 @DiscriminatorValue("user")
 @Searchable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User extends CoreUser {
 
   /** The length in characters of the email address.

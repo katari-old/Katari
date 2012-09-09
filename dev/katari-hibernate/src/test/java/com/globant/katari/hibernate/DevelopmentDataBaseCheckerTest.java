@@ -6,36 +6,24 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.SQLException;
 
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.After;
 
-public class DevelopmentDataBaseCheckerTest extends
-    AbstractTransactionalDataSourceSpringContextTests {
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
-  /* Injected by spring.
-  */
-  private DataSource dataSource = null;
+public class DevelopmentDataBaseCheckerTest {
 
-  Connection connection = null;
-
-  /* Disables rollback.
-   */
-  public DevelopmentDataBaseCheckerTest() {
-    setDefaultRollback(false);
-  }
-
-  /** Configures application context xml file.
-   */
-  @Override
-  protected String[] getConfigLocations() {
-    return new String[] {
-        "classpath:com/globant/katari/hibernate/coreuser/applicationContext.xml" };
-  }
+  private DataSource dataSource;
+  private Connection connection = null;
 
   /** Creates administrator role.
    */
-  @Override
-  protected void onSetUp() throws Exception {
-    connection = dataSource.getConnection();
+  @Before
+  public void setUp() throws Exception {
+    dataSource = (DataSource) SpringTestUtils.get().getBean("dataSource");
+    connection = SpringTestUtils.get().getConnection();
     Statement statement = connection.createStatement();
     try {
       statement.execute("drop table sample_marker");
@@ -44,22 +32,21 @@ public class DevelopmentDataBaseCheckerTest extends
     }
   }
 
-  /** Deletes all the roles.
-   */
-  @Override
-  protected void onTearDown() throws Exception {
-  //  this.deleteFromTables(new String[]{"roles"});
+  @After
+  public void tearDown() throws Exception {
     if (connection != null) {
       connection.close();
     }
   }
 
+  @Test
   public void testCheckForDevelopmentDatabase_noMarker() {
     DevelopmentDataBaseChecker checker;
-    checker = new DevelopmentDataBaseChecker(dataSource, "sample_marker");
-    assertTrue(!checker.checkForDevelopmentDatabase());
+    checker = new DevelopmentDataBaseChecker(dataSource , "sample_marker");
+    assertThat(checker.checkForDevelopmentDatabase(), is(false));
   }
 
+  @Test
   public void testCheckForDevelopmentDatabase_emptyMarker() throws Exception {
     Statement statement = connection.createStatement();
     statement.execute("create table sample_marker(drop_database varchar(50))");
@@ -67,9 +54,10 @@ public class DevelopmentDataBaseCheckerTest extends
 
     DevelopmentDataBaseChecker checker;
     checker = new DevelopmentDataBaseChecker(dataSource, "sample_marker");
-    assertTrue(!checker.checkForDevelopmentDatabase());
+    assertThat(checker.checkForDevelopmentDatabase(), is(false));
   }
 
+  @Test
   public void testCheckForDevelopmentDatabase_column() throws Exception {
     Statement statement = connection.createStatement();
     statement.execute("create table sample_marker(something varchar(50))");
@@ -77,9 +65,10 @@ public class DevelopmentDataBaseCheckerTest extends
 
     DevelopmentDataBaseChecker checker;
     checker = new DevelopmentDataBaseChecker(dataSource, "sample_marker");
-    assertTrue(!checker.checkForDevelopmentDatabase());
+    assertThat(checker.checkForDevelopmentDatabase(), is(false));
   }
 
+  @Test
   public void testCheckForDevelopmentDatabase_true() throws Exception {
     Statement statement = connection.createStatement();
     statement.execute("create table sample_marker(drop_database varchar(50))");
@@ -88,15 +77,7 @@ public class DevelopmentDataBaseCheckerTest extends
 
     DevelopmentDataBaseChecker checker;
     checker = new DevelopmentDataBaseChecker(dataSource, "sample_marker");
-    assertTrue(checker.checkForDevelopmentDatabase());
-  }
-
-  public DataSource getDataSaurce() {
-    return dataSource;
-  }
-
-  public void setDataSaurce(final DataSource theDataSource) {
-    dataSource = theDataSource;
+    assertThat(checker.checkForDevelopmentDatabase(), is(true));
   }
 }
 

@@ -66,6 +66,8 @@ public class UserRepository extends HibernateDaoSupport {
 
     Validate.notNull(username, "The username cannot be null");
 
+    getHibernateTemplate().setCacheQueries(true);
+
     List<User> users = getHibernateTemplate().find(
         "from User user where user.name = ?", username);
     if (users.isEmpty()) {
@@ -98,6 +100,7 @@ public class UserRepository extends HibernateDaoSupport {
     Validate.notNull(userFilter, "The user filter cannot be null");
 
     Criteria criteria = getSession().createCriteria(User.class);
+    criteria.setCacheable(true);
 
     // Add the order criteria.
     Sorting sorting = userFilter.getSorting();
@@ -159,6 +162,7 @@ public class UserRepository extends HibernateDaoSupport {
    * exists.
    */
   public User findUser(final long id) {
+    getHibernateTemplate().setCacheQueries(true);
     return (User) getHibernateTemplate().get(User.class, id);
   }
 }

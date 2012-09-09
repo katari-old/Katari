@@ -2,38 +2,23 @@
 
 package com.globant.katari.hibernate.coreuser.domain;
 
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.junit.Before;
 
-public class CoreUserRepositoryTest extends
-    AbstractTransactionalDataSourceSpringContextTests {
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
-  /** The core user repository.
-   *
-   * Injected by Spring.
-   */
+import com.globant.katari.hibernate.SpringTestUtils;
+
+public class CoreUserRepositoryTest {
+
   private CoreUserRepository userRepository = null;
-
-  /**
-   * Defines constructor for disabling rollback only transactions.
-   */
-  public CoreUserRepositoryTest() {
-    this.setDefaultRollback(false);
-  }
-
-  /**
-   * Configures application context xml file.
-   */
-  @Override
-  protected String[] getConfigLocations() {
-    return new String[] {
-      "classpath:com/globant/katari/hibernate/coreuser/applicationContext.xml"
-    };
-  }
 
   /** Creates a sample user named test.
    */
-  @Override
-  protected void onSetUp() throws Exception {
+  @Before
+  protected void setUp() throws Exception {
+    userRepository = (CoreUserRepository) SpringTestUtils.get().getBean(
+        "coreuser.userRepository");
     userRepository.getHibernateTemplate().bulkUpdate("delete from CoreUser");
     CoreUser user = new SampleUser("test");
     userRepository.getHibernateTemplate().save(user);
@@ -41,8 +26,8 @@ public class CoreUserRepositoryTest extends
 
   public void testFindUserByName() throws Exception {
     CoreUser user = userRepository.findUserByName("test");
-    assertNotNull(user);
-    assertEquals(user.getName(), "test");
+    assertThat(user, is(nullValue()));
+    assertThat(user.getName(), is("test"));
   }
 
   public void testFindUser() throws Exception {
@@ -50,7 +35,7 @@ public class CoreUserRepositoryTest extends
     long id = user.getId();
 
     user = userRepository.findUser(id);
-    assertEquals(user.getName(), "test");
+    assertThat(user.getName(), is("test"));
   }
 
   public CoreUserRepository getUserRepository() {

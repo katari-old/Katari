@@ -1,3 +1,5 @@
+/* vim: set ts=2 et sw=2 cindent fo=qroca: */
+
 package com.globant.katari.hibernate.coreuser.domain;
 
 import java.util.HashSet;
@@ -8,32 +10,33 @@ import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.userdetails.UserDetails;
 import org.apache.commons.lang.Validate;
 import org.easymock.EasyMock;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.After;
+
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.*;
+
+import com.globant.katari.hibernate.SpringTestUtils;
 
 /**
  * RoleSecurityUtils Test Case.
  * @author gerardo.bercovich
  */
-public class RoleSecurityUtilsTest extends
-    AbstractTransactionalDataSourceSpringContextTests {
+public class RoleSecurityUtilsTest {
 
   /**
    * This is the implementation of the repository of the role.
-   * Injected by Spring.
    */
   private RoleRepository roleRepository = null;
 
-  /**
-   * Configures application context xml file.
-   */
-  @Override
-  protected String[] getConfigLocations() {
-    return new String[] {
-        "classpath:com/globant/katari/hibernate/coreuser/applicationContext.xml" };
-  }
+  @Before
+  public void setUp() throws Exception {
 
-  @Override
-  protected void onSetUp() throws Exception {
+    roleRepository = (RoleRepository) SpringTestUtils.get().getBean(
+        "coreuser.roleRepository");
     String roleName = "ADMINISTRATOR";
     Set<Role> roles = new HashSet<Role>();
     roleRepository.save(new Role(roleName));
@@ -48,13 +51,14 @@ public class RoleSecurityUtilsTest extends
     SecurityContextHolder.getContext().setAuthentication(authentication);
   }
 
-  public void testGetCurrentUserRoles() {
+  @Test public void testGetCurrentUserRoles() {
     final Set<Role> currentUserRoles = RoleSecurityUtils.getCurrentUserRoles();
-    assertEquals(1, currentUserRoles.size());
-    assertEquals("ADMINISTRATOR", currentUserRoles.iterator().next().getName());
+    assertThat(currentUserRoles.size(), is(1));
+    assertThat(currentUserRoles.iterator().next().getName(),
+        is("ADMINISTRATOR"));
   }
 
-  public void test_Exception_Wrong_userDetails() throws Exception {
+  @Test public void test_Exception_Wrong_userDetails() throws Exception {
     UserDetails userDetails = EasyMock.createMock(UserDetails.class);
     EasyMock.replay(userDetails);
     UsernamePasswordAuthenticationToken authentication;
@@ -66,17 +70,6 @@ public class RoleSecurityUtilsTest extends
       fail("The principal object type must be RoleUserDetail");
     } catch (Exception e) {
     }
-  }
-
-  // Spring Accessors
-
-  public RoleRepository getRoleRepository() {
-    return roleRepository;
-  }
-
-  public void setRoleRepository(final RoleRepository theRoleRepository) {
-    Validate.notNull(theRoleRepository, "The roleRepository cannot be null.");
-    roleRepository = theRoleRepository;
   }
 }
 

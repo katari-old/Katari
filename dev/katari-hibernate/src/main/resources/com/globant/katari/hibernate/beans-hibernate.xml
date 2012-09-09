@@ -21,10 +21,49 @@
     class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
     lazy-init="true">
     <property name="dataSource" ref="katari.lazyDataSource" />
-    <property name="hibernateProperties" ref='katari.hibernateProperties'/>
+    <property name="hibernateProperties"
+      ref='katari.configuredHibernateProperties'/>
     <property name="annotatedClasses" ref='katari.persistentClasses' />
+    <property name="cacheRegionFactory" ref='katari.regionFactory' />
   </bean>
 
+  <!-- Hibernate properties. They are composed by initalHibernateProperties and
+       hibernateProperties. The initalHibernateProperties disables the second
+       level cache. hibernateProperties is intended to be overriden by the
+       containing webapp.
+       
+       We went through all this because hibernate enables the second level
+       cache even when there is no cache configured. This makes the application
+       fail if at least one class is annotated with the cache configuration. We
+       want the containing webapp to decide to use or not any cache. -->
+  <bean id='katari.configuredHibernateProperties'
+    class='com.globant.katari.core.spring.OverridingMapFactoryBean'>
+    <property name="targetMapClass" value="java.util.LinkedHashMap" />
+    <property name='sourceMap' ref='katari.initalHibernateProperties'/>
+    <property name="overridingMap" ref='katari.hibernateProperties'/>
+  </bean>
+
+  <bean id="katari.initalHibernateProperties"
+    class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="properties">
+      <props>
+        <prop key="hibernate.cache.use_second_level_cache">false</prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean id="katari.hibernateProperties"
+    class="org.springframework.beans.factory.config.PropertiesFactoryBean"/>
+
+  <!-- Bean to be overriden to configure the ehcache region factory. This may
+       be used by a module that implements caching, like katari-ehcache. -->
+  <bean id='katari.regionFactory'
+    class="com.globant.katari.core.spring.NullFactoryBean" />
+
+  <!-- Modules will add their cache configurations to this list. -->
+  <util:list id='katari.hibernateCacheRegions'/>
+
+  <!-- Modules will add their persistent classes to this list. -->
   <util:list id='katari.persistentClasses'/>
 
   <!-- Transaction manager for a single Hibernate SessionFactory. -->

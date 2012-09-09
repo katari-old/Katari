@@ -13,6 +13,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import org.apache.commons.lang.Validate;
 
 import org.compass.annotations.SearchableId;
@@ -36,6 +39,7 @@ import org.compass.annotations.SearchableProperty;
 @DiscriminatorColumn(name = "user_type",
     discriminatorType = DiscriminatorType.STRING)
 @Table(name = "users")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public abstract class CoreUser {
 
   /** The length in characters of the user name.

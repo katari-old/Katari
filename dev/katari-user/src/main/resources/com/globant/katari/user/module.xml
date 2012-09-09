@@ -90,11 +90,9 @@
   <!-- We expose the user repository as a public bean. It is used for the
     security modules. -->
   <bean id='user.userRepository'
-    class='com.globant.katari.user.domain.UserRepository'>
-    <property name='sessionFactory'>
-      <ref bean='katari.sessionFactory' />
-    </property>
-  </bean>
+    class='com.globant.katari.user.domain.UserRepository'
+    p:sessionFactory-ref='katari.sessionFactory'
+    />
 
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.persistentClasses'/>
@@ -103,6 +101,25 @@
         <value>com.globant.katari.user.domain.User</value>
       </list>
     </constructor-arg>
+  </bean>
+
+  <!-- The cache configurations for the entities in the user module (just
+       User for now). -->
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.hibernateCacheRegions'/>
+    <constructor-arg>
+      <list>
+        <ref bean='user.userCache'/>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <!-- The cache configurations for User. This can be overriden to fine-tune
+       the User cache. -->
+  <bean id='user.userCache' class='net.sf.ehcache.config.CacheConfiguration'>
+    <property name="name" value="com.globant.katari.user.domain.User" />
+    <property name="maxElementsInMemory" value="1000" />
+    <property name="eternal" value="false" />
   </bean>
 
   <!-- Defines the searchable entities and their corresponding handlers for the

@@ -99,6 +99,10 @@
   <!-- Provides registration. -->
   <katari:import module="com.globant.katari.registration" />
 
+  <!-- Provides ehcache, and integrates it with hibernate. -->
+  <katari:import module="com.globant.katari.ehcache" />
+  <katari:import module="com.globant.katari.ehcache.hibernate" />
+
   <!-- REMOVE THIS IN PRODUCTION. -->
 
   <bean name='sampleScheduledCommand1'
@@ -155,10 +159,16 @@
         never return the connections, thus emptying the connection pool.
 
         To avoid this, we set it to 'after_transaction', but there may be
-	unexpected side effect we don't know of yet. For start,
-	after_transaction does not propagate the read-only status of the
+        unexpected side effect we don't know of yet. For start,
+        after_transaction does not propagate the read-only status of the
         transaction to the database connection. -->
         <prop key="hibernate.connection.release_mode">after_transaction</prop>
+
+        <!-- Configure hibernate to use the second level cache. -->
+        <prop key="hibernate.cache.use_second_level_cache">true</prop>
+
+        <!-- Also use the query cache. -->
+        <prop key="hibernate.cache.use_query_cache">true</prop>
       </props>
     </property>
   </bean>

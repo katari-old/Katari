@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xmlns:p="http://www.springframework.org/schema/p"
+      xmlns:util="http://www.springframework.org/schema/util"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <bean id="ehcache.module"
+      class="com.globant.katari.core.web.ConfigurableModule">
+
+    <property name="entryPoints">
+      <!--
+        The servlet mappings. It maps the spring DispatcherServlet to *.do.
+      -->
+      <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+          <map>
+            <!-- The spring-mvc controller servlet -->
+            <entry key=".*\.do">
+              <bean class="com.globant.katari.core.web.ServletAndParameters">
+                <constructor-arg index="0">
+                  <bean class="com.globant.katari.core.web.DispatcherServlet" />
+                </constructor-arg>
+                <constructor-arg index="1">
+                  <map>
+                    <entry key="contextConfigLocation">
+                      <value>
+                        classpath:/com/globant/katari/ehcache/view/spring-servlet.xml
+                      </value>
+                    </entry>
+                  </map>
+                </constructor-arg>
+              </bean>
+            </entry>
+          </map>
+        </property>
+      </bean>
+    </property>
+
+    <property name='menuBar'>
+      <!-- The menu bar. -->
+      <katari:menuBar>
+        <katari:menuNode name='Administration'>
+          <katari:menuItem name='Cache' link='viewCache.do' />
+        </katari:menuNode>
+      </katari:menuBar>
+    </property>
+
+    <property name="urlToRoleMapper">
+      <bean class="com.globant.katari.core.security.StaticUrlToRoleMapper">
+        <constructor-arg index="0">
+          <map>
+            <entry key="/**/*" value="ROLE_ADMINISTRATOR" />
+          </map>
+        </constructor-arg>
+      </bean>
+    </property>
+
+  </bean>
+
+  <bean id='ehcache.cacheManager'
+    class='com.globant.katari.ehcache.CacheManagerFactory'
+    factory-method='create'>
+    <constructor-arg index='0' ref='ehcache.cacheManagerInitialConfiguration' />
+    <constructor-arg index='1' ref='ehcache.caches' />
+    <constructor-arg index='2' ref='ehcache.diskStorePath' />
+    <constructor-arg index='3' ref='ehcache.statistics' />
+  </bean>
+
+  <!-- The default configuration for caches. Intended to be overriden. -->
+  <bean id='ehcache.cacheManagerInitialConfiguration'
+    class='net.sf.ehcache.config.CacheConfiguration'
+    p:maxEntriesLocalHeap="1000"
+    p:eternal="false"
+    p:timeToLiveSeconds="120"
+    p:overflowToDisk="true" />
+
+  <!-- The default location of the overflow to disk elements. Can be
+       overriden if desired. -->
+  <bean id='ehcache.diskStorePath'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='../target/ehcache' />
+
+  <!-- The list of ehcache caches. Modules will add caches to this list.
+        Each entry must be a net.sf.ehcache.config.CacheConfiguration.
+       -->
+  <util:list id='ehcache.caches'/>
+
+  <!-- Set to true to record hit/miss/evict statistics. -->
+  <bean id='ehcache.statistics'
+    class="com.globant.katari.core.spring.StringHolder" p:value='false'/>
+
+<!-- vim: set ts=2 sw=2 et ai: -->
+</beans>
+

@@ -1,0 +1,34 @@
+~~~ vim: set sw=1 et ts=1 ai:
+
+EhCache Module
+
+* What?
+
+ The idea of this module is provide complete configuration within Spring's
+ context.
+ 
+* There are two modules
+
+** com.globant.katari.ehcache
+
+------
+This module configures EhCache, here you can override two main properties:
+
+ehcache.cacheManagerInitialConfiguration : define the default cache
+configuration.
+
+ehcache.diskStorePath : this is the path where EhCache will overflow to disk.
+------
+
+** com.globant.katari.ehcache.hibernate
+
+------
+This module configures EhCache running within hibernate. If you want to add
+more regions, Katari provides a list katari.hibernateCacheRegions.
+
+Once this module is active, this one will configure Hibernate with the
+CacheManger configured in com.globant.katari.ehcache. However, you should
+configure the cache level within the hibernate configuration
+for example: "hibernate.cache.use_query_cache"
+------
+

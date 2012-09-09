@@ -11,11 +11,12 @@ import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserFilter;
 import com.globant.katari.user.domain.UserRepository;
 
+import org.junit.Before;
+import org.junit.Test;
+
 /** Test the user module welcome page.
- *
- * @author nicolas.frontini
  */
-public class UsersTest extends TestCase {
+public class UsersTest {
 
   /** The path relative to BASE_URL of the login page plus username and
    * password.
@@ -32,25 +33,10 @@ public class UsersTest extends TestCase {
    *
    * @throws Exception when setup fails.
    */
+  @Before
   protected final void setUp() throws Exception {
     repository = (UserRepository) SpringTestUtils.get().getBeanFactory()
     		.getBean("user.userRepository");
-    addUsers();
-  }
-
-  /** Adds a pair of users to be used in the tests.
-   */
-  private void addUsers() {
-    // Removes the unneeded users.
-    for (Object element : repository.getUsers(new UserFilter())) {
-      User user = (User) element;
-      if (!user.getName().equals("admin")) {
-        repository.remove(user);
-      }
-    }
-    User user = new User("User-2", "email-2");
-    user.changePassword("Pass-2");
-    repository.save(user);
   }
 
   /** Tests that the app does returns a list of users.
@@ -59,11 +45,11 @@ public class UsersTest extends TestCase {
    *
    * @throws Exception when the test fails.
    */
+  @Test
   public final void testListOfUsers() throws Exception {
     WebClient webClient = SimplePageVerifier.login(USERS_PATH);
     String [] valid = new String[] {
       "(?s).*admin.*",
-      "(?s).*User-2.*",
       "(?s).*/.*/module/user/userView.do.*"
     };
     String [] invalid = new String[] {".*Exception.*", ".*Not Found.*"};

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:katari="http://www.globant.com/schema/katari"
+      xmlns:p="http://www.springframework.org/schema/p"
+      xmlns:util="http://www.springframework.org/schema/util"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+      http://www.globant.com/schema/katari
+      http://www.globant.com/schema/katari/katari.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <bean id="ehcache-hibernate.module"
+    class="com.globant.katari.core.web.ConfigurableModule" />
+
+  <!-- Overrides katari regionFactory to use ehcache. -->
+  <bean id='katari.regionFactory'
+    class='com.globant.katari.ehcache.hibernate.EhCacheRegionFactory'>
+    <constructor-arg index='0' ref='ehcache.cacheManager' />
+    <constructor-arg index='1' ref='katari.hibernateCacheRegions' />
+    <constructor-arg index='2' ref='ehcache.statistics' />
+  </bean>
+
+  <!-- Adds the default cache configurations for queries and timestamps.
+       -->
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.hibernateCacheRegions'/>
+    <constructor-arg>
+      <list>
+        <ref bean='ehcache-hibernate.standardQueryCache'/>
+        <ref bean='ehcache-hibernate.updateTimestampsCache'/>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <!-- The hibernate standardQueryCache. This can be overriden by the webapp.
+       -->
+  <bean id='ehcache-hibernate.standardQueryCache'
+    class='net.sf.ehcache.config.CacheConfiguration'>
+    <property name="name"
+      value="org.hibernate.cache.StandardQueryCache"/>
+    <property name="maxElementsInMemory" value="10000" />
+    <property name="eternal" value="false" />
+    <property name="timeToLiveSeconds" value="1000" />
+    <property name="overflowToDisk" value="false" />
+  </bean>
+
+  <!-- The hibernate updateTimestampsCache. This can be overriden by the
+       webapp.
+       -->
+  <bean id='ehcache-hibernate.updateTimestampsCache'
+    class='net.sf.ehcache.config.CacheConfiguration'>
+    <property name="name"
+      value="org.hibernate.cache.UpdateTimestampsCache" />
+    <property name="maxEntriesLocalHeap" value="5000" />
+    <property name="eternal" value="true" />
+    <property name="overflowToDisk" value="true" />
+  </bean>
+
+  <!-- vim: set ts=2 sw=2 et ai: -->
+</beans>
+

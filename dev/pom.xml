@@ -75,6 +75,7 @@
     <module>katari-quartz</module>
     <module>katari-email</module>
     <module>katari-registration</module>
+    <module>katari-ehcache</module>
     <!-- Monitoring with JavaMelody -->
     <module>katari-monitoring</module>
     <!-- Integration tests. It includes tests for katari-archetype and
@@ -263,6 +264,16 @@
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-annotations</artifactId>
         <version>${dependency.hibernate-annotations.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>net.sf.ehcache</groupId>
+        <artifactId>ehcache-core</artifactId>
+        <!-- 2.6.0 fails with:
+             cannot find symbol symbol  : method getDiskStorePath(),
+             in CacheManagerFactoryTest.java.
+             -->
+        <version>2.5.4</version>
       </dependency>
 
       <!-- This comment was related to jpa 1, looks like it still applies for 2:
@@ -629,6 +640,12 @@
       <dependency>
         <groupId>com.globant.katari</groupId>
         <artifactId>katari-registration</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.globant.katari</groupId>
+        <artifactId>katari-ehcache</artifactId>
         <version>${project.version}</version>
       </dependency>
 

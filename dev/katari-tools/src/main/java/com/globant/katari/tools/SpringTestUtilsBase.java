@@ -117,8 +117,8 @@ public abstract class SpringTestUtilsBase {
       XmlWebApplicationContext appContext = new XmlWebApplicationContext();
       appContext.setConfigLocations(globalConfigurationFiles);
       if (new File("./src/main/webapp").exists()) {
-	// We assume that the module references a web application if there is a
-	// webapp directory.
+        // We assume that the module references a web application if there is a
+        // webapp directory.
         ServletContext sc = new MockServletContext("./src/main/webapp",
             new FileSystemResourceLoader());
         appContext.setServletContext(sc);

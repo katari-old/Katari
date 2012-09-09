@@ -10,8 +10,11 @@
       http://www.springframework.org/schema/util
       http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
+  <import resource="classpath:/com/globant/katari/core/beans-core.xml"/>
+  <import resource="classpath:/com/globant/katari/hibernate/beans-hibernate.xml"/>
+
   <!-- The core user module. -->
-  <import resource="classpath:/com/globant/katari/hibernate/coreuser/module.xml"/>
+  <katari:import module="com.globant.katari.hibernate.coreuser"/>
 
   <!-- Implementation of BeanPostProcessor to initialize modules. It looks for
   bean that implements the Module interfase. -->
@@ -73,19 +76,15 @@
     <property name="password" value=""/>
   </bean>
 
-  <!-- Hibernate SessionFactory initialized with annotated classes. -->
-  <bean id="katari.sessionFactory"
-    class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
-    lazy-init="true">
-    <property name="dataSource" ref="dataSource" />
-    <property name="hibernateProperties">
+  <alias name="dataSource" alias="katari.dataSource"/>
+
+  <bean id="katari.hibernateProperties"
+    class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="properties">
       <props>
         <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
         <prop key="hibernate.hbm2ddl.auto">create</prop>
       </props>
-    </property>
-    <property name="annotatedClasses">
-      <ref bean='katari.persistentClasses' />
     </property>
   </bean>
 
@@ -97,7 +96,7 @@
     class="org.springframework.orm.hibernate3.HibernateTransactionManager"
     lazy-init="true">
     <property name="sessionFactory">
-      <ref local="katari.sessionFactory" />
+      <ref bean="katari.sessionFactory" />
     </property>
   </bean>
 
