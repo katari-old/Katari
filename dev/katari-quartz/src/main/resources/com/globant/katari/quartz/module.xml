@@ -14,6 +14,30 @@
   <bean id='quartz.module'
       class='com.globant.katari.core.web.ConfigurableModule'>
 
+    <property name='filters'>
+      <bean class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+          <list>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*/module/quartz/.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean class
+                      ="com.globant.katari.core.web.ClusterNodeProxyFilter">
+                      <constructor-arg ref='katari.clusterNodes' />
+                    </bean>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+              <!-- We want this filter to execute before the monitor. -->
+              <constructor-arg><value>9</value></constructor-arg>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+
     <property name='entryPoints'>
       <bean
         class="org.springframework.beans.factory.config.MapFactoryBean">
@@ -47,7 +71,7 @@
     <property name="menuBar">
       <katari:menuBar>
         <katari:menuNode name='Administration'>
-          <katari:menuItem name='Jobs' link='taskDashboard.do' />
+          <katari:menuItem name='Jobs' link='taskDashboard.do?katari-node=' />
         </katari:menuNode>
       </katari:menuBar>
     </property>
