@@ -107,8 +107,14 @@
   <!-- The default location of the overflow to disk elements. Can be
        overriden if desired. -->
   <bean id='ehcache.diskStorePath'
-    class='com.globant.katari.core.spring.StringHolder'
-    p:value='../target/ehcache' />
+    class='com.globant.katari.core.spring.JoinedStrings'>
+    <property name="values">
+      <list>
+        <ref bean='katari.dataLocation'/>
+        <value>/ehcache</value>
+      </list>
+    </property>
+  </bean>
 
   <!-- The list of ehcache caches. Modules will add caches to this list.
         Each entry must be a net.sf.ehcache.config.CacheConfiguration.
