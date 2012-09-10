@@ -14,6 +14,29 @@
   <bean id="ehcache.module"
       class="com.globant.katari.core.web.ConfigurableModule">
 
+    <property name='filters'>
+      <bean class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+          <list>
+            <bean class="com.globant.katari.core.web.FilterMapping">
+              <constructor-arg><value>.*/module/ehcache/.*</value></constructor-arg>
+              <constructor-arg>
+                <bean class="com.globant.katari.core.web.FilterAndParameters">
+                  <constructor-arg>
+                    <bean class
+                      ="com.globant.katari.core.web.ClusterNodeProxyFilter">
+                      <constructor-arg ref='katari.clusterNodes' />
+                    </bean>
+                  </constructor-arg>
+                </bean>
+              </constructor-arg>
+              <!-- We want this filter to execute before the monitor. -->
+              <constructor-arg><value>9</value></constructor-arg>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
     <property name="entryPoints">
       <!--
         The servlet mappings. It maps the spring DispatcherServlet to *.do.
@@ -47,7 +70,7 @@
       <!-- The menu bar. -->
       <katari:menuBar>
         <katari:menuNode name='Administration'>
-          <katari:menuItem name='Cache' link='viewCache.do' />
+          <katari:menuItem name='Cache' link='viewCache.do?katari-node=' />
         </katari:menuNode>
       </katari:menuBar>
     </property>

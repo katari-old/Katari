@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /** Filter to proxy connections to specific nodes in a cluster.
  *
@@ -314,10 +315,11 @@ public class ClusterNodeProxyFilter implements Filter {
     response.setContentType("text/html");
     PrintWriter writer = response.getWriter();
     writer.append("<h3>List of Cluster Nodes</h3>");
-    for (String node : nodeToUrl.keySet()) {
+    for (String nodeName : nodeToUrl.keySet()) {
       writer.append("<br><a href = '");
-      writer.append(calculateDestination(request, node, false).toString());
-      writer.append("'>" + node + "</a>");
+      URI nodeUrl = calculateDestination(request, nodeName, false);
+      writer.append(StringEscapeUtils.escapeHtml(nodeUrl.toString()));
+      writer.append("'>" + nodeName + "</a>");
     }
   }
 

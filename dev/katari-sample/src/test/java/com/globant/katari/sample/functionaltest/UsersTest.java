@@ -34,7 +34,7 @@ public class UsersTest {
    * @throws Exception when setup fails.
    */
   @Before
-  protected final void setUp() throws Exception {
+  public void setUp() throws Exception {
     repository = (UserRepository) SpringTestUtils.get().getBeanFactory()
     		.getBean("user.userRepository");
   }
@@ -46,7 +46,7 @@ public class UsersTest {
    * @throws Exception when the test fails.
    */
   @Test
-  public final void testListOfUsers() throws Exception {
+  public void testListOfUsers() throws Exception {
     WebClient webClient = SimplePageVerifier.login(USERS_PATH);
     String [] valid = new String[] {
       "(?s).*admin.*",
