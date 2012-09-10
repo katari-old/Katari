@@ -411,6 +411,9 @@
   <bean name='email.smtpPort'
     class='com.globant.katari.core.spring.StringHolder' p:value="3525"/>
 
+  <bean id='ehcache.statistics'
+    class="com.globant.katari.core.spring.StringHolder" p:value='true'/>
+
 </beans>
 
 <!-- vim: set ts=2 et sw=2 ai: -->

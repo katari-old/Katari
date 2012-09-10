@@ -121,7 +121,8 @@
        -->
   <util:list id='ehcache.caches'/>
 
-  <!-- Set to true to record hit/miss/evict statistics. -->
+  <!-- Set to true to record hit/miss/evict statistics, disabled by default.
+       -->
   <bean id='ehcache.statistics'
     class="com.globant.katari.core.spring.StringHolder" p:value='false'/>
 
