@@ -3,6 +3,7 @@
 package com.globant.katari.hibernate.coreuser.domain;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
@@ -16,7 +17,7 @@ public class CoreUserRepositoryTest {
   /** Creates a sample user named test.
    */
   @Before
-  protected void setUp() throws Exception {
+  public void setUp() throws Exception {
     userRepository = (CoreUserRepository) SpringTestUtils.get().getBean(
         "coreuser.userRepository");
     userRepository.getHibernateTemplate().bulkUpdate("delete from CoreUser");
@@ -24,12 +25,13 @@ public class CoreUserRepositoryTest {
     userRepository.getHibernateTemplate().save(user);
   }
 
+  @Test
   public void testFindUserByName() throws Exception {
     CoreUser user = userRepository.findUserByName("test");
-    assertThat(user, is(nullValue()));
     assertThat(user.getName(), is("test"));
   }
 
+  @Test
   public void testFindUser() throws Exception {
     CoreUser user = userRepository.findUserByName("test");
     long id = user.getId();
