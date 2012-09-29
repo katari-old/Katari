@@ -46,7 +46,7 @@ public class UserFilterCommandTest {
   /* Adds a pair of users to be used in the tests.
    */
   private void addUsers() {
-
+    SpringTestUtils.beginTransaction();
     //  Removes the unneeded users.
     while (userRepository.getUsers(new UserFilter()).size() != 0) {
       for (User user : userRepository.getUsers(new UserFilter())) {
@@ -74,6 +74,7 @@ public class UserFilterCommandTest {
     user = new User("ramon", "ramon@none");
     user.changePassword("pass");
     userRepository.save(user);
+    SpringTestUtils.endTransaction();
   }
 
   /* Test Execute.
