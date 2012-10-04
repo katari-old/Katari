@@ -21,12 +21,14 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.BeanReference;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config
+  .ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.TypedStringValue;
 import org.springframework.beans.factory.config
   .ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.support.ChildBeanDefinition;
+import org.springframework.validation.DataBinder;
 
 /**
  * <p>
@@ -84,8 +86,7 @@ public class ConstructorArgumentsBeanNameAutoProxyCreator extends
    *
    * @see #buildAdvisors
    */
-  @SuppressWarnings("unchecked")
-  protected Object createProxy(final Class beanClass, final String beanName,
+  protected Object createProxy(final Class<?> beanClass, final String beanName,
       final Object[] specificInterceptors, final TargetSource targetSource) {
     this.currentBeanName.set(beanName);
     return super.createProxy(beanClass, beanName, specificInterceptors,
@@ -150,27 +151,7 @@ public class ConstructorArgumentsBeanNameAutoProxyCreator extends
      */
     private AopProxyFactory delegate = new DefaultAopProxyFactory();
 
-    /**
-     * Creates a CustomAopProxyFactory with the given bean factory.
-     *
-     * @param theBeanFactory
-     *          The bean factory to use. Cannot be <code>null</code>
-     * @param theBeanName
-     *          The name of the bean that's going to be proxied. Cannot be
-     *          <code>null</code>
-     * @param delegateFactory
-     *          The aop factory to delegate to. Cannot be <code>null</code>
-     */
-    ConstructorArgsAopProxyFactory(
-        final ConfigurableListableBeanFactory theBeanFactory,
-        final String theBeanName, final AopProxyFactory delegateFactory) {
-      this(theBeanFactory, theBeanName);
-      Validate.notNull(delegateFactory);
-      this.delegate = delegateFactory;
-    }
-
-    /**
-     * Creates a CustomAopProxyFactory with the given bean factory.
+    /** Creates a CustomAopProxyFactory with the given bean factory.
      *
      * @param theBeanFactory
      *          The bean factory to use. Cannot be <code>null</code>
@@ -324,8 +305,10 @@ public class ConstructorArgumentsBeanNameAutoProxyCreator extends
       List<Object> argValues = new ArrayList<Object>(parameterTypes.length);
       log.debug("Assembling constructor arguments");
       for (int i = 0; i < parameterTypes.length; i++) {
-        ValueHolder argValue = constructorArgs.getIndexedArgumentValue(i,
-            parameterTypes[i]);
+        Class<?> parameterType = parameterTypes[i];
+
+        ValueHolder argValue;
+        argValue  = constructorArgs.getIndexedArgumentValue(i, parameterType);
         if (argValue == null) {
           throw new RuntimeException("Could not find value for argument " + i);
         }
@@ -333,12 +316,18 @@ public class ConstructorArgumentsBeanNameAutoProxyCreator extends
           log.debug("Obtained value holder for argument: " + argValue);
         }
         Object actualValue = getActualValue(argValue);
-        if (actualValue != null
-            && !parameterTypes[i].isInstance(actualValue)) {
-          log.warn("The actual value of the parameter does not match "
-              + "the expected argument type. Got " + actualValue.getClass()
-              + " but expected " + parameterTypes[i]);
-          return null;
+        if (actualValue != null && !parameterType.isInstance(actualValue)) {
+          // The argument types do not match, try to convert them.
+          DataBinder converter = new DataBinder(null);
+          try {
+            actualValue = converter.convertIfNecessary(
+                actualValue, parameterType);
+          } catch (Exception e) {
+            log.warn("The actual value of the parameter does not match "
+                + "the expected argument type. Got " + actualValue.getClass()
+                + " but expected " + parameterType);
+            return null;
+          }
         }
         argValues.add(actualValue);
       }
@@ -407,5 +396,5 @@ public class ConstructorArgumentsBeanNameAutoProxyCreator extends
       return args;
     }
   }
-
 }
+
