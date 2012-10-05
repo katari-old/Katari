@@ -17,7 +17,9 @@
     A template application that serves as a base for all java based Globant
     projects.
   </description>
-  <url>${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
+  <url>
+    ${repositoryUrl}/site/${project.groupId}/katari/${project.version}
+  </url>
 
   <modules>
     <module>dev</module>
@@ -86,7 +88,7 @@
     <extensions>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav-jackrabbit</artifactId>
+        <artifactId>wagon-ssh</artifactId>
         <version>1.0</version>
       </extension>
     </extensions>
@@ -113,9 +115,14 @@
 
   <repositories>
     <repository>
+      <id>katari-release</id>
+      <name>katari-release</name>
+      <url>${repositoryUrl}/release</url>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+    <repository>
       <id>globant-public-releases</id>
       <name>globant-public-releases</name>
-      <!-- If I use ${repositoryRoot}, maven does not find the parent pom. -->
       <url>https://projects.globant.com/nexus/content/repositories/globant</url>
       <snapshots><enabled>false</enabled></snapshots>
     </repository>
@@ -132,7 +139,13 @@
     <pluginRepository>
       <id>globant-public-releases</id>
       <name>globant-public-releases</name>
-      <url>${repositoryRoot}/globant</url>
+      <url>https://projects.globant.com/nexus/content/repositories/globant</url>
+      <snapshots><enabled>false</enabled></snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>katari-release</id>
+      <name>katari-release</name>
+      <url>${repositoryUrl}/release</url>
     </pluginRepository>
   </pluginRepositories>
 
@@ -141,16 +154,16 @@
        overriden in dev to skip this pom site. -->
   <distributionManagement>
     <repository>
-      <id>globant-public-releases</id>
-      <url>dav:${repositoryRoot}/globant</url>
+      <id>katari-release</id>
+      <url>${repositoryRoot}/release</url>
     </repository>
     <snapshotRepository>
-      <id>globant-public-snapshots</id>
-      <url>dav:${repositoryRoot}/globant-snapshots</url>
+      <id>katari-snapshot</id>
+      <url>${repositoryRoot}/snapshot</url>
     </snapshotRepository>
     <site>
-      <id>globant-public-releases</id>
-      <url>dav:${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
+      <id>katari-release</id>
+      <url>${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
     </site>
   </distributionManagement>
 
@@ -190,8 +203,11 @@
       2.2-beta-4
     </dependency.assembly-plugin.version>
     <repositoryRoot>
-      https://projects.globant.com/nexus/content/repositories
+      scp://maven.55social.com/opt/55social/maven/katari
     </repositoryRoot>
+    <repositoryUrl>
+      https://maven.55social.com/katari
+    </repositoryUrl>
   </properties>
 
 </project>
