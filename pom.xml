@@ -17,7 +17,9 @@
     A template application that serves as a base for all java based Globant
     projects.
   </description>
-  <url>${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
+  <url>
+    https://maven.55social.com/katari/site/${project.groupId}/katari/${project.version}
+  </url>
 
   <modules>
     <module>dev</module>
@@ -86,7 +88,7 @@
     <extensions>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav-jackrabbit</artifactId>
+        <artifactId>wagon-ssh</artifactId>
         <version>1.0</version>
       </extension>
     </extensions>
@@ -141,16 +143,16 @@
        overriden in dev to skip this pom site. -->
   <distributionManagement>
     <repository>
-      <id>globant-public-releases</id>
-      <url>dav:${repositoryRoot}/globant</url>
+      <id>katari-release</id>
+      <url>${repositoryRoot}/release</url>
     </repository>
     <snapshotRepository>
-      <id>globant-public-snapshots</id>
-      <url>dav:${repositoryRoot}/globant-snapshots</url>
+      <id>katari-snapshot</id>
+      <url>${repositoryRoot}/snapshot</url>
     </snapshotRepository>
     <site>
-      <id>globant-public-releases</id>
-      <url>dav:${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
+      <id>katari-release</id>
+      <url>${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
     </site>
   </distributionManagement>
 
@@ -190,7 +192,7 @@
       2.2-beta-4
     </dependency.assembly-plugin.version>
     <repositoryRoot>
-      https://projects.globant.com/nexus/content/repositories
+      scp://maven.55social.com/opt/55social/maven/katari
     </repositoryRoot>
   </properties>
 
