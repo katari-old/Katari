@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.globant.katari</groupId>
     <artifactId>katari</artifactId>
-    <version>0.47-SNAPSHOT</version>
+    <version>0.48-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
   <name>Katari - dev</name>
   <url>
-    https://projects.globant.com/nexus/content/repositories/site/${project.groupId}/katari/${project.version}
+    https://maven.55social.com/katari/site/${project.groupId}/katari/${project.version}
   </url>
 
   <licenses>
@@ -1129,17 +1129,9 @@ try {
        repositoryRoot is defined in globant parent pom. We override the parent
        distributionManagement section to skip the parent pom site. -->
   <distributionManagement>
-    <repository>
-      <id>globant-public-releases</id>
-      <url>dav:${repositoryRoot}/globant</url>
-    </repository>
-    <snapshotRepository>
-      <id>globant-public-snapshots</id>
-      <url>dav:${repositoryRoot}/globant-snapshots</url>
-    </snapshotRepository>
     <site>
-      <id>globant-public-releases</id>
-      <url>dav:${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
+      <id>katari-release</id>
+      <url>${repositoryRoot}/site/${project.groupId}/katari/${project.version}</url>
     </site>
   </distributionManagement>
 
