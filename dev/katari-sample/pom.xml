@@ -390,7 +390,7 @@
         <configuration>
 
           <container>
-            <containerId>tomcat5x</containerId>
+            <containerId>tomcat7x</containerId>
             <zipUrlInstaller>
               <url>${cargo.tomcatLocation}</url>
             </zipUrlInstaller>
@@ -620,7 +620,7 @@
             <version>1.1.2</version>
             <configuration>
               <container>
-                <containerId>tomcat5x</containerId>
+                <containerId>tomcat7x</containerId>
                 <zipUrlInstaller>
                   <url>${cargo.tomcatLocation}</url>
                 </zipUrlInstaller>
@@ -667,7 +667,7 @@
          case that apache cannot be reached normally. This is specifically used
          to build katari inside Globant in hudson. -->
     <cargo.tomcatLocation>
-      http://katari.globant.com/nexus/content/repositories/tools/com/globant/tools/apache-tomcat/5.5.28/apache-tomcat-5.5.28.zip
+      http://apache.xfree.com.ar/tomcat/tomcat-7/v7.0.32/bin/apache-tomcat-7.0.32.zip
     </cargo.tomcatLocation>
 
     <!-- Ports used during testing, intended to be overriden from the command
