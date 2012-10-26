@@ -634,7 +634,16 @@
     <value>IS_AUTHENTICATED_REMEMBERED</value>
   </util:list>
 
+  <util:list id='katari.defaultParameterProcessor'>
+    <bean class='com.globant.katari.core.spring.controller.DefaultRequestParameterProcessor' />
+    <bean class='com.globant.katari.core.spring.controller.OutputStreamParameterProcessor' />
+  </util:list>
+
+  <bean id='katari.deftaultRequestPropertyMapper'
+    class='com.globant.katari.core.spring.controller.ServletRequestPropertyMapper'>
+    <constructor-arg index='0' ref='katari.defaultParameterProcessor' />
+  </bean>
+
 </beans>
 
 <!-- vim: set ts=2 et sw=2 ai: -->
-
