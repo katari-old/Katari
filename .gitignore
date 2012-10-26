@@ -4,6 +4,8 @@ target
 .settings
 .*.swp
 .*.swo
+*.jar
+*.class
+*.DS_Store
 .externalToolBuilders
 maven-eclipse.xml
-
