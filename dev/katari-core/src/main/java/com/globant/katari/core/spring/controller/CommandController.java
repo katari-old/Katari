@@ -52,11 +52,10 @@ public abstract class CommandController extends AbstractCommandController {
    *
    * {@inheritDoc}
    */
-  @SuppressWarnings("unchecked")
   public ModelAndView handle(final HttpServletRequest request,
       final HttpServletResponse response, final Object command,
       final BindException errors) {
-    Object result = ((Command) command).execute();
+    Object result = ((Command<?>) command).execute();
     ModelAndView mav = new ModelAndView(viewName);
     mav.addObject(RESULT_NAME, result);
     mav.addObject(COMMAND_NAME, command);
