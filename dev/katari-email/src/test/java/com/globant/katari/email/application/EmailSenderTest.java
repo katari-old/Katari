@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -17,6 +18,7 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 import org.springframework.beans.DirectFieldAccessor;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import com.globant.katari.tools.DummySmtpServer;
 import com.globant.katari.email.model.EmailModel;
@@ -45,22 +47,24 @@ public class EmailSenderTest {
     smtpServer.stop();
   }
 
-  @Test
-  public void testSend_success() throws Exception {
+  @Test public void testSend_success() throws Exception {
+    LocaleContextHolder.setLocale(Locale.ENGLISH);
     Map<String, Object> values = new HashMap<String, Object>();
     values.put("oneKey", "a value");
     EmailModel model = new EmailModel("emiliano.arango@gmail.com",
-        "waabox@gmail.com", values, "plain text body", "the subject");
+        "waabox@gmail.com", values, "plain text body", "subject");
     emailSender.send(model, TEMPLATE);
 
     assertThat(smtpServer.getReceivedEmailSize(), is(1));
 
     String mailBody = smtpServer.iterator().next().getBody();
+
     String subject = smtpServer.iterator().next().getHeaderValue("Subject");
     assertThat(mailBody, containsString("a value"));
     assertThat(mailBody, containsString("just a test"));
     assertThat(mailBody, containsString("plain text"));
-    assertThat(subject, is("the subject"));
+    assertThat(mailBody, containsString("this is just a test for you :)"));
+    assertThat(subject, is("hello mom"));
   }
 
   @Test
