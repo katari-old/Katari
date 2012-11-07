@@ -6,9 +6,9 @@
       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
       http://www.globant.com/schema/katari
       http://www.globant.com/schema/katari/katari.xsd">
-  
+
   <import  resource="classpath:com/globant/katari/core/beans-core.xml"/>
-  
+
   <!-- The authentication manager. This must be provided by a login module. -->
   <bean id="katari.authenticationManager"
       class="org.acegisecurity.providers.ProviderManager">
@@ -34,8 +34,8 @@
 
   <bean name="/sampleSimpleCommandController.do"
     class="com.globant.katari.core.spring.controller.SimpleCommandController">
-    <constructor-arg index='0' value='justAView' />
-    <constructor-arg index='1'>
+    <property name='viewName' value='justAView' />
+    <property name='propertyEditorBinder'>
       <list>
         <bean class='com.globant.katari.core.spring.controller.PropertyEditorBinder'>
           <property name='targetClass' value='java.util.Date' />
@@ -44,8 +44,8 @@
             value='com.globant.katari.core.spring.controller.DatePropertyEditor' />
         </bean>
       </list>
-    </constructor-arg>
-    <constructor-arg index='2' ref='katari.deftaultRequestPropertyMapper' />
+    </property>
+    <property name='propertyMapper' ref='katari.deftaultRequestPropertyMapper' />
     <lookup-method name='createCommandBean' bean='sampleKatariCommand'/>
   </bean>
 

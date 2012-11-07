@@ -101,8 +101,8 @@ public class SimpleJsonCommandControllerTest {
 
   private static class MockJsonController extends SimpleJsonCommandController {
 
-    public MockJsonController(String command) {
-      super(command);
+    public MockJsonController(String viewName) {
+      setViewName(viewName);
     }
 
     @Override

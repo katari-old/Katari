@@ -26,24 +26,6 @@ import com.globant.katari.core.application.Command;
 public abstract class SimpleJsonCommandController extends
     SimpleCommandController {
 
-  /** Creates a new instance of the JSON command controller.
-   *
-   * @param command the command.
-   */
-  public SimpleJsonCommandController(final String command) {
-    super(command);
-  }
-
-  /** Creates a new instance of the JSON command controller.
-   *
-   * @param command the command.
-   * @param thePropertyEditorFactory the property editor factory.
-   */
-  public SimpleJsonCommandController(final String command,
-      final List<PropertyEditorBinder> thePropertyEditorFactory) {
-    super(command, thePropertyEditorFactory);
-  }
-
   /** {@inheritDoc}.
    *  Writes the JSON object created by the command directly to the Servlet
    * output.

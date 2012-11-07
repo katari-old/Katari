@@ -32,6 +32,9 @@
 
   <!--  The editable-pages module -->
   <katari:import module="com.globant.katari.editablepages"/>
+  
+  <!-- The controller sample module. -->
+  <katari:import module="com.globant.katari.sample.controller"/>
 
   <!-- LOGIN. -->
   <!--
