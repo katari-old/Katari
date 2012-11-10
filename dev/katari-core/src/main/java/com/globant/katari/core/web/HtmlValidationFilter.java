@@ -54,6 +54,10 @@ public class HtmlValidationFilter implements Filter {
    */
   private List<String> ignoredUrlpatterns = Collections.emptyList();
 
+  /** The list of evaluators, by default it is an empty list. */
+  private List<HtmlTidyEvaluator> evaluators =
+      new LinkedList<HtmlTidyEvaluator>();
+
   /** A response wrapper that provides access to the data submitted to the
    * client.
    */
@@ -122,8 +126,7 @@ public class HtmlValidationFilter implements Filter {
     }
   };
 
-  /** Listens to the validation errors.
-   */
+  /** Listens to the validation errors.*/
   private static final class ErrorListener implements TidyMessageListener {
 
     /** The list of errors received from the validator.
@@ -132,9 +135,8 @@ public class HtmlValidationFilter implements Filter {
      */
     private List<TidyMessage> errors = new LinkedList<TidyMessage>();
 
-    /** If true the listener will ignore unknown attribute "validator" message.
-     */
-    private boolean ignoreValidatorAttribute;
+    private List<HtmlTidyEvaluator> evaluators =
+        new LinkedList<HtmlTidyEvaluator>();
 
     /** Builds an ErrorListener.
      *
@@ -142,8 +144,9 @@ public class HtmlValidationFilter implements Filter {
      * unknown attribute "validator" message, useful to validate tapestry
      * pages.
      */
-    private ErrorListener(final boolean mustIgnoreValidatorAttribute) {
-      ignoreValidatorAttribute = mustIgnoreValidatorAttribute;
+    private ErrorListener(final List<HtmlTidyEvaluator> theEvaluators) {
+      evaluators.addAll(theEvaluators);
+      evaluators.add(new HtmlTidyEvaluator("0:#:(?s).*\"validation\"(?s).*"));
     }
 
     /** Called by tidy when a warning or error occurs.
@@ -156,9 +159,14 @@ public class HtmlValidationFilter implements Filter {
      */
     public void messageReceived(final TidyMessage message) {
       Validate.notNull(message, "The message cannot be null.");
-      boolean skipValidatorAttribute = ignoreValidatorAttribute
-        && message.getMessage().matches("(?s).*\"validator\"(?s).*");
-      if (!skipValidatorAttribute) {
+      boolean skip = false;
+      for (HtmlTidyEvaluator evaluator : evaluators) {
+        if (skip == true) {
+          break;
+        }
+        skip = evaluator.skip(message);
+      }
+      if (!skip) {
         errors.add(message);
       }
     }
@@ -257,7 +265,7 @@ public class HtmlValidationFilter implements Filter {
         // Set the error output and ignore it.
         tidy.setErrout(new PrintWriter(new ByteArrayOutputStream()));
 
-        ErrorListener errors = new ErrorListener(false);
+        ErrorListener errors = new ErrorListener(evaluators);
         tidy.setMessageListener(errors);
 
         InputStream inputStream;
@@ -334,5 +342,67 @@ public class HtmlValidationFilter implements Filter {
     Validate.notNull(theIgnoredUrlpatterns, "The pattern list cannot be null.");
     ignoredUrlpatterns = theIgnoredUrlpatterns;
   }
+
+  public void setEvaluators(final List<String> expressions) {
+    for (String expression : expressions) {
+      evaluators.add(new HtmlTidyEvaluator(expression));
+    }
+  }
+
+  /** This evaluator checks within the validation flow, if the given tidy
+   * message should propate an error or not.
+   *
+   * The expression given should be something like this:
+   *
+   * {int: error code}:#:{String: expression]
+   *
+   * for example: 32:#:(?s).*\"letter not allowed here\"(?s).*
+   */
+  private static class HtmlTidyEvaluator {
+
+    /** The user wants to ignore the error code, will provide this value
+     * within the given expression.*/
+    private static final int IGNORE_ERROR_CODE = 0;
+
+    /** The user wants to ignore the error message, will provide this value
+     * within the given expression.*/
+    private static final String IGNORE_ERROR_MESSAGE = "?";
+
+    /** The user error code.*/
+    private final int userErrorCode;
+
+    /** The error message.*/
+    private final String userMessage;
+
+    /** Creastes a new instance of the tidy html evaluator.
+     * @param expression the expression, cannot be null.
+     */
+    public HtmlTidyEvaluator(final String expression) {
+      Validate.notNull(expression, "The expression cannot be null");
+      String[] values = expression.split(":#:");
+      userErrorCode = Integer.parseInt(values[0]);
+      userMessage = values[1];
+    }
+
+    /** Evaluates the given tidy message in order to skip or not the error.
+     * @param message the tidy message, cannot be null.
+     * @return true if should skipt the message.
+     */
+    boolean skip(final TidyMessage message) {
+      String tidyMessage = message.getMessage();
+      int tidyErrorCode = message.getErrorCode();
+      if (userErrorCode == IGNORE_ERROR_CODE) {
+        return tidyMessage.equals(userMessage)
+            || tidyMessage.matches(userMessage);
+      } else if (userMessage.equals(IGNORE_ERROR_MESSAGE)) {
+        return userErrorCode == tidyErrorCode;
+      } else {
+        return (userErrorCode == tidyErrorCode
+            && (tidyMessage.equals(userMessage) ||
+                tidyMessage.matches(userMessage)));
+      }
+    }
+  }
+
 }
 
