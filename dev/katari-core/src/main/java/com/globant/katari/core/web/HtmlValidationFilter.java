@@ -343,7 +343,11 @@ public class HtmlValidationFilter implements Filter {
     ignoredUrlpatterns = theIgnoredUrlpatterns;
   }
 
-  public void setEvaluators(final List<String> expressions) {
+  /** Adds expressions into the validation's skip list.
+   * @param expressions the list of expressions, it cannot be null.
+   */
+  public void setSkipExpressions(final List<String> expressions) {
+    Validate.notNull(expressions, "The list of expressions cannot be null");
     for (String expression : expressions) {
       evaluators.add(new HtmlTidyEvaluator(expression));
     }

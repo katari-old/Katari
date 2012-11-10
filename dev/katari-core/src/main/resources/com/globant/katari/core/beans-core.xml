@@ -155,11 +155,15 @@
   <bean name='htmlValidator'
     class="com.globant.katari.core.web.HtmlValidationFilter"
     p:enabled='false'
-    p:ignoredUrlpatterns-ref='katari.htmlValidator.ignoredUrlpatterns'/>
+    p:ignoredUrlpatterns-ref='katari.htmlValidator.ignoredUrlpatterns'
+    p:skipExpressions-ref='katari.htmlValidator.skiExpressions'/>
 
   <!--The list of url patters to ignore for validation. Each module can add
   patters using the ListFactoryAppender bean post processor. -->
   <util:list id='katari.htmlValidator.ignoredUrlpatterns'/>
+
+  <!--The list of expressions to skip for validation errors.-->
+  <util:list id='katari.htmlValidator.skiExpressions'/>
 
   <bean class='com.globant.katari.core.spring.StringHolder'
     name='debugMode' p:value='false'/>
