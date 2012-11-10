@@ -13,7 +13,13 @@
 
   <bean id='email.module'
     class='com.globant.katari.core.web.ConfigurableModule'>
-    <property name='messageSource' ref='email.messageSource' />
+  </bean>
+
+  <bean id="email.messageSource"
+    class="com.globant.katari.core.spring.KatariMessageSource"
+    p:basename="classpath:/messages">
+    <constructor-arg index='0' value='email'/>
+    <constructor-arg index='1' ref='katari.messageSource'/>
   </bean>
 
   <bean name='email.smtpHostname' 
@@ -44,7 +50,6 @@
     </property>
 
   </bean>
-
 
   <bean name="katari.emailSender"
     class="com.globant.katari.email.application.EmailSender">

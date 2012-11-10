@@ -29,10 +29,13 @@ public class I18nDirective implements TemplateDirectiveModel {
   private final KatariMessageSource messageSource;
 
   /** The main key for the message.*/
-  private static final String KEY = "key";
+  private static final String KEY = "code";
 
   /** The default message if the searched key is not found.*/
-  private static final String DEFAULT = "default";
+  private static final String DEFAULT = "text";
+
+  /** The default message if the searched key is not found.*/
+  private static final String ARGUMENTS = "args";
 
   /** The katari message source.
    * @param katariMessageSource the message source, cannot be null.
@@ -51,16 +54,22 @@ public class I18nDirective implements TemplateDirectiveModel {
     Locale locale = LocaleContextHolder.getLocale();
 
     String key = getStringValue(KEY, params);
+    String defaultMessage = getStringValue(DEFAULT, params);
+    String arguments = getStringValue(ARGUMENTS, params);
+
     Validate.notNull(key, "The key cannot be null");
 
-    String defaultMessage = getStringValue(DEFAULT, params);
+    Object[] theArguments = null;
+    if (arguments != null) {
+      theArguments = arguments.split(",");
+    }
 
     String message = null;
-
     if (defaultMessage == null) {
-      message = messageSource.getMessage(key, null, locale);
+      message = messageSource.getMessage(key, theArguments, locale);
     } else {
-      message = messageSource.getMessage(key, null, defaultMessage, locale);
+      message = messageSource.getMessage(key, theArguments, defaultMessage,
+          locale);
     }
 
     if (message != null) {

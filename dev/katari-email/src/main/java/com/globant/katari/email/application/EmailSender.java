@@ -137,9 +137,8 @@ public class EmailSender {
       final Map<String, Object> model) {
     try {
       StringWriter writer = new StringWriter();
-
       Template template = freemarkerConfiguration.getTemplate(templateName);
-      model.put("i18n", new I18nDirective(messageSource));
+      model.put("message", new I18nDirective(messageSource));
       template.process(model, writer);
       String out = writer.toString();
       IOUtils.closeQuietly(writer);

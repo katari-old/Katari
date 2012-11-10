@@ -67,8 +67,7 @@ public class EmailSenderTest {
     assertThat(subject, is("hello mom"));
   }
 
-  @Test
-  public void testGenerateEmail_fail() throws Exception {
+  @Test public void testGenerateEmail_fail() throws Exception {
     Map<String, Object> values = new HashMap<String, Object>();
     values.put("oneKey", "a value");
     EmailModel model = new EmailModel("emiliano.arango@gmail.com",
