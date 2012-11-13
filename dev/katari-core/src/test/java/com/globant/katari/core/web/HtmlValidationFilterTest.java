@@ -20,7 +20,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -285,7 +284,7 @@ public class HtmlValidationFilterTest {
     HtmlValidationFilter filter = new HtmlValidationFilter();
 
     LinkedList<String> evaluators = new LinkedList<String>();
-    evaluators.add("32:#:'<' + '/' + letter not allowed here");
+    evaluators.add("32#.*letter not allowed here.*");
     filter.setSkipExpressions(evaluators);
 
     filter.setEnabled(true);

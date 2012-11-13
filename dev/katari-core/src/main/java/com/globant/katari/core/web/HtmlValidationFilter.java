@@ -55,8 +55,8 @@ public class HtmlValidationFilter implements Filter {
   private List<String> ignoredUrlpatterns = Collections.emptyList();
 
   /** The list of evaluators, by default it is an empty list. */
-  private List<HtmlTidyEvaluator> evaluators =
-      new LinkedList<HtmlTidyEvaluator>();
+  private List<HtmilTidySkipExpression> evaluators =
+      new LinkedList<HtmilTidySkipExpression>();
 
   /** A response wrapper that provides access to the data submitted to the
    * client.
@@ -135,8 +135,8 @@ public class HtmlValidationFilter implements Filter {
      */
     private List<TidyMessage> errors = new LinkedList<TidyMessage>();
 
-    private List<HtmlTidyEvaluator> evaluators =
-        new LinkedList<HtmlTidyEvaluator>();
+    private List<HtmilTidySkipExpression> evaluators =
+        new LinkedList<HtmilTidySkipExpression>();
 
     /** Builds an ErrorListener.
      *
@@ -144,9 +144,9 @@ public class HtmlValidationFilter implements Filter {
      * unknown attribute "validator" message, useful to validate tapestry
      * pages.
      */
-    private ErrorListener(final List<HtmlTidyEvaluator> theEvaluators) {
+    private ErrorListener(final List<HtmilTidySkipExpression> theEvaluators) {
       evaluators.addAll(theEvaluators);
-      evaluators.add(new HtmlTidyEvaluator("0:#:(?s).*\"validation\"(?s).*"));
+      evaluators.add(new HtmilTidySkipExpression("0#(?s).*\"validation\"(?s).*"));
     }
 
     /** Called by tidy when a warning or error occurs.
@@ -160,7 +160,7 @@ public class HtmlValidationFilter implements Filter {
     public void messageReceived(final TidyMessage message) {
       Validate.notNull(message, "The message cannot be null.");
       boolean skip = false;
-      for (HtmlTidyEvaluator evaluator : evaluators) {
+      for (HtmilTidySkipExpression evaluator : evaluators) {
         if (skip == true) {
           break;
         }
@@ -349,7 +349,7 @@ public class HtmlValidationFilter implements Filter {
   public void setSkipExpressions(final List<String> expressions) {
     Validate.notNull(expressions, "The list of expressions cannot be null");
     for (String expression : expressions) {
-      evaluators.add(new HtmlTidyEvaluator(expression));
+      evaluators.add(new HtmilTidySkipExpression(expression));
     }
   }
 
@@ -358,11 +358,11 @@ public class HtmlValidationFilter implements Filter {
    *
    * The expression given should be something like this:
    *
-   * {int: error code}:#:{String: expression]
+   * {int: error code}#{String: expression]
    *
-   * for example: 32:#:(?s).*\"letter not allowed here\"(?s).*
+   * for example: "32#.*letter not allowed here.*"
    */
-  private static class HtmlTidyEvaluator {
+  private static class HtmilTidySkipExpression {
 
     /** The user wants to ignore the error code, will provide this value
      * within the given expression.*/
@@ -381,9 +381,9 @@ public class HtmlValidationFilter implements Filter {
     /** Creastes a new instance of the tidy html evaluator.
      * @param expression the expression, cannot be null.
      */
-    public HtmlTidyEvaluator(final String expression) {
+    public HtmilTidySkipExpression(final String expression) {
       Validate.notNull(expression, "The expression cannot be null");
-      String[] values = expression.split(":#:");
+      String[] values = expression.split("#", 0);
       userErrorCode = Integer.parseInt(values[0]);
       userMessage = values[1];
     }
@@ -396,17 +396,14 @@ public class HtmlValidationFilter implements Filter {
       String tidyMessage = message.getMessage();
       int tidyErrorCode = message.getErrorCode();
       if (userErrorCode == IGNORE_ERROR_CODE) {
-        return tidyMessage.equals(userMessage)
-            || tidyMessage.matches(userMessage);
+        return tidyMessage.matches(userMessage);
       } else if (userMessage.equals(IGNORE_ERROR_MESSAGE)) {
         return userErrorCode == tidyErrorCode;
       } else {
         return (userErrorCode == tidyErrorCode
-            && (tidyMessage.equals(userMessage) ||
-                tidyMessage.matches(userMessage)));
+            && tidyMessage.matches(userMessage));
       }
     }
   }
 
 }
-
