@@ -23,7 +23,6 @@ public class SpringTestUtils {
     FileSystemXmlApplicationContext appContext;
     appContext = new FileSystemXmlApplicationContext();
     appContext.setConfigLocations(new String[] {
-        "src/main/resources/com/globant/katari/core/beans-core.xml",
         "src/test/resources/com/globant/katari/core/userApplicationContext.xml"
     });
     appContext.refresh();
