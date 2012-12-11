@@ -10,6 +10,8 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextAttributeEvent;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
 
 import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionAttributeListener;
@@ -35,17 +37,9 @@ import org.apache.commons.lang.Validate;
 public final class ModuleListenerProxy implements ServletContextListener,
        ServletContextAttributeListener, HttpSessionActivationListener,
        HttpSessionAttributeListener, HttpSessionListener,
-       HttpSessionBindingListener {
+       HttpSessionBindingListener, ServletRequestListener {
 
-  /** The serialization version number.
-   *
-   * This number must change every time a new serialization incompatible change
-   * is introduced in the class.
-   */
-  private static final long serialVersionUID = 1;
-
-  /** The class logger.
-   */
+  /** The class logger. */
   private static Logger log = LoggerFactory.getLogger(
       ModuleListenerProxy.class);
 
@@ -344,6 +338,36 @@ public final class ModuleListenerProxy implements ServletContextListener,
       }
     }
     log.trace("Leaving valueUnbound");
+  }
+
+  /*
+   * ServletRequestListener Methods.
+   */
+
+  /** The request is about to come into scope of the web application.
+   * @param event the Servlet Request event.
+   */
+  public void requestInitialized(final ServletRequestEvent event) {
+    log.trace("Entering requestInitialized");
+    for (EventListener delegate : delegates) {
+      if (delegate instanceof ServletRequestListener) {
+        ((ServletRequestListener) delegate).requestInitialized(event);
+      }
+    }
+    log.trace("Leaving requestInitialized");
+  }
+
+  /** The request is about to go out of scope of the web application.
+   * @param event the Servlet Request event.
+   */
+  public void requestDestroyed(final ServletRequestEvent event) {
+    log.trace("Entering requestDestroyed");
+    for (EventListener delegate : delegates) {
+      if (delegate instanceof ServletRequestListener) {
+        ((ServletRequestListener) delegate).requestDestroyed(event);
+      }
+    }
+    log.trace("Leaving requestDestroyed");
   }
 }
 

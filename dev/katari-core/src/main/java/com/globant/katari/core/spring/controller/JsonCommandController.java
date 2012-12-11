@@ -39,11 +39,11 @@ public abstract class JsonCommandController extends AbstractCommandController {
     jsonCommand = (Command<JsonRepresentation>) command;
     response.addHeader("Content-type", "application/json; charset=UTF-8");
     JsonRepresentation result = jsonCommand.execute();
-		if (result == null) {
-		  throw new RuntimeException("The result of executing the command"
+    if (result == null) {
+      throw new RuntimeException("The result of executing the command"
           + " cannnot be null. If your command may return nullt, then you"
           + " should use another controller");
-		}
+    }
     result.write(response.getWriter());
 
     return null;
