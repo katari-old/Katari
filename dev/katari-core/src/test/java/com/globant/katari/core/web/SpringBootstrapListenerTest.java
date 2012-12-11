@@ -9,6 +9,8 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextAttributeEvent;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
 
 import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionAttributeListener;
@@ -224,5 +226,29 @@ public class SpringBootstrapListenerTest extends TestCase {
     // Checks if the bootstrap called contextInitialized on the delegate.
     verify(delegate);
   }
+
+  public void testHttpServletEventListener() {
+
+    ServletRequestListener delegate;
+    delegate = createMock(ServletRequestListener.class);
+
+    ServletContext context = createServletContext(delegate);
+    ServletRequestEvent event;
+    event = createMock(ServletRequestEvent.class);
+    replay(event);
+
+    delegate.requestInitialized(event);
+    expectLastCall().times(2);
+    replay(delegate);
+
+    SpringBootstrapListener listener = new SpringBootstrapListener();
+    initBootstrapListener(listener, context);
+
+    ((ServletRequestListener) listener).requestInitialized(event);
+    listener.requestInitialized(event);
+
+    verify(delegate);
+  }
+
 }
 

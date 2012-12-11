@@ -30,6 +30,7 @@ public class EventFilterDispatcherServletTest {
         called = true;
       }
     };
+
     servlet.init(config);
 
     ContextRefreshedEvent event;

@@ -12,7 +12,15 @@
       http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
   <bean id='email.module'
-      class='com.globant.katari.core.web.ConfigurableModule' />
+    class='com.globant.katari.core.web.ConfigurableModule'>
+  </bean>
+
+  <bean id="email.messageSource"
+    class="com.globant.katari.core.spring.KatariMessageSource"
+    p:basename="classpath:/messages">
+    <constructor-arg index='0' value='email'/>
+    <constructor-arg index='1' ref='katari.messageSource'/>
+  </bean>
 
   <bean name='email.smtpHostname' 
     class='com.globant.katari.core.spring.StringHolder' p:value="hostname"/>
@@ -33,7 +41,15 @@
   <bean id="email.freemarkerConfig"
     class='org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean'
     p:preferFileSystemAccess='false'
-    p:templateLoaderPath="classpath:/" />
+    p:templateLoaderPath="classpath:/">
+
+    <property name="templateLoaderPaths">
+      <list>
+        <value>classpath:org/springframework/web/servlet/view/freemarker</value>
+      </list>
+    </property>
+
+  </bean>
 
   <bean name="katari.emailSender"
     class="com.globant.katari.email.application.EmailSender">
@@ -43,6 +59,7 @@
     <constructor-arg index='3' ref='email.smtpPassword' />
     <constructor-arg index='4' ref='email.smtpIsSsl' />
     <constructor-arg index='5' ref='email.freemarkerConfig' />
+    <constructor-arg index='6' ref='email.messageSource' />
   </bean>
 
 </beans>
