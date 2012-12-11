@@ -13,6 +13,8 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextAttributeEvent;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
 
 import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionAttributeListener;
@@ -115,6 +117,15 @@ public class ModuleListenerProxyTest extends TestCase {
     sessionBinding.valueUnbound(sessionBindingEvent);
     replay(sessionBinding);
 
+    ServletRequestEvent requestEvent = createMock(ServletRequestEvent.class);
+    replay(requestEvent);
+
+    ServletRequestListener requestListener;
+    requestListener = createMock(ServletRequestListener.class);
+    requestListener.requestDestroyed(requestEvent);
+    requestListener.requestInitialized(requestEvent);
+    replay(requestListener);
+
     List<EventListener> initial = new LinkedList<EventListener>();
     initial.add(context);
     ModuleListenerProxy proxy = new ModuleListenerProxy(initial);
@@ -124,6 +135,7 @@ public class ModuleListenerProxyTest extends TestCase {
     additional.add(sessionAttribute);
     additional.add(session);
     additional.add(sessionBinding);
+    additional.add(requestListener);
     proxy.addListeners(additional);
 
     proxy.contextInitialized(contextEvent);
@@ -140,6 +152,8 @@ public class ModuleListenerProxyTest extends TestCase {
     proxy.sessionDestroyed(sessionEvent);
     proxy.valueBound(sessionBindingEvent);
     proxy.valueUnbound(sessionBindingEvent);
+    proxy.requestInitialized(requestEvent);
+    proxy.requestDestroyed(requestEvent);
 
     verify(context);
     verify(contextAttribute);
@@ -147,6 +161,7 @@ public class ModuleListenerProxyTest extends TestCase {
     verify(sessionAttribute);
     verify(session);
     verify(sessionBinding);
+    verify(requestListener);
   }
 }
 
