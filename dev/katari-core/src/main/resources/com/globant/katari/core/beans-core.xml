@@ -31,6 +31,11 @@
         <!-- Cleans up bogus references from parent class loaders that stops
         this class loader from being garbarge collected. -->
         <bean class='com.globant.katari.core.spring.ReferenceCleaner'/>
+
+        <!-- Cleans up the slf4j mapped diagnostic context (MDC), otherwise
+             there will be a classloader leak. -->
+        <bean
+          class='com.globant.katari.core.web.MappedDiagnosticContextListener'/>
       </list>
     </property>
 

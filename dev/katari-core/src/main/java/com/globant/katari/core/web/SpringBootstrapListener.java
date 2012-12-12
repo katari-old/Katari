@@ -9,12 +9,14 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextAttributeEvent;
+import javax.servlet.ServletRequestListener;
+import javax.servlet.ServletRequestEvent;
 
 import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionActivationListener;
-import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
 import org.springframework.beans.factory.BeanFactory;
@@ -36,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public final class SpringBootstrapListener implements ServletContextListener,
        ServletContextAttributeListener, HttpSessionActivationListener,
        HttpSessionAttributeListener, HttpSessionListener,
-       HttpSessionBindingListener {
+       HttpSessionBindingListener, ServletRequestListener {
 
   /** The serialization version number.
    *
@@ -294,6 +296,34 @@ public final class SpringBootstrapListener implements ServletContextListener,
       ((HttpSessionBindingListener) delegate).valueUnbound(event);
     }
     log.trace("Leaving valueUnbound");
+  }
+
+  /*
+   * ServletRequestListener methods.
+   */
+
+  /** The request is about to come into scope of the web application.
+   *
+   * @param event the Servlet Request event. It cannot be null.
+   */
+  public void requestInitialized(final ServletRequestEvent event) {
+    log.trace("Entering requestInitialized");
+    if (delegate instanceof ServletRequestListener) {
+      ((ServletRequestListener) delegate).requestInitialized(event);
+    }
+    log.trace("Leaving requestInitialized");
+  }
+
+  /** The request is about to go out of scope of the web application.
+   *
+   * @param event the Servlet Request event. It cannot be null.
+   */
+  public void requestDestroyed(final ServletRequestEvent event) {
+    log.trace("Entering requestDestroyed");
+    if (delegate instanceof ServletRequestListener) {
+      ((ServletRequestListener) delegate).requestDestroyed(event);
+    }
+    log.trace("Leaving requestDestroyed");
   }
 
   /** Returns the spring web application context.

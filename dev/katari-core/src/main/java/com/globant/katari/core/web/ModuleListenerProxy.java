@@ -7,15 +7,17 @@ import java.util.LinkedList;
 import java.util.EventListener;
 
 import javax.servlet.ServletContextListener;
-import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextAttributeEvent;
+import javax.servlet.ServletRequestListener;
+import javax.servlet.ServletRequestEvent;
 
 import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionActivationListener;
-import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
 import org.slf4j.Logger;
@@ -35,14 +37,7 @@ import org.apache.commons.lang.Validate;
 public final class ModuleListenerProxy implements ServletContextListener,
        ServletContextAttributeListener, HttpSessionActivationListener,
        HttpSessionAttributeListener, HttpSessionListener,
-       HttpSessionBindingListener {
-
-  /** The serialization version number.
-   *
-   * This number must change every time a new serialization incompatible change
-   * is introduced in the class.
-   */
-  private static final long serialVersionUID = 1;
+       HttpSessionBindingListener, ServletRequestListener {
 
   /** The class logger.
    */
@@ -344,6 +339,38 @@ public final class ModuleListenerProxy implements ServletContextListener,
       }
     }
     log.trace("Leaving valueUnbound");
+  }
+
+  /*
+   * ServletRequestListener methods.
+   */
+
+  /** The request is about to come into scope of the web application.
+   *
+   * @param event the Servlet Request event. It cannot be null.
+   */
+  public void requestInitialized(final ServletRequestEvent event) {
+    log.trace("Entering requestInitialized");
+    for (EventListener delegate : delegates) {
+      if (delegate instanceof ServletRequestListener) {
+        ((ServletRequestListener) delegate).requestInitialized(event);
+      }
+    }
+    log.trace("Leaving requestInitialized");
+  }
+
+  /** The request is about to go out of scope of the web application.
+   *
+   * @param event the Servlet Request event. It cannot be null.
+   */
+  public void requestDestroyed(final ServletRequestEvent event) {
+    log.trace("Entering requestDestroyed");
+    for (EventListener delegate : delegates) {
+      if (delegate instanceof ServletRequestListener) {
+        ((ServletRequestListener) delegate).requestDestroyed(event);
+      }
+    }
+    log.trace("Leaving requestDestroyed");
   }
 }
 
