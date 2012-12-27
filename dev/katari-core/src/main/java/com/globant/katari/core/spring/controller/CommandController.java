@@ -9,6 +9,7 @@ import org.apache.commons.lang.Validate;
 
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.validation.BindException;
 
 import com.globant.katari.core.application.Command;

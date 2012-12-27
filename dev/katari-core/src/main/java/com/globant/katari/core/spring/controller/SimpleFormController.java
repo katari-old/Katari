@@ -3,6 +3,12 @@ package com.globant.katari.core.spring.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+
+import de.odysseus.el.ExpressionFactoryImpl;
+import de.odysseus.el.util.SimpleContext;
+
 import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.validation.BindException;
@@ -22,6 +28,9 @@ import com.globant.katari.core.application.Validatable;
 public abstract class SimpleFormController extends
     SimpleCommandController implements InitializingBean {
 
+  /** The servlet request parameter that holds the reference data.*/
+  public static final String REFERENCE_DATA_PARAMETER = "katari-referenceData";
+
   /** The form view, it's never null if it's initialized within spring. */
   private String formView;
 
@@ -33,37 +42,58 @@ public abstract class SimpleFormController extends
    * phase when renders its form. */
   private boolean bindOnNewForm = false;
 
+  /** Set to true if the successView must be evaluated as el expression.*/
+  private boolean successViewUsesEl = false;
+
   /** {@inheritDoc}. */
-  @Override
   public ModelAndView handleRequest(final HttpServletRequest request,
       final HttpServletResponse response) throws Exception {
-
     Command<?> command = getCommand(request);
+    Initializable referenceData = createReferenceDataBean(request);
+
+    bindReferenceData(request, referenceData);
+
+    ServletRequestDataBinder binder = null;
+
+    if (mustBind(request)) {
+      binder = bindCommandToCurrentRequest(request, response, command);
+    }
 
     ModelAndView mav = new ModelAndView();
     if (isFormSubmission(request)) {
-
-      ServletRequestDataBinder binder;
-      binder = bindCommandToCurrentRequest(request, response, command);
       BindException errors = new BindException(binder.getBindingResult());
-
       if (command instanceof Validatable) {
         ((Validatable) command).validate(errors);
       }
-
       if (errors.hasErrors()) {
         mav.setViewName(formView);
         mav.addObject(RESULT_ERRORS, errors);
         mav.addObject(COMMAND_NAME, command);
+        attachReferenceData(referenceData, mav);
         return mav;
       } else {
         return onSubmit(request, response, command, errors);
       }
-
     } else {
-      return showForm(request, response, command);
+      return showForm(request, response, command, referenceData);
     }
+  }
 
+  /** Binds the reference data to the current request.
+   * @param request the current HTTP servlet request.
+   * @param referenceData the reference data object.
+   */
+  private void bindReferenceData(final HttpServletRequest request,
+      final Initializable referenceData) {
+    if (referenceData != null) {
+      // Create a binder for the reference data, and bind it.
+      org.springframework.web.bind.ServletRequestDataBinder binder;
+      binder = new org.springframework.web.bind.ServletRequestDataBinder(
+          referenceData, "referenceData");
+      binder.bind(request);
+      referenceData.init();
+    }
+    request.setAttribute(REFERENCE_DATA_PARAMETER, referenceData);
   }
 
   /** Raise the command execution.
@@ -76,23 +106,13 @@ public abstract class SimpleFormController extends
   protected ModelAndView onSubmit(final HttpServletRequest request,
       final HttpServletResponse response, final Command<?> command,
       final BindException errors) {
-    Object result = onCommandExecute(command, request, response);
-    ModelAndView mav = new ModelAndView(getSuccessView(request));
+    Object result = command.execute();
+    String view = calculateSuccessView(command, request);
+    ModelAndView mav = new ModelAndView(view);
     mav.addObject(RESULT_ERRORS, errors);
     mav.addObject(COMMAND_NAME, command);
     mav.addObject(RESULT_NAME, result);
     return mav;
-  }
-
-  /** Performs the execution of the command.
-   * @param command the command to execute.
-   * @param request the current request.
-   * @param response the current response.
-   * @return the object result from the command execution.
-   */
-  protected Object onCommandExecute(final Command<?> command,
-      final HttpServletRequest request, final HttpServletResponse response) {
-    return command.execute();
   }
 
   /** Renders the form.
@@ -107,32 +127,67 @@ public abstract class SimpleFormController extends
    * @return the model and view.
    */
   protected ModelAndView showForm(final HttpServletRequest request,
-      final HttpServletResponse response, final Command<?> command) {
+      final HttpServletResponse response, final Command<?> command,
+      final Initializable referenceData) {
     ModelAndView mav = new ModelAndView(getFormView(request));
-
+    attachReferenceData(referenceData, mav);
     if (command instanceof Initializable) {
       ((Initializable) command).init();
     }
-
-    if (bindOnNewForm) {
-      ServletRequestDataBinder binder;
-      binder = bindCommandToCurrentRequest(request, response, command);
-      BindException errors = new BindException(binder.getBindingResult());
-      mav.addObject(RESULT_ERRORS, errors);
-    }
-
     mav.addObject(COMMAND_NAME, command);
     return mav;
   }
 
+  /** Attaches the reference data to the given model and view.
+   * @param referenceData the reference data.
+   * @param mav the model and view.
+   */
+  private void attachReferenceData(final Initializable referenceData,
+      final ModelAndView mav) {
+    if (referenceData != null) {
+      mav.addObject("referenceData", referenceData);
+    }
+  }
+
+  /** Calculates the success view, based on successViewUsesEl and using the
+   * provided command as EL model.
+   *
+   * Use the success view unchanged if successViewUsesEl is false.
+   *
+   * @param command the command.
+   *
+   * @return the succes view
+   */
+  private String calculateSuccessView(final Command<?> command,
+      final HttpServletRequest request) {
+
+    String mainView = getSuccessView(request);
+
+    if (successViewUsesEl) {
+      ExpressionFactory factory = new ExpressionFactoryImpl();
+      SimpleContext context = new SimpleContext();
+      ValueExpression commandExpression;
+      commandExpression = factory.createValueExpression(command, Command.class);
+      context.setVariable("command", commandExpression);
+      ValueExpression result;
+      result = factory.createValueExpression(context, mainView, String.class);
+      return (String) result.getValue(context);
+    } else {
+      return mainView;
+    }
+  }
+
+  /** Checks if should bind or not the current request to the command.
+   * @return true if should bind.
+   */
+  private boolean mustBind(final HttpServletRequest request) {
+    return isFormSubmission(request) || bindOnNewForm;
+  }
+
   /** Determine if the given request represents a form submission.
-   * <p>The default implementation treats a POST request as form submission.
-   * Note: If the form session attribute doesn't exist when using session form
-   * mode, the request is always treated as new form by handleRequestInternal.
-   * <p>Subclasses can override this to use a custom strategy, e.g. a specific
-   * request parameter (assumably a hidden field or submit button name).
+   * The default implementation treats a POST request as form submission.
    * @param request current HTTP request
-   * @return if the request represents a form submission
+   * @return true if the request represents a form submission
    */
   protected boolean isFormSubmission(final HttpServletRequest request) {
     return METHOD_POST.equals(request.getMethod());
@@ -183,5 +238,21 @@ public abstract class SimpleFormController extends
   public String getSuccessView(final HttpServletRequest request) {
     return successView;
   }
+
+  /** Defines if the successView is treated as an EL expression.
+   * @param useEl true if the successView is evaluated as an EL expression,
+   * false if the successView is used as is.
+   */
+  public void setSuccessViewUsesEl(final boolean useEl) {
+    successViewUsesEl = useEl;
+  }
+
+  /** This method must be injected with the reference data, an instance of an
+   * object that implements Initializable.
+   * @param request the current HTTP servlet request.
+   * @return an instance of the reference data.
+   */
+  abstract Initializable createReferenceDataBean(
+      final HttpServletRequest request);
 
 }

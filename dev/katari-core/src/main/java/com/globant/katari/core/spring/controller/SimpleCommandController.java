@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.support.WebContentGenerator;
 
 import com.globant.katari.core.application.Validatable;
 import com.globant.katari.core.application.Command;
@@ -27,9 +28,10 @@ import com.globant.katari.core.application.Command;
  * Command.execute() the 'command' as the value of the command object and
  * the 'errors' resulted from the bind and validate phase.
  *
- * @author waabox (emiliano[dot]arango[at]globant[dot]com)
+ * @author waabox (waabox[at]gmail[dot]com)
  */
-public abstract class SimpleCommandController extends AbstractController {
+public abstract class SimpleCommandController extends WebContentGenerator
+  implements Controller {
 
   /** The class logger.*/
   private static Logger log = LoggerFactory
@@ -55,8 +57,7 @@ public abstract class SimpleCommandController extends AbstractController {
   private List<PropertyEditorBinder> propertyEditorBinder;
 
   /** {@inheritDoc}.*/
-  @Override
-  protected ModelAndView handleRequestInternal(final HttpServletRequest request,
+  public ModelAndView handleRequest(final HttpServletRequest request,
       final HttpServletResponse response) throws Exception {
     log.trace("Entering handleRequestInternal");
 
@@ -134,11 +135,11 @@ public abstract class SimpleCommandController extends AbstractController {
     return createCommandBean();
   }
 
-  /** Abstract method used to inject the command bean, overriden in spring.
+  /** Abstract method used to inject the command bean, overridden in spring.
    *
    * @return returns the command bean injected, never null.
    */
-  protected abstract Command<?> createCommandBean();
+  abstract Command<?> createCommandBean();
 
   /** Sets the viewName to this instance.
    * @param view the viewName to set

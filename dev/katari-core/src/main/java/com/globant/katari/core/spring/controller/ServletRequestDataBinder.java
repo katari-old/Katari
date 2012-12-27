@@ -56,6 +56,7 @@ public class ServletRequestDataBinder
    * @param response the current response, cannot be null.
    * @param mapper the property mapper, cannot be null.
    * @param propertyEditors the list of property editors, can be null.
+   * @param theReferenceData the reference data, can be null.
    */
   public ServletRequestDataBinder(final Object target,
       final HttpServletRequest request, final HttpServletResponse response,
@@ -135,7 +136,7 @@ public class ServletRequestDataBinder
     return httpServletResponse;
   }
 
-  /** {@inheritDoc} . */
+  /** {@inheritDoc}.*/
   @Override
   @SuppressWarnings("rawtypes")
   public void registerCustomEditor(final Class requiredType,
@@ -143,7 +144,7 @@ public class ServletRequestDataBinder
     super.registerCustomEditor(requiredType, propertyEditor);
   }
 
-  /** {@inheritDoc} . */
+  /** {@inheritDoc}.*/
   @Override
   @SuppressWarnings("rawtypes")
   public void registerCustomEditor(final Class requiredType, final String field,

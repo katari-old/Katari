@@ -35,7 +35,7 @@ public class ServletRequestPropertyMapperTest {
         new String[]{oneParameter});
 
     expect(request.getAttribute("attribute")).andReturn(oneAttribute);
-
+    expect(request.getAttribute("katari-referenceData")).andReturn(null);
     replay(request, response);
 
     ServletRequestPropertyMapper mapper;

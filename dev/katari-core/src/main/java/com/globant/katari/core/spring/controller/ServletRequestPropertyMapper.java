@@ -33,6 +33,7 @@ public class ServletRequestPropertyMapper {
   public ServletRequestPropertyMapper() {
     parameterProcessor = new LinkedList<ParameterProcessor>();
     parameterProcessor.add(new DefaultRequestParameterProcessor());
+    parameterProcessor.add(new ReferenceDataParameterProcessor());
   }
 
   /** Creates a new instance of the mapper.
