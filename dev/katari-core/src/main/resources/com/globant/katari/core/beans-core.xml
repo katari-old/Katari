@@ -160,11 +160,15 @@
   <bean name='htmlValidator'
     class="com.globant.katari.core.web.HtmlValidationFilter"
     p:enabled='false'
-    p:ignoredUrlpatterns-ref='katari.htmlValidator.ignoredUrlpatterns'/>
+    p:ignoredUrlpatterns-ref='katari.htmlValidator.ignoredUrlpatterns'
+    p:skipExpressions-ref='katari.htmlValidator.skiExpressions'/>
 
   <!--The list of url patters to ignore for validation. Each module can add
   patters using the ListFactoryAppender bean post processor. -->
   <util:list id='katari.htmlValidator.ignoredUrlpatterns'/>
+
+  <!--The list of expressions to skip for validation errors.-->
+  <util:list id='katari.htmlValidator.skiExpressions'/>
 
   <bean class='com.globant.katari.core.spring.StringHolder'
     name='debugMode' p:value='false'/>
@@ -639,7 +643,16 @@
     <value>IS_AUTHENTICATED_REMEMBERED</value>
   </util:list>
 
+  <util:list id='katari.defaultParameterProcessor'>
+    <bean class='com.globant.katari.core.spring.controller.DefaultRequestParameterProcessor' />
+    <bean class='com.globant.katari.core.spring.controller.OutputStreamParameterProcessor' />
+  </util:list>
+
+  <bean id='katari.deftaultRequestPropertyMapper'
+    class='com.globant.katari.core.spring.controller.ServletRequestPropertyMapper'>
+    <constructor-arg index='0' ref='katari.defaultParameterProcessor' />
+  </bean>
+
 </beans>
 
 <!-- vim: set ts=2 et sw=2 ai: -->
-
