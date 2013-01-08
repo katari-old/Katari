@@ -9,6 +9,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -209,7 +210,7 @@ public class HtmlValidationFilterTest {
             + " \"http://www.w3.org/TR/html4/strict.dtd\">"
             + " <html><head><title>aa</title></head><body>"
             + "<form action='test'>"
-            + " <input type='text' validator='aa'>"
+            + " <input type='text' validation='aa'>"
             + "</form>"
             + "</body></html>");
         writer.flush();
@@ -223,7 +224,7 @@ public class HtmlValidationFilterTest {
     filter.init(filterConfig);
     // Would throw an exception if enabled.
     filter.doFilter(request, response, chain);
-    assertThat(response.getStatus(), is(500));
+    assertThat(response.getStatus(), is(200));
   }
 
   /* Tests what happens when the user does not call flush on the response or
@@ -253,5 +254,45 @@ public class HtmlValidationFilterTest {
     filter.doFilter(request, response, chain);
     assertThat(response.getStatus(), is(200));
   }
+
+  @Test public void customEvaluator() throws Exception {
+    request = createNiceMock(HttpServletRequest.class);
+    expect(request.getPathInfo()).andReturn("/something/");
+    expect(request.getRequestURI()).andReturn("/test");
+    replay(request);
+
+    // Mocks the filter chain.
+    FilterChain chain = new FilterChain() {
+      public void doFilter(final ServletRequest request, final
+          ServletResponse response) throws IOException {
+        log.trace("Entering doFilter");
+        PrintWriter writer = new PrintWriter(response.getOutputStream());
+        writer.write(
+            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\""
+            + " \"http://www.w3.org/TR/html4/strict.dtd\">"
+            + " <html><head><title>aa</title></head><body>"
+            + "<script type='html/template'>"
+            + " <b>hello there</b>"
+            + "</script>"
+            + "</body></html>");
+        writer.flush();
+        log.trace("Leaving doFilter");
+      }
+    };
+
+    // Executes the test.
+    HtmlValidationFilter filter = new HtmlValidationFilter();
+
+    LinkedList<String> evaluators = new LinkedList<String>();
+    evaluators.add("32#.*letter not allowed here.*");
+    filter.setSkipExpressions(evaluators);
+
+    filter.setEnabled(true);
+    filter.init(filterConfig);
+    // Would throw an exception if enabled.
+    filter.doFilter(request, response, chain);
+    assertThat(response.getStatus(), is(200));
+  }
+
 }
 
