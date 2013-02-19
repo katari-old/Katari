@@ -8,6 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableId;
@@ -18,6 +23,10 @@ import org.apache.commons.lang.Validate;
 /** A role determines what action a user can perform on the system.
  */
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "role_type",
+    discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("role")
 @Table(name = "roles")
 @Searchable(root = false)
 public class Role {

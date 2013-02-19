@@ -2,8 +2,8 @@
 
 insert into users(name, email, password, user_type, is_active) values (
   'admin', 'admin@none', 'admin', 'user', true);
-insert into roles(name) values ('ADMINISTRATOR');
-insert into roles(name) values ('REPORT_ADMIN');
+insert into roles(role_type, name) values ('role', 'ADMINISTRATOR');
+insert into roles(role_type, name) values ('role', 'REPORT_ADMIN');
 insert into users_roles(users_id, roles_id) select users.id, roles.id
   from users, roles where users.name='admin' and roles.name='ADMINISTRATOR';
 
