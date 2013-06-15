@@ -3,9 +3,13 @@
 package com.globant.katari.core.spring;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Arrays;
 
+import org.apache.commons.collections.ListUtils;
 import org.junit.Test;
 import org.springframework.util.FileCopyUtils;
 
@@ -32,6 +36,7 @@ public class KatariMessageSourceTest {
     assertThat(fileNames.size(), is(3));
     assertThat(fileNames.get(0), is("classpath:messages_en_US"));
     assertThat(fileNames.get(1), is("classpath:messages_en"));
+    // Falls back to Locale.UK (en_GB).
     assertThat(fileNames.get(2), is("classpath:messages_en_GB"));
   }
 
@@ -162,6 +167,52 @@ public class KatariMessageSourceTest {
 
     String message = messageSource.getMessage("test2", null, Locale.US);
     assertThat(message, is("overriden_2_for_module_name"));
+  }
+
+  @Test public void getMessage_sibling() {
+    KatariMessageSource parent = new KatariMessageSource(Locale.US);
+    parent.setBasename(
+        "classpath:com/globant/katari/core/spring/katariMessageSource");
+
+    KatariMessageSource dependency = new KatariMessageSource(Locale.US);
+    dependency.setBasename(
+        "classpath:com/globant/katari/core/spring/katariMessageSourceDep");
+
+    KatariMessageSource messageSource;
+    messageSource = new KatariMessageSource("local-login", parent,
+       Arrays.asList(new KatariMessageSource[]{dependency}));
+    messageSource.setBasename("classpath:katariMessageSource");
+
+    String message = messageSource.getMessage("dependency1", null, Locale.US);
+    assertThat(message, is("message from dependency"));
+  }
+
+  @Test public void getMessage_siblingOverriden() {
+    KatariMessageSource parent = new KatariMessageSource(Locale.US);
+    parent.setBasename(
+        "classpath:com/globant/katari/core/spring/katariMessageSource");
+
+    KatariMessageSource dependency = new KatariMessageSource(Locale.US);
+    dependency.setBasename(
+        "classpath:com/globant/katari/core/spring/katariMessageSourceDep");
+
+    String dependencyMessage;
+    dependencyMessage = dependency.getMessage("dependency2", null, Locale.US);
+    // This is just to be sure that we are loading the correct file.
+    assertThat(dependencyMessage, is("overriden message from dependency"));
+
+    ArrayList<KatariMessageSource> dependencies;
+    dependencies = new ArrayList<KatariMessageSource>();
+    dependencies.add(dependency);
+
+    KatariMessageSource messageSource;
+    messageSource = new KatariMessageSource("local-login", parent,
+        dependencies);
+    messageSource.setBasename("classpath:katariMessageSource");
+
+    String message = messageSource.getMessage("dependency2", null, Locale.US);
+    // Bonjour is overriden by the parent.
+    assertThat(message, is("hey you"));
   }
 }
 

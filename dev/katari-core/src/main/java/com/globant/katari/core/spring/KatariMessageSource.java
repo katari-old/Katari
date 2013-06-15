@@ -32,6 +32,11 @@ import org.springframework.context.support
  * - When resolving a message in the parent, the code is looked up by first
  *   prefixing it with the module name and then the plain code.
  *
+ * - You can 'link' message sources by declaring 'dependencies' between them.
+ *   If a message is not found in the current message source, it looks for it
+ *   in all its dependencies. This is intended to allow a module to resolve a
+ *   message that is declared in another module.
+ *
  * - In debug mode, when a client wants a message from the message code, this
  *   message source first looks for it in a file with an url of the form
  *   file:[debugPrefx]/basename. The message source checks the modification
@@ -97,7 +102,9 @@ import org.springframework.context.support
  *
  * - Look for C in com/globant/lang/msg_es.properties
  *
- * Finally, repeat the process for the locale selected as default.
+ * Then, repeat the process for the locale selected as default.
+ *
+ * Finally, repeat the process in each of the dependencies.
  *
  * This way of resolving messages allows:
  *
@@ -110,6 +117,15 @@ import org.springframework.context.support
  *
  * - Module integrators to support additional languages and override any
  *   translation.
+ *
+ * NOTE: the dependencies mechanism is not yet fully tested and it has many
+ * limitations, the main one being that the 'namespace' of the message names is
+ * shared between all message sources. So there is a chance that a message
+ * defined in a dependent module may be resolved as a different, non intended
+ * value.
+ *
+ * Another limitation is that the dependency mechanism comes into play only
+ * after looking for the message in every relevant locale.
  */
 public class KatariMessageSource
   extends ReloadableResourceBundleMessageSource {
@@ -142,8 +158,16 @@ public class KatariMessageSource
    */
   private String debugPrefix = "file:.";
 
+  /** A list of message sources that this message source may depend on.
+   *
+   * If a message is neither found in the parent and in this message source,
+   * look for messages in each of the dependencies.
+   */
+  private final List<KatariMessageSource> dependencies =
+      new LinkedList<KatariMessageSource>();
+
   /** Constructor to be used for the global (without parent) message source.
-   * 
+   *
    * @param theFallbackLocale the locale to use when the message is not found
    * in the requested locale. It cannot be null.
    */
@@ -169,6 +193,35 @@ public class KatariMessageSource
     setParentMessageSource(theParent);
     moduleName = theModuleName;
     fallbackLocale = theParent.fallbackLocale;
+  }
+
+  /** Constructor.
+   *
+   * Creates a KatariMessageSource with dependencies. This constructor is
+   * intended to be used in modules. It inherits the fallbackLocale from the
+   * parent.
+   *
+   * In addition to the module name and parent, this constructor takes a list
+   * of other message sources that are used the message source being
+   * constructed cannot resolve the message.
+   *
+   * @param theModuleName the name of the module. It cannot be null.
+   *
+   * @param theDependencies the dependencies of this message source. It cannot
+   * be null.
+   */
+  public KatariMessageSource(final String theModuleName,
+      final KatariMessageSource theParent,
+      final List<KatariMessageSource> theDependencies) {
+    Validate.notNull(theModuleName, "The module name cannot be null.");
+    Validate.notNull(theParent, "The parent cannot be null.");
+    Validate.notNull(theDependencies, "The dependencies cannot be null.");
+
+    setFallbackToSystemLocale(false);
+    setParentMessageSource(theParent);
+    moduleName = theModuleName;
+    fallbackLocale = theParent.fallbackLocale;
+    dependencies.addAll(theDependencies);
   }
 
   /** {@inheritDoc}
@@ -289,15 +342,25 @@ public class KatariMessageSource
   protected String getMessageInternal(final String code, final Object[] args,
       final Locale locale) {
     String message = null;
+    // First look in the parent, with the module name.
     if (moduleName != null) {
       message = getMessageFromParent(moduleName + "." + code, args, locale);
     }
+    // Then look in the parent, withou the module name.
     if (message == null) {
       message = getMessageFromParent(code, args, locale);
     }
+    // Look in my own messages.
     if (message == null) {
       message = super.getMessageInternal(code, args, locale);
     }
+    // And finally, if I don't have them, look for the dependencies.
+    if (message == null) {
+      for (KatariMessageSource messageSource : dependencies) {
+        message = messageSource.getMessageInternal(code, args, locale);
+      }
+    }
+
     return message;
   }
 
