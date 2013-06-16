@@ -376,7 +376,9 @@ katari.jsmodule.Loader = function (baseweb) {
           params = params.replace('&', '');
 
           post(endpoint, params, include);
-        }
+        } else {
+          onReady();
+	}
       }
     },
 
