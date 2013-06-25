@@ -3,7 +3,7 @@ package com.globant.katari.ehcache.hibernate;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import com.globant.katari.hibernate.HibernateDaoSupport;
 
 /** Just a repository test purposes.
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)

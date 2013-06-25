@@ -13,7 +13,6 @@ import static org.junit.Assert.*;
 import org.apache.commons.collections.MapUtils;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
@@ -32,12 +31,14 @@ public class ReportRepositoryTest {
 
   @Before
   public void setUp() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     reportRepository = ReportsTestSupport.getRepository();
     roleRepository = (RoleRepository) ReportsTestSupport
-      .getApplicationContext().getBean("coreuser.roleRepository");
+      .get().getBean("coreuser.roleRepository");
 
-    session = ((SessionFactory) ReportsTestSupport.getApplicationContext()
-        .getBean("katari.sessionFactory")).openSession();
+    session = roleRepository.getSessionFactory().getCurrentSession();
 
     session.createSQLQuery("delete from report_required_roles")
       .executeUpdate();
@@ -49,6 +50,7 @@ public class ReportRepositoryTest {
     roleRepository.save(new Role("GUEST"));
 
     createSampleReport();
+
   }
 
   /** Creates a sample report called test.
@@ -95,7 +97,7 @@ public class ReportRepositoryTest {
 
   @After
   public void tearDown() {
-    session.close();
+    ReportsTestSupport.get().endTransaction();
   }
 }
 

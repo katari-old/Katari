@@ -8,9 +8,11 @@ import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.sql.DataSource;
 
+import static org.junit.Assert.*;
+
 import org.easymock.EasyMock;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
@@ -23,8 +25,7 @@ import com.globant.katari.report.domain.ReportType;
 
 /** Test the GenerateReportCommand controller from the report module.
  */
-public class GenerateReportCommandTest extends
-    AbstractTransactionalSpringContextTests {
+public class GenerateReportCommandTest {
 
   /** The reports repository. */
   private JasperReportRepository repository;
@@ -36,27 +37,31 @@ public class GenerateReportCommandTest extends
   /** The saved report used for testing. */
   private ReportDefinition savedReport;
 
-  public GenerateReportCommandTest() {
-    setDefaultRollback(false);
-  }
-
   /**
    * Injects the repository and sets up the database for testing.
    */
-  @Override
-  protected final void onSetUpBeforeTransaction() throws Exception {
+  @Before
+  public final void setUp() throws Exception {
     ReportsTestSupport.initTestReportSecurityContext("REPORT_ADMIN");
+
+    ReportsTestSupport.get().beginTransaction();
 
     repository = ReportsTestSupport.getRepository();
     generator = ReportsTestSupport.getGenerator();
     dataSource = ReportsTestSupport.getDataSource();
     savedReport = ReportsTestSupport.createSampleReport();
+
+    ReportsTestSupport.get().endTransaction();
   }
 
   /** Tests for a bug that did not free the connection after generating the
    * report.
    */
+  @Test
   public final void testExecute_multipleTimes() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     GenerateReportCommand command;
     command = new GenerateReportCommand(repository, generator, dataSource);
 
@@ -75,9 +80,15 @@ public class GenerateReportCommandTest extends
     for (int i = 0; i < 10; ++ i) {
       command.execute();
     }
+
+    ReportsTestSupport.get().endTransaction();
+
   }
 
+  @Test
   public final void testExecute_reloadDropdown() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
     GenerateReportCommand command;
     command = new GenerateReportCommand(repository, generator, dataSource);
 
@@ -101,6 +112,8 @@ public class GenerateReportCommandTest extends
       }
     }
     assertNotNull(possibleValues);
+
+    ReportsTestSupport.get().endTransaction();
   }
 
   private Errors runValidateWithValues(final Map<String, String> values) {
@@ -118,52 +131,79 @@ public class GenerateReportCommandTest extends
     return errors;
   }
 
+  @Test
   public final void testValidate_ok() throws Exception {
+    ReportsTestSupport.get().beginTransaction();
+
     Map<String, String> values = new HashMap<String, String>();
     values.put("TEST_PARAM_1", "Custom Example Text 1");
     values.put("TEST_PARAM_3", "1");
     values.put("TEST_PARAM_4", "1");
     Errors errors = runValidateWithValues(values);
     assertEquals(0, errors.getAllErrors().size());
+    ReportsTestSupport.get().endTransaction();
   }
 
   public final void testValidate_invalidFormat() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     Map<String, String> values = new HashMap<String, String>();
     values.put("TEST_PARAM_1", "Custom Example Text 1");
     values.put("TEST_PARAM_3", "xcvvxc");
     values.put("TEST_PARAM_4", "1");
     Errors errors = runValidateWithValues(values);
     assertEquals(1, errors.getAllErrors().size());
+    ReportsTestSupport.get().endTransaction();
   }
 
+  @Test
   public final void testValidate_requiredValuesEmpty() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     Map<String, String> values = new HashMap<String, String>();
     values.put("TEST_PARAM_1", "");
     values.put("TEST_PARAM_3", "1");
     values.put("TEST_PARAM_4", "1");
     Errors errors = runValidateWithValues(values);
     assertEquals(1, errors.getAllErrors().size());
+    ReportsTestSupport.get().endTransaction();
   }
 
+  @Test
   public final void testValidate_requiredValuesBlank() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     Map<String, String> values = new HashMap<String, String>();
     values.put("TEST_PARAM_1", "    ");
     values.put("TEST_PARAM_3", "1");
     values.put("TEST_PARAM_4", "1");
     Errors errors = runValidateWithValues(values);
     assertEquals(1, errors.getAllErrors().size());
+    ReportsTestSupport.get().endTransaction();
   }
 
+  @Test
   public final void testValidate_requiredValuesNull() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     Map<String, String> values = new HashMap<String, String>();
     values.put("TEST_PARAM_1", null);
     values.put("TEST_PARAM_3", "1");
     values.put("TEST_PARAM_4", "1");
     Errors errors = runValidateWithValues(values);
     assertEquals(1, errors.getAllErrors().size());
+    ReportsTestSupport.get().endTransaction();
   }
 
+  @Test
   public final void testValidate_optionalValue() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     Map<String, String> values = new HashMap<String, String>();
     values.put("TEST_PARAM_1", "Custom Example Text 1");
     values.put("TEST_PARAM_2", "24/07/2008");
@@ -172,17 +212,7 @@ public class GenerateReportCommandTest extends
     values.put("TEST_PARAM_5", "");
     Errors errors = runValidateWithValues(values);
     assertEquals(0, errors.getAllErrors().size());
+    ReportsTestSupport.get().endTransaction();
   }
 
-  @Override
-  protected ConfigurableApplicationContext loadContext(final Object key) throws
-      Exception {
-    return ReportsTestSupport.getApplicationContext();
-  }
-
-  @Override
-  protected Object contextKey() {
-    return "notnull";
-  }
 }
-

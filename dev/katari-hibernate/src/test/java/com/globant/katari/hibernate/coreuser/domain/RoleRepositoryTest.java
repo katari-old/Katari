@@ -8,48 +8,34 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SQLQuery;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4
-    .AbstractTransactionalJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
+import com.globant.katari.hibernate.SpringTestUtils;
 
 /**
  * Tests Role repository with a db datasources for testing purpose.
  * @author gerardo.bercovich
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(defaultRollback=false)
-@ContextConfiguration(locations = {
-    "classpath:com/globant/katari/hibernate/coreuser/applicationContext.xml"
-  })
-public class RoleRepositoryTest
-    extends AbstractTransactionalJUnit4SpringContextTests {
+public class RoleRepositoryTest {
 
-  /**
-   * This is the implementation of the repository of the role.
-   * Injected by Spring.
-   */
-  @Autowired
   private RoleRepository roleRepository = null;
 
-  /**
-   * The name of administrator role.
-   */
   private final String ADMIN_ROLE_NAME = "ADMINISTRATOR";
 
-  /** Creates administrator role.
-   */
+  /** Creates administrator role. */
   @Before
   public void onSetUp() throws Exception {
+
+    roleRepository = (RoleRepository) SpringTestUtils.get().getBean(
+        "coreuser.roleRepository");
+
+    SpringTestUtils.get().beginTransaction();
     Role newRole = new Role(ADMIN_ROLE_NAME);
     roleRepository.save(newRole);
+    SpringTestUtils.get().endTransaction();
   }
 
   /**
@@ -57,42 +43,45 @@ public class RoleRepositoryTest
    */
   @After
   public void onTearDown() throws Exception {
-    this.deleteFromTables(new String[]{"roles"});
+    SpringTestUtils.get().beginTransaction();
+    SQLQuery query;
+    query = roleRepository.getSession().createSQLQuery(
+        "TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
+    query.executeUpdate();
+    SpringTestUtils.get().endTransaction();
   }
 
   /** Searches for a known role.
    */
   @Test
   public void testFindRoleByName() throws Exception {
+    SpringTestUtils.get().beginTransaction();
     Role adminRole = roleRepository.findRoleByName(ADMIN_ROLE_NAME);
     assertNotNull(adminRole);
     assertEquals(adminRole.getName(), ADMIN_ROLE_NAME);
+    SpringTestUtils.get().endTransaction();
   }
 
   /** Finds roles.
    */
   @Test
   public void testGetRoles() throws Exception {
+    SpringTestUtils.get().beginTransaction();
     final List<Role> roles = roleRepository.getRoles();
     assertEquals(1, roles.size());
+    SpringTestUtils.get().endTransaction();
   }
 
   @Test
   public void testGetRolesById() throws Exception {
+    SpringTestUtils.get().beginTransaction();
     final long id = roleRepository.findRoleByName(ADMIN_ROLE_NAME).getId();
     final ArrayList<String> ids = new ArrayList<String>();
     ids.add(Long.toString(id));
     final List<Role> roles = roleRepository.getRoles(ids);
     assertEquals(1, roles.size());
     assertEquals(id, roles.get(0).getId());
-  }
-
-  public RoleRepository getRoleRepository() {
-    return roleRepository;
-  }
-
-  public void setRoleRepository(final RoleRepository roleRepository) {
-    this.roleRepository = roleRepository;
+    SpringTestUtils.get().endTransaction();
   }
 }
 

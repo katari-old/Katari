@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import com.globant.katari.hibernate.HibernateDaoSupport;
 import com.globant.katari.user.domain.filter.ContainsFilter;
 import com.globant.katari.user.domain.filter.Paging;
 import com.globant.katari.user.domain.filter.Sorting;
@@ -63,11 +63,7 @@ public class UserRepository extends HibernateDaoSupport {
    */
   @SuppressWarnings("unchecked")
   public User findUserByName(final String username) {
-
     Validate.notNull(username, "The username cannot be null");
-
-    getHibernateTemplate().setCacheQueries(true);
-
     List<User> users = getHibernateTemplate().find(
         "from User user where user.name = ?", username);
     if (users.isEmpty()) {
@@ -162,7 +158,6 @@ public class UserRepository extends HibernateDaoSupport {
    * exists.
    */
   public User findUser(final long id) {
-    getHibernateTemplate().setCacheQueries(true);
     return (User) getHibernateTemplate().get(User.class, id);
   }
 }

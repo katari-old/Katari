@@ -17,7 +17,6 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.easymock.EasyMock;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.hibernate.coreuser.domain.RoleDetails;
@@ -25,12 +24,16 @@ import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.katari.report.domain.JasperReportGenerator;
 import com.globant.katari.report.domain.JasperReportRepository;
 import com.globant.katari.report.domain.ReportDefinition;
+import com.globant.katari.tools.SpringTestUtilsBase;
 
 /**
  * Report Test utility.
  * @author gerardo.bercovich
  */
-public class ReportsTestSupport {
+public class ReportsTestSupport extends SpringTestUtilsBase {
+
+  /** The static instance for the singleton.*/
+  private static ReportsTestSupport instance;
 
   /** The spring application context. */
   private static ConfigurableApplicationContext applicationContext = null;
@@ -46,26 +49,43 @@ public class ReportsTestSupport {
     = "src/test/resources/report-sample.jrxml";
 
   /**
-   * This method returns the spring ApplicationContext.
-   *
-   * @return a BeanFactory
+   * @param theGlobalConfigurationFiles
+   * @param theServletConfigurationFiles
    */
-  public static synchronized ConfigurableApplicationContext
-    getApplicationContext() {
-    if (applicationContext == null) {
-      applicationContext = new FileSystemXmlApplicationContext(new String[] {
-          "classpath:/applicationContext.xml",
-          "classpath:/com/globant/katari/report/view/spring-servlet.xml" });
-    }
-    return applicationContext;
+  protected ReportsTestSupport(final String[] theGlobalConfigurationFiles,
+      final String[] theServletConfigurationFiles) {
+    super(
+        new String[] {
+            "classpath:/applicationContext.xml",
+            "classpath:/com/globant/katari/report/module.xml"
+        },
+        new String[] {
+        "classpath:/com/globant/katari/report/view/spring-servlet.xml"
+        }
+    );
   }
+
+  /** Retrieves the intance.
+   * @return the instance, never null.
+   */
+  public static synchronized ReportsTestSupport get() {
+    if (instance == null) {
+      instance = new ReportsTestSupport(null, null);
+    }
+    return instance;
+  }
+
 
   /** initialize Acegi security context with mock user with the given roles.
    * @param roleNames for user mockup. it can be empty but cannot be null.
    */
-  public static void initTestReportSecurityContext(final String... roleNames) {
-    RoleRepository roleRepository = (RoleRepository) getApplicationContext()
-        .getBean("coreuser.roleRepository");
+  public static void initTestReportSecurityContext(
+      final String... roleNames) {
+
+    ReportsTestSupport.get().beginTransaction();
+
+    RoleRepository roleRepository = (RoleRepository)
+        get().getBean("coreuser.roleRepository");
 
     Set<Role> roles = new HashSet<Role>();
     for (String roleName : roleNames) {
@@ -79,6 +99,8 @@ public class ReportsTestSupport {
     UsernamePasswordAuthenticationToken authentication =
         new UsernamePasswordAuthenticationToken(roleDetailsMock, "admin");
     SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    ReportsTestSupport.get().endTransaction();
   }
 
   /**
@@ -146,8 +168,7 @@ public class ReportsTestSupport {
         REPORT_DESCRIPTION, getBytes(new File(REPORT_XML_SAMPLE_PATH)));
     repository.save(testReport);
 
-    DataSource dataSource = (DataSource) ReportsTestSupport
-      .getApplicationContext().getBean("dataSource");
+    DataSource dataSource = (DataSource) get().getBean("dataSource");
 
     Connection connection = null;
     Statement stmt = null;
@@ -181,7 +202,7 @@ public class ReportsTestSupport {
    * @return Returns the data source, never null.
    */
   public static DataSource getDataSource() {
-    return (DataSource) getApplicationContext().getBean(
+    return (DataSource) get().getBean(
         "dataSource");
   }
 
@@ -190,7 +211,7 @@ public class ReportsTestSupport {
    * @return Returns the jasper repository, never null.
    */
   public static JasperReportRepository getRepository() {
-    return (JasperReportRepository) getApplicationContext().getBean(
+    return (JasperReportRepository) get().getBean(
         "jasperReportRepository");
   }
 
@@ -199,7 +220,7 @@ public class ReportsTestSupport {
    * @return Returns the jasper report generator, never null.
    */
   public static JasperReportGenerator getGenerator() {
-    return (JasperReportGenerator) getApplicationContext().getBean(
+    return (JasperReportGenerator) get().getBean(
         "jasperReportGenerator");
   }
 }

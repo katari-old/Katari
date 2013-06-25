@@ -32,7 +32,7 @@ public class ReportsControllerTest extends TestCase {
   @SuppressWarnings("unchecked")
   @Override
   protected final void setUp() throws Exception {
-    controller = (ReportsController) ReportsTestSupport.getApplicationContext()
+    controller = (ReportsController) ReportsTestSupport.get()
         .getBean("/reports.do");
     command = (Command<List<ReportDefinition>>) controller.createCommandBean();
     ReportsTestSupport.initTestReportSecurityContext("REPORT_ADMIN");

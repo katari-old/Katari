@@ -42,7 +42,7 @@ public class ReportCommandTest {
     ReportDefinition rd = reportRepository
         .findReportDefinition("test_ReportTest");
     DeleteReportCommand deleteReportCmd = (DeleteReportCommand)
-      ReportsTestSupport.getApplicationContext().getBean("deleteReportCommand");
+      ReportsTestSupport.get().getBean("deleteReportCommand");
     deleteReportCmd.setReportId(rd.getId());
     deleteReportCmd.execute();
 
@@ -55,7 +55,7 @@ public class ReportCommandTest {
     saveTestReportForAdmin("Test report 1", "Report Description");
     saveTestReportForAdmin("Test report 2", "Report Description");
     ReportsCommand command = (ReportsCommand) ReportsTestSupport
-      .getApplicationContext().getBean("reportsCommand");
+      .get().getBean("reportsCommand");
     final List<ReportDefinition> reports = command.execute();
     assertEquals(reportsCount + 2, reports.size());
   }
@@ -64,7 +64,7 @@ public class ReportCommandTest {
   public void testSaveReportCommand() throws Exception {
     saveTestReportForAdmin("Test report 7", "Report Description 7");
     SaveReportCommand command = (SaveReportCommand)
-    ReportsTestSupport.getApplicationContext().getBean("saveReportCommand");
+    ReportsTestSupport.get().getBean("saveReportCommand");
     long reportId = reportRepository.findReportDefinition("Test report 7")
         .getId();
     command.setReportId(reportId);
@@ -79,11 +79,11 @@ public class ReportCommandTest {
   private void saveTestReportForAdmin(final String reportName,
       final String description) throws Exception {
     SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
-      .getApplicationContext().getBean("saveReportCommand");
+      .get().getBean("saveReportCommand");
     command.init();
     command.setName(reportName);
     command.setDescription(description);
-    command.setReportContent(ReportsTestSupport.getSampleReportBytes());
+    command.setReportContent(ReportsTestSupport.get().getSampleReportBytes());
     final Map<String, String> availableRoles = command.getAvailableRoles();
     final String firstId = availableRoles.keySet().iterator().next();
     final LinkedList<String> linkedList = new LinkedList<String>();
@@ -95,7 +95,7 @@ public class ReportCommandTest {
   @Test
   public void testInit_inexistentReport() throws Exception {
     SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
-      .getApplicationContext().getBean("saveReportCommand");
+      .get().getBean("saveReportCommand");
     // Inexistent ID
     command.setReportId(Long.MAX_VALUE);
     try {
@@ -109,7 +109,7 @@ public class ReportCommandTest {
   @Test
   public void testValidate_valid() throws Exception {
     SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
-      .getApplicationContext().getBean("saveReportCommand");
+      .get().getBean("saveReportCommand");
 
     command.setName("a name");
     command.setDescription("a description");
@@ -124,7 +124,7 @@ public class ReportCommandTest {
   @Test
   public void testValidate_emptyContent() throws Exception {
     SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
-      .getApplicationContext().getBean("saveReportCommand");
+      .get().getBean("saveReportCommand");
 
     command.setName("a name");
     command.setDescription("a description");
@@ -137,7 +137,7 @@ public class ReportCommandTest {
   @Test
   public void testValidate_invalidContent() throws Exception {
     SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
-      .getApplicationContext().getBean("saveReportCommand");
+      .get().getBean("saveReportCommand");
     command.setName("a name");
     command.setDescription("a description");
     command.setReportContent(new byte[]{'a', 'b'});
@@ -153,7 +153,7 @@ public class ReportCommandTest {
     long reportId = reportRepository.findIdForName("Test report 3");
 
     SaveReportCommand command = (SaveReportCommand) ReportsTestSupport
-      .getApplicationContext().getBean("saveReportCommand");
+      .get().getBean("saveReportCommand");
 
     command.setReportId(reportId);
     command.setName("a name");

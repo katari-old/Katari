@@ -5,7 +5,7 @@ package com.globant.katari.editablepages.domain;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import com.globant.katari.hibernate.HibernateDaoSupport;
 
 /** This class is responsible for managing the persistence of pages.
  */

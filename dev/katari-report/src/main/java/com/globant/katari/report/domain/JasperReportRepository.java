@@ -9,10 +9,10 @@ import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.transform.AliasToBeanConstructorResultTransformer;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.hibernate.type.StringType;
+import com.globant.katari.hibernate.HibernateDaoSupport;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 
@@ -182,8 +182,8 @@ public class JasperReportRepository extends HibernateDaoSupport {
       throw new RuntimeException("Error obtaining constructor", e);
     }
     Query query = getSession().createSQLQuery(parameter.getDropdownQuery())
-      .addScalar("value", Hibernate.STRING)
-      .addScalar("label", Hibernate.STRING)
+      .addScalar("value", new StringType())
+      .addScalar("label", new StringType())
       .setResultTransformer(new AliasToBeanConstructorResultTransformer(
           constructor));
 

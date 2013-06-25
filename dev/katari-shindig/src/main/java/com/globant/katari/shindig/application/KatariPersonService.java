@@ -22,7 +22,7 @@ import org.hibernate.Query;
 
 import org.slf4j.Logger;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import com.globant.katari.hibernate.HibernateDaoSupport;
 
 import com.globant.katari.shindig.lang.Validate;
 

@@ -35,7 +35,7 @@ public class EditParametersFtlTest extends TestCase {
   private Map<String, Object> buildModel() {
     // Building Model
     GenerateReportCommand command = (GenerateReportCommand)
-      ReportsTestSupport.getApplicationContext().getBean(
+      ReportsTestSupport.get().getBean(
           "generateReportCommand");
 
     long id = ReportsTestSupport.createSampleReport().getId();

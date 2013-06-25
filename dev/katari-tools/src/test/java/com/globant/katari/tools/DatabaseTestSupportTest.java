@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.util.Properties;
 
 import org.springframework.beans.DirectFieldAccessor;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.hibernate.cfg.Configuration;
 
 import static org.easymock.EasyMock.*;

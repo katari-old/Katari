@@ -56,9 +56,12 @@ public class ReportControllerTest extends TestCase {
    * Injects the repository and sets up the database for testing.
    */
   protected final void setUp() {
+
+    ReportsTestSupport.get().beginTransaction();
+
     ReportsTestSupport.initTestReportSecurityContext("REPORT_ADMIN");
     repository = (JasperReportRepository) ReportsTestSupport
-        .getApplicationContext().getBean(REPOSITORY_BEAN_NAME);
+        .get().getBean(REPOSITORY_BEAN_NAME);
 
     // Removes the unneeded reports.
     for (ReportDefinition report : repository.getReportList()) {
@@ -70,6 +73,9 @@ public class ReportControllerTest extends TestCase {
     repository.save(testReport);
 
     savedReport = repository.findReportDefinition(REPORT_NAME);
+
+    ReportsTestSupport.get().endTransaction();
+
   }
 
   /**
@@ -81,7 +87,7 @@ public class ReportControllerTest extends TestCase {
   public final void testEditReportDoSubmitAction() throws Exception {
 
     editReportController = (ReportController) ReportsTestSupport
-        .getApplicationContext().getBean(EDIT_REPORT_BEAN_NAME);
+        .get().getBean(EDIT_REPORT_BEAN_NAME);
 
     SaveReportCommand command = (SaveReportCommand) editReportController
         .createCommandBean();
@@ -108,7 +114,7 @@ public class ReportControllerTest extends TestCase {
    */
   public final void testDeleteReportDoSubmitAction() throws Exception {
     editReportController = (ReportController) ReportsTestSupport
-        .getApplicationContext().getBean(DELETE_REPORT_BEAN_NAME);
+        .get().getBean(DELETE_REPORT_BEAN_NAME);
 
     DeleteReportCommand command;
     command = (DeleteReportCommand) editReportController.createCommandBean();
@@ -130,7 +136,7 @@ public class ReportControllerTest extends TestCase {
    */
   public final void testInitBinder() throws Exception {
     editReportController = (ReportController) ReportsTestSupport
-        .getApplicationContext().getBean(EDIT_REPORT_BEAN_NAME);
+        .get().getBean(EDIT_REPORT_BEAN_NAME);
 
     SaveReportCommand command;
     command = (SaveReportCommand) editReportController.createCommandBean();
@@ -151,7 +157,7 @@ public class ReportControllerTest extends TestCase {
    */
   public final void testEditReportFormBackingObject() throws Exception {
     editReportController = (ReportController) ReportsTestSupport
-        .getApplicationContext().getBean(EDIT_REPORT_BEAN_NAME);
+        .get().getBean(EDIT_REPORT_BEAN_NAME);
 
     MockHttpServletRequest request = new MockHttpServletRequest();
     Object formBackingObject = editReportController.formBackingObject(request);

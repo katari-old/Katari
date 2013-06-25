@@ -11,24 +11,29 @@ import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.hibernate.management.impl
   .ProviderMBeanRegistrationHelper;
-import net.sf.ehcache.hibernate.nonstop.NonstopAccessStrategyFactory;
-import net.sf.ehcache.hibernate.regions.EhcacheCollectionRegion;
-import net.sf.ehcache.hibernate.regions.EhcacheEntityRegion;
-import net.sf.ehcache.hibernate.regions.EhcacheQueryResultsRegion;
-import net.sf.ehcache.hibernate.regions.EhcacheTimestampsRegion;
-import net.sf.ehcache.hibernate.strategy.EhcacheAccessStrategyFactory;
-import net.sf.ehcache.hibernate.strategy.EhcacheAccessStrategyFactoryImpl;
 import net.sf.ehcache.util.Timestamper;
 
 import org.apache.commons.lang.Validate;
-import org.hibernate.cache.CacheDataDescription;
+import org.hibernate.cache.ehcache.internal.nonstop
+  .NonstopAccessStrategyFactory;
+import org.hibernate.cache.ehcache.internal.regions.EhcacheCollectionRegion;
+import org.hibernate.cache.ehcache.internal.regions.EhcacheEntityRegion;
+import org.hibernate.cache.ehcache.internal.regions.EhcacheNaturalIdRegion;
+import org.hibernate.cache.ehcache.internal.regions.EhcacheQueryResultsRegion;
+import org.hibernate.cache.ehcache.internal.regions.EhcacheTimestampsRegion;
+import org.hibernate.cache.ehcache.internal.strategy
+  .EhcacheAccessStrategyFactory;
+import org.hibernate.cache.ehcache.internal.strategy
+  .EhcacheAccessStrategyFactoryImpl;
+import org.hibernate.cache.spi.CacheDataDescription;
 import org.hibernate.cache.CacheException;
-import org.hibernate.cache.CollectionRegion;
-import org.hibernate.cache.EntityRegion;
-import org.hibernate.cache.QueryResultsRegion;
-import org.hibernate.cache.RegionFactory;
-import org.hibernate.cache.TimestampsRegion;
-import org.hibernate.cache.access.AccessType;
+import org.hibernate.cache.spi.CollectionRegion;
+import org.hibernate.cache.spi.EntityRegion;
+import org.hibernate.cache.spi.NaturalIdRegion;
+import org.hibernate.cache.spi.QueryResultsRegion;
+import org.hibernate.cache.spi.RegionFactory;
+import org.hibernate.cache.spi.TimestampsRegion;
+import org.hibernate.cache.spi.access.AccessType;
 import org.hibernate.cfg.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +45,9 @@ import org.slf4j.LoggerFactory;
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
 public class EhCacheRegionFactory implements RegionFactory {
+
+  /** The serial version.*/
+  private static final long serialVersionUID = 1L;
 
   /** The class logger.*/
   private Logger log = LoggerFactory.getLogger(EhCacheRegionFactory.class);
@@ -196,6 +204,14 @@ public class EhCacheRegionFactory implements RegionFactory {
       final Properties properties) {
     return new EhcacheTimestampsRegion(accessStrategyFactory,
         getCache(regionName), properties);
+  }
+
+  /** {@inheritDoc}. */
+  public NaturalIdRegion buildNaturalIdRegion(final String regionName,
+      final Properties properties, final CacheDataDescription metadata)
+      throws CacheException {
+    return new EhcacheNaturalIdRegion(accessStrategyFactory,
+        getCache(regionName), hibernateSettings, metadata, properties);
   }
 }
 

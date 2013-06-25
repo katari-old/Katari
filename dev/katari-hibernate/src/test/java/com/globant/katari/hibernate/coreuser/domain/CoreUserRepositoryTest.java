@@ -18,34 +18,39 @@ public class CoreUserRepositoryTest {
    */
   @Before
   public void setUp() throws Exception {
+
+    SpringTestUtils.get().beginTransaction();
+
     userRepository = (CoreUserRepository) SpringTestUtils.get().getBean(
         "coreuser.userRepository");
     userRepository.getHibernateTemplate().bulkUpdate("delete from CoreUser");
     CoreUser user = new SampleUser("test");
     userRepository.getHibernateTemplate().save(user);
+
+    SpringTestUtils.get().endTransaction();
+
   }
 
   @Test
   public void testFindUserByName() throws Exception {
+    SpringTestUtils.get().beginTransaction();
     CoreUser user = userRepository.findUserByName("test");
     assertThat(user.getName(), is("test"));
+
+    SpringTestUtils.get().endTransaction();
   }
 
   @Test
   public void testFindUser() throws Exception {
+    SpringTestUtils.get().beginTransaction();
     CoreUser user = userRepository.findUserByName("test");
     long id = user.getId();
 
     user = userRepository.findUser(id);
     assertThat(user.getName(), is("test"));
+
+    SpringTestUtils.get().endTransaction();
   }
 
-  public CoreUserRepository getUserRepository() {
-    return userRepository;
-  }
-
-  public void setUserRepository(final CoreUserRepository repository) {
-    userRepository = repository;
-  }
 }
 

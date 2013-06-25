@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import com.globant.katari.hibernate.HibernateDaoSupport;
 
 /** The application repository.
  *

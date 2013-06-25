@@ -7,6 +7,8 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 
+import static org.junit.Assert.*;
+
 import java.beans.PropertyEditor;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,10 +18,10 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.easymock.EasyMock;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -34,8 +36,7 @@ import com.globant.katari.report.domain.ReportType;
  *
  * @author jorge.atucha@globant.com
  */
-public class ParameterControllerTest extends
-    AbstractTransactionalSpringContextTests {
+public class ParameterControllerTest {
 
   /** The name of the spring form view in the ReportController. */
   private static final String EDIT_PARAMETER_FORM_VIEW = "editParameters";
@@ -46,19 +47,21 @@ public class ParameterControllerTest extends
   /** The saved report used for testing. */
   private ReportDefinition savedReport;
 
-  public ParameterControllerTest() {
-    setDefaultRollback(false);
-  }
 
   /** Sets up the database for testing.
    */
-  @Override
-  protected final void onSetUpBeforeTransaction() throws Exception {
+  @Before
+  public final void setUp() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     ReportsTestSupport.initTestReportSecurityContext("REPORT_ADMIN");
     editParameterController = (ParameterController) ReportsTestSupport
-        .getApplicationContext().getBean("/editParameters.do");
+        .get().getBean("/editParameters.do");
 
     savedReport = ReportsTestSupport.createSampleReport();
+
+    ReportsTestSupport.get().endTransaction();
   }
 
   /**
@@ -67,7 +70,10 @@ public class ParameterControllerTest extends
    * Tests that modifications on a report definition are persisted after calling
    * the ReportController.doSubmitAction method.
    */
+  @Test
   public final void testEditParameterDoSubmitAction() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
 
     MockHttpServletRequest req = new MockHttpServletRequest();
 
@@ -99,6 +105,8 @@ public class ParameterControllerTest extends
 
     assertEquals(EDIT_PARAMETER_FORM_VIEW, editParameterController
         .getFormView());
+
+    ReportsTestSupport.get().endTransaction();
   }
 
   /**
@@ -106,7 +114,11 @@ public class ParameterControllerTest extends
    *
    * Tests that a valid map with the reference data is constructed.
    */
+  @Test
   public final void testReferenceData() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     MockHttpServletRequest req = new MockHttpServletRequest();
     GenerateReportCommand command = (GenerateReportCommand)
       editParameterController.createCommandBean();
@@ -121,6 +133,8 @@ public class ParameterControllerTest extends
     assertTrue(map.size() == 2);
     assertNotNull(map.get("command"));
     assertNotNull(map.get("reportTypes"));
+
+    ReportsTestSupport.get().endTransaction();
   }
 
   /**
@@ -128,7 +142,11 @@ public class ParameterControllerTest extends
    *
    * It tests that there is a custom binder defined to handle Date properties.
    */
+  @Test
   public final void testInitBinder() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     GenerateReportCommand command = (GenerateReportCommand)
       editParameterController.createCommandBean();
 
@@ -139,6 +157,8 @@ public class ParameterControllerTest extends
     PropertyEditor customEditor = binder.findCustomEditor(Date.class, null);
     assertNotNull(customEditor);
     assertTrue(CustomDateEditor.class.isInstance(customEditor));
+
+    ReportsTestSupport.get().endTransaction();
   }
 
   /**
@@ -146,25 +166,22 @@ public class ParameterControllerTest extends
    *
    * It tests that a valid formBacking Object is returned when editing
    * parameters.
+   *
    */
+  @Test
   public final void testEditParameterFormBackingObject() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
 
     MockHttpServletRequest request = new MockHttpServletRequest();
     GenerateReportCommand fbo = (GenerateReportCommand) editParameterController
         .formBackingObject(request);
     assertNotNull(fbo);
     assertTrue(GenerateReportCommand.class.isInstance(fbo));
+
+    ReportsTestSupport.get().endTransaction();
+
   }
 
-  @Override
-  protected ConfigurableApplicationContext loadContext(final Object key) throws
-      Exception {
-    return ReportsTestSupport.getApplicationContext();
-  }
-
-  @Override
-  protected Object contextKey() {
-    return "notnull";
-  }
 }
 

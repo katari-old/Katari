@@ -18,15 +18,6 @@
 
   <dependencies>
 
-    <!-- Test only dependencies. This is needed by spring to load annotated
-         classes in spring (when you use AnnotationSessionFactoryBean instead
-         of LocalSessionFactoryBean). Not directly used in our code. -->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-annotations</artifactId>
-      <scope>test</scope>
-    </dependency>
-
     <!-- Runtime dependeecies (this jar should be used at test time only. -->
     <dependency>
       <groupId>junit</groupId>
@@ -87,11 +78,6 @@
       <artifactId>hibernate-core</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
-    </dependency>
-
     <!-- Needed for hibernate. This is the default bytecode provider. Not used
          directly in our code. -->
     <dependency>
@@ -100,7 +86,7 @@
     </dependency>
 
     <dependency>
-      <groupId>hsqldb</groupId>
+      <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
     </dependency>
 

@@ -34,7 +34,7 @@ public class EditReportFtlTest extends TestCase {
   private Map<String, Object> buildModel() {
     // Building Model
     SaveReportCommand command = (SaveReportCommand)
-      ReportsTestSupport.getApplicationContext().getBean(
+      ReportsTestSupport.get().getBean(
           "saveReportCommand");
 
     ReportsTestSupport.createSampleReport().getId();

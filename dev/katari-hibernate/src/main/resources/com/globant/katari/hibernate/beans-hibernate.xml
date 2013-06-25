@@ -18,13 +18,13 @@
 
   <!-- Hibernate SessionFactory -->
   <bean id="katari.sessionFactory"
-    class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+    class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
     lazy-init="true">
     <property name="dataSource" ref="katari.lazyDataSource" />
     <property name="hibernateProperties"
       ref='katari.configuredHibernateProperties'/>
     <property name="annotatedClasses" ref='katari.persistentClasses' />
-    <property name="cacheRegionFactory" ref='katari.regionFactory' />
+    <!-- property name="cacheRegionFactory" ref='katari.regionFactory' /-->
   </bean>
 
   <!-- Hibernate properties. They are composed by initalHibernateProperties and
@@ -68,7 +68,7 @@
 
   <!-- Transaction manager for a single Hibernate SessionFactory. -->
   <bean id="katari.transactionManager" lazy-init="true"
-    class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+    class="org.springframework.orm.hibernate4.HibernateTransactionManager"
     p:sessionFactory-ref="katari.sessionFactory"
     p:dataSource-ref="katari.lazyDataSource" />
 

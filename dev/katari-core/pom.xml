@@ -42,7 +42,7 @@
     <!-- Used by a test to register the driver with the driver manager. No
          class from this package is imported directly. -->
     <dependency>
-      <groupId>hsqldb</groupId>
+      <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <scope>test</scope>
     </dependency>

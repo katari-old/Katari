@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import com.globant.katari.hibernate.HibernateDaoSupport;
 
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 

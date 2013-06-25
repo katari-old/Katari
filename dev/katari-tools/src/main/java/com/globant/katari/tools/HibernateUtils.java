@@ -16,11 +16,10 @@ import org.apache.commons.lang.Validate;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.jdbc.util.Formatter;
-import org.hibernate.jdbc.util.DDLFormatterImpl;
+import org.hibernate.engine.jdbc.internal.DDLFormatterImpl;
 
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
 /** Utility class that creates a ddl file from an application context
  * configuration file.
@@ -116,7 +115,7 @@ public final class HibernateUtils {
     log.trace("Entering createDdlScript");
     String[] ddlScript = cfg.generateSchemaCreationScript(Dialect
         .getDialect(cfg.getProperties()));
-    Formatter formatter = new DDLFormatterImpl();
+    DDLFormatterImpl formatter = new DDLFormatterImpl();
     for (String sentence : ddlScript) {
       sentence = formatter.format(sentence);
       IOUtils.write(sentence + ";" + IOUtils.LINE_SEPARATOR, out);

@@ -93,6 +93,18 @@
     </constructor-arg>
   </bean>
 
+  <!-- The reports repository -->
+  <bean id="jasperReportRepository"
+      class="com.globant.katari.report.domain.JasperReportRepository">
+      <property name="sessionFactory" ref="katari.sessionFactory"/>
+  </bean>
+
+  <!-- The Jasper Generator -->
+  <bean id="jasperReportGenerator"
+      class="com.globant.katari.report.domain.JasperReportGenerator">
+    <constructor-arg index="0" ref="jasperReportRepository"/>
+  </bean>
+
 </beans>
 
 <!-- vim: set ts=2 et sw=2 ai: -->

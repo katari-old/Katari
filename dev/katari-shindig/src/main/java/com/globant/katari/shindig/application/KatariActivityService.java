@@ -14,7 +14,7 @@ import java.util.concurrent.Future;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import com.globant.katari.hibernate.HibernateDaoSupport;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;

@@ -31,7 +31,7 @@ public class RestrictedCookieLocaleResolverTest {
 
   @Before public void setUp() {
     supportedLocales.add(defaultLocale);
-    supportedLocales.add(new Locale("ja", "JP", "JP"));
+    supportedLocales.add(new Locale("ja", "JP", "N"));
     supportedLocales.add(new Locale("ja", "JP"));
     supportedLocales.add(new Locale("ja"));
     supportedLocales.add(new Locale("th", "TH"));
@@ -81,10 +81,13 @@ public class RestrictedCookieLocaleResolverTest {
     assertThat(locale, is(new Locale("th", "TH")));
   }
 
+  /** I create a new kind of variant called: "N" because an spring bug.
+   * https://jira.springsource.org/browse/SPR-9420
+   */
   @Test public void resolveLocale_fullKnown() {
-    request.setCookies(new Cookie(cookieName, "ja_JP_JP"));
+    request.setCookies(new Cookie(cookieName, "ja_JP_N"));
     Locale locale = resolver.resolveLocale(request);
-    assertThat(locale, is(new Locale("ja", "JP", "JP")));
+    assertThat(locale, is(new Locale("ja", "JP", "N")));
   }
 
   @Test public void setLocale() {

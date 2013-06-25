@@ -34,7 +34,7 @@ public class RoleSecurityUtilsTest {
 
   @Before
   public void setUp() throws Exception {
-
+    SpringTestUtils.get().beginTransaction();
     roleRepository = (RoleRepository) SpringTestUtils.get().getBean(
         "coreuser.roleRepository");
     String roleName = "ADMINISTRATOR";
@@ -49,16 +49,20 @@ public class RoleSecurityUtilsTest {
     authentication = new UsernamePasswordAuthenticationToken(
         roleDetailsMock, "admin");
     SecurityContextHolder.getContext().setAuthentication(authentication);
+    SpringTestUtils.get().endTransaction();
   }
 
   @Test public void testGetCurrentUserRoles() {
+    SpringTestUtils.get().beginTransaction();
     final Set<Role> currentUserRoles = RoleSecurityUtils.getCurrentUserRoles();
     assertThat(currentUserRoles.size(), is(1));
     assertThat(currentUserRoles.iterator().next().getName(),
         is("ADMINISTRATOR"));
+    SpringTestUtils.get().endTransaction();
   }
 
   @Test public void test_Exception_Wrong_userDetails() throws Exception {
+    SpringTestUtils.get().beginTransaction();
     UserDetails userDetails = EasyMock.createMock(UserDetails.class);
     EasyMock.replay(userDetails);
     UsernamePasswordAuthenticationToken authentication;
@@ -70,6 +74,7 @@ public class RoleSecurityUtilsTest {
       fail("The principal object type must be RoleUserDetail");
     } catch (Exception e) {
     }
+    SpringTestUtils.get().endTransaction();
   }
 }
 

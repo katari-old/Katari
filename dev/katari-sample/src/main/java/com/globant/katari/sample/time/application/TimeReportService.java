@@ -2,7 +2,7 @@ package com.globant.katari.sample.time.application;
 
 
 import org.apache.commons.lang.Validate;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import com.globant.katari.hibernate.HibernateDaoSupport;
 
 import java.util.Date;
 import java.util.List;
