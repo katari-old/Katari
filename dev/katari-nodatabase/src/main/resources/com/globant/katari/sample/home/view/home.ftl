@@ -13,7 +13,7 @@
     <#import "katari.ftl" as katari />
 
     First level menu weblet:<br>
-    <@katari.weblet "classic-menu" "menu" "1"/>
+    <@katari.decoratedWeblet "classic-menu" "menu" "1"/>
 
     -->
 

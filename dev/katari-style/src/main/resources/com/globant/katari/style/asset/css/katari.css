@@ -342,7 +342,6 @@ div#section div#content { padding:0 10px; }
  * positioning, the div#section is rendered correctly. */
 #pageclose {
   height:20px;
-  background:url(../image/globant.png) no-repeat top right;
   background-color:#ffffff;
   position:relative;
 }
@@ -645,7 +644,6 @@ table.results tbody td a, table.results tbody td a:hover {
 }
 
 div#footer {
-  background:#FFFFFF url(../image/globant.png) no-repeat scroll right 25px;
   font-size:0.80em;
   border-top:none;
 }

@@ -61,26 +61,26 @@
       <div id="frame">
         <#if menuType == 'classic'>
           <!-- the main menu starts here -->
-          <@katari.weblet "classic-menu" "menu" "1"/>
+          <@katari.decoratedWeblet "classic-menu" "menu" "1"/>
           <!-- the main menu ends here -->
         <#elseif menuType == 'bar'>
-          <@katari.weblet "dropdown-menu" "menu" "bar"/>
+          <@katari.decoratedWeblet "dropdown-menu" "menu" "bar"/>
         <#else>
           <div style='height:3px; background-color:#fff'>
-            <@katari.weblet "dropdown-menu" "menu" "context"/>
+            <@katari.decoratedWeblet "dropdown-menu" "menu" "context"/>
           </div>
         </#if>
         <div id="section">
 
           <#if menuType == 'classic'>
             <!-- the inner menu starts here -->
-            <@katari.weblet "classic-menu" "menu" "2"/>
+            <@katari.decoratedWeblet "classic-menu" "menu" "2"/>
             <!-- the inner menu ends here -->
           </#if>
 
           <#if menuType == 'classic'>
             <!-- the button menu starts here -->
-            <@katari.weblet "classic-menu" "menu" "3"/>
+            <@katari.decoratedWeblet "classic-menu" "menu" "3"/>
             <!-- the button menu ends here -->
           </#if>
 
