@@ -169,7 +169,7 @@
             <td>${timeEntry.comment}</td>
 
             <#-- Delete a time entry -->
-            <td>
+            <td data-x='chau'>
               <form class="deleteTimeEntry" method="POST"
                 action="deleteTimeEntry.do">
                 <@spring.bind "command.timeEntryId" />

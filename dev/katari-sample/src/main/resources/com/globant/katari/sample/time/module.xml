@@ -67,6 +67,15 @@
   </bean>
 
   <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.htmlValidator.ignoredAttributePatterns'/>
+    <constructor-arg>
+      <list>
+        <value>data-.*</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
     <constructor-arg value='katari.persistentClasses'/>
     <constructor-arg>
       <list>

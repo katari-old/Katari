@@ -1,5 +1,16 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.51
+
+* What's new since version 0.50
+
+ * Removed the special treatment of the validator attribute html tidy
+ validation.. Tapestry adds this attribute to some html elements.
+
+ * Now you can specify which invalid attributes to ignore in html tidy, for
+ example, 'data-.*'. Just append a regex to the
+ katari.htmlValidator.ignoredAttributePatterns list (use a ListFactoryAppender).
+
 Release notes for version 0.50
 
 * What's new since version 0.49

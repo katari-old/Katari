@@ -54,6 +54,13 @@ public class HtmlValidationFilter implements Filter {
    */
   private List<String> ignoredUrlpatterns = Collections.emptyList();
 
+  /** The list of element attribute patterns to ignore.
+   * 
+   * Some frameworks or custom pages may need to introduce non valid markup
+   * (for example, data- attributes). By default it is an empty list.
+   */
+  private List<String> ignoredAttributePatterns = Collections.emptyList();
+
   /** A response wrapper that provides access to the data submitted to the
    * client.
    */
@@ -132,35 +139,45 @@ public class HtmlValidationFilter implements Filter {
      */
     private List<TidyMessage> errors = new LinkedList<TidyMessage>();
 
-    /** If true the listener will ignore unknown attribute "validator" message.
+    /** A list of attribute regular expressions to ignore.
      */
-    private boolean ignoreValidatorAttribute;
+    private List<String> ignoredAttributePatterns = Collections.emptyList();
 
     /** Builds an ErrorListener.
      *
-     * @param mustIgnoreValidatorAttribute true if the listener will ignore the
-     * unknown attribute "validator" message, useful to validate tapestry
-     * pages.
+     * If any attribute matches one of the regex in ignoreValidatorAttribute,
+     * that attribute will not generate an error if invalid.
+     *
+     * @param theIgnoredAttributepatterns a list of patterns to match agains
+     * attributes to ignored.
      */
-    private ErrorListener(final boolean mustIgnoreValidatorAttribute) {
-      ignoreValidatorAttribute = mustIgnoreValidatorAttribute;
+    private ErrorListener(final List<String> theIgnoredAttributepatterns) {
+      ignoredAttributePatterns = theIgnoredAttributepatterns;
     }
 
     /** Called by tidy when a warning or error occurs.
      *
-     * It explicitly skips the error related to the attribute 'validator'.
-     * This makes it possible to validate tapestry pages that adds the
-     * 'validator' attribute to some elements.
-     *
+     * It skips errors that include an attribute that matches one of the
+     * ignoredAttributePatterns.
+     * 
      * @param message The error/warning message. It cannot be null.
      */
     public void messageReceived(final TidyMessage message) {
+      log.trace("Entering messageReceived()");
       Validate.notNull(message, "The message cannot be null.");
-      boolean skipValidatorAttribute = ignoreValidatorAttribute
-        && message.getMessage().matches("(?s).*\"validator\"(?s).*");
-      if (!skipValidatorAttribute) {
-        errors.add(message);
+      // Check if the error message corresponds to one of the attribute
+      // regexes.
+      for (String pattern : ignoredAttributePatterns) {
+        log.debug("Checking if attribute in {} matches {}.", message, pattern);
+        String regex = "unknown attribute \"" + pattern + "\"";
+        if (message.getMessage().matches(regex)) {
+          // Just skip the tidy error.
+          log.trace("Leaving messageReceived() - skipped attribute");
+          return;
+        }
       }
+      errors.add(message);
+      log.trace("Leaving messageReceived()");
     }
 
     /** Indicates if the filter found validation errors.
@@ -242,6 +259,7 @@ public class HtmlValidationFilter implements Filter {
       ignored = requestUri.matches(regexp);
     }
     if (enabled && !ignored) {
+      log.debug("Checking {} for validation errors.", requestUri);
 
       ResponseWrapper wrapper = new ResponseWrapper(httpResponse);
 
@@ -257,7 +275,7 @@ public class HtmlValidationFilter implements Filter {
         // Set the error output and ignore it.
         tidy.setErrout(new PrintWriter(new ByteArrayOutputStream()));
 
-        ErrorListener errors = new ErrorListener(false);
+        ErrorListener errors = new ErrorListener(ignoredAttributePatterns);
         tidy.setMessageListener(errors);
 
         InputStream inputStream;
@@ -267,7 +285,7 @@ public class HtmlValidationFilter implements Filter {
         tidy.parse(inputStream, new ByteArrayOutputStream());
 
         if (errors.hasErrors()) {
-          // jtidy found an error. Logger it with the page to make it easier to
+          // jtidy found an error. Log it with the page to make it easier to
           // trace.
           //
           // TODO This is using a non localized string conversion.
@@ -287,10 +305,12 @@ public class HtmlValidationFilter implements Filter {
           out.print("</body></html>");
         } else {
           // No error, send the response to the client.
+          log.debug("No errors found.");
           response.getOutputStream().write(wrapper.toByteArray());
         }
       } else {
         // Unknown content type, send the response to the client.
+        log.debug("Skipping validation because it is not text/html");
         response.getOutputStream().write(wrapper.toByteArray());
       }
     } else {
@@ -326,13 +346,24 @@ public class HtmlValidationFilter implements Filter {
     return enabled;
   }
 
-  /** Configures the list of patters for the urls that should be ignored on the
-   * validation process.
+  /** Configures the list of patterns for the urls that should be ignored on
+   * the validation process.
+   * 
    * @param theIgnoredUrlpatterns the list of url patterns, it cannot be null.
    */
   public void setIgnoredUrlpatterns(final List<String> theIgnoredUrlpatterns) {
     Validate.notNull(theIgnoredUrlpatterns, "The pattern list cannot be null.");
     ignoredUrlpatterns = theIgnoredUrlpatterns;
+  }
+
+  /** Configures the list of patterns for the attributes that should be ignored
+   * on the validation process.
+   * 
+   * @param patterns the list of attribute patterns, it cannot be null.
+   */
+  public void setIgnoredAttributePatterns(final List<String> patterns) {
+    Validate.notNull(patterns, "The pattern list cannot be null.");
+    ignoredAttributePatterns = patterns;
   }
 }
 

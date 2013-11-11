@@ -153,6 +153,8 @@ public class HtmlValidationFilterTest {
   @Test
   public final void testDoFilter_ignoredUrlPatternList() throws Exception {
 
+    log.trace("Entering testDoFilter_ignoredUrlPatternList");
+
     request = createNiceMock(HttpServletRequest.class);
     expect(request.getRequestURI()).andReturn("/ignoredPage/test");
     expect(request.getPathInfo()).andReturn("/notTrails/");
@@ -167,12 +169,12 @@ public class HtmlValidationFilterTest {
         PrintWriter writer = new PrintWriter(response.getOutputStream());
         writer.write(
             "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\""
-            + " \"http://www.w3.org/TR/html4/strict.dtd\">"
+            + " \"http://www.w3.org/TR/html4/strict.dtd\">\r\n"
             + " <html><head><title>aa</title></head><body>"
             + "<form action='test'>"
             + " <input type='text' validator='aa'>"
             + "</form>"
-            + "</body></html>");
+            + "</body></html>\r\n");
         writer.flush();
         log.trace("Leaving doFilter");
       }
@@ -185,12 +187,15 @@ public class HtmlValidationFilterTest {
     filter.setIgnoredUrlpatterns(ListFactory.create(".*/ignoredPage/.*"));
     // Would throw an exception if enabled.
     filter.doFilter(request, response, chain);
+
+    log.trace("Leaving testDoFilter_ignoredUrlPatternList");
   }
 
   /* Tests that the filter considers the invalid attribute 'validator'.
    */
   @Test
   public final void testDoFilter_considerValidator() throws Exception {
+    log.trace("Entering testDoFilter_considerValidator");
 
     request = createNiceMock(HttpServletRequest.class);
     expect(request.getPathInfo()).andReturn("/something/");
@@ -224,6 +229,51 @@ public class HtmlValidationFilterTest {
     // Would throw an exception if enabled.
     filter.doFilter(request, response, chain);
     assertThat(response.getStatus(), is(500));
+
+    log.trace("Leaving testDoFilter_considerValidator");
+  }
+
+  /* Tests that the filter considers the invalid attribute 'validator'.
+   */
+  @Test
+  public final void testDoFilter_skipValidatorAttribute() throws Exception {
+    log.trace("Entering testDoFilter_skipValidatorAttribute");
+
+    request = createNiceMock(HttpServletRequest.class);
+    expect(request.getPathInfo()).andReturn("/something/");
+    expect(request.getRequestURI()).andReturn("/test");
+    replay(request);
+
+    // Mocks the filter chain.
+    FilterChain chain = new FilterChain() {
+      public void doFilter(final ServletRequest request, final
+          ServletResponse response) throws IOException {
+        log.trace("Entering doFilter");
+
+        PrintWriter writer = new PrintWriter(response.getOutputStream());
+        writer.write(
+            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\""
+            + " \"http://www.w3.org/TR/html4/strict.dtd\">"
+            + " <html><head><title>aa</title></head><body>"
+            + "<form action='test'>"
+            + " <input type='text' validator='aa'>"
+            + "</form>"
+            + "</body></html>");
+        writer.flush();
+        log.trace("Leaving doFilter");
+      }
+    };
+
+    // Executes the test.
+    HtmlValidationFilter filter = new HtmlValidationFilter();
+    filter.setEnabled(true);
+    filter.init(filterConfig);
+    filter.setIgnoredAttributePatterns(ListFactory.create("validator"));
+    // Would throw an exception if enabled.
+    filter.doFilter(request, response, chain);
+    assertThat(response.getStatus(), is(200));
+
+    log.trace("Leaving testDoFilter_skipValidatorAttribute");
   }
 
   /* Tests what happens when the user does not call flush on the response or
