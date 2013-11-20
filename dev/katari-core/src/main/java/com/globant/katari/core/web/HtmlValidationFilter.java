@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.tidy.Tidy;
 import org.w3c.tidy.TidyMessage;
 import org.w3c.tidy.TidyMessageListener;
+import org.w3c.tidy.Report;
 
 /** Filter that passes all generated html through jtidy, an html validator.
  */
@@ -168,9 +169,11 @@ public class HtmlValidationFilter implements Filter {
       // Check if the error message corresponds to one of the attribute
       // regexes.
       for (String pattern : ignoredAttributePatterns) {
-        log.debug("Checking if attribute in {} matches {}.", message, pattern);
-        String regex = "unknown attribute \"" + pattern + "\"";
-        if (message.getMessage().matches(regex)) {
+        log.debug("Checking if attribute in {} matches {}.",
+            message.getMessage(), pattern);
+        String regex = ".*\"" + pattern + "\".*";
+        if (message.getMessage().matches(regex)
+            && message.getErrorCode() == Report.UNKNOWN_ATTRIBUTE) {
           // Just skip the tidy error.
           log.trace("Leaving messageReceived() - skipped attribute");
           return;
@@ -207,7 +210,8 @@ public class HtmlValidationFilter implements Filter {
         output.append("line ").append(message.getLine());
         output.append(" column ").append(message.getColumn());
         output.append(" - ").append(message.getLevel());
-        output.append(": ");
+        output.append("(").append(message.getErrorCode());
+        output.append("): ");
         output.append(StringEscapeUtils.escapeHtml(message.getMessage()));
         output.append("<br>\r");
       }

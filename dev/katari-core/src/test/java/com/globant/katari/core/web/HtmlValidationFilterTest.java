@@ -191,11 +191,11 @@ public class HtmlValidationFilterTest {
     log.trace("Leaving testDoFilter_ignoredUrlPatternList");
   }
 
-  /* Tests that the filter considers the invalid attribute 'validator'.
+  /* Tests that the filter fails with the invalid attribute 'validator'.
    */
   @Test
-  public final void testDoFilter_considerValidator() throws Exception {
-    log.trace("Entering testDoFilter_considerValidator");
+  public final void testDoFilter_failOnValidator() throws Exception {
+    log.trace("Entering testDoFilter_failOnValidator");
 
     request = createNiceMock(HttpServletRequest.class);
     expect(request.getPathInfo()).andReturn("/something/");
@@ -226,14 +226,16 @@ public class HtmlValidationFilterTest {
     HtmlValidationFilter filter = new HtmlValidationFilter();
     filter.setEnabled(true);
     filter.init(filterConfig);
-    // Would throw an exception if enabled.
     filter.doFilter(request, response, chain);
+
+    // Fails with error 500.
     assertThat(response.getStatus(), is(500));
 
-    log.trace("Leaving testDoFilter_considerValidator");
+    log.trace("Leaving testDoFilter_failOnValidator");
   }
 
-  /* Tests that the filter considers the invalid attribute 'validator'.
+  /* Tests that the filter considers the invalid attribute 'validator' if
+   * configured to do so.
    */
   @Test
   public final void testDoFilter_skipValidatorAttribute() throws Exception {
@@ -253,12 +255,12 @@ public class HtmlValidationFilterTest {
         PrintWriter writer = new PrintWriter(response.getOutputStream());
         writer.write(
             "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\""
-            + " \"http://www.w3.org/TR/html4/strict.dtd\">"
-            + " <html><head><title>aa</title></head><body>"
-            + "<form action='test'>"
-            + " <input type='text' validator='aa'>"
-            + "</form>"
-            + "</body></html>");
+            + " \"http://www.w3.org/TR/html4/strict.dtd\">\n"
+            + " <html><head><title>aa</title></head><body>\n"
+            + "<form action='test'>\n"
+            + " <input type='text' validator='aa'>\n"
+            + "</form>\n"
+            + "</body></html>\n");
         writer.flush();
         log.trace("Leaving doFilter");
       }
@@ -269,8 +271,8 @@ public class HtmlValidationFilterTest {
     filter.setEnabled(true);
     filter.init(filterConfig);
     filter.setIgnoredAttributePatterns(ListFactory.create("validator"));
-    // Would throw an exception if enabled.
     filter.doFilter(request, response, chain);
+    // Should pass with a 200 status code.
     assertThat(response.getStatus(), is(200));
 
     log.trace("Leaving testDoFilter_skipValidatorAttribute");
