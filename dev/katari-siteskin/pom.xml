@@ -6,7 +6,7 @@
     <!-- This is used to style the maven generated site, so it depends directly
          on katari, not on dev -->
     <artifactId>katari</artifactId>
-    <version>0.52</version>
+    <version>0.53-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
