@@ -12,6 +12,7 @@
 
   <!-- The reports module.  -->
   <import resource="classpath:/com/globant/katari/report/module.xml"/>
+  <import resource="classpath:/com/globant/katari/report/view/spring-servlet.xml"/>
 
   <!-- The user core module. -->
   <import resource="classpath:/com/globant/katari/hibernate/coreuser/module.xml"/>

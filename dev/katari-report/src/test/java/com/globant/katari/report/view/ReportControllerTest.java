@@ -57,9 +57,12 @@ public class ReportControllerTest extends TestCase {
    */
   protected final void setUp() {
 
-    ReportsTestSupport.get().beginTransaction();
+    ReportsTestSupport.get().clearDatabase();
 
     ReportsTestSupport.initTestReportSecurityContext("REPORT_ADMIN");
+
+    ReportsTestSupport.get().beginTransaction();
+
     repository = (JasperReportRepository) ReportsTestSupport
         .get().getBean(REPOSITORY_BEAN_NAME);
 
@@ -74,8 +77,12 @@ public class ReportControllerTest extends TestCase {
 
     savedReport = repository.findReportDefinition(REPORT_NAME);
 
-    ReportsTestSupport.get().endTransaction();
+  }
 
+  /** {@inheritDoc}. */
+  @Override
+  protected void tearDown() throws Exception {
+    ReportsTestSupport.get().endTransaction();
   }
 
   /**

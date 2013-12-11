@@ -2,6 +2,7 @@
 
 package com.globant.katari.editablepages.application;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -21,9 +22,12 @@ public class RevertPageCommandTest {
 
   @Before
   public final void setUp() {
-    repository = (PageRepository) TestUtils
+
+    TestUtils.get().beginTransaction();
+
+    repository = (PageRepository) TestUtils.get()
       .getServletBeanFactory().getBean("pageRepository");
-    command = (RevertPageCommand) TestUtils
+    command = (RevertPageCommand) TestUtils.get()
       .getServletBeanFactory().getBean("revertPageCommand");
     siteName = TestUtils.getSiteName();
 
@@ -39,6 +43,10 @@ public class RevertPageCommandTest {
     page.publish();
     page.modify("first.last", "page-2", "title", "content - modified");
     repository.save(siteName, page);
+  }
+
+  @After public void after() {
+    TestUtils.get().endTransaction();
   }
 
   @Test

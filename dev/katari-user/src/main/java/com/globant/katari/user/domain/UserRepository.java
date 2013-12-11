@@ -32,7 +32,7 @@ public class UserRepository extends HibernateDaoSupport {
    */
   public void remove(final User user) {
     Validate.notNull(user, "The user cannot be null");
-    getHibernateTemplate().delete(user);
+    getSession().delete(user);
   }
 
   /** Finds a user by email.
@@ -44,7 +44,7 @@ public class UserRepository extends HibernateDaoSupport {
    */
   @SuppressWarnings("unchecked")
   public User findUserByEmail(final String email) {
-    List<User> users = getHibernateTemplate().find("from User where email = ?",
+    List<User> users = (List<User>) find("from User where email = ?",
         email);
     if (users.isEmpty()) {
       return null;
@@ -64,7 +64,7 @@ public class UserRepository extends HibernateDaoSupport {
   @SuppressWarnings("unchecked")
   public User findUserByName(final String username) {
     Validate.notNull(username, "The username cannot be null");
-    List<User> users = getHibernateTemplate().find(
+    List<User> users = (List<User>) find(
         "from User user where user.name = ?", username);
     if (users.isEmpty()) {
       return null;
@@ -79,7 +79,7 @@ public class UserRepository extends HibernateDaoSupport {
    */
   public void save(final User user) {
     Validate.notNull(user, "The user cannot be null");
-    getHibernateTemplate().saveOrUpdate(user);
+    getSession().saveOrUpdate(user);
   }
 
   /** Gets all the users using a filter.
@@ -158,7 +158,7 @@ public class UserRepository extends HibernateDaoSupport {
    * exists.
    */
   public User findUser(final long id) {
-    return (User) getHibernateTemplate().get(User.class, id);
+    return (User) getSession().get(User.class, id);
   }
 }
 

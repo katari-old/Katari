@@ -30,6 +30,9 @@ public class ViewTimeEntriesCommandTest extends TestCase {
   /** This is a set up method of this TestCase.
    */
   public void setUp() {
+
+    SpringTestUtils.get().beginTransaction();
+
     viewTimeEntriesCommand = (ViewTimeEntriesCommand) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("viewTimeEntriesCommand");
     TimeRepository repository = (TimeRepository) SpringTestUtils
@@ -39,6 +42,12 @@ public class ViewTimeEntriesCommandTest extends TestCase {
     user = userRepository.findUserByName("admin");
     DataHelper.createTimeEntry(repository, user);
     SecurityTestUtils.setContextUser(user);
+  }
+
+  /** {@inheritDoc}. */
+  @Override
+  protected void tearDown() throws Exception {
+    SpringTestUtils.get().endTransaction();
   }
 
   /** Test the execute method.

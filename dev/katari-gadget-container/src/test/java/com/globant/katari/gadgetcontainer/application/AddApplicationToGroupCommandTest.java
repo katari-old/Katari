@@ -44,38 +44,41 @@ public class AddApplicationToGroupCommandTest {
   @Before
   public void setUp() throws Exception {
 
-    appContext = SpringTestUtils.getContext();
+    SpringTestUtils.get().clearDatabase();
+    SpringTestUtils.get().beginTransaction();
+
+    appContext = SpringTestUtils.get().getBeanFactory();
 
     session = ((SessionFactory) appContext.getBean("katari.sessionFactory"))
       .openSession();
 
-    session.createQuery("delete from GadgetInstance").executeUpdate();
-    session.createQuery("delete from GadgetGroup").executeUpdate();
-    session.createQuery("delete from CoreUser").executeUpdate();
-    session.createSQLQuery("delete from supported_views").executeUpdate();
-    session.createQuery("delete from Application").executeUpdate();
-
     user = new SampleUser("me");
     session.saveOrUpdate(user);
     user = (CoreUser) session.createQuery("from CoreUser").uniqueResult();
+
+    SpringTestUtils.get().endTransaction();
   }
 
   // An end-to-end test (bah, from the command) to add a gadget instance.
   @Test
   public void testExecute_endToEnd() throws Exception {
 
+    SpringTestUtils.get().beginTransaction();
+
     GadgetGroupRepository repository = (GadgetGroupRepository)
       appContext.getBean("gadgetcontainer.gadgetGroupRepository");
 
     Application application1 = new Application(gadgetXmlUrl1);
-    repository.getHibernateTemplate().saveOrUpdate(application1);
+    repository.getSession().saveOrUpdate(application1);
     Application application2 = new Application(gadgetXmlUrl2);
-    repository.getHibernateTemplate().saveOrUpdate(application2);
+    repository.getSession().saveOrUpdate(application2);
 
     CustomizableGadgetGroup group;
     group = new CustomizableGadgetGroup(user, "sample", "default", 2);
     group.add(new GadgetInstance(application1, 0, 0));
     repository.save(group);
+
+    SpringTestUtils.get().endTransaction();
 
     // Sets the currently logged on user
     SpringTestUtils.setLoggedInUser(user);
@@ -89,6 +92,7 @@ public class AddApplicationToGroupCommandTest {
     command.execute();
 
     // Now we verify. There should be two gadgets in one column.
+    SpringTestUtils.get().beginTransaction();
     group = repository.findCustomizableGadgetGroup(user.getId(), "sample");
     for (GadgetInstance gadget: group.getGadgets()) {
       assertThat(gadget.getColumn(), is(0));
@@ -96,11 +100,7 @@ public class AddApplicationToGroupCommandTest {
         assertThat(gadget.getTitle(), is("Test title 2"));
       }
     }
-  }
-
-  @After
-  public void tearDown() {
-    session.close();
+    SpringTestUtils.get().endTransaction();
   }
 }
 

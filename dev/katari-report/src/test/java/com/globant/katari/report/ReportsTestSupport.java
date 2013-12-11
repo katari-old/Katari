@@ -16,7 +16,6 @@ import javax.sql.DataSource;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.easymock.EasyMock;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.hibernate.coreuser.domain.RoleDetails;
@@ -34,9 +33,6 @@ public class ReportsTestSupport extends SpringTestUtilsBase {
 
   /** The static instance for the singleton.*/
   private static ReportsTestSupport instance;
-
-  /** The spring application context. */
-  private static ConfigurableApplicationContext applicationContext = null;
 
   /** The name of the report used for testing. */
   public static final String REPORT_NAME = "Test Project Report";
@@ -197,15 +193,6 @@ public class ReportsTestSupport extends SpringTestUtilsBase {
     return repository.findReportDefinition(REPORT_NAME);
   }
 
-  /** Obtains the data source.
-   *
-   * @return Returns the data source, never null.
-   */
-  public static DataSource getDataSource() {
-    return (DataSource) get().getBean(
-        "dataSource");
-  }
-
   /** Obtains the jasper repository.
    *
    * @return Returns the jasper repository, never null.
@@ -223,5 +210,6 @@ public class ReportsTestSupport extends SpringTestUtilsBase {
     return (JasperReportGenerator) get().getBean(
         "jasperReportGenerator");
   }
+
 }
 

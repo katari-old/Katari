@@ -31,7 +31,7 @@ public class ApplicationRepository extends HibernateDaoSupport {
     log.trace("Entering findApplication with id = {}", Long.valueOf(id));
 
     Application app;
-    app = (Application) getHibernateTemplate().get(Application.class, id);
+    app = (Application) getSession().get(Application.class, id);
 
     log.trace("Leaving findApplication");
     return app;

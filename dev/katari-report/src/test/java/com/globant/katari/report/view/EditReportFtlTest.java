@@ -16,6 +16,10 @@ public class EditReportFtlTest extends TestCase {
 
   public final void testFtl() throws Exception {
 
+    ReportsTestSupport.get().clearDatabase();
+
+    ReportsTestSupport.get().beginTransaction();
+
     List<String> valid = new ArrayList<String>();
     valid.add(".*<title>Add Report Definition</title>.*");
     valid.add(".*Report Name.*");
@@ -29,6 +33,9 @@ public class EditReportFtlTest extends TestCase {
     FreemarkerTestEngine engine = new FreemarkerTestEngine(
         "/com/globant/katari/report/view", Locale.ENGLISH, buildModel());
     engine.runAndValidate("editReport.ftl", valid, invalid);
+
+    ReportsTestSupport.get().endTransaction();
+
   }
 
   private Map<String, Object> buildModel() {

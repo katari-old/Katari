@@ -26,7 +26,7 @@ public class RegistrationRepository extends HibernateDaoSupport {
     Validate.notNull(request, "The RecoverPasswordRequest cannot be null");
     LOG.debug("storing new forgot password token for the user: "
         + request.getUserId());
-    getHibernateTemplate().saveOrUpdate(request);
+    getSession().saveOrUpdate(request);
   }
 
   /** Search the recover password request for the given user and token.

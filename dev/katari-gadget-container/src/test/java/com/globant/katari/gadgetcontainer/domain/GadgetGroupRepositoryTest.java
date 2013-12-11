@@ -37,22 +37,23 @@ public class GadgetGroupRepositoryTest {
 
   @Before
   public void setUp() throws Exception {
-    appContext = SpringTestUtils.getContext();
+
+    SpringTestUtils.get().clearDatabase();
+    SpringTestUtils.get().beginTransaction();
+
+    appContext = SpringTestUtils.get().getBeanFactory();
     repository = (GadgetGroupRepository) appContext.getBean(REPOSITORY);
     user = new SampleUser("me");
     session = ((SessionFactory) appContext.getBean("katari.sessionFactory"))
         .openSession();
-    session.createQuery("delete from GadgetInstance").executeUpdate();
-    session.createQuery("delete from GadgetGroup").executeUpdate();
-    session.createQuery("delete from CoreUser").executeUpdate();
     session.saveOrUpdate(user);
     user = (CoreUser) session.createQuery("from CoreUser").uniqueResult();
   }
 
-  @After
-  public void tearDown() {
-    session.close();
+  @After public void after() {
+    SpringTestUtils.get().endTransaction();
   }
+
 
   @Test
   public void testFindGadgetGroup() {
@@ -121,7 +122,7 @@ public class GadgetGroupRepositoryTest {
     group = new CustomizableGadgetGroup(user, "for me", "default", 2);
     Application app = new Application(gadgetUrl);
     // Test friendly hack: never use the repository like this.
-    repository.getHibernateTemplate().saveOrUpdate(app);
+    repository.getSession().saveOrUpdate(app);
     group.add(new GadgetInstance(app, 1, 2));
     repository.save(group);
 

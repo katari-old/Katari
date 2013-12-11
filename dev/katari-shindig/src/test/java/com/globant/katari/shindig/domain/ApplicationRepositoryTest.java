@@ -28,21 +28,22 @@ public class ApplicationRepositoryTest {
   private String gadgetXmlUrl = "file:///" + new File(
       "src/test/resources/FullSampleGadget.xml").getAbsolutePath();
 
-  @Before
-  public void setUp() throws Exception {
-    ApplicationContext appContext = SpringTestUtils.getBeanFactory();
+  @Before public void setUp() throws Exception {
+
+    SpringTestUtils.get().clearDatabase();
+    SpringTestUtils.get().beginTransaction();
+
+    ApplicationContext appContext = SpringTestUtils.get().getBeanFactory();
     repository = (ApplicationRepository) appContext.getBean(REPOSITORY);
     session = ((SessionFactory) appContext.getBean("katari.sessionFactory"))
         .openSession();
-    session.createQuery("delete from Application").executeUpdate();
     Application app = new Application(gadgetXmlUrl);
     session.saveOrUpdate(app);
     appId = app.getId();
   }
 
-  @After
-  public void tearDown() {
-    session.close();
+  @After public void tearDown() {
+    SpringTestUtils.get().endTransaction();
   }
 
   @Test

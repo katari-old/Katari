@@ -49,6 +49,9 @@ public class SaveUserCommandTest {
    */
   @Before
   public final void setUp() {
+
+    SpringTestUtils.clearDatabase();
+
     SpringTestUtils.beginTransaction();
     userRepository = (UserRepository) SpringTestUtils.getBean(
         "user.userRepository");
@@ -64,13 +67,6 @@ public class SaveUserCommandTest {
   /** Removes the unneeded users.
    */
   private void setUpUserRepository() {
-    for (User user : userRepository.getUsers(new UserFilter())) {
-      userRepository.remove(user);
-    }
-
-    for (Role role : roleRepository.getRoles()) {
-      roleRepository.remove(role);
-    }
 
     // Add new roles in the user repository.
     roleRepository.save(new Role("member"));

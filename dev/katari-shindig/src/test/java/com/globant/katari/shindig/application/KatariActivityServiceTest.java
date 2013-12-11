@@ -57,15 +57,21 @@ public class KatariActivityServiceTest {
 
   private Session session;
 
-  @Before
-  public void setUp() {
-    service = (KatariActivityService) SpringTestUtils.getBeanFactory().getBean(
-        "shindig.activityService");
+  @Before public void setUp() {
 
-    session = ((SessionFactory) SpringTestUtils.getBeanFactory()
-        .getBean("katari.sessionFactory")).openSession();
+    SpringTestUtils.get().clearDatabase();
+
+    SpringTestUtils.get().beginTransaction();
+
+    service = (KatariActivityService) SpringTestUtils.get()
+        .getBeanFactory().getBean("shindig.activityService");
+
+    session = ((SessionFactory) SpringTestUtils.get().getBeanFactory()
+        .getBean("katari.sessionFactory")).getCurrentSession();
+
     session.createQuery("delete from KatariActivity").executeUpdate();
     // Creates a sample application.
+
     session.createQuery("delete from Application").executeUpdate();
     Application app = new Application(gadgetXmlUrl);
     session.saveOrUpdate(app);
@@ -87,10 +93,8 @@ public class KatariActivityServiceTest {
         .toString();
   }
 
-  @After
-  public void tearDown() {
-    session.createQuery("delete from KatariActivity").executeUpdate();
-    session.close();
+  @After public void after() {
+    SpringTestUtils.get().endTransaction();
   }
 
   @Test
@@ -256,10 +260,6 @@ public class KatariActivityServiceTest {
   }
 
   @Test
-  public void testDeleteActivities() {
-  }
-
-  @Test
   public void testGetActivities_news_feed() throws Exception {
 
     service.setNewsFeedApplicationId(newsFeedGadgetXmlUrl);
@@ -324,7 +324,6 @@ public class KatariActivityServiceTest {
       final String appId) {
     Activity activity = new ActivityImpl();
     activity.setTitle(title);
-
     service.createActivity(new UserId(UserId.Type.userId, userId),
         new GroupId(GroupId.Type.self, "@self"), appId, null, activity, null);
   }
@@ -336,7 +335,7 @@ public class KatariActivityServiceTest {
       if (user.toString().equals(userId1)) {
         switch (groupId.getType()) {
         case self:
-          criteria.createCriteria("user").add(Restrictions.ne("id", 
+          criteria.createCriteria("user").add(Restrictions.ne("id",
               userIds.get(0)));
           break;
         default:

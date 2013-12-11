@@ -42,7 +42,7 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
 
     log.trace("Entering findGadgetGroup('{}', '{}')", userId, name);
 
-    List<GadgetGroup> groups = getHibernateTemplate().find("from"
+    List<GadgetGroup> groups = (List<GadgetGroup>) find("from"
         + " GadgetGroup gadgetGroup where gadgetGroup.name = ?"
         + " and (gadgetGroup.class = SharedGadgetGroup or"
         + " (gadgetGroup.class = CustomizableGadgetGroup and"
@@ -76,7 +76,8 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
 
     log.trace("Entering findCustomizableGadgetGroup('{}', '{}')", userId, name);
 
-    List<CustomizableGadgetGroup> groups = getHibernateTemplate().find("from"
+    List<CustomizableGadgetGroup> groups = (List<CustomizableGadgetGroup>)
+        find("from"
         + " CustomizableGadgetGroup where name = ? and owner.id = ?",
         new Object[]{name, userId});
 
@@ -103,7 +104,7 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
 
     log.trace("Entering findGadgetGroupTemplate('{}')", name);
 
-    List<GadgetGroupTemplate> groups = getHibernateTemplate().find("from"
+    List<GadgetGroupTemplate> groups = (List<GadgetGroupTemplate>) find("from"
         + " GadgetGroupTemplate where name = ?", new Object[]{name});
 
     if (groups.isEmpty()) {
@@ -125,7 +126,7 @@ public class GadgetGroupRepository extends HibernateDaoSupport {
   public void save(final GadgetGroup gadgetGroup) {
     log.trace("Entering save");
     Validate.notNull(gadgetGroup, "the group can not be null");
-    getHibernateTemplate().saveOrUpdate(gadgetGroup);
+    getSession().saveOrUpdate(gadgetGroup);
     log.trace("Leaving save");
   }
 

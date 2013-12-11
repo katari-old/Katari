@@ -53,18 +53,15 @@ public class MoveGadgetCommandTest {
   @Before
   public void setUp() throws Exception {
 
+    SpringTestUtils.get().clearDatabase();
+    SpringTestUtils.get().beginTransaction();
+
     gadgetGroup = createMock(CustomizableGadgetGroup.class);
 
-    appContext = SpringTestUtils.getContext();
+    appContext = SpringTestUtils.get().getBeanFactory();
 
     session = ((SessionFactory) appContext.getBean("katari.sessionFactory"))
       .openSession();
-
-    session.createQuery("delete from GadgetInstance").executeUpdate();
-    session.createQuery("delete from GadgetGroup").executeUpdate();
-    session.createQuery("delete from CoreUser").executeUpdate();
-    session.createSQLQuery("delete from supported_views").executeUpdate();
-    session.createQuery("delete from Application").executeUpdate();
 
     user = new SampleUser("me");
     session.saveOrUpdate(user);
@@ -79,6 +76,10 @@ public class MoveGadgetCommandTest {
       .andReturn(gadgetGroup);
     repository.save(gadgetGroup);
     replay(repository);
+  }
+
+  @After public void after() {
+    SpringTestUtils.get().endTransaction();
   }
 
   @Test
@@ -144,7 +145,7 @@ public class MoveGadgetCommandTest {
 
     Application app = new Application(gadgetXmlUrl);
     // Test friendly hack: never use the repository like this.
-    repository.getHibernateTemplate().saveOrUpdate(app);
+    repository.getSession().saveOrUpdate(app);
 
     CustomizableGadgetGroup group;
     group = new CustomizableGadgetGroup(user, "sample", "default", 2);

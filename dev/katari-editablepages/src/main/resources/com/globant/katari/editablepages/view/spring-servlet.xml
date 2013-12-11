@@ -31,6 +31,7 @@
     class='com.globant.katari.editablepages.view.PageController'>
     <constructor-arg ref='pageRepository'/>
     <constructor-arg ref='editable-pages.siteName'/>
+    <constructor-arg ref='katari.transaction'/>
   </bean>
 
   <!-- Edits a page. -->
@@ -175,6 +176,7 @@
     <property name="transactionAttributes">
       <props>
         <prop key="execute">PROPAGATION_REQUIRED</prop>
+        <prop key="init">PROPAGATION_REQUIRED</prop>
       </props>
     </property>
   </bean>

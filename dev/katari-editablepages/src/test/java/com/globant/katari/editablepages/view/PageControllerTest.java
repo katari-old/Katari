@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,17 +15,25 @@ import org.springframework.web.servlet.ModelAndView;
 import com.globant.katari.editablepages.TestUtils;
 import com.globant.katari.editablepages.domain.Page;
 import com.globant.katari.editablepages.domain.PageRepository;
+import com.globant.katari.hibernate.Transaction;
 
 /* Tests the page controller.
  */
 public class PageControllerTest {
 
   private PageRepository repository;
-  
+
   private String siteName;
+
+  private Transaction transaction;
 
   @Before
   public final void setUp() throws Exception {
+
+    TestUtils.get().beginTransaction();
+
+    transaction = (Transaction) TestUtils.get().getBean("katari.transaction");
+
     repository = TestUtils.getPageRepository();
     siteName = TestUtils.getSiteName();
 
@@ -37,6 +46,8 @@ public class PageControllerTest {
     page = new Page("first.last", "page-2", "title", "content - 2");
     page.publish();
     repository.save(siteName, page);
+
+    TestUtils.get().endTransaction();
   }
 
   /* Tests that the controller forwards the request with the correct page to
@@ -44,7 +55,8 @@ public class PageControllerTest {
    */
   @Test
   public final void testhandleRequestInternal() throws Exception {
-    PageController controller = new PageController(repository,siteName);
+    PageController controller = new PageController(repository, siteName,
+        transaction);
 
     MockHttpServletRequest request = new MockHttpServletRequest();
     request.setPathInfo("/page/page-2");
@@ -63,7 +75,8 @@ public class PageControllerTest {
    */
   @Test(expected = RuntimeException.class)
   public final void testhandleRequestInternal_notPublished() throws Exception {
-    PageController controller = new PageController(repository,siteName);
+    PageController controller = new PageController(repository, siteName,
+        transaction);
 
     MockHttpServletRequest request = new MockHttpServletRequest();
     request.setPathInfo("/page/page-1");
@@ -76,7 +89,8 @@ public class PageControllerTest {
    */
   @Test(expected = RuntimeException.class)
   public final void testhandleRequestInternal_pageNotFound() throws Exception {
-    PageController controller = new PageController(repository,siteName);
+    PageController controller = new PageController(repository, siteName,
+        transaction);
 
     MockHttpServletRequest request = new MockHttpServletRequest();
     request.setPathInfo("/page/This page name is never found");

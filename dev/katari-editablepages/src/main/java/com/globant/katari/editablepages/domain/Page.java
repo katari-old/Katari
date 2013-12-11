@@ -14,9 +14,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
-import org.compass.annotations.Searchable;
-import org.compass.annotations.SearchableId;
-import org.compass.annotations.SearchableProperty;
 
 import org.apache.commons.lang.Validate;
 
@@ -38,7 +35,6 @@ import org.apache.commons.lang.Validate;
 @Entity
 @Table(name = "pages", uniqueConstraints
     = { @UniqueConstraint(columnNames = { "site_name", "name" }) })
-@Searchable
 public class Page {
 
   /** The length in characters of the page name.
@@ -62,7 +58,6 @@ public class Page {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
-  @SearchableId
   private long id = 0;
 
   /** The name of the site that the page belongs to.
@@ -71,7 +66,6 @@ public class Page {
    */
   @SuppressWarnings("unused")
   @Column(name = "site_name", nullable = false)
-  @SearchableProperty
   private String siteName;
 
   /** The name of the page.
@@ -81,7 +75,6 @@ public class Page {
    */
   @Column(name = "name", nullable = false, unique = false,
       length = PAGE_NAME_LENGTH)
-  @SearchableProperty
   private String name;
 
   /** The title of the page
@@ -89,7 +82,6 @@ public class Page {
    * The title is inserted in the html title element.
    */
   @Column(name = "title", nullable = false, length = TITLE_LENGTH)
-  @SearchableProperty
   private String title;
 
   /** The content of the page.
@@ -98,7 +90,6 @@ public class Page {
    * created and not yet published.
    */
   @Column(name = "content", nullable = true, length = CONTENT_LENGTH)
-  @SearchableProperty
   private String content = null;
 
   /** The unpublished content of the page (html code).
@@ -121,7 +112,6 @@ public class Page {
    * page. It is never null.
    */
   @Column(name = "modifier", nullable = false, length = CREATOR_NAME_LENGTH)
-  @SearchableProperty
   private String modifier;
 
   /** The default constructor to make hibernate happy.

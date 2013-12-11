@@ -17,6 +17,10 @@ public class EditParametersFtlTest extends TestCase {
 
   public final void testFtl() throws Exception {
 
+    ReportsTestSupport.get().clearDatabase();
+
+    ReportsTestSupport.get().beginTransaction();
+
     List<String> valid = new ArrayList<String>();
     valid.add(".*<title>Edit Parameters Descriptors</title>.*");
     valid.add(".*TEST_PARAM_1.*");
@@ -30,6 +34,9 @@ public class EditParametersFtlTest extends TestCase {
     FreemarkerTestEngine engine = new FreemarkerTestEngine(
         "/com/globant/katari/report/view", Locale.ENGLISH, buildModel());
     engine.runAndValidate("editParameters.ftl", valid, invalid);
+
+    ReportsTestSupport.get().endTransaction();
+
   }
 
   private Map<String, Object> buildModel() {

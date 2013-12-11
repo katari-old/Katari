@@ -5,6 +5,7 @@ package com.globant.katari.hibernate.coreuser.domain;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.hibernate.Query;
 
 import com.globant.katari.hibernate.HibernateDaoSupport;
 
@@ -23,7 +24,7 @@ public class CoreUserRepository extends HibernateDaoSupport {
    * exists.
    */
   public CoreUser findUser(final long id) {
-    return (CoreUser) getHibernateTemplate().get(CoreUser.class, id);
+    return (CoreUser) getSession().get(CoreUser.class, id);
   }
 
   /** Finds the user with the specified name.
@@ -37,9 +38,10 @@ public class CoreUserRepository extends HibernateDaoSupport {
   public CoreUser findUserByName(final String name) {
 
     Validate.notNull(name, "The user name cannot be null");
-
-    List<CoreUser> users = getHibernateTemplate().find(
-        "from CoreUser user where user.name = ?", name);
+    Query query = getSession().createQuery(
+        "from CoreUser user where user.name = ?");
+    query.setParameter(0, name);
+    List<CoreUser> users = query.list();
     if (users.isEmpty()) {
       return null;
     } else {

@@ -41,23 +41,24 @@ public class RemoveApplicationFromGroupCommandTest {
 
   private Session session;
 
-  @Before
-  public void setUp() throws Exception {
+  @Before public void setUp() throws Exception {
 
-    appContext = SpringTestUtils.getContext();
+    SpringTestUtils.get().clearDatabase();
+
+    SpringTestUtils.get().beginTransaction();
+
+    appContext = SpringTestUtils.get().getBeanFactory();
 
     session = ((SessionFactory) appContext.getBean("katari.sessionFactory"))
       .openSession();
 
-    session.createQuery("delete from GadgetInstance").executeUpdate();
-    session.createQuery("delete from GadgetGroup").executeUpdate();
-    session.createQuery("delete from CoreUser").executeUpdate();
-    session.createSQLQuery("delete from supported_views").executeUpdate();
-    session.createQuery("delete from Application").executeUpdate();
-
     user = new SampleUser("me");
     session.saveOrUpdate(user);
     user = (CoreUser) session.createQuery("from CoreUser").uniqueResult();
+  }
+
+  @After public void after() {
+    SpringTestUtils.get().endTransaction();
   }
 
   @Test
@@ -67,9 +68,9 @@ public class RemoveApplicationFromGroupCommandTest {
       appContext.getBean("gadgetcontainer.gadgetGroupRepository");
 
     Application application1 = new Application(gadgetXmlUrl1);
-    repository.getHibernateTemplate().saveOrUpdate(application1);
+    repository.getSession().saveOrUpdate(application1);
     Application application2 = new Application(gadgetXmlUrl2);
-    repository.getHibernateTemplate().saveOrUpdate(application2);
+    repository.getSession().saveOrUpdate(application2);
 
     CustomizableGadgetGroup group;
     group = new CustomizableGadgetGroup(user, "sample", "default", 2);

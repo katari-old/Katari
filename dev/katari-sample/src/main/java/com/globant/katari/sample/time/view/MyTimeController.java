@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.globant.katari.hibernate.Transaction;
 import com.globant.katari.hibernate.coreuser.SecurityUtils;
 import com.globant.katari.sample.time.application.ViewTimeEntriesCommand;
 import com.globant.katari.sample.time.domain.TimeEntry;
@@ -31,8 +32,9 @@ public abstract class MyTimeController extends BaseTimeController {
    *
    * @param theTimeRepository The time entry repository.
    */
-  public MyTimeController(final TimeRepository theTimeRepository) {
-    super(theTimeRepository);
+  public MyTimeController(final TimeRepository theTimeRepository,
+      final Transaction transaction) {
+    super(theTimeRepository, transaction);
   }
 
   /** Set reference data used in the view.

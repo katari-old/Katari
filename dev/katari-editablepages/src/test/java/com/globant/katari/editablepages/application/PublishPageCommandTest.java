@@ -2,6 +2,7 @@
 
 package com.globant.katari.editablepages.application;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -21,9 +22,12 @@ public class PublishPageCommandTest {
 
   @Before
   public final void setUp() {
-    repository = (PageRepository) TestUtils
+
+    TestUtils.get().beginTransaction();
+
+    repository = (PageRepository) TestUtils.get()
       .getServletBeanFactory().getBean("pageRepository");
-    command = (PublishPageCommand) TestUtils
+    command = (PublishPageCommand) TestUtils.get()
       .getServletBeanFactory().getBean("publishPageCommand");
     siteName = TestUtils.getSiteName();
 
@@ -38,6 +42,10 @@ public class PublishPageCommandTest {
     page = new Page("first.last", "page-2", "title", "content - 2");
     page.publish();
     repository.save(siteName, page);
+  }
+
+  @After public void after() {
+    TestUtils.get().endTransaction();
   }
 
   /* Publishes a page.

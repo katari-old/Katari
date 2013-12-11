@@ -134,6 +134,8 @@
     <property name="transactionAttributes">
       <props>
         <prop key="execute">PROPAGATION_REQUIRED</prop>
+        <prop key="init">PROPAGATION_REQUIRED</prop>
+        <prop key="validate">PROPAGATION_REQUIRED</prop>
       </props>
     </property>
   </bean>

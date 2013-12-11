@@ -24,7 +24,6 @@
     <property name="hibernateProperties"
       ref='katari.configuredHibernateProperties'/>
     <property name="annotatedClasses" ref='katari.persistentClasses' />
-    <!-- property name="cacheRegionFactory" ref='katari.regionFactory' /-->
   </bean>
 
   <!-- Hibernate properties. They are composed by initalHibernateProperties and
@@ -121,6 +120,12 @@
       </bean>
     </property>
   </bean>
+
+  <bean id='katari.transaction' scope='singleton' lazy-init="true"
+    class='com.globant.katari.hibernate.Transaction'>
+    <constructor-arg index='0' ref='katari.transactionManager' />
+  </bean>
+
 </beans>
 
 <!-- vim: set ts=2 et sw=2 ai: -->

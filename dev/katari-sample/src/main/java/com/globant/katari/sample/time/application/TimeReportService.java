@@ -2,6 +2,8 @@ package com.globant.katari.sample.time.application;
 
 
 import org.apache.commons.lang.Validate;
+import org.hibernate.Query;
+
 import com.globant.katari.hibernate.HibernateDaoSupport;
 
 import java.util.Date;
@@ -38,9 +40,10 @@ public class TimeReportService extends HibernateDaoSupport {
       + "WHERE timeEntry.entryDate BETWEEN :from AND :to "
       + "GROUP BY user.name, project.name";
 
-    return getHibernateTemplate().findByNamedParam(
-        queryString,
-        new String[] {"from", "to"},
-        new Object[] {from, to});
+    Query query = getSession().createQuery(queryString);
+    query.setParameter("from", from);
+    query.setParameter("to", to);
+
+    return query.list();
   }
 }

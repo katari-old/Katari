@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.AbstractController;
 
 import com.globant.katari.editablepages.domain.PageRepository;
 import com.globant.katari.editablepages.domain.Page;
+import com.globant.katari.hibernate.Transaction;
 
 /** Controller that shows pages that can be edited by the user.
  *
@@ -43,18 +44,25 @@ public class PageController extends AbstractController {
    */
   private String siteName;
 
+  /** The katari's transaction.*/
+  private Transaction transaction;
+
   /** Builds a PageController instance.
    *
    * @param thePageRepository the page repository, it cannot be null.
    *
    * @param theSiteName the name of the site, it cannot be null.
+   *
+   * @param platformTransaction the platform transaction, it cannot be null.
    */
   public PageController(final PageRepository thePageRepository, final String
-      theSiteName) {
+      theSiteName, final Transaction platformTransaction) {
     Validate.notNull(thePageRepository, "The page repository cannot be null.");
     Validate.notNull(theSiteName, "The site name cannot be null.");
+    Validate.notNull(platformTransaction, "The tx cannot be null.");
     pageRepository = thePageRepository;
     siteName = theSiteName;
+    transaction = platformTransaction;
   }
 
   /** Finds a page from the domain.
@@ -74,46 +82,54 @@ public class PageController extends AbstractController {
   protected final ModelAndView handleRequestInternal(final HttpServletRequest
       request, final HttpServletResponse response) throws Exception {
     log.trace("Entering handleRequestInternal");
+    try {
+      transaction.start();
 
-    String pathInfo = request.getPathInfo();
-    log.debug("pathInfo: {}", pathInfo);
-    Validate.notNull(pathInfo, "The path info cannot be null");
-    Validate.isTrue(pathInfo.matches("/page/.+"));
+      String pathInfo = request.getPathInfo();
+      log.debug("pathInfo: {}", pathInfo);
+      Validate.notNull(pathInfo, "The path info cannot be null");
+      Validate.isTrue(pathInfo.matches("/page/.+"));
 
-    // Strip the '/page/' prefix from the pathinfo to obtain the page name.
-    String pageName = pathInfo.substring(PAGE_PREFIX_LENGTH);
-    Page page = pageRepository.findPageByName(siteName, pageName);
-    ModelAndView mav = new ModelAndView("page");
-    if (null != page) {
-      // We found a page, but it may have never been published.
-      if (page.getContent() == null) {
+      // Strip the '/page/' prefix from the pathinfo to obtain the page name.
+      String pageName = pathInfo.substring(PAGE_PREFIX_LENGTH);
+      Page page = pageRepository.findPageByName(siteName, pageName);
+      ModelAndView mav = new ModelAndView("page");
+      if (null != page) {
+        // We found a page, but it may have never been published.
+        if (page.getContent() == null) {
+          throw new RuntimeException("Page not found: " + pageName);
+        }
+        // We found the page, prepare the edition toolbar.
+        mav.addObject("page", page);
+        mav.addObject("request", request);
+        mav.addObject("baseweb", request.getAttribute("baseweb"));
+
+        // Increments the elementId from the request.
+        Long elementId = (Long) request.getAttribute("elementId");
+        if (elementId == null) {
+          elementId = Long.valueOf(1);
+        } else {
+          elementId++;
+        }
+        request.setAttribute("elementId", elementId);
+
+        mav.addObject("elementId", elementId);
+
+      } else {
+        // TODO The page was not found. See what to do next. It is probably a
+        // good idea to redirect to the creation page if the user has the
+        // privileges.
         throw new RuntimeException("Page not found: " + pageName);
       }
-      // We found the page, prepare the edition toolbar.
-      mav.addObject("page", page);
-      mav.addObject("request", request);
-      mav.addObject("baseweb", request.getAttribute("baseweb"));
 
-      // Increments the elementId from the request.
-      Long elementId = (Long) request.getAttribute("elementId");
-      if (elementId == null) {
-        elementId = Long.valueOf(1);
-      } else {
-        elementId++;
-      }
-      request.setAttribute("elementId", elementId);
+      transaction.commit();
 
-      mav.addObject("elementId", elementId);
+      log.trace("Leaving handleRequestInternal");
+      return mav;
 
-    } else {
-      // TODO The page was not found. See what to do next. It is probably a
-      // good idea to redirect to the creation page if the user has the
-      // privileges.
-      throw new RuntimeException("Page not found: " + pageName);
+    } finally {
+      transaction.cleanup();
     }
-
-    log.trace("Leaving handleRequestInternal");
-    return mav;
   }
 }
 

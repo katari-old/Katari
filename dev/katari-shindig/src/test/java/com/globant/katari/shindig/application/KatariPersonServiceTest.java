@@ -18,6 +18,7 @@ import org.apache.shindig.social.opensocial.spi.UserId;
 import org.apache.shindig.social.opensocial.spi.UserId.Type;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -31,9 +32,13 @@ public class KatariPersonServiceTest {
   private KatariPersonService service;
   private Session session;
 
-  @Before
-  public void setUp() throws Exception {
-    ApplicationContext appContext = SpringTestUtils.getBeanFactory();
+  @Before public void setUp() throws Exception {
+
+    SpringTestUtils.get().clearDatabase();
+
+    SpringTestUtils.get().beginTransaction();
+
+    ApplicationContext appContext = SpringTestUtils.get().getBeanFactory();
     service = (KatariPersonService) appContext.getBean("shindig.personService");
     session = ((SessionFactory) appContext.getBean("katari.sessionFactory"))
       .openSession();
@@ -42,6 +47,10 @@ public class KatariPersonServiceTest {
         + " users (id, name, user_type)"
         + " values (1, 'admin', 'user')")
         .executeUpdate();
+  }
+
+  @After public void after() {
+    SpringTestUtils.get().endTransaction();
   }
 
   @Test

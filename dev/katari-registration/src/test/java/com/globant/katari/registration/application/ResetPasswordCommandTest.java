@@ -41,11 +41,9 @@ public class ResetPasswordCommandTest {
 
   private DummySmtpServer smtpServer;
 
-  /**
-   * @throws java.lang.Exception
-   */
-  @Before
-  public void setUp() throws Exception {
+  @Before public void setUp() throws Exception {
+
+    get().beginTransaction();
 
     smtpServer = createSmtpServer();
 
@@ -56,25 +54,25 @@ public class ResetPasswordCommandTest {
     configurer = new EmailConfigurer("emiliano.arango@globant.com",
         "reset", "template", "lol");
 
-    requestCommand = (RequestForgotPasswordCommand) getContext().getBean(
+    requestCommand = (RequestForgotPasswordCommand) get().getBean(
         "registration.requestForgotPasswordCommand");
 
-    registrationCommand = (RegisterUserCommand) getContext().getBean(
+    registrationCommand = (RegisterUserCommand) get().getBean(
       "registration.registerUserCommand");
 
-    registrationRepository = (RegistrationRepository) getContext().getBean(
+    registrationRepository = (RegistrationRepository) get().getBean(
       "registration.registrationRepository");
 
-    userRepository = (UserRepository) getContext().getBean(
+    userRepository = (UserRepository) get().getBean(
     "user.userRepository");
 
     resetCommand = new ResetPasswordCommand(registrationRepository,
         userRepository, emailSender, configurer);
   }
 
-  @After
-  public void tearDown() {
+  @After public void tearDown() {
     smtpServer.stop();
+    get().endTransaction();
   }
 
   @Test
@@ -98,7 +96,7 @@ public class ResetPasswordCommandTest {
     RecoverPasswordRequest request = null;
 
     request = (RecoverPasswordRequest)
-      registrationRepository.getHibernateTemplate().find(
+      registrationRepository.find(
           "from RecoverPasswordRequest where userId = ?",
             userFromEmail.getId()).get(0);
 

@@ -2,39 +2,33 @@
 
 package com.globant.katari.gadgetcontainer.view;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-import static org.easymock.EasyMock.*;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.io.File;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.PrintWriter;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-
-import com.globant.katari.hibernate.coreuser.domain.CoreUser;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.globant.katari.gadgetcontainer.SpringTestUtils;
-import org.springframework.context.ApplicationContext;
-
-import com.globant.katari.shindig.domain.Application;
-
+import com.globant.katari.gadgetcontainer.application.ListApplicationsCommand;
 import com.globant.katari.gadgetcontainer.domain.CustomizableGadgetGroup;
 import com.globant.katari.gadgetcontainer.domain.GadgetGroupRepository;
 import com.globant.katari.gadgetcontainer.domain.SampleUser;
-
-import com.globant.katari.gadgetcontainer.application.ListApplicationsCommand;
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
+import com.globant.katari.shindig.domain.Application;
 
 public class DirectoryDoTest {
 
@@ -48,16 +42,16 @@ public class DirectoryDoTest {
   @Before
   public void setUp() throws Exception {
 
-    appContext = SpringTestUtils.getContext();
+    SpringTestUtils.get().clearDatabase();
+    SpringTestUtils.get().beginTransaction();
 
+    appContext = SpringTestUtils.get().getBeanFactory();
     repository = ((GadgetGroupRepository) appContext.getBean(
           "gadgetcontainer.gadgetGroupRepository"));
+  }
 
-    repository.getHibernateTemplate().bulkUpdate("delete from GadgetInstance");
-    repository.getHibernateTemplate().bulkUpdate("delete from GadgetGroup");
-    repository.getHibernateTemplate().bulkUpdate("delete from CoreUser");
-    repository.getHibernateTemplate().bulkUpdate("delete from supported_views");
-    repository.getHibernateTemplate().bulkUpdate("delete from Application");
+  @After public void after() {
+    SpringTestUtils.get().endTransaction();
   }
 
   @SuppressWarnings("unchecked")
@@ -65,16 +59,15 @@ public class DirectoryDoTest {
   public void test() throws Exception {
 
     CoreUser user = new SampleUser("me");
-    repository.getHibernateTemplate().saveOrUpdate(user);
-    user = (CoreUser) repository.getHibernateTemplate().find("from CoreUser")
-      .get(0);
+    repository.getSession().saveOrUpdate(user);
+    user = (CoreUser) repository.find("from CoreUser").get(0);
 
     CustomizableGadgetGroup group;
     group = new CustomizableGadgetGroup(user, "gadget group", "default", 2);
-    repository.getHibernateTemplate().saveOrUpdate(group);
+    repository.getSession().saveOrUpdate(group);
 
     Application app = new Application(gadgetXmlUrl);
-    repository.getHibernateTemplate().saveOrUpdate(app);
+    repository.getSession().saveOrUpdate(app);
 
     // Sets the currently logged on user
     SpringTestUtils.setLoggedInUser(user);

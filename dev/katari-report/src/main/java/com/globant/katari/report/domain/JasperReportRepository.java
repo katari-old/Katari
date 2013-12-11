@@ -38,7 +38,8 @@ public class JasperReportRepository extends HibernateDaoSupport {
   @SuppressWarnings("unchecked")
   public List<ReportDefinition> getReportList() {
     log.trace("getReportTemplateList");
-    return getHibernateTemplate().find("from ReportDefinition");
+    return getSessionFactory().getCurrentSession().createQuery(
+        "from ReportDefinition").list();
   }
 
   /**
@@ -51,7 +52,7 @@ public class JasperReportRepository extends HibernateDaoSupport {
   public ReportDefinition findReportDefinitionById(final long anId) {
     log.trace("findReportTemplateById");
     Validate.isTrue(anId > 0, "The id must be greater than zero.");
-    return (ReportDefinition) getHibernateTemplate().get(CLASS_NAME, anId);
+    return (ReportDefinition) getSession().get(CLASS_NAME, anId);
   }
 
   /**
@@ -68,7 +69,7 @@ public class JasperReportRepository extends HibernateDaoSupport {
     ReportDefinition result = null;
 
     String query = "from " + CLASS_NAME + " where name = ?";
-    List<ReportDefinition> list = getHibernateTemplate().find(query, aName);
+    List<ReportDefinition> list = (List<ReportDefinition>) find(query, aName);
 
     if (!list.isEmpty()) {
       result = list.get(0);
@@ -141,7 +142,7 @@ public class JasperReportRepository extends HibernateDaoSupport {
   public void save(final ReportDefinition aReportDefinition) {
     log.trace("save");
     Validate.notNull(aReportDefinition, "the report definition cannot be null");
-    getHibernateTemplate().saveOrUpdate(aReportDefinition);
+    getSession().saveOrUpdate(aReportDefinition);
   }
 
   /**
@@ -153,7 +154,7 @@ public class JasperReportRepository extends HibernateDaoSupport {
   public void remove(final ReportDefinition aReportDefinition) {
     log.trace("remove");
     Validate.notNull(aReportDefinition, "the reportTemplate cannot be null");
-    getHibernateTemplate().delete(aReportDefinition);
+    getSession().delete(aReportDefinition);
   }
 
   /** Builds a list of options used in a drop down tag from a sql query.

@@ -14,10 +14,6 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 
-import org.compass.annotations.Searchable;
-import org.compass.annotations.SearchableId;
-import org.compass.annotations.SearchableProperty;
-
 import org.apache.commons.lang.Validate;
 
 /** A role determines what action a user can perform on the system.
@@ -28,7 +24,6 @@ import org.apache.commons.lang.Validate;
     discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("role")
 @Table(name = "roles")
-@Searchable(root = false)
 public class Role {
 
   /** The length in characters of the role name.
@@ -40,13 +35,11 @@ public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
-  @SearchableId
   private long id = 0;
 
   /** The name of the role.
    */
   @Column(name = "name", nullable = false, length = ROLE_NAME_LENGTH)
-  @SearchableProperty
   private String name;
 
   /** The default constructor.

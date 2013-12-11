@@ -69,12 +69,6 @@
   <!-- The Institutional module. It has some static pages. -->
   <katari:import module="com.globant.katari.sample.institutional"/>
 
-  <!-- The wicket module. -->
-  <katari:import module="com.globant.katari.sample.wicket" />
-
-  <!-- The search module. -->
-  <katari:import module="com.globant.katari.search" />
-
   <!-- The console module. -->
   <katari:import module="com.globant.katari.console" />
 
@@ -98,10 +92,6 @@
 
   <!-- Provides registration. -->
   <katari:import module="com.globant.katari.registration" />
-
-  <!-- Provides ehcache, and integrates it with hibernate. -->
-  <katari:import module="com.globant.katari.ehcache" />
-  <katari:import module="com.globant.katari.ehcache.hibernate" />
 
   <!-- REMOVE THIS IN PRODUCTION. -->
 
@@ -165,10 +155,10 @@
         <prop key="hibernate.connection.release_mode">after_transaction</prop>
 
         <!-- Configure hibernate to use the second level cache. -->
-        <prop key="hibernate.cache.use_second_level_cache">true</prop>
+        <prop key="hibernate.cache.use_second_level_cache">false</prop>
 
         <!-- Also use the query cache. -->
-        <prop key="hibernate.cache.use_query_cache">true</prop>
+        <prop key="hibernate.cache.use_query_cache">false</prop>
       </props>
     </property>
   </bean>
@@ -410,9 +400,6 @@
 
   <bean name='email.smtpPort'
     class='com.globant.katari.core.spring.StringHolder' p:value="3525"/>
-
-  <bean id='ehcache.statistics'
-    class="com.globant.katari.core.spring.StringHolder" p:value='true'/>
 
 </beans>
 

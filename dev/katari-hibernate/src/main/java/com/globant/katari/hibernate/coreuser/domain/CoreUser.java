@@ -18,9 +18,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import org.apache.commons.lang.Validate;
 
-import org.compass.annotations.SearchableId;
-import org.compass.annotations.SearchableProperty;
-
 /** Defines the minimum information needed by katari modules of a user.
  *
  * This class holds the user name, as a string that can be displayed to the
@@ -53,7 +50,6 @@ public abstract class CoreUser {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
-  @SearchableId
   private long id = 0;
 
   /** The name of the user.
@@ -62,7 +58,6 @@ public abstract class CoreUser {
    */
   @Column(name = "name", nullable = false, unique = true,
       length = USER_NAME_LENGTH)
-  @SearchableProperty
   private String name;
 
   /** The default constructor.

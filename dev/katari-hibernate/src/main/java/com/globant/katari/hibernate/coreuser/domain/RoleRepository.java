@@ -21,7 +21,7 @@ public class RoleRepository extends HibernateDaoSupport {
    */
   public void remove(final Role role) {
     Validate.notNull(role, "The role cannot be null");
-    getHibernateTemplate().delete(role);
+    getSession().delete(role);
   }
 
   /**
@@ -31,7 +31,7 @@ public class RoleRepository extends HibernateDaoSupport {
    */
   public void save(final Role role) {
     Validate.notNull(role, "The role cannot be null");
-    getHibernateTemplate().saveOrUpdate(role);
+    getSession().saveOrUpdate(role);
   }
 
   /**
@@ -43,7 +43,7 @@ public class RoleRepository extends HibernateDaoSupport {
    * exists.
    */
   public Role findRole(final long id) {
-    return (Role) getHibernateTemplate().get(Role.class, id);
+    return (Role) getSession().get(Role.class, id);
   }
 
   /**
@@ -59,7 +59,7 @@ public class RoleRepository extends HibernateDaoSupport {
 
     Validate.notNull(name, "The role name cannot be null");
 
-    List<Role> roles = getHibernateTemplate().find(
+    List<Role> roles = (List<Role>) find(
         "from Role role where role.name = ?", name);
     if (roles.isEmpty()) {
       return null;
@@ -76,7 +76,7 @@ public class RoleRepository extends HibernateDaoSupport {
    */
   @SuppressWarnings("unchecked")
   public List<Role> getRoles() {
-    return getHibernateTemplate().find("from Role");
+    return (List<Role>) find("from Role");
   }
 
   /**

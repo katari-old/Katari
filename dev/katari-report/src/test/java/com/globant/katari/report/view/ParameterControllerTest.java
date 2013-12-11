@@ -53,11 +53,13 @@ public class ParameterControllerTest {
   @Before
   public final void setUp() throws Exception {
 
-    ReportsTestSupport.get().beginTransaction();
+    ReportsTestSupport.get().clearDatabase();
 
     ReportsTestSupport.initTestReportSecurityContext("REPORT_ADMIN");
     editParameterController = (ParameterController) ReportsTestSupport
         .get().getBean("/editParameters.do");
+
+    ReportsTestSupport.get().beginTransaction();
 
     savedReport = ReportsTestSupport.createSampleReport();
 

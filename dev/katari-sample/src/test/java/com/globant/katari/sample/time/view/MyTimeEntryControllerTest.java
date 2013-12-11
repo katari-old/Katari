@@ -52,6 +52,9 @@ public class MyTimeEntryControllerTest extends TestCase {
   /** This is a set up method of this TestCase.
    */
   protected final void setUp() {
+
+    SpringTestUtils.get().beginTransaction();
+
     myTimeController = (MyTimeController) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("/myTime.do");
     timeRepository = (TimeRepository) SpringTestUtils
@@ -62,6 +65,7 @@ public class MyTimeEntryControllerTest extends TestCase {
     DataHelper.createTimeEntry(timeRepository, user);
 
     SecurityTestUtils.setContextUser(user);
+    SpringTestUtils.get().endTransaction();
   }
 
   /** Test the referenceData method.
@@ -88,6 +92,9 @@ public class MyTimeEntryControllerTest extends TestCase {
   /** Test the OnSubmit method.
    */
   public final void testOnSubmit() throws Exception {
+
+    SpringTestUtils.get().beginTransaction();
+
     HttpServletRequest request;
     request = createMock(HttpServletRequest.class);
     HttpServletResponse response;
@@ -112,6 +119,9 @@ public class MyTimeEntryControllerTest extends TestCase {
           saveTimeEntryCommand, new BindException(saveTimeEntryCommand,
           "command"));
       assertNotNull(mav);
+
+      SpringTestUtils.get().endTransaction();
+
   }
 }
 

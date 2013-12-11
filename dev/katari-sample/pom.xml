@@ -142,17 +142,6 @@
       <artifactId>acegi-security</artifactId>
     </dependency>
 
-    <!-- Wicket -->
-    <dependency>
-      <groupId>org.apache.wicket</groupId>
-      <artifactId>wicket</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.wicket</groupId>
-      <artifactId>wicket-spring</artifactId>
-    </dependency>
-
     <!-- Provided by the container. -->
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -226,11 +215,6 @@
 
     <dependency>
       <groupId>com.globant.katari</groupId>
-      <artifactId>katari-search</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.globant.katari</groupId>
       <artifactId>katari-console</artifactId>
     </dependency>
 
@@ -267,16 +251,6 @@
     <dependency>
       <groupId>com.globant.katari</groupId>
       <artifactId>katari-registration</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.globant.katari</groupId>
-      <artifactId>katari-ehcache</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.compass-project</groupId>
-      <artifactId>compass</artifactId>
     </dependency>
 
     <!-- Javascript dependencies -->

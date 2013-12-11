@@ -44,11 +44,13 @@ public class GenerateReportCommandTest {
   public final void setUp() throws Exception {
     ReportsTestSupport.initTestReportSecurityContext("REPORT_ADMIN");
 
+    ReportsTestSupport.get().clearDatabase();
+
     ReportsTestSupport.get().beginTransaction();
 
     repository = ReportsTestSupport.getRepository();
     generator = ReportsTestSupport.getGenerator();
-    dataSource = ReportsTestSupport.getDataSource();
+    dataSource = ReportsTestSupport.get().getDataSource();
     savedReport = ReportsTestSupport.createSampleReport();
 
     ReportsTestSupport.get().endTransaction();

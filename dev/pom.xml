@@ -47,8 +47,6 @@
     <module>katari-report</module>
     <!-- Katari editable pages module -->
     <module>katari-editablepages</module>
-    <!-- Katari search module -->
-    <module>katari-search</module>
     <!-- Katari common client side libraries (javascript)-->
     <module>katari-ajax</module>
     <!-- Katari cas login module -->
@@ -75,14 +73,12 @@
     <module>katari-quartz</module>
     <module>katari-email</module>
     <module>katari-registration</module>
-    <module>katari-ehcache</module>
     <!-- Monitoring with JavaMelody -->
     <module>katari-monitoring</module>
     <!-- Integration tests. It includes tests for katari-archetype and
          katari-module-archetype. -->
     <module>katari-it</module>
-    
-    <module>igexpansion-smp-infrastructure</module>
+
   </modules>
 
   <!-- List of dependencies for all modules in the application. This section
@@ -485,25 +481,6 @@
         <groupId>stax</groupId>
         <artifactId>stax</artifactId>
         <version>1.2.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.compass-project</groupId>
-        <artifactId>compass</artifactId>
-        <version>2.2.0</version>
-      </dependency>
-
-      <!-- Wicket -->
-      <dependency>
-        <groupId>org.apache.wicket</groupId>
-        <artifactId>wicket</artifactId>
-        <version>1.4.4</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.wicket</groupId>
-        <artifactId>wicket-spring</artifactId>
-        <version>1.4.4</version>
       </dependency>
 
       <!-- Provided by the container -->

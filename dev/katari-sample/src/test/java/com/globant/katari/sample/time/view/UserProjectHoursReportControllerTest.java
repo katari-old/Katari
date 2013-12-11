@@ -46,6 +46,9 @@ public class UserProjectHoursReportControllerTest extends TestCase {
    */
   @Override
   protected final void setUp() {
+
+    SpringTestUtils.get().beginTransaction();
+
     userProjectHoursReportController = (UserProjectHoursReportController)
       SpringTestUtils.getTimeModuleBeanFactory()
       .getBean("/userProjectHoursReport.do");
@@ -57,10 +60,15 @@ public class UserProjectHoursReportControllerTest extends TestCase {
     DataHelper.createTimeEntry(timeRepository, user);
   }
 
+  /** {@inheritDoc}. */
+  @Override
+  protected void tearDown() throws Exception {
+    SpringTestUtils.get().endTransaction();
+  }
+
   /** Test the referenceData method.
    * @throws Exception if the test fails
    */
-  @SuppressWarnings("unchecked")
   public final void testReferenceData() throws Exception {
     HttpServletRequest request = createMock(HttpServletRequest.class);
     expect(request.getAttribute("baseweb")).andReturn("path").anyTimes();

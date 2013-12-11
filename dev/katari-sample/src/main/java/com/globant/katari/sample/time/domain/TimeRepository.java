@@ -24,7 +24,7 @@ public class TimeRepository extends HibernateDaoSupport {
    * time entry exists.
    */
   public TimeEntry findTimeEntry(final long id) {
-    TimeEntry timeEntry = (TimeEntry) getHibernateTemplate().get(
+    TimeEntry timeEntry = (TimeEntry) getSession().get(
         TimeEntry.class, id);
     return timeEntry;
   }
@@ -37,7 +37,7 @@ public class TimeRepository extends HibernateDaoSupport {
    * activity exists.
    */
   public Activity findActivity(final long id) {
-    Activity activity = (Activity) getHibernateTemplate().get(
+    Activity activity = (Activity) getSession().get(
         Activity.class, id);
     return activity;
   }
@@ -50,7 +50,7 @@ public class TimeRepository extends HibernateDaoSupport {
    * project exists.
    */
   public Project findProject(final long id) {
-    Project project = (Project) getHibernateTemplate().get(
+    Project project = (Project) getSession().get(
         Project.class, id);
     return project;
   }
@@ -84,7 +84,7 @@ public class TimeRepository extends HibernateDaoSupport {
    */
   @SuppressWarnings("unchecked")
   public List<TimeEntry> getTimeEntries() {
-    return getHibernateTemplate().find("from TimeEntry");
+    return (List<TimeEntry>) find("from TimeEntry");
   }
 
   /** Gets all the projects.
@@ -94,7 +94,7 @@ public class TimeRepository extends HibernateDaoSupport {
    */
   @SuppressWarnings("unchecked")
   public List<Project> getProjects() {
-    return getHibernateTemplate().find("from Project");
+    return (List<Project>) find("from Project");
   }
 
   /** Gets all the activities.
@@ -104,7 +104,7 @@ public class TimeRepository extends HibernateDaoSupport {
    */
   @SuppressWarnings("unchecked")
   public List<Activity> getActivities() {
-    return getHibernateTemplate().find("from Activity");
+    return (List<Activity>) find("from Activity");
   }
 
   /** Saves a new time entry or updates an existing time entry to the database.
@@ -113,7 +113,7 @@ public class TimeRepository extends HibernateDaoSupport {
    */
   public void save(final TimeEntry timeEntry) {
     Validate.notNull(timeEntry, "The time entry cannot be null");
-    getHibernateTemplate().saveOrUpdate(timeEntry);
+    getSession().saveOrUpdate(timeEntry);
   }
 
   /** Removes the specified time entry from the database.
@@ -122,6 +122,6 @@ public class TimeRepository extends HibernateDaoSupport {
    */
   public void remove(final TimeEntry timeEntry) {
     Validate.notNull(timeEntry, "The time entry cannot be null");
-    getHibernateTemplate().delete(timeEntry);
+    getSession().delete(timeEntry);
   }
 }

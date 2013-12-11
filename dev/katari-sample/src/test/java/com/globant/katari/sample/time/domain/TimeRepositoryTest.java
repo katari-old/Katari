@@ -30,6 +30,9 @@ public class TimeRepositoryTest extends TestCase {
   /** This is a set up method of this TestCase.
    */
   protected final void setUp() {
+
+    SpringTestUtils.get().beginTransaction();
+
     timeRepository = (TimeRepository) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils
@@ -47,6 +50,12 @@ public class TimeRepositoryTest extends TestCase {
     TimeEntry timeEntry = new TimeEntry(activity, user, project,
         new Date(), period, "Test note");
     timeRepository.save(timeEntry);
+  }
+
+  /** {@inheritDoc}. */
+  @Override
+  protected void tearDown() throws Exception {
+    SpringTestUtils.get().endTransaction();
   }
 
   /** Test find activity feature.

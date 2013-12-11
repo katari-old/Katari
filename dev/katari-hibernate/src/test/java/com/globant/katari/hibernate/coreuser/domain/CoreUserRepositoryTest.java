@@ -23,9 +23,10 @@ public class CoreUserRepositoryTest {
 
     userRepository = (CoreUserRepository) SpringTestUtils.get().getBean(
         "coreuser.userRepository");
-    userRepository.getHibernateTemplate().bulkUpdate("delete from CoreUser");
+    userRepository.getSession().createQuery(
+        "delete from CoreUser").executeUpdate();
     CoreUser user = new SampleUser("test");
-    userRepository.getHibernateTemplate().save(user);
+    userRepository.getSession().save(user);
 
     SpringTestUtils.get().endTransaction();
 

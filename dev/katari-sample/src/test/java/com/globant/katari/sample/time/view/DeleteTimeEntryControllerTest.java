@@ -38,6 +38,9 @@ public class DeleteTimeEntryControllerTest extends TestCase {
   /** This is a set up method of this TestCase.
    */
   protected final void setUp() {
+
+    SpringTestUtils.get().beginTransaction();
+
     deleteTimeEntryController = (DeleteTimeEntryController) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("/deleteTimeEntry.do");
     timeRepository = (TimeRepository) SpringTestUtils
@@ -47,6 +50,12 @@ public class DeleteTimeEntryControllerTest extends TestCase {
     User user = userRepository.findUserByName("admin");
     DataHelper.createTimeEntry(timeRepository, user);
     timeEntryId = timeRepository.getTimeEntries().get(0).getId();
+  }
+
+  /** {@inheritDoc}. */
+  @Override
+  protected void tearDown() throws Exception {
+    SpringTestUtils.get().endTransaction();
   }
 
   /** Test the OnSubmit method.

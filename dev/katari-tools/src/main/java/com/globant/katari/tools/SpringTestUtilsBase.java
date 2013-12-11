@@ -3,25 +3,24 @@
 package com.globant.katari.tools;
 
 import java.io.File;
-
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.core.io.FileSystemResourceLoader;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.mock.web.MockServletContext;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.context.support.XmlWebApplicationContext;
-import org.springframework.mock.web.MockServletContext;
-import org.springframework.core.io.FileSystemResourceLoader;
-import org.springframework.jdbc.datasource.DataSourceUtils;
-
-import javax.servlet.ServletContext;
 
 /**  Utility class to give support to test cases.
  *
@@ -82,7 +81,7 @@ public abstract class SpringTestUtilsBase {
    *
    * @return a DataSource.
    */
-  private synchronized DataSource getDataSource() {
+  public synchronized DataSource getDataSource() {
     if (dataSource == null) {
       beanFactory = getBeanFactory();
       dataSource = (DataSource) beanFactory.getBean("dataSource");
@@ -223,5 +222,24 @@ public abstract class SpringTestUtilsBase {
       final String[] fileNames) {
     globalConfigurationFiles = fileNames;
   }
+
+  /** Clean up the database. */
+  public void clearDatabase() {
+    try {
+      beginTransaction();
+      Connection connection = getDataSource().getConnection();
+      Statement statement = connection.createStatement();
+      statement.execute(
+          "TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
+      connection.commit();
+      statement.close();
+      connection.close();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    } finally {
+      endTransaction();
+    }
+  }
+
 }
 

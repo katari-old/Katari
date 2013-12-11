@@ -11,6 +11,7 @@ import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 
+import com.globant.katari.hibernate.Transaction;
 import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserRepository;
 
@@ -30,14 +31,19 @@ public class DomainUserDetailsService implements UserDetailsService {
    */
   private UserRepository userRepository;
 
+  /** The katari's transaction.*/
+  private Transaction transaction;
+
   /** Builds an instance of this service.
    *
    * @param theUserRepository The user repository to get the domain user from.
    * It cannot be null.
    */
-  public DomainUserDetailsService(final UserRepository theUserRepository) {
+  public DomainUserDetailsService(final UserRepository theUserRepository,
+      final Transaction platformTrasaction) {
     Validate.notNull(theUserRepository, "The user repository cannot be null");
     userRepository = theUserRepository;
+    transaction = platformTrasaction;
   }
 
   /** Obtains the user details from a user name.
@@ -48,21 +54,20 @@ public class DomainUserDetailsService implements UserDetailsService {
    * instance of DomainUserDetails.
    */
   public UserDetails loadUserByUsername(final String username) {
-
     log.trace("Entering loadUserByUsername");
-
     Validate.notNull(username, "The username cannot be null");
-
-    User user = userRepository.findUserByName(username);
-
-    if (user == null) {
-      throw new UsernameNotFoundException("User not found: " + username);
+    try {
+      transaction.start();
+      User user = userRepository.findUserByName(username);
+      if (user == null) {
+        throw new UsernameNotFoundException("User not found: " + username);
+      }
+      UserDetails userDetails = new DomainUserDetails(user);
+      log.trace("Leaving loadUserByUsername");
+      return userDetails;
+    } finally {
+      transaction.cleanup();
     }
-
-    UserDetails userDetails = new DomainUserDetails(user);
-
-    log.trace("Leaving loadUserByUsername");
-    return userDetails;
   }
 }
 

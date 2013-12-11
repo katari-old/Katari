@@ -40,9 +40,14 @@ public class JasperReportGeneratorTest extends TestCase {
    */
   @Override
   protected final void setUp() throws Exception {
+
+    ReportsTestSupport.get().clearDatabase();
+
+    ReportsTestSupport.get().beginTransaction();
+
     generator = ReportsTestSupport.getGenerator();
 
-    DataSource dataSource = ReportsTestSupport.getDataSource();
+    DataSource dataSource = ReportsTestSupport.get().getDataSource();
     connection = dataSource.getConnection();
 
     // add one report
@@ -56,6 +61,7 @@ public class JasperReportGeneratorTest extends TestCase {
 
   @Override
   public final void tearDown() throws Exception {
+    ReportsTestSupport.get().endTransaction();
     connection.close();
     connection = null;
   }

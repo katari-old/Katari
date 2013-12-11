@@ -18,7 +18,7 @@ public class OrderedUsers<T extends List<User>>
   extends TypeSafeMatcher<List<User>> {
 
   /** True to check if the list is in ascending order.
-   */ 
+   */
   boolean ascending = false;
 
   /** Constructor.
@@ -32,7 +32,7 @@ public class OrderedUsers<T extends List<User>>
   /** {@inheritDoc}.
    */
   @Override
-  public boolean matchesSafely(List<User> list) {
+  public boolean matchesSafely(final List<User> list) {
     User previous = list.get(0);
     for (User current: list) {
       int result = previous.getName().compareToIgnoreCase(current.getName());
@@ -50,7 +50,7 @@ public class OrderedUsers<T extends List<User>>
 
   /** {@inheritDoc}.
    */
-  public void describeTo(Description description) {
+  public void describeTo(final Description description) {
     description.appendText("not in descendent order");
   }
 

@@ -32,27 +32,30 @@ public class RequestForgotPasswordCommandTest {
 
   @Before
   public void setUp() throws Exception {
-    
+
+    get().beginTransaction();
+
     smtpServer = createSmtpServer();
-    
-    command = (RequestForgotPasswordCommand) getContext().getBean(
+
+    command = (RequestForgotPasswordCommand) get().getBean(
         "registration.requestForgotPasswordCommand");
 
-    registrationCommand = (RegisterUserCommand) getContext().getBean(
+    registrationCommand = (RegisterUserCommand) get().getBean(
       "registration.registerUserCommand");
 
-    repository = (RegistrationRepository) getContext().getBean(
+    repository = (RegistrationRepository) get().getBean(
         "registration.registrationRepository");
 
-    repository.getHibernateTemplate().bulkUpdate("delete from User");
-    repository.getHibernateTemplate().bulkUpdate(
-        "delete from RecoverPasswordRequest");
+    repository.getSession().createQuery("delete from User").executeUpdate();
+    repository.getSession().createQuery(
+        "delete from RecoverPasswordRequest").executeUpdate();
 
   }
 
   @After
   public void tearDown() {
     smtpServer.stop();
+    get().endTransaction();
   }
 
   @SuppressWarnings("unchecked")
@@ -72,8 +75,9 @@ public class RequestForgotPasswordCommandTest {
     command.validate(errors);
     command.execute(); // generate another token.
 
-    List<RecoverPasswordRequest> requests = repository.getHibernateTemplate()
-      .find("from RecoverPasswordRequest where userId=?", user.getId());
+    List<RecoverPasswordRequest> requests;
+    requests = (List<RecoverPasswordRequest>) repository
+        .find("from RecoverPasswordRequest where userId=?", user.getId());
     assertEquals(2, requests.size());
 
     RecoverPasswordRequest request = requests.get(0);

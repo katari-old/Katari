@@ -43,6 +43,9 @@ public class ReportsControllerTest extends TestCase {
    */
   @SuppressWarnings("unchecked")
   public final void testShowForm() throws Exception {
+
+    ReportsTestSupport.get().beginTransaction();
+
     MockHttpServletRequest req = new MockHttpServletRequest();
     MockHttpServletResponse resp = new MockHttpServletResponse();
     ModelAndView mav = controller.handle(req, resp, command, null);
@@ -53,6 +56,9 @@ public class ReportsControllerTest extends TestCase {
         .getModel().get("reportsDefinitions");
     assertNotNull(reportDefinitions);
     assertEquals(1, reportDefinitions.size());
+
+    ReportsTestSupport.get().endTransaction();
+
   }
 }
 

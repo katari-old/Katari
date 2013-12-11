@@ -46,7 +46,7 @@ public class RegexPagesAndJavascriptTest {
    */
   @Test
   public void testExistController() {
-    assertNotNull(SpringTestUtils.getContext()
+    assertNotNull(SpringTestUtils.get().getBeanFactory()
        .getBean("/" + KATARI_CANVAS_JS_FILE_NAME));
   }
 }

@@ -80,12 +80,6 @@
       <artifactId>acegi-security</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.compass-project</groupId>
-      <artifactId>compass</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
     <!-- Provided by the container -->
     <dependency>
       <groupId>javax.servlet</groupId>

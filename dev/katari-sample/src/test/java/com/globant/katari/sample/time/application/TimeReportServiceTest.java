@@ -29,6 +29,9 @@ public class TimeReportServiceTest extends TestCase {
    */
   @Override
   public void setUp() {
+
+    SpringTestUtils.get().beginTransaction();
+
     timeReportService = (TimeReportService) SpringTestUtils
       .getTimeModuleBeanFactory() .getBean("timeReportService");
     TimeRepository repository = (TimeRepository) SpringTestUtils
@@ -46,6 +49,12 @@ public class TimeReportServiceTest extends TestCase {
     DataHelper.createTimeEntry(repository, user, tmpCalendar.getTime());
 
     SecurityTestUtils.setContextUser(user);
+  }
+
+  /** {@inheritDoc}. */
+  @Override
+  protected void tearDown() throws Exception {
+    SpringTestUtils.get().endTransaction();
   }
 
   /** Test the execute method with one entry.

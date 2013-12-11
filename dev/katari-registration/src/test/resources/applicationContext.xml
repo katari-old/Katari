@@ -24,6 +24,8 @@
     <property name="password" value=""/>
   </bean>
 
+  <alias name="katari.dataSource" alias="dataSource"/>
+
   <bean id="katari.hibernateProperties"
     class="org.springframework.beans.factory.config.PropertiesFactoryBean">
     <property name="properties">

@@ -4,6 +4,7 @@ package com.globant.katari.user;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
@@ -176,5 +177,24 @@ public final class SpringTestUtils {
     }
     transactionStatus = null;
   }
+
+  /** Clean up the database. */
+  public static void clearDatabase() {
+    try {
+      beginTransaction();
+      Connection connection = getDataSource().getConnection();
+      Statement statement = connection.createStatement();
+      statement.execute(
+          "TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
+      connection.commit();
+      statement.close();
+      connection.close();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    } finally {
+      endTransaction();
+    }
+  }
+
 }
 

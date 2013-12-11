@@ -2,6 +2,7 @@
 
 package com.globant.katari.editablepages.application;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -21,9 +22,12 @@ public class SavePageCommandTest {
 
   @Before
   public final void setUp() {
-    repository = (PageRepository) TestUtils
+
+    TestUtils.get().beginTransaction();
+
+    repository = (PageRepository) TestUtils.get()
       .getServletBeanFactory().getBean("pageRepository");
-    command = (SavePageCommand) TestUtils
+    command = (SavePageCommand) TestUtils.get()
       .getServletBeanFactory().getBean("editPageCommand");
     siteName = TestUtils.getSiteName();
 
@@ -31,13 +35,17 @@ public class SavePageCommandTest {
 
     // Adds a pair of pages to be used in the tests.
     Page page;
-   
+
     // Creates two sample pages.
     page = new Page("first.last", "page-1", "title", "content");
     repository.save(siteName, page);
     page = new Page("first.last", "page-2", "title", "content - 2");
     page.publish();
     repository.save(siteName, page);
+  }
+
+  @After public void after() {
+    TestUtils.get().endTransaction();
   }
 
   /* Tests the init operation.

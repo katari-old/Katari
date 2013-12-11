@@ -65,7 +65,7 @@ public class PreviewButtonFtlTest {
     // Building Model
     Map<String, Object> model = new HashMap<String, Object>();
 
-    Object accessHelper = TestUtils.getServletBeanFactory()
+    Object accessHelper = TestUtils.get().getServletBeanFactory()
       .getBean("katari.secureUrlAccessHelper");
 
     MockHttpServletRequest request = new MockHttpServletRequest();

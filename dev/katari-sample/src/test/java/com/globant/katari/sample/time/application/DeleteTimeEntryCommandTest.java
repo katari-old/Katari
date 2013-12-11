@@ -34,6 +34,9 @@ public class DeleteTimeEntryCommandTest extends TestCase {
   /** This is a set up method of this TestCase.
    */
   public void setUp() {
+
+    SpringTestUtils.get().beginTransaction();
+
     deleteTimeEntryCommand = (DeleteTimeEntryCommand) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("deleteTimeEntryCommand");
     timeRepository = (TimeRepository) SpringTestUtils
@@ -43,6 +46,12 @@ public class DeleteTimeEntryCommandTest extends TestCase {
     DataHelper.removeExtraTimeEntries(timeRepository);
     user = userRepository.findUserByName("admin");
     DataHelper.createTimeEntry(timeRepository, user);
+  }
+
+  /** {@inheritDoc}. */
+  @Override
+  protected void tearDown() throws Exception {
+    SpringTestUtils.get().endTransaction();
   }
 
   /** Test the execute method.

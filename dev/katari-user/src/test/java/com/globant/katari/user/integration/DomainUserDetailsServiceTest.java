@@ -9,6 +9,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 import org.acegisecurity.userdetails.UserDetails;
 
+import com.globant.katari.hibernate.Transaction;
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.hibernate.coreuser.domain.RoleRepository;
 import com.globant.katari.user.SpringTestUtils;
@@ -23,15 +24,20 @@ public class DomainUserDetailsServiceTest {
 
   private UserRepository repository;
 
+  private Transaction transaction;
+
   @Before
   public final void setUp() {
     SpringTestUtils.beginTransaction();
     repository = (UserRepository) SpringTestUtils.getBean(
         "user.userRepository");
 
+    transaction = (Transaction) SpringTestUtils.getBean(
+        "katari.transaction");
+
     RoleRepository roleRepository = (RoleRepository) SpringTestUtils.getBean(
         "coreuser.roleRepository");
-    
+
     Role adminRole = roleRepository.findRoleByName("ADMINISTRATOR");
     if (adminRole == null) {
       roleRepository.save(new Role("ADMINISTRATOR"));
@@ -49,6 +55,8 @@ public class DomainUserDetailsServiceTest {
     user.changePassword("admin");
     user.addRole(adminRole);
     repository.save(user);
+
+    SpringTestUtils.endTransaction();
   }
 
 
@@ -58,7 +66,7 @@ public class DomainUserDetailsServiceTest {
   public final void testLoadUserByUsername() {
 
     DomainUserDetailsService userDetailsService;
-    userDetailsService = new DomainUserDetailsService(repository);
+    userDetailsService = new DomainUserDetailsService(repository, transaction);
 
     UserDetails  userDetails;
     userDetails = userDetailsService.loadUserByUsername("admin");

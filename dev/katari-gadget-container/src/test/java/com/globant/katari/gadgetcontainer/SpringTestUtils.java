@@ -1,44 +1,39 @@
 package com.globant.katari.gadgetcontainer;
 
-import javax.servlet.ServletContext;
-
-import org.springframework.core.io.FileSystemResourceLoader;
-import org.springframework.mock.web.MockServletContext;
-import org.springframework.web.context.support.XmlWebApplicationContext;
-
-import com.globant.katari.hibernate.coreuser.domain.CoreUserDetails;
-import com.globant.katari.hibernate.coreuser.domain.CoreUser;
-
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+
+import com.globant.katari.hibernate.coreuser.domain.CoreUser;
+import com.globant.katari.hibernate.coreuser.domain.CoreUserDetails;
+import com.globant.katari.tools.SpringTestUtilsBase;
 
 /** Container for the spring module application context.
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
-public class SpringTestUtils {
+public class SpringTestUtils extends SpringTestUtilsBase {
 
   private static final String MODULE =
     "classpath:com/globant/katari/gadgetcontainer/applicationContext.xml";
 
+  /** The static instance for the singleton.*/
+  private static SpringTestUtils instance;
+
   private static final SpringTestUtils INSTANCE = new SpringTestUtils();
 
-  private final XmlWebApplicationContext appContext;
-
   private SpringTestUtils() {
-    ServletContext sc;
-    sc = new MockServletContext(".", new FileSystemResourceLoader());
-    appContext = new XmlWebApplicationContext();
-    appContext.setServletContext(sc);
-    appContext.setConfigLocations(new String[] { MODULE });
-    appContext.refresh();
+    super(new String[]{MODULE}, null);
   }
 
-  /** @return {@link XmlWebApplicationContext} the spring application context.
+  /** Retrieves the intance.
+   * @return the instance, never null.
    */
-  public static final XmlWebApplicationContext getContext() {
-    return INSTANCE.appContext;
+  public static synchronized SpringTestUtils get() {
+    if (instance == null) {
+      instance = new SpringTestUtils();
+    }
+    return instance;
   }
 
   /** Sets the logged in user, used for testing only.

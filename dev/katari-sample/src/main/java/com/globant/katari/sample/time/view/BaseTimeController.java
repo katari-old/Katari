@@ -19,6 +19,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
+import com.globant.katari.hibernate.Transaction;
 import com.globant.katari.sample.time.application.SaveTimeEntryCommand;
 import com.globant.katari.sample.time.domain.Activity;
 import com.globant.katari.sample.time.domain.Project;
@@ -35,7 +36,8 @@ public abstract class BaseTimeController extends SimpleFormController {
 
   /** The class logger.
    */
-  private static Logger log = LoggerFactory.getLogger(BaseTimeController.class);
+  private static Logger log = LoggerFactory.getLogger(
+      BaseTimeController.class);
 
   /** The simple date format.
    */
@@ -45,6 +47,9 @@ public abstract class BaseTimeController extends SimpleFormController {
   /** The time entry repository.
    */
   private TimeRepository timeRepository;
+
+  /** The platform transaction.*/
+  protected Transaction transaction;
 
   /** Formats a Date into a date/time string.
    *
@@ -69,11 +74,14 @@ public abstract class BaseTimeController extends SimpleFormController {
    * The list of roles provide all the existing roles in the system.
    *
    * @param theTimeRepository The time entry repository.
+   * @param theTransaction the platform transaction.
    */
-  public BaseTimeController(final TimeRepository theTimeRepository) {
+  public BaseTimeController(final TimeRepository theTimeRepository,
+      final Transaction theTransaction) {
     Validate.notNull(theTimeRepository,
         "The time entry repository cannot be null");
     timeRepository = theTimeRepository;
+    transaction = theTransaction;
   }
 
   /** Receives the request to save a time entry.
@@ -161,29 +169,34 @@ public abstract class BaseTimeController extends SimpleFormController {
    * @return A <code>Map</code> with the reference data.
    */
   @Override
-  protected Map<String, Object> referenceData(final HttpServletRequest request)
-      throws Exception {
-    Map<String, Object> reference = new  LinkedHashMap<String, Object>();
-    reference.put("request", request);
-    reference.put("baseweb", request.getAttribute("baseweb"));
+  protected Map<String, Object> referenceData(
+      final HttpServletRequest request) throws Exception {
+    try {
+      transaction.start();
+      Map<String, Object> reference = new  LinkedHashMap<String, Object>();
+      reference.put("request", request);
+      reference.put("baseweb", request.getAttribute("baseweb"));
 
-    // Projects.
-    List<Project> projects = timeRepository.getProjects();
-    Map<String, String> projectsMap = new LinkedHashMap<String, String>();
-    for (Project project : projects) {
-      projectsMap.put(String.valueOf(project.getId()), project.getName());
+      // Projects.
+      List<Project> projects = timeRepository.getProjects();
+      Map<String, String> projectsMap = new LinkedHashMap<String, String>();
+      for (Project project : projects) {
+        projectsMap.put(String.valueOf(project.getId()), project.getName());
+      }
+      reference.put("projects", projectsMap);
+
+      // Activities.
+      List<Activity> activities = timeRepository.getActivities();
+      Map<String, String> activitiesMap = new LinkedHashMap<String, String>();
+      for (Activity activity : activities) {
+        activitiesMap.put(String.valueOf(activity.getId()), activity.getName());
+      }
+
+      reference.put("activities", activitiesMap);
+      return reference;
+    } finally {
+      transaction.cleanup();
     }
-    reference.put("projects", projectsMap);
-
-    // Activities.
-    List<Activity> activities = timeRepository.getActivities();
-    Map<String, String> activitiesMap = new LinkedHashMap<String, String>();
-    for (Activity activity : activities) {
-      activitiesMap.put(String.valueOf(activity.getId()), activity.getName());
-    }
-
-    reference.put("activities", activitiesMap);
-    return reference;
   }
 }
 

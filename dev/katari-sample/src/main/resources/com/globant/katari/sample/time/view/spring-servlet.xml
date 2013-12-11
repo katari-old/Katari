@@ -38,6 +38,9 @@
     <constructor-arg index="0" >
       <ref bean="timeRepository" />
     </constructor-arg>
+    <constructor-arg index="1" >
+      <ref bean="katari.transaction" />
+    </constructor-arg>
     <property name="formView" value="myTime" />
     <lookup-method name="createCommandBean" bean="saveTimeEntryCommand" />
     <lookup-method name="createViewTimeEntriesCommand" bean="viewTimeEntriesCommand" />
@@ -48,6 +51,9 @@
       class='com.globant.katari.sample.time.view.EditTimeEntryController'>
     <constructor-arg index="0">
       <ref bean="timeRepository" />
+    </constructor-arg>
+    <constructor-arg index="1" >
+      <ref bean="katari.transaction" />
     </constructor-arg>
     <lookup-method name="createCommandBean" bean="saveTimeEntryCommand" />
     <property name="validator" ref="commandValidator" />

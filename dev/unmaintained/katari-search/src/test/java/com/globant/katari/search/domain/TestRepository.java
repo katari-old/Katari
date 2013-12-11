@@ -20,7 +20,7 @@ public class TestRepository extends HibernateDaoSupport {
 
     List<Object> objects = findAll(type);
     for (Object o: objects) {
-      getHibernateTemplate().delete(o);
+      getSession().delete(o);
     }
   }
 
@@ -41,7 +41,7 @@ public class TestRepository extends HibernateDaoSupport {
    */
   public void save(final Object o) {
     Validate.notNull(o, "The object cannot be null");
-    getHibernateTemplate().saveOrUpdate(o);
+    getSession().saveOrUpdate(o);
   }
 }
 

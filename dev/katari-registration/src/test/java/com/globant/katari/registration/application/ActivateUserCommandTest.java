@@ -1,8 +1,7 @@
 package com.globant.katari.registration.application;
 
 
-import static com.globant.katari.registration.SpringTestUtils.createSmtpServer;
-import static com.globant.katari.registration.SpringTestUtils.getContext;
+import static com.globant.katari.registration.SpringTestUtils.*;
 import static org.hamcrest.CoreMatchers.is;
 
 import org.junit.After;
@@ -34,26 +33,24 @@ public class ActivateUserCommandTest {
   public void setUp() throws Exception {
     smtpServer = createSmtpServer();
 
-    activateUserCommand  = (ActivateUserCommand) getContext().getBean(
+    activateUserCommand  = (ActivateUserCommand) get().getBean(
         "registration.activateUserCommand");
 
-    userRepository = (UserRepository) getContext().getBean(
+    userRepository = (UserRepository) get().getBean(
     "user.userRepository");
 
-    registrationRepository = (RegistrationRepository) getContext().getBean(
+    registrationRepository = (RegistrationRepository) get().getBean(
     "registration.registrationRepository");
   }
 
-  /**
-   * @throws java.lang.Exception
-   */
-  @After
-  public void tearDown() throws Exception {
+  @After public void tearDown() throws Exception {
     smtpServer.stop();
   }
 
   @Test
   public void testExecute() throws Exception {
+
+    get().beginTransaction();
 
     User user = activateUserCommand.execute();
     Assert.assertNull(user);
@@ -75,6 +72,9 @@ public class ActivateUserCommandTest {
 
     Assert.assertThat(user.getName(), is(newUser.getName()));
     Assert.assertThat(user.getEmail(), is(newUser.getEmail()));
+
+    get().endTransaction();
+
 
   }
 

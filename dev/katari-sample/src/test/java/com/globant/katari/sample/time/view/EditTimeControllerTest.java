@@ -53,6 +53,9 @@ public class EditTimeControllerTest extends TestCase {
   /** This is a set up method of this TestCase.
    */
   protected final void setUp() {
+
+    SpringTestUtils.get().beginTransaction();
+
     editTimeEntryController = (EditTimeEntryController) SpringTestUtils
         .getTimeModuleBeanFactory().getBean("/editTimeEntry.do");
     timeRepository = (TimeRepository) SpringTestUtils
@@ -64,12 +67,14 @@ public class EditTimeControllerTest extends TestCase {
     timeEntryId = timeRepository.getTimeEntries().get(0).getId();
 
     SecurityTestUtils.setContextUser(user);
+
+    SpringTestUtils.get().endTransaction();
+
   }
 
   /** Test the formBackingObject method.
    */
   public final void testFormBackingObject() throws Exception {
-
     HttpServletRequest request = createMock(HttpServletRequest.class);
     expect(request.getParameter("timeEntryId")).andReturn(
         String.valueOf(timeEntryId));
@@ -83,6 +88,9 @@ public class EditTimeControllerTest extends TestCase {
   /** Test the OnSubmit method.
    */
   public final void testOnSubmit() throws Exception {
+
+    SpringTestUtils.get().beginTransaction();
+
     HttpServletRequest request;
     request = createMock(HttpServletRequest.class);
     HttpServletResponse response;
@@ -107,6 +115,8 @@ public class EditTimeControllerTest extends TestCase {
         saveTimeEntryCommand, new BindException(saveTimeEntryCommand,
           "command"));
     assertNotNull(mav);
+
+    SpringTestUtils.get().endTransaction();
   }
 }
 

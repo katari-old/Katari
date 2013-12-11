@@ -17,10 +17,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import org.apache.commons.lang.Validate;
 
-import org.compass.annotations.Searchable;
-import org.compass.annotations.SearchableProperty;
-import org.compass.annotations.SearchableComponent;
-
 import com.globant.katari.hibernate.coreuser.domain.Role;
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
@@ -28,7 +24,6 @@ import com.globant.katari.hibernate.coreuser.domain.CoreUser;
  */
 @Entity
 @DiscriminatorValue("user")
-@Searchable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User extends CoreUser {
 
@@ -46,7 +41,6 @@ public class User extends CoreUser {
    */
   @Column(name = "email", nullable = false, unique = true,
       length = EMAIL_LENGTH)
-  @SearchableProperty
   private String email;
 
   /** The password that the user must know to log in.
@@ -62,7 +56,6 @@ public class User extends CoreUser {
    */
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "users_roles")
-  @SearchableComponent
   private Set<Role> roles = new HashSet<Role>();
 
   /** Validates that the user is active. Default value is false.

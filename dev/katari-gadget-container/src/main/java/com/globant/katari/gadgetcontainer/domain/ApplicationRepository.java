@@ -26,7 +26,7 @@ public class ApplicationRepository extends HibernateDaoSupport {
    * @return The application with the provided id, null if not found.
    */
   public Application find(final long id) {
-    return (Application) getHibernateTemplate().get(Application.class, id);
+    return (Application) getSession().get(Application.class, id);
   }
 
   /** Returns all registered applications, ordered by title.
@@ -42,8 +42,7 @@ public class ApplicationRepository extends HibernateDaoSupport {
     log.trace("Entering findAll");
 
     List<Application> applications;
-    applications = getHibernateTemplate().find(
-        "from Application order by title");
+    applications = (List<Application>) find("from Application order by title");
 
     log.trace("Leaving findAll");
     return applications;

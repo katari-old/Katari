@@ -170,7 +170,7 @@ public class PageFtlTest {
     }
     model.put("page", page);
 
-    Object accessHelper = TestUtils.getServletBeanFactory()
+    Object accessHelper = TestUtils.get().getServletBeanFactory()
       .getBean("katari.secureUrlAccessHelper");
 
     MockHttpServletRequest request = new MockHttpServletRequest();

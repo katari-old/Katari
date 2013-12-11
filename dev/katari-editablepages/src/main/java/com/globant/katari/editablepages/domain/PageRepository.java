@@ -21,7 +21,7 @@ public class PageRepository extends HibernateDaoSupport {
     Validate.notNull(page, "The page cannot be null");
     Validate.notNull(siteName, "The site cannot be null");
     page.setSiteName(siteName);
-    getHibernateTemplate().saveOrUpdate(page);
+    getSession().saveOrUpdate(page);
   }
 
   /** Removes the specified page from the database.
@@ -30,7 +30,7 @@ public class PageRepository extends HibernateDaoSupport {
    */
   public void remove(final Page page) {
     Validate.notNull(page, "The page cannot be null");
-    getHibernateTemplate().delete(page);
+    getSession().delete(page);
   }
 
   /** Finds a page by name and a site.
@@ -46,7 +46,7 @@ public class PageRepository extends HibernateDaoSupport {
   public Page findPageByName(final String siteName, final String name) {
     Validate.notNull(siteName, "The site name cannot be null.");
     Validate.notNull(name, "The page name cannot be null.");
-    List<Page> pages = getHibernateTemplate().find(
+    List<Page> pages = (List<Page>) find(
         "from Page where name = ? and site_name = ?",
         new Object[] {name, siteName });
     if (pages.isEmpty()) {
@@ -64,7 +64,7 @@ public class PageRepository extends HibernateDaoSupport {
    * exists.
    */
   public Page findPage(final long id) {
-    return (Page) getHibernateTemplate().get(Page.class, id);
+    return (Page) getSession().get(Page.class, id);
   }
 }
 

@@ -35,6 +35,9 @@ public class SaveTimeEntryCommandTest extends TestCase {
   /** This is a set up method of this TestCase.
    */
   public void setUp() {
+
+    SpringTestUtils.get().beginTransaction();
+
     repository = (TimeRepository) SpringTestUtils.getTimeModuleBeanFactory()
         .getBean("timeRepository");
     userRepository = (UserRepository) SpringTestUtils.get()
@@ -44,6 +47,12 @@ public class SaveTimeEntryCommandTest extends TestCase {
     // Login a user.
     user = userRepository.findUserByName("admin");
     SecurityTestUtils.setContextUser(user);
+  }
+
+  /** {@inheritDoc}. */
+  @Override
+  protected void tearDown() throws Exception {
+    SpringTestUtils.get().endTransaction();
   }
 
   private SaveTimeEntryCommand defaultCommand() {

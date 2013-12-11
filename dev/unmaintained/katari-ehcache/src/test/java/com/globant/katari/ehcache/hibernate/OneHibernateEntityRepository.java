@@ -18,11 +18,11 @@ public class OneHibernateEntityRepository extends HibernateDaoSupport {
   }
 
   public void save(final OneHibernateEntity entity) {
-    getHibernateTemplate().saveOrUpdate(entity);
+    getSession().saveOrUpdate(entity);
   }
 
   public OneHibernateEntity get(final long id) {
-    return getHibernateTemplate().get(OneHibernateEntity.class, id);
+    return (OneHibernateEntity) getSession().get(OneHibernateEntity.class, id);
   }
 
 

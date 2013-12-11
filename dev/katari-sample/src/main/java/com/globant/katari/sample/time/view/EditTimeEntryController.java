@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.globant.katari.hibernate.Transaction;
 import com.globant.katari.sample.time.application.SaveTimeEntryCommand;
 import com.globant.katari.sample.time.domain.TimeEntry;
 import com.globant.katari.sample.time.domain.TimeRepository;
@@ -28,9 +29,11 @@ public abstract class EditTimeEntryController extends BaseTimeController {
   /** Default initialization for the controller.
    *
    * @param theTimeRepository The time entry repository.
+   * @param theTransaction the platform transaction.
    */
-  public EditTimeEntryController(final TimeRepository theTimeRepository) {
-    super(theTimeRepository);
+  public EditTimeEntryController(final TimeRepository theTimeRepository,
+      final Transaction transaction) {
+    super(theTimeRepository, transaction);
   }
 
   /** Retrieve a backing object for the current form from the given request.
@@ -44,23 +47,30 @@ public abstract class EditTimeEntryController extends BaseTimeController {
   @Override
   protected Object formBackingObject(final HttpServletRequest request)
       throws Exception {
-    log.trace("Entering formBackingObject");
+    try {
+      transaction.start();
 
-    SaveTimeEntryCommand saveTimeEntryCommand = (SaveTimeEntryCommand)
-        createCommandBean();
-    TimeEntry timeEntry = getTimeRepository().findTimeEntry(
-        Long.valueOf(request.getParameter("timeEntryId")));
+      log.trace("Entering formBackingObject");
 
-    saveTimeEntryCommand.setTimeEntryId(timeEntry.getId());
-    saveTimeEntryCommand.setActivityId(timeEntry.getActivity().getId());
-    saveTimeEntryCommand.setProjectId(timeEntry.getProject().getId());
-    saveTimeEntryCommand.setStart(timeEntry.getPeriod().getStartHour() + ":"
-        + timeEntry.getPeriod().getStartMinutes());
-    saveTimeEntryCommand.setDuration(timeEntry.getPeriod().getDuration());
-    saveTimeEntryCommand.setComment(timeEntry.getComment());
-    saveTimeEntryCommand.setDate(timeEntry.getEntryDate());
+      SaveTimeEntryCommand saveTimeEntryCommand;
+      saveTimeEntryCommand = (SaveTimeEntryCommand) createCommandBean();
+      TimeEntry timeEntry = getTimeRepository().findTimeEntry(
+          Long.valueOf(request.getParameter("timeEntryId")));
 
-    log.trace("Leaving formBackingObject");
-    return saveTimeEntryCommand;
+      saveTimeEntryCommand.setTimeEntryId(timeEntry.getId());
+      saveTimeEntryCommand.setActivityId(timeEntry.getActivity().getId());
+      saveTimeEntryCommand.setProjectId(timeEntry.getProject().getId());
+      saveTimeEntryCommand.setStart(timeEntry.getPeriod().getStartHour() + ":"
+          + timeEntry.getPeriod().getStartMinutes());
+      saveTimeEntryCommand.setDuration(timeEntry.getPeriod().getDuration());
+      saveTimeEntryCommand.setComment(timeEntry.getComment());
+      saveTimeEntryCommand.setDate(timeEntry.getEntryDate());
+
+      log.trace("Leaving formBackingObject");
+      transaction.commit();
+      return saveTimeEntryCommand;
+    } finally {
+      transaction.cleanup();
+    }
   }
 }

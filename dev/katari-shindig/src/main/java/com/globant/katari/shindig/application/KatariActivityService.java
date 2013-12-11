@@ -296,12 +296,13 @@ public class KatariActivityService extends HibernateDaoSupport implements
     Application application;
     application = applicationRepository.findApplicationByUrl(appId);
 
-    CoreUser user = (CoreUser) applicationRepository.getHibernateTemplate().get(
+    CoreUser user = (CoreUser) applicationRepository.getSessionFactory().getCurrentSession().get(
         CoreUser.class, Long.parseLong(userId.getUserId(token)));
 
     KatariActivity newActivity = new KatariActivity(new Date().getTime(),
         application, user, activity);
-    getHibernateTemplate().saveOrUpdate(newActivity);
+    applicationRepository.getSessionFactory()
+      .getCurrentSession().saveOrUpdate(newActivity);
 
     log.trace("Leaving createActivity");
     return null;
@@ -420,7 +421,7 @@ public class KatariActivityService extends HibernateDaoSupport implements
           criteria.createCriteria("user")
             .add(Restrictions.eq("id", userIdList.get(0)));
         } else {
-          criteria.createCriteria("user").add(Restrictions.in("id", 
+          criteria.createCriteria("user").add(Restrictions.in("id",
               userIdList));
         }
         break;

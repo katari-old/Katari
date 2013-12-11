@@ -1,10 +1,10 @@
 /**
- * 
+ *
  */
 package com.globant.katari.registration.application;
 
-import static com.globant.katari.registration.SpringTestUtils.createSmtpServer;
-import static com.globant.katari.registration.SpringTestUtils.getContext;
+import static com.globant.katari.registration.SpringTestUtils.*;
+
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.createMock;
@@ -21,9 +21,11 @@ import org.junit.Test;
 import org.springframework.validation.Errors;
 
 import com.dumbster.smtp.SmtpMessage;
+import com.globant.katari.registration.SpringTestUtils;
 import com.globant.katari.registration.domain.RecoverPasswordRequest;
 import com.globant.katari.registration.domain.RegistrationRepository;
 import com.globant.katari.tools.DummySmtpServer;
+
 import com.globant.katari.user.domain.User;
 import com.globant.katari.user.domain.UserRepository;
 
@@ -37,26 +39,27 @@ public class RegisterUserCommandTest {
   private DummySmtpServer smtpServer;
   private RegistrationRepository registrationRepository;
 
-  @Before
-  public void setUp() throws Exception {
+  @Before public void setUp() throws Exception {
+
+    SpringTestUtils.get().clearDatabase();
+
+    get().beginTransaction();
 
     smtpServer = createSmtpServer();
 
-    command = (RegisterUserCommand) getContext().getBean(
+    command = (RegisterUserCommand) get().getBean(
         "registration.registerUserCommand");
 
-    userRepository = (UserRepository) getContext().getBean(
+    userRepository = (UserRepository) get().getBean(
         "user.userRepository");
 
-    registrationRepository = (RegistrationRepository) getContext().getBean(
+    registrationRepository = (RegistrationRepository) get().getBean(
         "registration.registrationRepository");
-
-    userRepository.getHibernateTemplate().bulkUpdate("delete from User");
   }
 
-  @After
-  public void tearDown() {
+  @After public void tearDown() {
     smtpServer.stop();
+    get().endTransaction();
   }
 
   @Test
@@ -64,6 +67,7 @@ public class RegisterUserCommandTest {
     command.setEmail("emiliano.arango@globant.com");
     command.setName("emiliano");
     command.execute();
+
     User user = userRepository.findUserByEmail(command.getEmail());
     assertEquals(command.getName(), user.getName());
 
@@ -71,8 +75,7 @@ public class RegisterUserCommandTest {
 
     RecoverPasswordRequest request;
     request = (RecoverPasswordRequest) registrationRepository
-      .getHibernateTemplate().find(
-        "from RecoverPasswordRequest where userId=?", user.getId()).get(0);
+      .find("from RecoverPasswordRequest where userId=?", user.getId()).get(0);
 
     SmtpMessage message = smtpServer.iterator().next();
     String mailBody = message.getBody();
@@ -85,7 +88,8 @@ public class RegisterUserCommandTest {
   @Test
   public void testValidate_validate_parameters() throws Exception {
     Errors errors = createMock(Errors.class);
-    errors.rejectValue(isA(String.class), isA(String.class), isA(String.class));
+    errors.rejectValue(isA(String.class), isA(String.class),
+        isA(String.class));
     expectLastCall().times(2);
     replay(errors);
     command.setEmail("");
@@ -116,7 +120,7 @@ public class RegisterUserCommandTest {
   }
 
   @Test
-  public void testValidate_validate_user_exist_with_same_email() 
+  public void testValidate_validate_user_exist_with_same_email()
     throws Exception {
 
     command.setEmail("emiliano.arango@globant.com");

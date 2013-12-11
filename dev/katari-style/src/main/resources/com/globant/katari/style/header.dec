@@ -7,7 +7,6 @@
 
 <div id="data" class='leftMargin'>
   <@katari.weblet "editable-pages" "previewButton"/>
-  <@katari.weblet "search" "search"/>
   <#if request.remoteUser??>
     <@spring.message "welcome"/> ${request.remoteUser}
     (<a href="${baseweb}/logout?service=${response.encodeRedirectURL(baseweb+'/module/editable-pages/page/about?selected-module-entry=/root/Institutional/About')}"

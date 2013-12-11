@@ -9,34 +9,32 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import com.globant.katari.email.application.EmailSender;
 import com.globant.katari.tools.DummySmtpServer;
+import com.globant.katari.tools.SpringTestUtilsBase;
 
 /**
  * Container for the spring module application context.
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
-public class SpringTestUtils {
+public class SpringTestUtils extends SpringTestUtilsBase {
 
   private static final String MODULE = "classpath:applicationContext.xml";
 
-  private static final SpringTestUtils INSTANCE = new SpringTestUtils();
-
-  private final XmlWebApplicationContext appContext;
+  /** The static instance for the singleton.*/
+  private static SpringTestUtils instance;
 
   private SpringTestUtils() {
-    ServletContext sc;
-    sc = new MockServletContext(".", new FileSystemResourceLoader());
-    appContext = new XmlWebApplicationContext();
-    appContext.setServletContext(sc);
-    appContext.setConfigLocations(new String[] { MODULE });
-    appContext.refresh();
+    super(new String[] {MODULE}, null);
   }
 
-  /**
-   * @return {@link XmlWebApplicationContext} the spring application context.
+  /** Retrieves the intance.
+   * @return the instance, never null.
    */
-  public static final XmlWebApplicationContext getContext() {
-    return INSTANCE.appContext;
+  public static synchronized SpringTestUtils get() {
+    if (instance == null) {
+      instance = new SpringTestUtils();
+    }
+    return instance;
   }
 
   /** Create a new instance of the DumySmtpServer and also configure
@@ -46,12 +44,11 @@ public class SpringTestUtils {
    */
   public static final DummySmtpServer createSmtpServer() {
     // the email sender is singleton
-    EmailSender emailSender = (EmailSender) getContext().getBean(
+    EmailSender emailSender = (EmailSender) get().getBean(
         "katari.emailSender");
     DummySmtpServer smtpServer = DummySmtpServer.start(0);
     DirectFieldAccessor accessor = new DirectFieldAccessor(emailSender);
     accessor.setPropertyValue("smtpPort", smtpServer.getPortNumber());
     return smtpServer;
   }
-
 }

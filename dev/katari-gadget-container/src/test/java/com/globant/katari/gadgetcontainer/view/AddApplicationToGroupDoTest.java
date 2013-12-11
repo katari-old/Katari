@@ -50,18 +50,17 @@ public class AddApplicationToGroupDoTest {
 
   @Before
   public void setUp() throws Exception {
-
-    appContext = SpringTestUtils.getContext();
-
+    SpringTestUtils.get().clearDatabase();
+    SpringTestUtils.get().beginTransaction();
+    appContext = SpringTestUtils.get().getBeanFactory();
     session = ((SessionFactory) appContext.getBean("katari.sessionFactory"))
       .openSession();
-
-    session.createQuery("delete from GadgetInstance").executeUpdate();
-    session.createQuery("delete from GadgetGroup").executeUpdate();
-    session.createQuery("delete from CoreUser").executeUpdate();
-    session.createSQLQuery("delete from supported_views").executeUpdate();
-    session.createQuery("delete from Application").executeUpdate();
   }
+
+  @After public void after() {
+    SpringTestUtils.get().endTransaction();
+  }
+
 
   @Test
   public void test() throws Exception {
@@ -74,9 +73,9 @@ public class AddApplicationToGroupDoTest {
       appContext.getBean("gadgetcontainer.gadgetGroupRepository");
 
     Application app1 = new Application(gadgetXmlUrl1);
-    repository.getHibernateTemplate().saveOrUpdate(app1);
+    repository.getSession().saveOrUpdate(app1);
     Application app2 = new Application(gadgetXmlUrl2);
-    repository.getHibernateTemplate().saveOrUpdate(app2);
+    repository.getSession().saveOrUpdate(app2);
 
     CustomizableGadgetGroup group;
     group = new CustomizableGadgetGroup(user, "sample", "default", 2);
@@ -123,9 +122,5 @@ public class AddApplicationToGroupDoTest {
     assertThat(col1, is(0));
   }
 
-  @After
-  public void tearDown() {
-    session.close();
-  }
 }
 

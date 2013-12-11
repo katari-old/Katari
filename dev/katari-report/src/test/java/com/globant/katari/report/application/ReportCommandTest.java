@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -26,8 +27,16 @@ public class ReportCommandTest {
 
   @Before
   public void onSetUp() throws Exception {
+    ReportsTestSupport.get().clearDatabase();
+
     reportRepository = ReportsTestSupport.getRepository();
     ReportsTestSupport.initTestReportSecurityContext("ADMINISTRATOR");
+
+    ReportsTestSupport.get().beginTransaction();
+  }
+
+  @After public void after() {
+    ReportsTestSupport.get().endTransaction();
   }
 
   /**

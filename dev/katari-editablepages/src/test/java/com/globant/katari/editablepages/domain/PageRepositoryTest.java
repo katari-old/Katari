@@ -2,6 +2,7 @@
 
 package com.globant.katari.editablepages.domain;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -15,7 +16,9 @@ public class PageRepositoryTest {
   @Before
   public final void setUp() throws Exception {
 
-    pageRepository = (PageRepository) TestUtils.getServletBeanFactory()
+    TestUtils.get().beginTransaction();
+
+    pageRepository = (PageRepository) TestUtils.get().getServletBeanFactory()
       .getBean("pageRepository");
 
     TestUtils.deleteTestPages();
@@ -29,6 +32,10 @@ public class PageRepositoryTest {
     page = new Page("first.last", "page-2", "title", "content - 2");
     page.publish();
     pageRepository.save("site", page);
+  }
+
+  @After public void after() {
+    TestUtils.get().endTransaction();
   }
 
   /* Searches a page by an existing site and name.

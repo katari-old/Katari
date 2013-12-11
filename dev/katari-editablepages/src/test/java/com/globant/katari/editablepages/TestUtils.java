@@ -2,16 +2,7 @@
 
 package com.globant.katari.editablepages;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.commons.lang.Validate;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.core.io.FileSystemResourceLoader;
-import org.springframework.web.context.support.XmlWebApplicationContext;
-import org.springframework.mock.web.MockServletContext;
 
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.Authentication;
@@ -23,56 +14,35 @@ import java.sql.Connection;
 import javax.sql.DataSource;
 
 import com.globant.katari.editablepages.domain.PageRepository;
+import com.globant.katari.tools.SpringTestUtilsBase;
 
 /** Utilites for testing the editable pages module.
  */
-public class TestUtils {
+public class TestUtils extends SpringTestUtilsBase {
 
-  /** The class logger.
-   */
-  private static Logger log = LoggerFactory.getLogger(TestUtils.class);
+  /** The static instance for the singleton.*/
+  private static TestUtils instance;
 
-  /** The global application bean factory.
+  /**
+   * @param theGlobalConfigurationFiles
+   * @param theServletConfigurationFiles
    */
-  private static ApplicationContext beanFactory;
-
-  /** The servlet bean factory.
-   */
-  private static ApplicationContext servletBeanFactory;
-
-  /** This method returns a BeanFactory.
-   *
-   * @return a BeanFactory, never null.
-   */
-  public static ApplicationContext getBeanFactory() {
-    if (beanFactory == null) {
-      log.info("Creating a beanFactory");
-      MockServletContext sc = new MockServletContext("./src/main/webapp",
-          new FileSystemResourceLoader());
-      XmlWebApplicationContext appContext = new XmlWebApplicationContext();
-      appContext.setServletContext(sc);
-      appContext.setConfigLocations(new String[] {
-        "classpath:/applicationContext.xml",
-      });
-      appContext.refresh();
-      beanFactory = appContext;
-    }
-    return beanFactory;
+  protected TestUtils(final String[] theGlobalConfigurationFiles,
+      final String[] theServletConfigurationFiles) {
+    super(theGlobalConfigurationFiles, theServletConfigurationFiles);
   }
 
-  /** Returns the bean factory for the servlet.
-   *
-   * @return a BeanFactory.
+  /** Retrieves the intance.
+   * @return the instance, never null.
    */
-  public static synchronized ApplicationContext getServletBeanFactory() {
-    if (servletBeanFactory == null) {
-      log.info("Creating a beanFactory");
-      servletBeanFactory = new FileSystemXmlApplicationContext(
-          new String[]
-          {"classpath:/com/globant/katari/editablepages/view/spring-servlet.xml"},
-          getBeanFactory());
+  public static synchronized TestUtils get() {
+    if (instance == null) {
+      instance = new TestUtils(
+        new String[] {"classpath:/applicationContext.xml"},
+        new String[] {"classpath:/com/globant/katari/editablepages/view/"
+            + "spring-servlet.xml"});
     }
-    return servletBeanFactory;
+    return instance;
   }
 
   /** Removes all test pages.
@@ -81,7 +51,7 @@ public class TestUtils {
     // Removes all the pages.
     try {
       DataSource dataSource;
-      dataSource = (DataSource) getBeanFactory().getBean("dataSource");
+      dataSource = (DataSource) get().getBeanFactory().getBean("dataSource");
       Connection connection = dataSource.getConnection();
       connection.createStatement().execute("delete from pages");
       connection.close();
@@ -95,15 +65,17 @@ public class TestUtils {
    * @return The page repository, never null.
    */
   public static PageRepository getPageRepository() {
-    return (PageRepository) getServletBeanFactory().getBean("pageRepository");
+    return (PageRepository) get().getServletBeanFactory().getBean(
+        "pageRepository");
   }
-  
+
   /** Obtains the site name from the spring application context.
   *
   * @return The site Name, never null.
   */
  public static String getSiteName() {
-   return (String) getServletBeanFactory().getBean("editable-pages.siteName");
+   return (String) get().getServletBeanFactory().getBean(
+       "editable-pages.siteName");
  }
 
  /** Creates a mock user with the specified role and registers it in acegi

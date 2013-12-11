@@ -6,6 +6,7 @@ import java.util.Map;
 
 import static org.easymock.EasyMock.*;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -31,6 +32,9 @@ public class PageEditControllerTest {
 
   @Before
   public void setUp() throws Exception {
+
+    TestUtils.get().beginTransaction();
+
     repository = TestUtils.getPageRepository();
 
     TestUtils.deleteTestPages();
@@ -50,6 +54,10 @@ public class PageEditControllerTest {
         return command;
       }
     };
+  }
+
+  @After public void after() {
+    TestUtils.get().endTransaction();
   }
 
   /* Simulates a GET request and tests the result.

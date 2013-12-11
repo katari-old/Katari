@@ -106,11 +106,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.compass-project</groupId>
-      <artifactId>compass</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.acegisecurity</groupId>
       <artifactId>acegi-security</artifactId>
     </dependency>

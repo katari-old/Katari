@@ -40,15 +40,13 @@ public class ApplicationRepositoryTest {
 
   @Before
   public void setUp() throws Exception {
-    appContext = SpringTestUtils.getContext();
+    SpringTestUtils.get().clearDatabase();
+    SpringTestUtils.get().beginTransaction();
+
+    appContext = SpringTestUtils.get().getBeanFactory();
     repository = (ApplicationRepository) appContext.getBean(REPOSITORY);
     session = ((SessionFactory) appContext.getBean("katari.sessionFactory"))
         .openSession();
-    session.createQuery("delete from GadgetInstance").executeUpdate();
-    session.createQuery("delete from GadgetGroup").executeUpdate();
-    session.createQuery("delete from CoreUser").executeUpdate();
-    session.createSQLQuery("delete from supported_views").executeUpdate();
-    session.createQuery("delete from Application").executeUpdate();
 
     Application app1 = new Application(gadgetUrl1);
     Application app2 = new Application(gadgetUrl2);
@@ -59,9 +57,8 @@ public class ApplicationRepositoryTest {
     applicationId = app1.getId();
   }
 
-  @After
-  public void tearDown() {
-    session.close();
+  @After public void tearDown() {
+    SpringTestUtils.get().endTransaction();
   }
 
   @Test
