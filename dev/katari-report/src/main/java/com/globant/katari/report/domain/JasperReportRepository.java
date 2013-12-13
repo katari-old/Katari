@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.hibernate.Query;
 import org.hibernate.transform.AliasToBeanConstructorResultTransformer;
 import org.hibernate.type.StringType;
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 import com.globant.katari.hibernate.coreuser.domain.Role;
 
@@ -21,7 +21,7 @@ import com.globant.katari.hibernate.coreuser.domain.Role;
  *
  * @author sergio.sobek
  */
-public class JasperReportRepository extends HibernateDaoSupport {
+public class JasperReportRepository extends BaseRepository {
 
   /** The class logger. */
   private static Logger log =

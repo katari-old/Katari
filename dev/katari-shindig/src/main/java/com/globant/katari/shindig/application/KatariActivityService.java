@@ -14,7 +14,7 @@ import java.util.concurrent.Future;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
@@ -47,7 +47,7 @@ import com.globant.katari.shindig.domain.ApplicationRepository;
  *
  * Shindig uses the application url as the appId.
  */
-public class KatariActivityService extends HibernateDaoSupport implements
+public class KatariActivityService extends BaseRepository implements
     ActivityService {
 
   /** The class logger. */
@@ -296,13 +296,12 @@ public class KatariActivityService extends HibernateDaoSupport implements
     Application application;
     application = applicationRepository.findApplicationByUrl(appId);
 
-    CoreUser user = (CoreUser) applicationRepository.getSessionFactory().getCurrentSession().get(
+    CoreUser user = (CoreUser) applicationRepository.getSession().get(
         CoreUser.class, Long.parseLong(userId.getUserId(token)));
 
     KatariActivity newActivity = new KatariActivity(new Date().getTime(),
         application, user, activity);
-    applicationRepository.getSessionFactory()
-      .getCurrentSession().saveOrUpdate(newActivity);
+    applicationRepository.getSession().saveOrUpdate(newActivity);
 
     log.trace("Leaving createActivity");
     return null;

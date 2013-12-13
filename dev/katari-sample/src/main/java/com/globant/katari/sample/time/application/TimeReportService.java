@@ -4,7 +4,7 @@ package com.globant.katari.sample.time.application;
 import org.apache.commons.lang.Validate;
 import org.hibernate.Query;
 
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author roman.cunci@globant.com
  */
-public class TimeReportService extends HibernateDaoSupport {
+public class TimeReportService extends BaseRepository {
 
   /**
    * Finds the DTOs to show in JasperReports.

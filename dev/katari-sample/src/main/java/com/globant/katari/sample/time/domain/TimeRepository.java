@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 import com.globant.katari.hibernate.coreuser.domain.CoreUser;
 
@@ -14,7 +14,7 @@ import com.globant.katari.hibernate.coreuser.domain.CoreUser;
  *
  * @author nicolas.frontini
  */
-public class TimeRepository extends HibernateDaoSupport {
+public class TimeRepository extends BaseRepository {
 
   /** Finds a time entry by id.
    *

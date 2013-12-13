@@ -8,13 +8,13 @@ import org.apache.commons.lang.Validate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 /** Repository for the gadget groups.
  *
  * @author waabox(emiliano[dot]arango[at]globant[dot]com)
  */
-public class GadgetGroupRepository extends HibernateDaoSupport {
+public class GadgetGroupRepository extends BaseRepository {
 
   /** The class logger.
    */

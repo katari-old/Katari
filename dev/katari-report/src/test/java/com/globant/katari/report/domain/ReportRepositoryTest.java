@@ -38,7 +38,7 @@ public class ReportRepositoryTest {
     roleRepository = (RoleRepository) ReportsTestSupport
       .get().getBean("coreuser.roleRepository");
 
-    session = roleRepository.getSessionFactory().getCurrentSession();
+    session = roleRepository.getSession();
 
     session.createSQLQuery("delete from report_required_roles")
       .executeUpdate();

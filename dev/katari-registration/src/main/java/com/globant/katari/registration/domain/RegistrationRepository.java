@@ -6,7 +6,7 @@ import org.apache.commons.lang.Validate;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 /**
  * The repository for all operations related to registration and password
@@ -14,7 +14,7 @@ import com.globant.katari.hibernate.HibernateDaoSupport;
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
-public class RegistrationRepository extends HibernateDaoSupport {
+public class RegistrationRepository extends BaseRepository {
 
   /** The class logger. */
   private static final Logger LOG = getLogger(RegistrationRepository.class);

@@ -1,0 +1,40 @@
+package com.globant.katari.hibernate;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+/** POJO for testing purposes.
+ */
+@Entity
+@Table(name = "entities_with_default_constructor")
+public class EntityWithDefaultConstructor {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  @SuppressWarnings("unused")
+  private long id = 0;
+
+  /** Transient name.
+   */
+  @Transient
+  private String name;
+
+  /** Default hibernate constructor.
+   */
+  EntityWithDefaultConstructor() {}
+
+  /** Returns the name.
+  *
+  * @return the name, always null.
+  */
+  public String getName() {
+    return name;
+  }
+}
+

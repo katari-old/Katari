@@ -5,11 +5,11 @@ package com.globant.katari.editablepages.domain;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 /** This class is responsible for managing the persistence of pages.
  */
-public class PageRepository extends HibernateDaoSupport {
+public class PageRepository extends BaseRepository {
 
   /** Saves a new page or updates an existing page to the database.
    *

@@ -22,7 +22,7 @@ import org.hibernate.Query;
 
 import org.slf4j.Logger;
 
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 import com.globant.katari.shindig.lang.Validate;
 
@@ -36,7 +36,7 @@ import org.apache.shindig.social.core.model.PersonImpl;
  *
  * @author waabox (emiliano[dot]arango[at]globant[dot]com)
  */
-public class KatariPersonService extends HibernateDaoSupport implements
+public class KatariPersonService extends BaseRepository implements
     PersonService {
 
   /** The class logger. */

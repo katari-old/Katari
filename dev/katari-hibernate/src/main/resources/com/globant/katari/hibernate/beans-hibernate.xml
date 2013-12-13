@@ -16,14 +16,16 @@
     hibernate dependent beans.
   </description>
 
+  <util:map id='infrastructure.entityFactoryBeanNames'/>
+
   <!-- Hibernate SessionFactory -->
   <bean id="katari.sessionFactory"
-    class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
-    lazy-init="true">
+    class="com.globant.katari.hibernate.LocalSessionFactoryBean" lazy-init="true">
     <property name="dataSource" ref="katari.lazyDataSource" />
     <property name="hibernateProperties"
       ref='katari.configuredHibernateProperties'/>
     <property name="annotatedClasses" ref='katari.persistentClasses' />
+    <property name="entityFactories" ref='infrastructure.entityFactoryBeanNames' />
   </bean>
 
   <!-- Hibernate properties. They are composed by initalHibernateProperties and

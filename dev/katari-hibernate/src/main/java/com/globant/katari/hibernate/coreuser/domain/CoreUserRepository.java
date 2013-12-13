@@ -7,14 +7,14 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.hibernate.Query;
 
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 /** This class provides read only access to the user.
  *
  * User creation is left to a module. This repository gives you access to the
  * CoreUser only.
  */
-public class CoreUserRepository extends HibernateDaoSupport {
+public class CoreUserRepository extends BaseRepository {
 
   /** Finds the user with the specified id.
    *

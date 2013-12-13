@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 /**
  * This class is responsible for managing the persistence of roles.
  */
-public class RoleRepository extends HibernateDaoSupport {
+public class RoleRepository extends BaseRepository {
 
   /**
    * Removes the specified role from the database.

@@ -13,14 +13,14 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 import com.globant.katari.user.domain.filter.ContainsFilter;
 import com.globant.katari.user.domain.filter.Paging;
 import com.globant.katari.user.domain.filter.Sorting;
 
 /** This class is responsible for managing the persistence of users.
  */
-public class UserRepository extends HibernateDaoSupport {
+public class UserRepository extends BaseRepository {
 
   /** The class logger.
    */

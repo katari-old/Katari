@@ -139,8 +139,37 @@
     <constructor-arg>
       <list>
         <value>com.globant.katari.hibernate.coreuser.domain.SampleUser</value>
+        <value>com.globant.katari.hibernate.EntityWithParameterInConstructor</value>
+        <value>com.globant.katari.hibernate.EntityWithDefaultConstructor</value>
       </list>
     </constructor-arg>
+  </bean>
+
+  <bean class='com.globant.katari.core.web.MapFactoryAppender'>
+    <constructor-arg index='0' value='infrastructure.entityFactoryBeanNames' />
+    <constructor-arg index='1'>
+      <util:map>
+        <entry
+          key='com.globant.katari.hibernate.EntityWithParameterInConstructor'
+          value='entityWithParameterInConstructorFactory' />
+          <entry
+          key='com.globant.katari.hibernate.OneEmbedded'
+          value='oneEmbeddedFactory' />
+      </util:map>
+    </constructor-arg>
+  </bean>
+
+  <bean id='entityWithParameterInConstructorFactory'
+    class='com.globant.katari.hibernate.EntityWithParameterInConstructorFactory'>
+    <constructor-arg index='0' ref='entityWithParameterInConstructorRepository'/>
+  </bean>
+
+  <bean id='oneEmbeddedFactory'
+    class='com.globant.katari.hibernate.OneEmbeddedFactory' />
+
+  <bean id='entityWithParameterInConstructorRepository'
+    class='com.globant.katari.hibernate.EntityWithParameterInConstructorRepository'>
+    <property name='sessionFactory' ref='katari.sessionFactory'/>
   </bean>
 
 </beans>

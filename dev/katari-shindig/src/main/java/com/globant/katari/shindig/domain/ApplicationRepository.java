@@ -8,13 +8,13 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.globant.katari.hibernate.HibernateDaoSupport;
+import com.globant.katari.hibernate.BaseRepository;
 
 /** The application repository.
  *
  * This repository should probably need to cache the applications.
  */
-public class ApplicationRepository extends HibernateDaoSupport {
+public class ApplicationRepository extends BaseRepository {
 
   /** The class logger.
    */

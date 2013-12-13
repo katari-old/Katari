@@ -12,9 +12,11 @@ import org.springframework.beans.factory.InitializingBean;
  * Also, this class provides helper methods that simplifies the Hibernate
  * data access code.
  */
-public class HibernateDaoSupport implements InitializingBean {
+public class BaseRepository implements InitializingBean {
 
-  /** The hibernate session factory. */
+  /** The Hibernate's session factory, it's never null if this object is
+   * initialized within the spring's context.
+   */
   private SessionFactory sessionFactory;
 
   /** Obtain a Hibernate's session from the current transaction.
@@ -31,7 +33,7 @@ public class HibernateDaoSupport implements InitializingBean {
    *
    * @return the sessionFactory the session factory, never null.
    */
-  public SessionFactory getSessionFactory() {
+  protected SessionFactory getSessionFactory() {
     return sessionFactory;
   }
 
