@@ -59,6 +59,16 @@
       <artifactId>hibernate-core</artifactId>
     </dependency>
 
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-search</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>org.elasticsearch</groupId>
+        <artifactId>elasticsearch</artifactId>
+      </dependency>
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
@@ -85,6 +95,11 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
     </dependency>
+
+     <dependency>
+       <groupId>org.objenesis</groupId>
+       <artifactId>objenesis</artifactId>
+     </dependency>
 
   </dependencies>
 

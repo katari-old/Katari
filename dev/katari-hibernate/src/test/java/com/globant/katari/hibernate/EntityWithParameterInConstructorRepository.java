@@ -2,9 +2,7 @@
 
 package com.globant.katari.hibernate;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
 public class EntityWithParameterInConstructorRepository
-    extends HibernateDaoSupport {
+    extends BaseRepository {
 }
 

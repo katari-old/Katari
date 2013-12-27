@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-2.5.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+  <import resource="classpath:com/globant/katari/core/beans-core.xml"/>
+  <import resource="classpath:com/globant/katari/hibernate/beans-hibernate.xml"/>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='katari.persistentClasses'/>
+    <constructor-arg>
+      <list>
+        <value>com.globant.katari.hibernate.EntityWithParameterInConstructor</value>
+        <value>com.globant.katari.hibernate.EntityWithDefaultConstructor</value>
+        <value>com.globant.katari.hibernate.search.MockEntity</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <bean class='com.globant.katari.core.web.MapFactoryAppender'>
+    <constructor-arg index='0' value='infrastructure.entityFactoryBeanNames' />
+    <constructor-arg index='1'>
+      <util:map>
+        <entry
+          key='com.globant.katari.hibernate.EntityWithParameterInConstructor'
+          value='entityWithParameterInConstructorFactory' />
+        <entry
+          key='com.globant.katari.hibernate.OneEmbedded'
+          value='oneEmbeddedFactory' />
+      </util:map>
+    </constructor-arg>
+  </bean>
+
+  <bean id='entityWithParameterInConstructorFactory'
+    class='com.globant.katari.hibernate.EntityWithParameterInConstructorFactory'>
+    <constructor-arg index='0' ref='entityWithParameterInConstructorRepository'/>
+  </bean>
+
+  <bean id='oneEmbeddedFactory'
+    class='com.globant.katari.hibernate.OneEmbeddedFactory' />
+
+  <bean id='entityWithParameterInConstructorRepository'
+    class='com.globant.katari.hibernate.EntityWithParameterInConstructorRepository'>
+    <property name='sessionFactory' ref='katari.sessionFactory'/>
+  </bean>
+
+  <!-- Hibernate SessionFactory -->
+
+  <bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value='org.hsqldb.jdbcDriver'/>
+    <property name="url" value="jdbc:hsqldb:mem:testdb"/>
+    <property name="username" value="sa"/>
+    <property name="password" value=""/>
+  </bean>
+
+  <bean id="katari.hibernateProperties"
+    depends-on='infrastructure.searchSessionFactory'
+    class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="properties">
+      <map>
+        <entry key="hibernate.dialect" value='org.hibernate.dialect.HSQLDialect' />
+        <entry key="hibernate.hbm2ddl.auto" value='create-drop' />
+        <entry key="hibernate.search.default.directory_provider" value="ram" />
+        <entry key="hibernate.cache.use_second_level_cache" value='false' />
+        <entry key="hibernate.search.autoregister_listeners" value='false' />
+        <entry key="hibernate.search.default.worker.backend" 
+          value='com.globant.katari.hibernate.search.ElasticSearchBackendQueueProcessorFactory' />
+      </map>
+    </property>
+  </bean>
+
+  <alias name="dataSource" alias="katari.dataSource"/>
+
+  <bean id='test.mockEntityRepository'
+    class='com.globant.katari.hibernate.search.MockEntityRepository'>
+    <constructor-arg index='0' ref='infrastructure.searchSessionFactory' />
+    <property name='sessionFactory'>
+      <ref bean='katari.sessionFactory' />
+    </property>
+  </bean>
+
+  <bean id='sampleBeanA'
+    class='com.globant.katari.hibernate.SampleBean'>
+    <constructor-arg index='0' value='beanA' />
+  </bean>
+
+  <bean id='sampleBeanB'
+    class='com.globant.katari.hibernate.SampleBean'>
+    <constructor-arg index='0' value='beanB' />
+  </bean>
+
+  <bean id='sampleBeanList'
+    class='com.globant.katari.core.web.ListFactoryBean'>
+    <property name='targetListClass'
+      value='com.globant.katari.core.web.BeanlookupList' />
+    <property name='sourceList'><list></list></property>
+  </bean>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='sampleBeanList'/>
+    <constructor-arg>
+      <list>
+        <value>sampleBeanA</value>
+        <value>sampleBeanB</value>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <bean id='sampleBeanWithList'
+    class='com.globant.katari.hibernate.SampleBean'>
+    <constructor-arg index='0' ref='sampleBeanList' />
+  </bean>
+
+  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
+    <constructor-arg value='elasticSearch.indexFactories'/>
+    <constructor-arg>
+      <list>
+        <bean class='com.globant.katari.hibernate.search.AnotherIndexIndexFactory'>
+          <constructor-arg index='0' value='another' />
+        </bean>
+      </list>
+    </constructor-arg>
+  </bean>
+
+</beans>
+
+<!-- vim: set ts=2 et sw=2 ai: -->

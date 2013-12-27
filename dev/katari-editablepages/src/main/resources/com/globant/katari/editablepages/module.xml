@@ -122,17 +122,6 @@
       </list>
     </constructor-arg>
   </bean>
-  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
-    <constructor-arg value='search.adapters'/>
-    <constructor-arg value='true'/>
-    <constructor-arg>
-      <list>
-        <bean class="com.globant.katari.editablepages.domain.PageSearchAdapter">
-          <constructor-arg value='/module/editable-pages'/>
-        </bean>
-      </list>
-    </constructor-arg>
-  </bean>
 
   <util:list id="editable-pages.admins">
     <value>ROLE_ADMINISTRATOR</value>

@@ -45,12 +45,6 @@
       <artifactId>katari-hibernate</artifactId>
     </dependency>
 
-    <!-- This is optional, should we mark it as provided? -->
-    <dependency>
-      <groupId>com.globant.katari</groupId>
-      <artifactId>katari-search</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>

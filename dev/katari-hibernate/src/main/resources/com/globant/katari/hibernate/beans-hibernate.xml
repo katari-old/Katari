@@ -18,6 +18,40 @@
 
   <util:map id='infrastructure.entityFactoryBeanNames'/>
 
+    <!-- List of index factories that will be appended to the ElasticSearchClientFactory. -->
+  <util:list id='elasticSearch.indexFactories'/>
+
+  <bean id='infrastructure.elasticserarchHost'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='debian'/>
+
+  <bean id='infrastructure.elasticserarchPort'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='9300'/>
+
+  <bean id='infrastructure.elasticserarchLocalNode'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='true'/>
+
+  <bean id='infrastructure.elasticsearchActive'
+    class='com.globant.katari.core.spring.StringHolder'
+    p:value='true' />
+
+  <bean id='infrastructure.elasticsearchClientFactory' 
+    class='com.globant.katari.hibernate.search.ElasticSearchClientFactory'>
+    <constructor-arg ref='infrastructure.elasticserarchHost' />
+    <constructor-arg ref='infrastructure.elasticserarchPort' />
+    <constructor-arg ref='katari.persistentClasses' />
+    <constructor-arg ref='elasticSearch.indexFactories' />
+    <constructor-arg ref='infrastructure.elasticserarchLocalNode' />
+    <constructor-arg ref='infrastructure.elasticsearchActive' />
+  </bean>
+
+  <bean id='infrastructure.searchSessionFactory' 
+    class='com.globant.katari.hibernate.search.SearchSessionFactory'>
+    <constructor-arg ref='infrastructure.elasticsearchClientFactory' />
+  </bean>
+
   <!-- Hibernate SessionFactory -->
   <bean id="katari.sessionFactory"
     class="com.globant.katari.hibernate.LocalSessionFactoryBean" lazy-init="true">
@@ -49,6 +83,13 @@
     <property name="properties">
       <props>
         <prop key="hibernate.cache.use_second_level_cache">false</prop>
+        <prop key="hibernate.search.autoregister_listeners">false</prop>
+        <prop key="hibernate.search.default.batchbackend">
+          com.globant.katari.hibernate.search.ElasticsearchBatchBackendQueue
+         </prop>
+        <prop key="hibernate.search.default.worker.backend">
+          com.globant.katari.hibernate.search.ElasticSearchBackendQueueProcessorFactory
+         </prop>
       </props>
     </property>
   </bean>

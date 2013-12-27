@@ -134,17 +134,6 @@
       </list>
     </constructor-arg>
   </bean>
-  <bean class='com.globant.katari.core.web.ListFactoryAppender'>
-    <constructor-arg value='search.adapters'/>
-    <constructor-arg value='true'/>
-    <constructor-arg>
-      <list>
-        <bean class="com.globant.katari.user.domain.UserSearchAdapter">
-          <constructor-arg value='/module/user'/>
-        </bean>
-      </list>
-    </constructor-arg>
-  </bean>
 
   <!-- An implementation of UserDetailsService that builds a user details
   object that delegates the user handling to the user domain object.
