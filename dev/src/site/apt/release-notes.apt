@@ -1,11 +1,25 @@
 ~~~ vim: set sw=1 et ts=1 tw=80 ai:
 
+Release notes for version 0.53
+
+* What's new since version 0.51
+
+ * In freemarker, boolean values that are part of a JsonRepresentation are now
+ treated as booleans instead of strings. You now need to explicitely convert
+ booleans to string with ?c, and you no longer need to compare booleans to
+ "true" or "false".
+
+Upgrading from 0.42
+
+ * You must change all boolean expressions in freemarker and handle them as
+ proper booleans instead of strings, freemarker will throw an error if not.
+
 Release notes for version 0.51
 
 * What's new since version 0.50
 
  * Removed the special treatment of the validator attribute html tidy
- validation.. Tapestry adds this attribute to some html elements.
+ validation. Tapestry adds this attribute to some html elements.
 
  * Now you can specify which invalid attributes to ignore in html tidy, for
  example, 'data-.*'. Just append a regex to the
