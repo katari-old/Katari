@@ -222,7 +222,7 @@ public final class JsonRepresentationWrapperTest {
 
     JSONObject nestedObject = new JSONObject();
     nestedObject.put("key1", "value key1");
-    nestedObject.put("key2", "value key2");
+    nestedObject.put("key2", true);
 
     JSONArray nestedArray = new JSONArray();
     nestedArray.put(0, "value 0");

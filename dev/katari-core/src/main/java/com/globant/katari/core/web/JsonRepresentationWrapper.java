@@ -31,7 +31,7 @@ public final class JsonRepresentationWrapper extends DefaultObjectWrapper {
     log.trace("Entering wrap");
     TemplateModel model;
     if (object instanceof JsonRepresentation) {
-      model = new JsonRepresentationModel((JsonRepresentation) object);
+      model = new JsonRepresentationModel((JsonRepresentation) object, this);
       log.trace("Leaving wrap with JsonRepresentationWrapper");
     } else {
       model = super.wrap(object);

@@ -20,11 +20,16 @@ import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateSequenceModel;
 import freemarker.template.TemplateScalarModel;
 
+import freemarker.template.WrappingTemplateModel;
+import freemarker.template.ObjectWrapper;
+import freemarker.ext.util.WrapperTemplateModel;
+
 /** A Freemarker JsonRepresentation model to expose the Json objects from the
  * JsonRepresentation as freemarker elements.
  */
-public final class JsonRepresentationModel implements TemplateHashModel,
-    TemplateSequenceModel, TemplateScalarModel {
+public final class JsonRepresentationModel extends WrappingTemplateModel
+    implements WrapperTemplateModel, TemplateHashModel, TemplateSequenceModel,
+               TemplateScalarModel {
 
   /** The class logger.
    */
@@ -39,7 +44,9 @@ public final class JsonRepresentationModel implements TemplateHashModel,
    *
    * @param object the wrapper JsonRepresentation object, never null.
    */
-  public JsonRepresentationModel(final JsonRepresentation object) {
+  public JsonRepresentationModel(final JsonRepresentation object,
+      final ObjectWrapper wrapper) {
+    super(wrapper);
     Validate.notNull(object, "The json representation object cannot be null.");
     representation = object;
   }
@@ -64,27 +71,29 @@ public final class JsonRepresentationModel implements TemplateHashModel,
     JSONObject target = object.optJSONObject(key);
     if (target != null) {
       TemplateModel model;
-      model = new JsonRepresentationModel(new JsonRepresentation(target));
+      model = new JsonRepresentationModel(new JsonRepresentation(target),
+          getObjectWrapper());
       log.trace("Leaving get with json object");
       return model;
     }
     JSONArray array = object.optJSONArray(key);
     if (array != null) {
       TemplateModel model;
-      model = new JsonRepresentationModel(new JsonRepresentation(array));
+      model = new JsonRepresentationModel(new JsonRepresentation(array),
+          getObjectWrapper());
       log.trace("Leaving get with json array");
       return model;
     }
     if (object.has(key)) {
-      String value;
+      Object value;
       try {
-        value = object.getString(key);
+        value = object.get(key);
       } catch (JSONException e) {
         throw new RuntimeException("Error converting " + key + " to string.",
             e);
       }
       log.trace("Leaving get with string");
-      return new SimpleScalar(value);
+      return wrap(value);
     } else {
       log.trace("Leaving get with null");
       return null;
@@ -108,26 +117,28 @@ public final class JsonRepresentationModel implements TemplateHashModel,
     JSONObject object = array.optJSONObject(index);
     if (object != null) {
       TemplateModel model;
-      model = new JsonRepresentationModel(new JsonRepresentation(object));
+      model = new JsonRepresentationModel(new JsonRepresentation(object),
+          getObjectWrapper());
       log.trace("Leaving with json array");
       return model;
     }
     JSONArray target = array.optJSONArray(index);
     if (target != null) {
       TemplateModel model;
-      model = new JsonRepresentationModel(new JsonRepresentation(target));
+      model = new JsonRepresentationModel(new JsonRepresentation(target),
+          getObjectWrapper());
       log.trace("Leaving with json array");
       return model;
     }
-    String value;
+    Object value;
     try {
-      value = array.getString(index);
+      value = array.get(index);
     } catch (JSONException e) {
       throw new RuntimeException("Error converting " + index + " to string.",
           e);
     }
     log.trace("Leaving with string");
-    return new SimpleScalar(value);
+    return wrap(value);
   }
 
   /** {@inheritDoc}
@@ -173,6 +184,10 @@ public final class JsonRepresentationModel implements TemplateHashModel,
    */
   public String getAsString() {
     return representation.toString();
+  }
+
+  public Object getWrappedObject() {
+    return representation;
   }
 }
 
