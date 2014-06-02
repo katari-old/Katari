@@ -84,8 +84,7 @@ public class ContentModuleServlet extends BaseStaticContentServlet {
 
   /** The resource sets, keyed by base path.
    */
-  private SortedMap<String, ResourceSet> resourceSets
-    = new TreeMap<String, ResourceSet>();
+  private ResourceSets resourceSets = new ResourceSets();
 
   /** Contains the cache of the bundled files, never null.
    */
@@ -110,6 +109,7 @@ public class ContentModuleServlet extends BaseStaticContentServlet {
    *
    * @throws ServletException in case of error.
    */
+  /*
   @Override
   public void init(final ServletConfig config) throws ServletException {
     log.trace("Entering init");
@@ -131,6 +131,7 @@ public class ContentModuleServlet extends BaseStaticContentServlet {
 
     log.trace("Leaving init");
   }
+  */
 
   /** {@inheritDoc}
    */
@@ -146,18 +147,9 @@ public class ContentModuleServlet extends BaseStaticContentServlet {
         return JS_CONTENT_TYPE;
       }
     } else {
-      ResourceSet set = findResourceSet(path);
-      if (set != null) {
-        String basePath = set.getBasePath();
-        Map<String, String> mimeTypes;
-        mimeTypes = resourceSets.get(basePath).getMimeTypes();
-        int dotPosition = path.lastIndexOf('.');
-        if (dotPosition != -1) {
-          String contentType = mimeTypes.get(path.substring(dotPosition + 1));
-          log.trace("Leaving getContentType with {}", contentType);
-          return contentType;
-        }
-      }
+      String contentType = resourceSets.getContentType(path);
+      log.trace("Leaving getContentType with {}", contentType);
+      return contentType;
     }
     log.trace("Leaving getContentType with null");
     return null;
@@ -179,7 +171,7 @@ public class ContentModuleServlet extends BaseStaticContentServlet {
         return new ByteArrayInputStream(bundleContent.getBytes("UTF-8"));
       }
     } else {
-      ResourceSet set = findResourceSet(path);
+      ResourceSet set = resourceSets.find(path);
       if (set != null) {
         if (isInDebugMode()) {
           String filePath = buildPath(set.getDebugPrefix(), path);
@@ -215,6 +207,7 @@ public class ContentModuleServlet extends BaseStaticContentServlet {
    * @return the resource set, or null if the path cannot be served by any
    * resource set.
    */
+  /*
   private ResourceSet findResourceSet(final String path) {
     log.trace("Entering findResourceSet {}", path);
     Validate.notNull(path, "the path cannot be null");
@@ -229,5 +222,6 @@ public class ContentModuleServlet extends BaseStaticContentServlet {
     log.trace("Leaving findResourceSet with null");
     return null;
   }
+  */
 }
 

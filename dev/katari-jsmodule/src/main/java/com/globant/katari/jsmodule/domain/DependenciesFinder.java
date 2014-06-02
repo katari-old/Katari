@@ -2,8 +2,14 @@
 
 package com.globant.katari.jsmodule.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +19,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.globant.katari.jsmodule.view.ResourceSets;
+import com.globant.katari.jsmodule.view.ResourceSet;
+
 /** Looks for the dep file corresponding to the given javascript file path.
  *
  * It then fetches for the dependencies files included in that dep and returns
@@ -21,6 +30,27 @@ import org.json.JSONObject;
  * @author ivan.bedecarats@globant.com
  */
 public class DependenciesFinder {
+
+  /** The class logger.
+   */
+  private static Logger log = LoggerFactory.getLogger(DependenciesFinder.class);
+
+  /** The resource sets, never null.
+   */
+  private ResourceSets resourceSets = new ResourceSets();
+
+  /** True if the application is running in debug mode, false otherwise.
+   */
+  private boolean debugMode;
+
+  /** Constructs a new {@link DependenciesFinder}.
+   * 
+   * @param theDebugMode true if the application is running in debug mode,
+   * false otherwise.
+   */
+  public DependenciesFinder(final boolean theDebugMode) {
+    debugMode = theDebugMode;
+  }
 
   /** Fetches the immediate dependencies of the given file.
    *
@@ -41,18 +71,40 @@ public class DependenciesFinder {
     Validate.notEmpty(fileToBeResolved, "The file cannot be null nor empty");
 
     List<String> foundDependencies = new ArrayList<String>();
+    String fileName = getPathWithDepJsExtension(fileToBeResolved);
 
-    String file = getPathWithDepJsExtension(fileToBeResolved);
-    InputStream fileContent = getClass().getResourceAsStream(file);
+    InputStream fileContent = null;
 
-    // if the file was found that means it has dependencies files. Otherwise, it
-    // hasn't.
+    if (debugMode) {
+      ResourceSet resourceSet = resourceSets.find(fileName);
+      if (resourceSet != null) {
+        String filePath = buildPath(resourceSet.getDebugPrefix(), fileName);
+        log.debug("In debug mode, looking for file {}", filePath);
+        File file = new File(filePath);
+        if (file.exists()) {
+          log.debug("Found {} in debug mode.", filePath);
+          try {
+            fileContent = new FileInputStream(file);
+          } catch (FileNotFoundException e) {
+            throw new RuntimeException ("Error opening file " + filePath, e);
+          }
+        }
+      }
+      if (fileContent == null) {
+        fileContent = getClass().getResourceAsStream(fileName);
+      }
+    } else {
+      fileContent = getClass().getResourceAsStream(fileName);
+    }
+
+    // if the file was found that means it has dependencies files. Otherwise,
+    // it hasn't.
     if (fileContent != null) {
       String jsonTxt;
       try {
         jsonTxt = IOUtils.toString(fileContent);
       } catch (IOException e) {
-        throw new RuntimeException("Error reading dep file " + file, e);
+        throw new RuntimeException("Error reading dep file " + fileName, e);
       } finally {
         IOUtils.closeQuietly(fileContent);
       }
@@ -61,7 +113,7 @@ public class DependenciesFinder {
       try {
         fileDependency = new JSONObject(jsonTxt);
       } catch (JSONException e) {
-        throw new RuntimeException("Error parsing dep file " + file, e);
+        throw new RuntimeException("Error parsing dep file " + fileName, e);
       }
       JSONArray fileDependencyFiles;
       try {
@@ -71,7 +123,7 @@ public class DependenciesFinder {
         }
       } catch (JSONException e) {
         throw new RuntimeException(
-            "Error obtaning js dependencies files from dep file " + file, e);
+            "Error obtaning js dependencies files from dep file " + fileName, e);
       }
     }
 
@@ -91,6 +143,28 @@ public class DependenciesFinder {
     int fileExtensionDot = file.lastIndexOf(".");
     String fileWithoutExtension = file.substring(0, fileExtensionDot);
     return fileWithoutExtension + ".dep.js";
+  }
+
+  /** Concatenates two path names.
+   *
+   * This is protected as an aid for subclasses.
+   *
+   * @param prefix The first component of the file name. It cannot be null.
+   *
+   * @param name The second component of the file name. It cannot be null.
+   *
+   * @return A file name of the form prefix/name with the correct number of /.
+   */
+  private String buildPath(final String prefix, final String name) {
+    Validate.notNull(prefix, "The file component prefix cannot be null.");
+    Validate.notNull(name, "The second file component cannot be null.");
+
+    if (prefix.endsWith("/") && name.startsWith("/")) {
+      return prefix + name.substring(1);
+    } else if (prefix.endsWith("/") || name.startsWith("/")) {
+      return prefix + name;
+    }
+    return prefix + "/" +  name;
   }
 }
 

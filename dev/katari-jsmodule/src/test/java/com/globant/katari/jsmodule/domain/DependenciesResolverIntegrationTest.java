@@ -16,7 +16,6 @@ import com.globant.katari.jsmodule.domain.DependenciesResolver;
  * src/test/resources/com/globant/igexpnasion/smp/jslib/testfile.
  *
  * @author ivan.bedecarats@globant.com
- *
  */
 public class DependenciesResolverIntegrationTest {
 
@@ -44,7 +43,7 @@ public class DependenciesResolverIntegrationTest {
    */
   @Test
   public void resolve_singleDependency() throws Exception {
-    DependenciesFinder finder = new DependenciesFinder();
+    DependenciesFinder finder = new DependenciesFinder(true);
     DependenciesResolver resolver = new DependenciesResolver(finder);
     List<String> files = Arrays.asList(
         "/com/globant/katari/jsmodule/testfile/calendar.js");
@@ -96,7 +95,7 @@ public class DependenciesResolverIntegrationTest {
    */
   @Test
   public void resolve_MultipleDependency() throws Exception {
-    DependenciesFinder finder = new DependenciesFinder();
+    DependenciesFinder finder = new DependenciesFinder(true);
     DependenciesResolver resolver = new DependenciesResolver(finder);
     List<String> files = Arrays.asList(
         "/com/globant/katari/jsmodule/testfile/calendar.js",
@@ -157,7 +156,7 @@ public class DependenciesResolverIntegrationTest {
    */
   @Test
   public void resolve_ComplexDependency() throws Exception {
-    DependenciesFinder finder = new DependenciesFinder();
+    DependenciesFinder finder = new DependenciesFinder(true);
     DependenciesResolver resolver = new DependenciesResolver(finder);
     List<String> files = Arrays.asList(
         "/com/globant/katari/jsmodule/testfile/calendar.js",
@@ -192,7 +191,7 @@ public class DependenciesResolverIntegrationTest {
    */
   @Test (expected = RuntimeException.class)
   public void resolve_singleCircularDependency() {
-    DependenciesFinder finder = new DependenciesFinder();
+    DependenciesFinder finder = new DependenciesFinder(true);
     DependenciesResolver resolver = new DependenciesResolver(finder);
     List<String> files = Arrays.asList(
         "/com/globant/katari/jsmodule/testfile/event.js");
@@ -233,7 +232,7 @@ public class DependenciesResolverIntegrationTest {
    */
   @Test (expected = RuntimeException.class)
   public void resolve_complexCircularDependency() {
-    DependenciesFinder finder = new DependenciesFinder();
+    DependenciesFinder finder = new DependenciesFinder(true);
     DependenciesResolver resolver = new DependenciesResolver(finder);
     List<String> files = Arrays.asList(
         "/com/globant/katari/jsmodule/testfile/post.js");

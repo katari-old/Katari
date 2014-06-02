@@ -45,6 +45,7 @@
 
   <bean name="jsmodule.dependenciesFinder"
       class="com.globant.katari.jsmodule.domain.DependenciesFinder">
+      <constructor-arg index="0" ref="debugMode" />
   </bean>
 
   <bean name="jsmodule.dependenciesResolver"

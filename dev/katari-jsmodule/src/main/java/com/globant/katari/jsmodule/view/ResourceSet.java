@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 /** Holds the resource information for one package.
  */
-class ResourceSet {
+public class ResourceSet {
 
   /** The class logger.
    */

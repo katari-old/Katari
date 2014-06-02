@@ -32,7 +32,7 @@ public class ResolveDependenciesCommandTest {
 
   @Before
   public void setUp() {
-    DependenciesFinder finder = new DependenciesFinder();
+    DependenciesFinder finder = new DependenciesFinder(true);
     resolver = new DependenciesResolver(finder);
     cache = createMock(BundleCache.class);
   }

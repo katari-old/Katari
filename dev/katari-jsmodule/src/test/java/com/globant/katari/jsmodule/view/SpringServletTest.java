@@ -25,7 +25,8 @@ import com.globant.katari.jsmodule.application.ResolveDependenciesCommand;
 /** Tests the spring-servlet.xml.
  *
  * The test performed is very naive. Just verifies that the application context
- * can be created and the /hello.do bean is of the expected type.
+ * can be created and the /resolveDependenciesCommand.do bean is of the
+ * expected type.
  */
 public class SpringServletTest {
 

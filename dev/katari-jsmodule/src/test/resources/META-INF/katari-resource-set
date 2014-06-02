@@ -1,5 +1,5 @@
 
-staticContentPath=/com/globant/katari/jsmodule/view
+staticContentPath=/com/globant/katari/jsmodule/testfile
 
 mimeType.js=text/javascript
 mimeType.png=image/png

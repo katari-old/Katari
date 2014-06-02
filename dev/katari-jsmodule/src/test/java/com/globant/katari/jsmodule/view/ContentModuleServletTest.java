@@ -35,7 +35,8 @@ public class ContentModuleServletTest {
     ContentModuleServlet servlet = new ContentModuleServlet(cache);
     servlet.init(config);
 
-    request.setServletPath("/com/globant/katari/jsmodule/view/image/a.png");
+    request.setServletPath(
+        "/com/globant/katari/jsmodule/testfile/image/a.png");
     request.setMethod("GET");
     servlet.service(request, response);
 
@@ -55,7 +56,8 @@ public class ContentModuleServletTest {
     ContentModuleServlet servlet = new ContentModuleServlet(cache);
     servlet.init(config);
 
-    request.setServletPath("/com/globant/katari/jsmodule/view/notserved/a.png");
+    request.setServletPath(
+        "/com/globant/katari/jsmodule/testfile/notserved/a.png");
     request.setMethod("GET");
     servlet.service(request, response);
 

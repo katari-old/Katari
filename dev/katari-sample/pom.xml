@@ -667,7 +667,7 @@
          case that apache cannot be reached normally. This is specifically used
          to build katari inside Globant in hudson. -->
     <cargo.tomcatLocation>
-      http://katari.globant.com/nexus/content/repositories/tools/com/globant/tools/apache-tomcat/5.5.28/apache-tomcat-5.5.28.zip
+      https://maven.55social.com/tools/com/55social/tools/apache-tomcat/5.5.28/apache-tomcat-5.5.28.zip
     </cargo.tomcatLocation>
 
     <!-- Ports used during testing, intended to be overriden from the command

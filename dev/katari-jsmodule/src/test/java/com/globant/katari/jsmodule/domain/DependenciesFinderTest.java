@@ -30,7 +30,7 @@ public class DependenciesFinderTest {
    */
   @Test
   public void find() {
-    DependenciesFinder depFinder = new DependenciesFinder();
+    DependenciesFinder depFinder = new DependenciesFinder(true);
     List<String> depsFound = depFinder.find(
         "/com/globant/katari/jsmodule/testfile/calendar.js");
     List<String> expectedResult = Arrays.asList(
@@ -50,7 +50,7 @@ public class DependenciesFinderTest {
    */
   @Test
   public void find_noDeps() {
-    DependenciesFinder depFinder = new DependenciesFinder();
+    DependenciesFinder depFinder = new DependenciesFinder(true);
     List<String> depsFound = depFinder.find(
         "/com/globant/katari/jsmodule/testfile/jquery.js");
     List<String> expectedResult = new ArrayList<String>();
@@ -63,16 +63,15 @@ public class DependenciesFinderTest {
    */
   @Test
   public void find_depFileDoesntExit() {
-    DependenciesFinder depFinder = new DependenciesFinder();
+    DependenciesFinder depFinder = new DependenciesFinder(true);
     List<String> depsFound = depFinder.find(
         "/com/globant/katari/jsmodule/testfile/doesntExit.js");
     List<String> expectedResult = new ArrayList<String>();
     assertThat(depsFound, is(expectedResult));
   }
 
-  /**
-   * The jquery.js doesn't have any dependencies so there is no .dep.js file
-   * associated to it.
+  /* empty.js has an invalid empty .dep.js file.
+   *
    * <ul>
    *  <li>
    *    /com/globant/katari/jsmodule/testfile/empty.js = empty.
@@ -81,13 +80,13 @@ public class DependenciesFinderTest {
    */
   @Test (expected = RuntimeException.class)
   public void find_emptyDepFile() {
-    DependenciesFinder depFinder = new DependenciesFinder();
+    DependenciesFinder depFinder = new DependenciesFinder(true);
     depFinder.find("/com/globant/katari/jsmodule/testfile/empty.js");
   }
 
   @Test (expected = RuntimeException.class)
   public void find_invalidDepFile() {
-    DependenciesFinder depFinder = new DependenciesFinder();
+    DependenciesFinder depFinder = new DependenciesFinder(true);
     List<String> depsFound = depFinder.find(
         "/com/globant/katari/jsmodule/testfile/invalidJson.js");
     List<String> expectedResult = new ArrayList<String>();
@@ -96,16 +95,16 @@ public class DependenciesFinderTest {
 
   @Test (expected = IllegalArgumentException.class)
   public void find_nullFile() {
-    (new DependenciesFinder()).find(null);
+    (new DependenciesFinder(true)).find(null);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void find_emptyFile() {
-    (new DependenciesFinder()).find(null);
+    (new DependenciesFinder(true)).find(null);
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void find_invalidJsFile() {
-    (new DependenciesFinder()).find("file.txt");
+    (new DependenciesFinder(true)).find("file.txt");
   }
 }
