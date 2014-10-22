@@ -1,12 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <!-- vim: set ts=2 et sw=2 ai: -->
 
-  <parent>
-    <groupId>com.globant.maven</groupId>
-    <artifactId>globant-parent</artifactId>
-    <version>1.17</version>
-  </parent>
-
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.globant.katari</groupId>
   <artifactId>katari</artifactId>
@@ -32,6 +26,31 @@
   <build>
 
     <plugins>
+
+      <!-- Forces maven 2.2.1 or newer and java 1.5 or newer. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.0-beta-1</version>
+        <executions>
+          <execution>
+            <id>enforce-java</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>2.2.1</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>1.5</version>
+                </requireJavaVersion>
+              </rules>    
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       <!-- Version 2.1 fails with something related to a duplicate version of
            commons logging (version 1.0.4). See
@@ -83,6 +102,37 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.5</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.globant.maven</groupId>
+            <artifactId>globant-build-tools</artifactId>
+            <version>1.8</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <!-- mvn eclipse:eclipse, by default, generates web project description
+      compatible with wtp versions pre 1.0, and this does not work with current
+      versions of eclipse (3.1 / 3.2). We need the plugin to generate the web
+      project description for wtp version 1.0
+      Another note: version 2.7 throws an error related to a merging problem
+      when filtering a single file.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <wtpversion>1.0</wtpversion>
+          <downloadSources>true</downloadSources>
+          <downloadJavadocs>true</downloadJavadocs>
+        </configuration>
+      </plugin>
+
     </plugins>
 
     <extensions>
@@ -94,6 +144,141 @@
     </extensions>
 
   </build>
+
+  <reporting>
+    <plugins>
+
+      <!-- Checkstyle report plugin configuration. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <configLocation>globant/checkstyle/globant-checkstyle-strict.xml</configLocation>
+          <!-- headerLocation>globant/checkstyle/LICENSE.txt</headerLocation -->
+        </configuration>
+      </plugin>
+
+      <!-- Findbugs report plugin configuration. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.3.1</version>
+      </plugin>
+
+      <!-- Changelog report plugin configuration. -->
+      <!-- I could not manage to make this work. When there are several
+      projects each with its own svn account, 'svn log' waits indefinitely for
+      the password of the wrong account. -->
+      <!-- plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>changelog-maven-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <id>all</id>
+            <reports>
+              <report>dev-activity</report>
+              <report>changelog</report>
+              <report>file-activity</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin -->
+
+      <!-- Javadoc plugin configuration. -->
+      <!-- We hit these bugs w/ maven-javadoc-plugin:
+      in version 2.6.1, http://jira.codehaus.org/browse/MJAVADOC-276
+      in 2.5 and 2.6, http://jira.codehaus.org/browse/MJAVADOC-246
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <quiet>true</quiet>
+        </configuration>
+      </plugin>
+
+      <!-- PMD/CPD report plugin configuration. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <targetJdk>1.5</targetJdk>
+        </configuration>
+      </plugin>
+
+      <!-- Surefire (unit tests) report plugin configuration. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.5</version>
+      </plugin>
+
+      <!-- Source cross reference plugin configuration. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>
+
+      <!-- Taglist report plugin configuration. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+        <version>2.4</version>
+      </plugin>
+
+      <!-- Cobertura report plugin configuration. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.3</version>
+      </plugin>
+
+      <!-- Javancss report plugin configuration. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javancss-maven-plugin</artifactId>
+        <version>2.0</version>
+      </plugin>
+
+      <!-- JDepend report plugin configuration. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+        <version>2.0-beta-2</version>
+      </plugin>
+
+      <!-- There is a bug in the dependency generation report: it hits
+      repo1.maven.org even if the central repo points to other url. See the
+      comment below, in the pluginManagement section. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.0.1</version>
+        <inherited>true</inherited>
+        <configuration>
+          <dependencyLocationEnabled>false</dependencyLocationEnabled>
+          <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+        </configuration>
+      </plugin>
+
+      <!-- Generates an api difference report.  -->
+      <!-- Commented out due to strange failures:
+           - if running against an archetype, it says that it cannot find the
+           old version.
+           - Some problems checking an anonymous inner class.
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>clirr-maven-plugin</artifactId>
+        <version>2.2.2</version>
+      </plugin>
+      -->
+
+    </plugins>
+  </reporting>
 
   <!-- The scm information used by continuous integration and documentation. -->
   <!-- scm>
@@ -117,35 +302,16 @@
     <repository>
       <id>katari-release</id>
       <name>katari-release</name>
-      <url>${repositoryUrl}/release</url>
-      <snapshots><enabled>false</enabled></snapshots>
-    </repository>
-    <repository>
-      <id>globant-public-releases</id>
-      <name>globant-public-releases</name>
-      <url>https://projects.globant.com/nexus/content/repositories/globant</url>
-      <snapshots><enabled>false</enabled></snapshots>
-    </repository>
-    <!-- The jboss repository, mainly for hibernate -->
-    <repository>
-      <id>jboss-releases</id>
-      <name>Jboss Releases</name>
-      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+      <url>https://maven.55social.com/katari/release</url>
       <snapshots><enabled>false</enabled></snapshots>
     </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
-      <id>globant-public-releases</id>
-      <name>globant-public-releases</name>
-      <url>https://projects.globant.com/nexus/content/repositories/globant</url>
-      <snapshots><enabled>false</enabled></snapshots>
-    </pluginRepository>
-    <pluginRepository>
       <id>katari-release</id>
       <name>katari-release</name>
-      <url>${repositoryUrl}/release</url>
+      <url>https://maven.55social.com/katari/release</url>
     </pluginRepository>
   </pluginRepositories>
 
@@ -206,6 +372,8 @@
       scp://maven.55social.com/opt/55social/maven/katari
     </repositoryRoot>
     <repositoryUrl>
+      <!-- Note: If you need to change this, also change the values in the
+           katary-release repositories -->
       https://maven.55social.com/katari
     </repositoryUrl>
   </properties>

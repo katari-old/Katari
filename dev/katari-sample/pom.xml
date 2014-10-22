@@ -535,15 +535,16 @@
         <executions>
           <execution>
             <phase>generate-resources</phase>
-            <!-- We must remove the key from previous runs so that the genkey
-                 goal does not fail with an existing key error. -->
+            <!-- We must remove the key from previous runs so that the
+                 generateKeyPair goal does not fail with an existing key error.
+                 -->
             <id>clean</id>
             <goals><goal>clean</goal></goals>
           </execution>
           <execution>
             <phase>generate-resources</phase>
             <id>genkey</id>
-            <goals><goal>genkey</goal></goals>
+            <goals><goal>generateKeyPair</goal></goals>
           </execution>
         </executions>
         <configuration>

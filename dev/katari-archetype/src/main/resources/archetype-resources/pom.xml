@@ -90,23 +90,6 @@
     <url>http://svn.globant.com/svn/\${artifactId}/main</url>
   </scm>
 
-  <repositories>
-    <repository>
-      <id>globant-public-releases</id>
-      <name>globant-public-releases</name>
-      <!-- If I use ${repositoryRoot}, maven does not find the parent pom. -->
-      <url>https://projects.globant.com/nexus/content/repositories/globant</url>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>globant-public-releases</id>
-      <name>globant-public-releases</name>
-      <url>${repositoryRoot}/globant</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <!-- The location where deploy and site-deploy leaves the artifacts -->
   <distributionManagement>
     <repository>
