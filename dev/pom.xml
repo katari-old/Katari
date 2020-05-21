@@ -1144,7 +1144,7 @@ try {
     <dependency.junit.version>4.5</dependency.junit.version>
     <dependency.easymock.version>3.0</dependency.easymock.version>
     <dependency.spring.version>3.0.5.RELEASE</dependency.spring.version>
-    <dependency.htmlunit.version>2.9</dependency.htmlunit.version>
+    <dependency.htmlunit.version>2.37.0</dependency.htmlunit.version>
     <dependency.hibernate-core.version>
       3.5.3-Final
     </dependency.hibernate-core.version>
