@@ -291,7 +291,7 @@
       <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
-        <version>3.1.13</version>
+        <version>8.0.16</version>
       </dependency>
 
       <!-- If you want to use postgres.
