@@ -1145,9 +1145,7 @@ try {
     <dependency.easymock.version>3.0</dependency.easymock.version>
     <dependency.spring.version>3.0.5.RELEASE</dependency.spring.version>
     <dependency.htmlunit.version>2.9</dependency.htmlunit.version>
-    <dependency.hibernate-core.version>
-      3.5.3-Final
-    </dependency.hibernate-core.version>
+    <dependency.hibernate-core.version>5.3.20.Final</dependency.hibernate-core.version>
     <dependency.hibernate-annotations.version>
       3.5.3-Final
     </dependency.hibernate-annotations.version>
